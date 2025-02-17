@@ -4,10 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>이도현 연구 포트폴리오</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+        }
+        .container {
+            max-width: 900px;
+            margin-top: 40px;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+    </style>
 </head>
 <body>
-    <h1>이도현 연구 포트폴리오</h1>
-    <p>불균형 데이터 및 마이크로 모빌리티 연구</p>
-    <p><a href="https://github.com/DDohyeon2941">GitHub</a> | <a href="https://orcid.org/0000-0002-7362-6616">ORCID</a></p>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">이도현 포트폴리오</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#research">연구</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">프로젝트</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#talks">발표</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">소개</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="home" class="section">
+            <h2>이도현 연구 포트폴리오</h2>
+            <p>불균형 데이터 문제 해결 및 마이크로 모빌리티 연구를 수행하는 데이터 과학자입니다.</p>
+            <p><strong>주요 연구 키워드:</strong> 불균형 데이터, 오버샘플링, 마이크로 모빌리티, AdaBoost</p>
+        </section>
+
+        <section id="research" class="section">
+            <h3>📄 연구 논문</h3>
+            <ul>
+                <li><strong>불균형 데이터 오버샘플링 크기 결정</strong> (ESWA, 2021) - <a href="https://doi.org/10.1016/j.eswa.2021.115442">DOI 링크</a></li>
+                <li><strong>AdaBoost 기반 노이즈 필터링</strong> (JIFS, 2022) - <a href="https://doi.org/10.3233/JIFS-213244">DOI 링크</a></li>
+                <li><strong>마이크로 모빌리티 예측</strong> (IET ITS, 2024) - <a href="https://doi.org/10.1049/itr2.12596">DOI 링크</a></li>
+                <li><strong>야구 확률 모델 연구</strong> (Journal of Sports Sciences, 2024) - <a href="https://doi.org/10.1080/02640414.2024.2355423">DOI 링크</a></li>
+            </ul>
+        </section>
+
+        <section id="projects" class="section">
+            <h3>🛠 연구 프로젝트</h3>
+            <ul>
+                <li><strong>성수동 상권 분석</strong> - <a href="https://youtu.be/yfcqHHT5f1w">YouTube 발표</a></li>
+                <li><strong>자전거 공유 시스템 예측</strong> - <a href="https://github.com/DDohyeon2941/bike-sharing-demand">GitHub 코드</a></li>
+                <li><strong>AdaBoost 기반 노이즈 필터링 개선</strong> - <a href="https://github.com/DDohyeon2941/adaboost-noise-filtering">GitHub 코드</a></li>
+            </ul>
+        </section>
+
+        <section id="talks" class="section">
+            <h3>🎤 발표 및 활동</h3>
+            <ul>
+                <li>Imbalanced Problem for Regression - <a href="https://youtu.be/yfcqHHT5f1w">발표 영상</a></li>
+                <li>Oversampling Methods for Imbalanced Dataset - <a href="https://youtu.be/XqRSu0tX1PI">발표 영상</a></li>
+                <li>Noise-Filtering Methods for Noisy Robust Adaboost - <a href="https://youtu.be/JksnEaiyL-M">발표 영상</a></li>
+                <li>MAUP for Free-Float Micro-Mobility - <a href="https://youtu.be/tVGDsRIWSNs">발표 영상</a></li>
+            </ul>
+        </section>
+
+        <section id="about" class="section">
+            <h3>📌 소개</h3>
+            <p><strong>학력:</strong> 서울과학기술대학교 데이터사이언스 박사 과정</p>
+            <p><strong>이메일:</strong> skypo1000@ds.seoultech.ac.kr</p>
+            <p><strong>GitHub:</strong> <a href="https://github.com/DDohyeon2941">https://github.com/DDohyeon2941</a></p>
+            <p><strong>ORCID:</strong> <a href="https://orcid.org/0000-0002-7362-6616">https://orcid.org/0000-0002-7362-6616</a></p>
+        </section>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
