@@ -1,0 +1,290 @@
+```html
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why Setpoint ≠ Actual Process Value</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 50px;
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h3 {
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            color: gray;
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            background-color: #f1f3f5;
+            padding: 20px;
+            border-left: 5px solid #343a40;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .diagram {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .back-link {
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back-link" href="../index.html">← Portfolio Home</a>
+
+    <h1>Why Setpoint ≠ Actual Process Value</h1>
+    <h2>제조 AI에서 학습 데이터와 운영 데이터는 같지 않을 수 있다</h2>
+
+    <p class="meta">
+        2026.05.28 · Manufacturing AI · Setpoint · Actual Value · Industrial ML
+    </p>
+
+    <div class="highlight">
+        제조 AI에서 중요한 것은 단순히 모델을 학습할 수 있는지가 아니다.
+        <br><br>
+        실제 운영 시점에 존재하는 데이터로 추론 가능한 구조인지 먼저 확인해야 한다.
+    </div>
+
+    <p>
+        제조 AI 프로젝트에서는 종종 다음과 같은 상황이 발생한다.
+    </p>
+
+    <p>
+        모델 학습에는 실제 측정값(actual value)을 사용하지만,
+        운영 환경에서는 설정값(setpoint) 기반으로 추론하려는 경우다.
+    </p>
+
+    <p>
+        문제는 이 둘이 같은 의미를 가지지 않는다는 점이다.
+    </p>
+
+    <p>
+        실제 프로젝트에서도 검사 이후 측정되는 FBH/FBD 값을 기반으로
+        Coining 압력을 예측하자는 의견이 있었다.
+    </p>
+
+    <p>
+        겉보기에는 가능해 보였다.
+        학습 데이터에는 압력과 FBH/FBD가 모두 존재하기 때문이다.
+    </p>
+
+    <p>
+        하지만 이 접근은 운영 구조 관점에서 문제가 있었다.
+    </p>
+
+    <div class="diagram">
+        실제 생산에서는 압력을 먼저 결정한 뒤,<br>
+        그 결과로 FBH/FBD가 측정된다.
+    </div>
+
+    <p>
+        즉 운영 시점에는 아직 존재하지 않는 정보를 입력으로 사용하는 구조가 된다.
+    </p>
+
+    <h2>제조 AI에서 중요한 것은 운영 시점의 데이터다</h2>
+
+    <p>
+        AI 모델은 단순히 accuracy만 높으면 되는 것이 아니다.
+    </p>
+
+    <p>
+        실제 운영 시점에서 사용 가능한 데이터로 추론 가능해야 한다.
+    </p>
+
+    <p>
+        하지만 제조 AI에서는 학습 시점과 운영 시점의 데이터 구조가 다른 경우가 많다.
+    </p>
+
+    <ul>
+        <li>actual value는 공정 이후에 존재한다.</li>
+        <li>setpoint는 공정 이전에 존재한다.</li>
+        <li>검사 결과는 공정 이후에 측정된다.</li>
+        <li>추천값은 공정 이전에 제공되어야 한다.</li>
+    </ul>
+
+    <p>
+        즉 모델은 실제 수행된 공정 데이터를 기반으로 학습할 수 있지만,
+        운영 단계에서는 아직 수행되지 않은 공정 조건을 기준으로 판단해야 한다.
+    </p>
+
+    <div class="highlight">
+        제조 AI에서는 “학습 가능한 데이터”와 “운영 시점에 사용 가능한 데이터”를 구분해야 한다.
+    </div>
+
+    <h2>왜 FBH/FBD 기반 압력 예측이 문제가 되었는가</h2>
+
+    <p>
+        프로젝트의 목적은 목표 bump 품질을 만족하는 Coining 압력을 추천하는 것이었다.
+    </p>
+
+    <p>
+        따라서 실제 운영 흐름은 다음과 같았다.
+    </p>
+
+    <div class="diagram">
+        RBH → Coining Pressure → FBH / FBD
+    </div>
+
+    <p>
+        즉 이전 상태(RBH)를 확인하고,
+        적절한 Coining 압력을 결정한 뒤,
+        그 결과로 FBH/FBD가 측정되는 구조다.
+    </p>
+
+    <p>
+        하지만 FBH/FBD를 입력으로 사용해 압력을 예측하면 흐름이 반대가 된다.
+    </p>
+
+    <div class="diagram">
+        FBH / FBD → Coining Pressure
+    </div>
+
+    <p>
+        이는 결과를 보고 원인을 맞추는 구조에 가깝다.
+    </p>
+
+    <p>
+        물론 학습 데이터 안에서는 이런 모델을 만들 수 있다.
+        압력과 FBH/FBD가 모두 기록되어 있기 때문이다.
+    </p>
+
+    <p>
+        하지만 실제 생산 환경에서는 FBH/FBD가 아직 존재하지 않는다.
+        압력을 먼저 결정해야 하기 때문이다.
+    </p>
+
+    <p>
+        결국 이 방식은 모델 성능이 높게 나올 수는 있어도,
+        실제 운영에서는 사용할 수 없는 구조가 된다.
+    </p>
+
+    <h2>단순 leakage 문제가 아니었다</h2>
+
+    <p>
+        이 문제는 단순히 leakage 여부만의 문제가 아니었다.
+    </p>
+
+    <p>
+        더 중요한 것은 데이터의 성격과 분포가 다르다는 점이었다.
+    </p>
+
+    <p>
+        setpoint는 작업자가 입력하거나 시스템이 설정한 목표값에 가깝다.
+        반면 actual value는 실제 공정에서 발생한 결과에 가깝다.
+    </p>
+
+    <p>
+        두 값은 같은 숫자처럼 보일 수 있지만,
+        제조 AI 관점에서는 역할이 다르다.
+    </p>
+
+    <ul>
+        <li>setpoint는 공정 이전의 의도다.</li>
+        <li>actual value는 공정 이후의 실행 결과다.</li>
+        <li>검사값은 공정 결과를 측정한 값이다.</li>
+        <li>추천값은 공정 이전에 결정해야 하는 값이다.</li>
+    </ul>
+
+    <p>
+        따라서 학습 데이터에서 함께 존재한다는 이유만으로,
+        이 값들을 동일한 운영 구조에서 사용할 수 있다고 보면 안 된다.
+    </p>
+
+    <p>
+        특히 실제 생산에서는 작업자 개입, 장비 상태, 공정 편차, 유지보수 상태 등에 따라
+        동일한 setpoint라도 actual value와 결과가 달라질 수 있다.
+    </p>
+
+    <div class="highlight">
+        중요한 것은 “모델을 만들 수 있는가”가 아니라,
+        “운영 환경에서도 같은 구조로 사용할 수 있는가”이다.
+    </div>
+
+    <h2>제조 AI는 모델보다 운영 구조를 먼저 정의해야 한다</h2>
+
+    <p>
+        제조 AI 프로젝트에서는 모델 성능 이전에 먼저 정의해야 하는 것이 있다.
+    </p>
+
+    <ul>
+        <li>실제 운영 흐름이 무엇인가</li>
+        <li>어떤 데이터가 공정 이전에 존재하는가</li>
+        <li>어떤 값이 공정 이후에 생성되는가</li>
+        <li>운영 시점에 실제 사용 가능한 데이터는 무엇인가</li>
+        <li>학습 데이터와 운영 데이터의 분포가 같은가</li>
+    </ul>
+
+    <p>
+        이 구조가 정리되지 않으면,
+        모델은 높은 accuracy를 보여도 실제 생산에서는 사용할 수 없는 형태가 될 수 있다.
+    </p>
+
+    <p>
+        제조 AI에서 중요한 것은 단순 prediction이 아니라,
+        운영 환경에서 실제로 동작 가능한 구조를 만드는 것이다.
+    </p>
+
+    <div class="highlight">
+        제조 AI 모델은 데이터셋 위에서만 잘 동작하면 안 된다.
+        <br><br>
+        실제 공정 흐름 안에서 사용할 수 있어야 한다.
+    </div>
+
+</div>
+
+</body>
+</html>
+```
