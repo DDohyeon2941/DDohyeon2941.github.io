@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Why AI Evaluation Metrics Must Be Realistic in Manufacturing</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.8;
+        }
+
+        .container {
+            max-width: 900px;
+            margin-top: 50px;
+            margin-bottom: 80px;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        h1 {
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        h2 {
+            margin-top: 50px;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        h3 {
+            margin-top: 35px;
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        .meta {
+            color: gray;
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            background-color: #f1f3f5;
+            padding: 20px;
+            border-left: 5px solid #343a40;
+            margin: 30px 0;
+            border-radius: 8px;
+        }
+
+        .diagram {
+            background-color: #f8f9fa;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .case-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            margin: 24px 0;
+        }
+
+        @media (max-width: 600px) {
+            .case-grid { grid-template-columns: 1fr; }
+        }
+
+        .case-card {
+            background-color: #f8f9fa;
+            border-left: 5px solid #343a40;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .case-card .label {
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .case-card p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #343a40;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .back-link {
+            margin-bottom: 30px;
+            display: inline-block;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <a class="back-link" href="../index.html">← Portfolio Home</a>
+
+    <h1>Why AI Evaluation Metrics Must Be Realistic in Manufacturing</h1>
+
+    <p class="meta">
+        2026.05.30 · Manufacturing AI · Evaluation Metrics · KPI Design
+    </p>
+
+    <div class="highlight">
+        제조 AI 프로젝트에서 평가 기준을 너무 이상적으로 잡는 경우가 많다.
+        <br><br>
+        현실과 맞지 않는 기준은 결국 아무도 안 쓴다.
+        모델 성능이 아무리 좋아도, 현장에서 신뢰를 못 받으면 의미가 없다.
+    </div>
+
+    <p>
+        평가 기준은 모델 다 만들고 나서 조정하는 게 아니다.
+        모델이 뭘 최적화할지를 결정하는 거라서, 처음부터 현실적으로 잡아야 한다.
+    </p>
+
+    <h2>달성할 수 없는 기준은 기준이 아니다</h2>
+
+    <p>
+        한 프로젝트에서 이미 5%, 8% okay 율을 만족하고 있었다.
+        그런데 추가로 2% okay 율 달성 요구가 나왔다.
+    </p>
+
+    <p>
+        더 높은 목표니까 당연히 도전해야 하는 거 아닌가 싶었는데,
+        데이터를 보니 얘기가 달랐다.
+    </p>
+
+    <p>
+        타겟값 분포가 소수점 둘째 자리 수준에서 왔다갔다할 만큼 편차가 너무 작았다.
+        모델이 아무리 열심히 학습해도 타겟 평균값을 그대로 쓰는 것과 성능 차이가 거의 없었다.
+        현업에서도 그 얘기를 했다.
+    </p>
+
+    <p>
+        거기다 tree 모델은 구조상 극단값을 잘 못 맞춘다.
+        편차가 작은 타겟에서 극단값까지 잡으려는 건 애초에 무리한 요구였다.
+    </p>
+
+    <div class="highlight">
+        이미 잘 되고 있는 상황에서, 처음부터 도달할 수 없는 기준이 얹어진 거다.
+        이런 기준으로 평가하면 숫자는 나오는데 그 숫자가 아무 의미가 없다.
+    </div>
+
+    <h2>평가 기준은 결국 책임 범위를 나누는 일이다</h2>
+
+    <p>
+        coining 압력을 추천하는 AI 모델 개발 프로젝트가 있었다.
+        bump 품질을 원하는 수준으로 맞추기 위해 최적 압력을 추천하는 모델이었고,
+        평가 기준은 bump-level FBH/FBD였다.
+    </p>
+
+    <p>
+        이 프로젝트에서 평가 기준을 설계하면서 생각이 바뀌었다.
+        평가 기준은 단순히 "모델이 얼마나 잘 맞히나"를 보는 게 아니었다.
+    </p>
+
+    <div class="diagram">
+        AI가 어디까지 책임지고, 어디서부터는 사람이 판단할지를 나누는 작업
+    </div>
+
+    <p>이 관점에서 FBH와 FBD 각각의 기준을 다르게 설계했다.</p>
+
+    <div class="case-grid">
+        <div class="case-card">
+            <div class="label">FBH</div>
+            <p>
+                spec-in이 안 되더라도 coining 압력과 무관한 오류면 평가에서 뺐다.
+                압력과 관계없는 불량까지 모델 성능으로 따지는 건 책임 범위가 잘못된 거다.
+            </p>
+        </div>
+        <div class="case-card">
+            <div class="label">FBD</div>
+            <p>
+                CPK가 1.67을 못 넘으면 현업이 직접 원인을 파악하기로 했다.
+                모델이 모든 걸 해결하는 게 아니라,
+                사람이 개입해야 할 타이밍을 알려주는 역할로 정리한 거다.
+            </p>
+        </div>
+    </div>
+
+    <p>
+        결국 두 기준 모두 AI가 할 일과 사람이 할 일을 명확히 나눈 것이다.
+    </p>
+
+    <h2>AI가 현장에서 안 쓰여도 평가할 수 있어야 한다</h2>
+
+    <p>
+        제조 현장에서 AI 추천이 100% 적용되는 경우는 거의 없다.
+        도입 초기엔 더 그렇다.
+        수십 년 경험이 쌓인 엔지니어한테 처음 보는 AI 추천을 그대로 따르라고 하는 건 현실적으로 어렵다.
+    </p>
+
+    <p>
+        이 문제 때문에 counterfactual 모니터링 지표를 설계했다.
+    </p>
+
+    <div class="diagram">
+        "AI가 추천한 압력으로 했으면 어떤 결과가 나왔을까"를 사후에 추정하는 지표
+    </div>
+
+    <p>
+        기준은 현업 인터뷰에서 가져왔다.
+        초도 실패했을 때 현업이 평균적으로 압력을 얼마나 조정하는지를 미리 파악해서,
+        그 조정 폭을 기준으로 AI 추천 방향이 맞았는지를 보는 방식이다.
+    </p>
+
+    <div class="highlight">
+        실제 운영까지는 못 했지만, "AI가 현장에서 쓰였는가"와 "AI가 좋은 추천을 했는가"는 다른 질문이다.
+        <br><br>
+        이 둘을 구분하지 않으면, AI가 안 쓰인 게 모델 문제인지 신뢰 문제인지조차 알 수 없다.
+    </div>
+
+    <h2>현실적인 기준이 오히려 더 어렵다</h2>
+
+    <p>
+        "모든 bump spec-in", "2% okay 율 최대화", "CPK 완전 만족" 같은 기준은
+        말하기도 쉽고 반박하기도 어렵다.
+        근데 이런 기준은 현장에서 안 통한다.
+    </p>
+
+    <p>
+        현실적인 기준을 만들려면 공정을 직접 이해해야 하고,
+        모델 책임 범위를 현업과 합의해야 하고,
+        AI가 틀렸을 때 누가 뭘 할지까지 같이 설계해야 한다.
+    </p>
+
+    <p>
+        그리고 이건 모델 개발보다 먼저 해야 한다.
+        평가 기준이 모델이 최적화하는 대상을 결정하기 때문이다.
+    </p>
+
+    <div class="highlight">
+        기준이 현실을 반영하지 않으면,
+        아무리 잘 만든 모델도 현실에서 의미 없는 걸 최적화하고 있는 거다.
+        <br><br>
+        제조 AI에서 평가 기준 설계는 기술 작업이 아니다.
+        현장을 이해하고, 책임을 나누고, 현실을 반영하는 일이다.
+    </div>
+
+</div>
+
+</body>
+</html>
