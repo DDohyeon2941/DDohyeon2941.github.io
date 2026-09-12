@@ -3,112 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>이도현 연구 포트폴리오</title>
+    <title>이도현 | ML · DL · Data Architecture</title>
+    <meta name="description" content="이도현 포트폴리오. 불균형 학습과 예측 모델 연구, GAN·Computer Vision·Federated Learning 프로젝트, ETL 및 운영 데이터 구조 설계 경험을 소개합니다.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <style>
+        :root {
+            --ink: #17212b;
+            --muted: #5d6b78;
+            --accent: #0f766e;
+            --accent-light: #dff4ef;
+            --paper: #fbfaf7;
+            --line: #d8e0df;
+        }
         body {
             font-family: Arial, sans-serif;
-            background-color: #f8f9fa;
+            color: var(--ink);
+            background: linear-gradient(135deg, #eef6f3 0%, var(--paper) 42%, #f5f0e8 100%);
+            line-height: 1.7;
         }
         .container {
-            max-width: 900px;
+            max-width: 1040px;
             margin-top: 40px;
         }
         .navbar {
-            margin-bottom: 20px;
+            margin-bottom: 28px;
+            background: var(--ink) !important;
         }
         .section {
-            margin-bottom: 60px;
-            padding: 20px;
-            background: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 36px;
+            padding: 34px;
+            background: rgba(255, 255, 255, 0.86);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(23, 33, 43, 0.06);
         }
         .profile-img {
-            width: 180px;
+            width: 150px;
             height: auto;
             border-radius: 50%;
-            border: 3px solid #ddd;
+            border: 3px solid var(--accent-light);
             display: block;
             margin: 20px auto;
         }
         html {
             scroll-behavior: smooth;
         }
+        h1, h2, h3 { letter-spacing: 0; }
+        h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; }
+        h2 { color: var(--accent); font-size: 1.65rem; font-weight: 700; }
+        h3 { color: var(--accent); font-size: 1.15rem; }
+        a { color: var(--accent); }
+        .eyebrow { color: var(--accent); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+        .lead { max-width: 760px; margin: 0 auto 1rem; font-size: 1.15rem; color: var(--muted); }
+        .keyword-list, .section-intro { color: var(--muted); }
+        .navbar .container { margin-top: 0; }
+        .navbar-nav .nav-link { font-size: 0.9rem; }
+        .expertise-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; text-align: left; }
+        .expertise-card { padding: 20px; border: 1px solid var(--line); border-radius: 8px; background: var(--paper); }
+        .expertise-card p { color: var(--muted); }
+        .project-group + .project-group { margin-top: 24px; }
+        .section { scroll-margin-top: 20px; overflow-wrap: anywhere; }
+        a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+        @media (max-width: 767px) { .expertise-grid { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+        @media (max-width: 576px) {
+            .container { margin-top: 18px; }
+            .section { padding: 22px; }
+        }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" aria-label="주요 메뉴">
         <div class="container">
             <a class="navbar-brand" href="#home">이도현 포트폴리오</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="메뉴 열기 또는 닫기">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">홈</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#research">연구 논문</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#industrial-ai">Industrial AI</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#machine-learning">ML Research</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#projects">DL Projects</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#data-architecture">Data Architecture</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#applied-ai">Applied AI</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#research">Publications</a></li>
                     <li class="nav-item"><a class="nav-link" href="#blog">Blog</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#awards">수상</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">소개</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">About</a></li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container">
+    <main class="container">
         <section id="home" class="section text-center">
-            <h2>이도현 연구 포트폴리오</h2>
-            <img src="https://raw.githubusercontent.com/DDohyeon2941/DDohyeon2941.github.io/main/images/author1_dohyeon.PNG" 
-                 alt="이도현 프로필 사진" 
+            <p class="eyebrow">Machine Learning · Deep Learning · Data Architecture</p>
+            <h1>데이터 구조 설계부터<br>ML·DL 연구와 응용까지.</h1>
+            <img src="https://raw.githubusercontent.com/DDohyeon2941/DDohyeon2941.github.io/main/images/author1_dohyeon.PNG"
+                 alt="이도현 프로필 사진"
                  class="profile-img">
-            <p>Manufacturing AI 및 실무 데이터 환경에서의 Machine Learning 시스템 설계와 불균형 데이터 문제 해결을 수행합니다.</p>
-            <p><strong>주요 연구 키워드:</strong> Manufacturing AI, Imbalanced Learning, Time-Series Analysis, Feature Engineering, ETL Pipeline, AdaBoost</p>
+            <p class="lead">불균형 데이터와 예측 모델을 연구하고, 생성 모델·Computer Vision·분산 학습 프로젝트를 수행합니다. ETL과 운영 데이터 구조 설계 경험을 바탕으로 데이터 준비부터 모델 적용까지 연결합니다.</p>
+            <div class="expertise-grid">
+                <article class="expertise-card">
+                    <h2>Machine Learning</h2>
+                    <p>불균형 학습, oversampling, AdaBoost와 수요 예측 연구</p>
+                    <a href="#machine-learning">ML 연구 살펴보기 →</a>
+                </article>
+                <article class="expertise-card">
+                    <h2>Deep Learning</h2>
+                    <p>GAN, OOD, Computer Vision과 Federated Learning 프로젝트</p>
+                    <a href="#projects">DL 프로젝트 살펴보기 →</a>
+                </article>
+                <article class="expertise-card">
+                    <h2>Data Architecture</h2>
+                    <p>ETL, 데이터 적재 구조, 시계열 정합성과 ML 파이프라인 설계</p>
+                    <a href="#data-architecture">데이터 설계 경험 살펴보기 →</a>
+                </article>
+            </div>
         </section>
 
-        <section id="research" class="section">
-            <h3>📄 연구 논문</h3>
-            <p>아래 논문들은 졸업논문 및 학술지에 게재된 연구로, GitHub 코드와 함께 확인할 수 있습니다.</p>
+        <section id="machine-learning" class="section">
+            <h2>Machine Learning Research</h2>
+            <p class="section-intro">데이터 불균형, 노이즈, 극단 수요처럼 학습과 예측을 어렵게 만드는 문제를 다룹니다.</p>
+            <div class="project-group">
+                <h3>Imbalanced Learning &amp; Noise Filtering</h3>
+                <p>분류 복잡도를 활용한 oversampling 크기 산출과 클래스 간·내 변동성을 고려한 AdaBoost 노이즈 필터링을 연구했습니다.</p>
+                <p><a href="https://github.com/DDohyeon2941/classification-complexity-based-oversampling">Oversampling 코드</a> · <a href="https://github.com/DDohyeon2941/noise-filtering-adaboost-for-imbalanced-data">Noise filtering 코드</a></p>
+            </div>
+            <div class="project-group">
+                <h3>Demand Prediction &amp; Spatial Data</h3>
+                <p>공유자전거의 극단 수요 예측을 위한 AdaBoost.RDT와 마이크로 모빌리티 수요 예측을 위한 공간 단위 생성 프레임워크를 개발했습니다.</p>
+                <p><a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">AdaBoost.RDT 코드</a> · <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">수요 예측 프레임워크 코드</a></p>
+            </div>
+            <a href="#research">전체 논문 및 학위논문 보기 →</a>
+        </section>
+
+        <section id="projects" class="section">
+            <h2>Deep Learning Projects</h2>
+            <p class="section-intro">생성 모델, 분포 밖 데이터 탐지, 분산 학습과 시각 인식을 다룬 프로젝트 및 연구 발표입니다.</p>
             <ul>
-                <li><strong>Strategies to Prevent Biased Learning for Imbalanced Data </strong> (박사학위논문, 2025) - <a href="https://snut.dcollection.net/srch/srchDetail/200000865329"> 링크</a>
-                    <p> </p>
-                <li><strong>Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility</strong> (IET ITS, 2024, 1저자) - <a href="https://doi.org/10.1049/itr2.12596">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">GitHub 코드</a></li>
-                    <p>🔹 기존의 grid-based areal unit 산정방식이 가지고 있는 MAUP를 해결하는 areal unit 프레임워크 개발</p>
-                <li><strong>AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands</strong> (IEEE ACCESS, 2024, 1저자) - <a href="https://ieeexplore.ieee.org/document/10705154">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">GitHub 코드</a></li>
-                    <p>🔹 잔차기반 DT를 기반해, 공유자전거 대여분포내 존재하는 Extreme event와 normal event를 모두 적절히 에측하는 모델 개발</p>
-                <li><strong>A measure of the importance of moment for ball-strike counts in a baseball plate appearance</strong> (Journal of Sports Sciences, 2024, 공동1저자) - <a href="https://doi.org/10.1080/02640414.2024.2355423">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">GitHub 코드</a></li>
-                    <p>🔹 확률모형을 기반해, 타자와 투수간 1대1 대결해서, 투수에게 유리한 상황을 추정</p>
-                <li><strong>Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets</strong> (JIFS, 2022, 1저자) - <a href="https://doi.org/10.3233/JIFS-213244">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/noise-filtering-adaboost-for-imbalanced-data">GitHub 코드</a></li>
-                    <p>🔹 클래스 간 분포 차이를 고려한 노이즈 필터링 기법을 제안하여 기존 AdaBoost의 한계를 개선.</p>
-                <li><strong>An efficient method to determine sample size in oversampling based on classification complexity for imbalanced data</strong> (ESWA, 2021, 1저자) - <a href="https://doi.org/10.1016/j.eswa.2021.115442">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/classification-complexity-based-oversampling">GitHub 코드</a></li>
-                    <p>🔹 기존 연구에서는 오버샘플링 크기를 일괄적으로 설정했으나, 본 연구에서는 분류 복잡도를 기반으로 최적 크기를 결정하는 방법을 제안.</p>
-                <li><strong>Investigation on the Factors Affecting the Number of International Visitors Using Online Reviews </strong> (Journal of the Korean Institute of Industrial Engineers, 2021, 2저자) - <a href="http://dx.doi.org/10.7232/jkiie.2021.47.1.045">DOI 링크</a> |
-                    <p> </p>
-                <li><strong>분류 복잡도를 활용한 오버 샘플링 크기 산출 알고리즘 </strong> (석사학위논문, 2020) - <a href="https://www.riss.kr/link?id=T15671100">RISS 링크</a>   
-                    <p> </p>
+                <li><strong>GAN for Imbalanced Data</strong> - 불균형 데이터 문제에 대한 GAN 활용 연구 발표 - <a href="https://www.youtube.com/watch?v=JdLwad0vzWs&list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&index=14">발표 영상</a></li>
+                <li><strong>Out-of-Distribution Detection</strong> - OOD 문제를 다룬 Deep Learning 연구 프로젝트</li>
+                <li><strong>Federated Learning with Flower</strong> - 분산 환경에서의 협력 학습 프로젝트 - <a href="https://github.com/JihyoKim00/federated-learning">GitHub 코드</a></li>
+                <li><strong>Emergency Exit Detection</strong> - 시각장애인을 위한 비상구 탐지 Computer Vision 프로젝트 - <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">GitHub 코드</a></li>
             </ul>
         </section>
 
-        <section id="funded-projects" class="section">
-            <h3>🔬 연구 과제</h3>
-            <p>학생연구원으로 참여한 연구 과제입니다.</p>
-            <ul>
-                <li><strong>과분산, 영과잉이면서 두터운 꼬리를 갖는 시공간 데이터를 위한 예측 알고리즘 개발</strong> (2023.06.01 ~ 2025.02.28, 한국연구재단)</li>
-                <li><strong>실수연산 기반의 동형암호를 활용한 통계 분석 알고리즘 및 모듈 개발</strong> (2022.04.01 ~ 2025.02.28, 정보통신기획평가원)</li>
-                <li><strong>공유 마이크로 모빌리티 시스템의 도입 및 운영을 위한 예측 시스템 개발</strong> (2020.06.01 ~ 2023.02.28, 한국연구재단)</li>
-            </ul>
-        </section>
-
-        <section id="industrial-ai" class="section">
-    <h3>🏭 Industrial AI Experience</h3>
+        <section id="data-architecture" class="section">
+    <h2>🧱 Data Architecture</h2>
     <p>
-    2차전지 제조 공정의 성분 예측과 제조 검사 데이터 기반 압력 추천 시스템을 중심으로,
-    산업 데이터 정합성 검증, 시계열 feature engineering, ETL pipeline 설계를 수행했습니다.
+    데이터를 학습과 운영에 활용할 수 있도록 ETL, 적재 구조, 시간축 정합성과 ML 평가 구조를 설계합니다.
+    제조 공정과 검사 데이터를 다루며 쌓은 경험을 데이터 아키텍처의 주요 역량별로 정리했습니다.
     </p>
     <ul>
         <li>
-            <strong>Manufacturing Data Pipeline Design</strong>
+            <strong>ETL Pipeline &amp; Data Structure</strong>
             <p>
                 대규모 제조 데이터를 대상으로 ETL 파이프라인 및 데이터 적재 구조를 설계하고,
                 irregular time-series 데이터 정합성 문제를 해결.
@@ -116,7 +163,7 @@
         </li>
 
         <li>
-            <strong>Industrial Time-Series Feature Engineering</strong>
+            <strong>Data Quality &amp; Time-Series Alignment</strong>
             <p>
                 센서 및 검사 데이터의 시간축 불일치 문제를 해결하기 위한
                 feature engineering 및 데이터 동기화 로직 설계.
@@ -124,14 +171,14 @@
         </li>
 
         <li>
-            <strong>Production ML System Design</strong>
+            <strong>ML Pipeline &amp; Evaluation Design</strong>
             <p>
                 실제 운영 환경을 고려한 ML pipeline 및 평가 구조 설계 경험.
             </p>
         </li>
 
         <li>
-            <strong>Large-scale Data Processing</strong>
+            <strong>Staging &amp; Large-scale Data Processing</strong>
             <p>
                 parquet 기반 staging 구조 및 대용량 제조 데이터 처리 구조 검토.
             </p>
@@ -144,10 +191,50 @@
     </a>
     저장소에 정리했습니다.
 </p>
-</section>            
+</section>
 
-<section id="blog" class="section">
-    <h3>📝 Blog Posts</h3>
+        <section id="applied-ai" class="section">
+    <h2>⚙️ Applied AI</h2>
+    <p class="section-intro">ML·DL 방법론과 데이터 설계를 제조, 모빌리티, 시각 보조 및 데이터 분석 문제에 적용했습니다.</p>
+    <ul>
+        <li><strong>Manufacturing</strong> - 2차전지 제조 공정 성분 예측 및 검사 데이터 기반 압력 추천을 위한 데이터 정합성 검증과 파이프라인 설계 · <a href="#data-architecture">설계 경험</a></li>
+        <li><strong>Mobility</strong> - 공유자전거 극단 수요 예측과 마이크로 모빌리티 공간 단위 설계 · <a href="#machine-learning">ML 연구</a></li>
+        <li><strong>Emergency Exit Detection</strong> - 시각장애인을 위한 비상구 탐지 Computer Vision 프로젝트 - <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">GitHub 코드</a></li>
+        <li><strong>Sports Analytics</strong> - 야구 타석의 볼·스트라이크 카운트에 따른 상황 중요도 분석 · <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">GitHub 코드</a></li>
+        <li><strong>Urban &amp; Financial Data</strong> - <a href="https://github.com/DDohyeon2941/sungsoo">성수동 상권 분석</a> (2024.07 ~ 2024.12) · <a href="https://github.com/chromatices/2020_mirae_insurance_competition">2020 금융 빅데이터 페스티벌</a> (2020.08 ~ 2020.10)</li>
+    </ul>
+</section>
+
+        <section id="research" class="section">
+            <h2>📄 Research & Publications</h2>
+            <p class="section-intro">불균형 학습, oversampling, AdaBoost 및 분류 복잡도를 중심으로 수행한 연구입니다. 가능한 경우 논문과 실행 코드를 함께 연결했습니다.</p>
+            <ul>
+                <li><strong>Strategies to Prevent Biased Learning for Imbalanced Data </strong> (박사학위논문, 2025) - <a href="https://snut.dcollection.net/srch/srchDetail/200000865329"> 링크</a></li>
+
+                <li><strong>Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility</strong> (IET ITS, 2024, 1저자) - <a href="https://doi.org/10.1049/itr2.12596">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">GitHub 코드</a><p>🔹 기존의 grid-based areal unit 산정방식이 가지고 있는 MAUP를 해결하는 areal unit 프레임워크 개발</p></li>
+                <li><strong>AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands</strong> (IEEE ACCESS, 2024, 1저자) - <a href="https://ieeexplore.ieee.org/document/10705154">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">GitHub 코드</a><p>🔹 잔차기반 DT를 기반해, 공유자전거 대여분포내 존재하는 Extreme event와 normal event를 모두 적절히 예측하는 모델 개발</p></li>
+                <li><strong>A measure of the importance of moment for ball-strike counts in a baseball plate appearance</strong> (Journal of Sports Sciences, 2024, 공동1저자) - <a href="https://doi.org/10.1080/02640414.2024.2355423">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">GitHub 코드</a><p>🔹 확률모형을 기반해, 타자와 투수간 1대1 대결해서, 투수에게 유리한 상황을 추정</p></li>
+                <li><strong>Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets</strong> (JIFS, 2022, 1저자) - <a href="https://doi.org/10.3233/JIFS-213244">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/noise-filtering-adaboost-for-imbalanced-data">GitHub 코드</a><p>🔹 클래스 간 분포 차이를 고려한 노이즈 필터링 기법을 제안하여 기존 AdaBoost의 한계를 개선.</p></li>
+                <li><strong>An efficient method to determine sample size in oversampling based on classification complexity for imbalanced data</strong> (ESWA, 2021, 1저자) - <a href="https://doi.org/10.1016/j.eswa.2021.115442">DOI 링크</a> | <a href="https://github.com/DDohyeon2941/classification-complexity-based-oversampling">GitHub 코드</a><p>🔹 기존 연구에서는 오버샘플링 크기를 일괄적으로 설정했으나, 본 연구에서는 분류 복잡도를 기반으로 최적 크기를 결정하는 방법을 제안.</p></li>
+                <li><strong>Investigation on the Factors Affecting the Number of International Visitors Using Online Reviews </strong> (Journal of the Korean Institute of Industrial Engineers, 2021, 2저자) - <a href="http://dx.doi.org/10.7232/jkiie.2021.47.1.045">DOI 링크</a> |</li>
+
+                <li><strong>분류 복잡도를 활용한 오버 샘플링 크기 산출 알고리즘 </strong> (석사학위논문, 2020) - <a href="https://www.riss.kr/link?id=T15671100">RISS 링크</a></li>
+
+            </ul>
+        </section>
+
+        <section id="funded-projects" class="section">
+            <h2>🔬 연구 과제</h2>
+            <p>학생연구원으로 참여한 연구 과제입니다.</p>
+            <ul>
+                <li><strong>과분산, 영과잉이면서 두터운 꼬리를 갖는 시공간 데이터를 위한 예측 알고리즘 개발</strong> (2023.06.01 ~ 2025.02.28, 한국연구재단)</li>
+                <li><strong>실수연산 기반의 동형암호를 활용한 통계 분석 알고리즘 및 모듈 개발</strong> (2022.04.01 ~ 2025.02.28, 정보통신기획평가원)</li>
+                <li><strong>공유 마이크로 모빌리티 시스템의 도입 및 운영을 위한 예측 시스템 개발</strong> (2020.06.01 ~ 2023.02.28, 한국연구재단)</li>
+            </ul>
+        </section>
+
+        <section id="blog" class="section">
+    <h2>📝 Blog Posts</h2>
 
     <ul>
 
@@ -186,22 +273,9 @@
         </li>
     </ul>
 </section>
-            
-<section>
-        
-        <section id="competitions" class="section">
-            <h3>🏅 공모전 및 학술활동</h3>
-            <p>공모전 및 수업과제로 진행한 프로젝트 입니다.</p>
-            <ul>
-                <li><strong>성수동 상권 분석</strong> (2024.07 ~ 2024.12) - <a href="https://github.com/DDohyeon2941/sungsoo"> GitHub 코드</a></li>
-                <li><strong>Emergency Exit Detection for Visually Impaired People </strong> (2022.03 ~ 2022.06) - <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">GitHub 코드</a></li>
-                <li><strong>Flower 기반 Federated Learning 프로젝트</strong> (2022.03 ~ 2022.06) - <a href="https://github.com/JihyoKim00/federated-learning">GitHub 코드</a></li>
-                <li><strong>2020 금융 빅데이터 페스티벌</strong> (2020.08 ~ 2020.10) - <a href="https://github.com/chromatices/2020_mirae_insurance_competition">GitHub 코드</a></li>
-            </ul>
-        </section>
 
         <section id="awards" class="section">
-            <h3>🏆 수상 경력</h3>
+            <h2>🏆 수상 경력</h2>
             <ul>
                 <li><strong>2024학년도 2학기 우수논문상</strong> - 서울과학기술대학교 (2025.02)</li>
                 <li><strong>최우수 박사학위논문상</strong> - BK21 데이터사이언스와 비즈니스 포텐셜 교육연구단 (2025.01)</li>
@@ -210,12 +284,12 @@
                 <li><strong>DS 인터페이스 최우수상</strong> - BK21 데이터사이언스와 비즈니스 포텐셜 교육연구단 (2024.01)</li>
                 <li><strong>우수상 </strong> - AI를 활용한 통관물품 판독 아이디어 해커톤 대회 (2022.12)</li>
                 <li><strong>우수논문상</strong> - 사단법인 한국정보처리학회주관 2020 온라인 춘계학술발표대회 (2020.05)</li>
-                
+
             </ul>
         </section>
 
         <section id="talks" class="section">
-            <h3>🎤 발표 자료</h3>
+            <h2>🎤 발표 자료</h2>
             <ol class="custom-list">
                 <li>Imbalanced Problem for Regression (2024.11) - <a href="https://youtu.be/yfcqHHT5f1w">발표 영상</a></li>
                 <li>SMOTE (Synthetic Minority Over-sampling Technique) for Imbalanced dataset (2024.05) - <a href="https://www.youtube.com/watch?v=q5yhwOPmP-k&list=PLVUMrRRWzO2q2dMZG9dqV8Mbz-gkEC1Yg&index=38">발표 영상</a></li>
@@ -229,7 +303,9 @@
         </section>
 
         <section id="about" class="section">
-            <h3>📌 소개</h3>
+            <h2>📌 소개</h2>
+            <p>데이터사이언스 박사로서 불균형 학습과 예측 알고리즘을 연구했습니다. ML 연구, DL 프로젝트, 운영 데이터 구조 설계를 연결하며 다양한 도메인의 데이터 문제를 다룹니다.</p>
+            <p><a href="#funded-projects">참여 연구 과제</a> · <a href="#awards">수상 경력</a> · <a href="#talks">발표 자료</a></p>
              <p><strong>학력:</strong></p>
 <ul>
     <li><strong>박사</strong>: 서울과학기술대학교 데이터사이언스학과 (2020.09 ~ 2025.02)</li>
@@ -240,7 +316,7 @@
             <p><strong>GitHub:</strong> <a href="https://github.com/DDohyeon2941">https://github.com/DDohyeon2941</a></p>
             <p><strong>ORCID:</strong> <a href="https://orcid.org/0000-0002-7362-6616">https://orcid.org/0000-0002-7362-6616</a></p>
         </section>
-    </div>
+    </main>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
