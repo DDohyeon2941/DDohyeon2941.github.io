@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Round 2 — Week 1 | 수식으로 다시 보는 ML</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --border2: #ccc9be;
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9b9890;
+    --blue: #1a4f8a;
+    --blue-bg: #eaf0f8;
+    --blue-border: #b8ccdf;
+    --red: #8a1a1a;
+    --red-bg: #f8eaea;
+    --red-border: #dfb8b8;
+    --amber: #7a4a00;
+    --amber-bg: #fdf3e0;
+    --amber-border: #e8cc98;
+    --green: #1a5a2a;
+    --green-bg: #eaf5ec;
+    --green-border: #b8d8bf;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+  }
+
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.7; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; display: flex; align-items: center; height: 48px; overflow-x: auto; gap: 0;
+  }
+  .nav-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    background: var(--blue); color: #fff; padding: 2px 9px; border-radius: 3px;
+    margin-right: 16px; white-space: nowrap; letter-spacing: .04em;
+  }
+  .nav-title { font-size: 12px; font-weight: 500; color: var(--text2); white-space: nowrap; margin-right: 24px; padding-right: 24px; border-right: 1px solid var(--border); }
+  .nav a { font-size: 12px; color: var(--text3); text-decoration: none; padding: 0 14px; height: 48px; display: flex; align-items: center; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .15s; }
+  .nav a:hover { color: var(--text); }
+  .nav a.active { color: var(--text); border-bottom-color: var(--text); }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 56px 40px 100px; }
+
+  /* ── HERO ── */
+  .hero {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface); padding: 36px 40px; margin-bottom: 56px;
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;
+  }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--text3); text-transform: uppercase; margin-bottom: 10px; }
+  .hero-title { font-size: 26px; font-weight: 500; line-height: 1.3; margin-bottom: 10px; }
+  .hero-title em { font-style: normal; color: var(--blue); }
+  .hero-sub { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 480px; }
+  .hero-eq {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 20px 24px; text-align: center; white-space: nowrap;
+  }
+  .hero-eq .eq-main { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--blue); }
+  .hero-eq .eq-desc { font-size: 11px; color: var(--text3); margin-top: 8px; line-height: 1.6; }
+  @media (max-width: 640px) { .hero { grid-template-columns: 1fr; } }
+
+  /* ── SESSION TIMELINE ── */
+  .timeline {
+    display: flex; gap: 0; margin-bottom: 56px; border: 1px solid var(--border);
+    border-radius: 8px; overflow: hidden; background: var(--surface);
+  }
+  .tl-item {
+    flex: 1; padding: 14px 16px; border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .tl-item:last-child { border-right: none; }
+  .tl-num { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+  .tl-name { font-size: 12px; font-weight: 500; color: var(--text); }
+  .tl-time { font-family: var(--mono); font-size: 10px; color: var(--blue); margin-top: 2px; }
+  .tl-item.highlight { background: var(--blue-bg); }
+  .tl-item.highlight .tl-num { color: var(--blue); }
+  @media (max-width: 700px) { .timeline { flex-direction: column; } .tl-item { border-right: none; border-bottom: 1px solid var(--border); } .tl-item:last-child { border-bottom: none; } }
+
+  /* ── SECTIONS ── */
+  .section-block { margin-bottom: 64px; }
+  .section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 28px; }
+  .section-title { font-size: 18px; font-weight: 500; }
+  .section-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .06em;
+    padding: 2px 8px; border-radius: 3px; margin-left: 8px;
+    background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+  }
+  .section-time { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+
+  .label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; margin-top: 20px; }
+  .label:first-child { margin-top: 0; }
+
+  .note { border-left: 3px solid var(--border2); padding: 10px 14px; background: var(--surface2); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+
+  .box { border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; background: var(--surface); margin-bottom: 12px; }
+  .box-blue  { border-color: var(--blue-border);  background: var(--blue-bg);  }
+  .box-red   { border-color: var(--red-border);   background: var(--red-bg);   }
+  .box-amber { border-color: var(--amber-border); background: var(--amber-bg); }
+  .box-green { border-color: var(--green-border); background: var(--green-bg); }
+  .box .box-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: var(--text2); }
+  .box-blue  .box-title { color: var(--blue); }
+  .box-red   .box-title { color: var(--red); }
+  .box-amber .box-title { color: var(--amber); }
+  .box-green .box-title { color: var(--green); }
+  .box p { font-size: 13px; line-height: 1.7; }
+
+  .q-box { border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; background: var(--surface2); margin-bottom: 12px; }
+  .q-box .q-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .q-box .q-text { font-size: 13px; color: var(--text); font-style: italic; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  th { font-size: 11px; font-weight: 500; color: var(--text3); text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  tr:last-child td { border-bottom: none; }
+  td.mono { font-family: var(--mono); font-size: 12px; }
+  td.muted { color: var(--text3); font-size: 12px; }
+  td.blue { color: var(--blue); font-weight: 500; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  @media (max-width: 580px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ── NOTATION TABLE ── */
+  .n-table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+  .n-table th { font-family: var(--mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); padding: 6px 12px; border-bottom: 2px solid var(--border); background: var(--surface2); }
+  .n-table td { padding: 11px 12px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 13px; line-height: 1.65; }
+  .n-table tr:last-child td { border-bottom: none; }
+  .n-table .sym { font-family: var(--mono); font-size: 16px; font-weight: 500; color: var(--blue); min-width: 60px; text-align: center; }
+  .n-table .meaning { font-weight: 500; }
+  .n-table .note-inline { color: var(--text3); font-size: 11px; display: block; margin-top: 3px; }
+
+  /* ── CASE TABLE — 대/소문자 비교 ── */
+  .case-table { width: 100%; border-collapse: collapse; margin-bottom: 16px; }
+  .case-table th { font-family: var(--mono); font-size: 10px; letter-spacing: .07em; text-transform: uppercase; color: var(--text3); padding: 6px 14px; border-bottom: 2px solid var(--border); background: var(--surface2); }
+  .case-table td { padding: 13px 14px; border-bottom: 1px solid var(--border); vertical-align: top; font-size: 13px; line-height: 1.65; }
+  .case-table tr:last-child td { border-bottom: none; }
+  .case-table .upper { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--blue); text-align: center; width: 54px; }
+  .case-table .lower { font-family: var(--mono); font-size: 20px; font-weight: 500; color: var(--green); text-align: center; width: 54px; }
+  .case-table .upper-desc { color: var(--blue); font-size: 12px; }
+  .case-table .lower-desc { color: var(--green); font-size: 12px; }
+  .case-table .ex { font-size: 11px; color: var(--text3); display: block; margin-top: 3px; font-family: var(--mono); }
+
+  /* ── READ STEPS ── */
+  .read-steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 16px; }
+  .rs-row {
+    display: grid; grid-template-columns: 36px 1fr; border: 1px solid var(--border);
+    border-top: none; background: var(--surface);
+  }
+  .rs-row:first-child { border-radius: 6px 6px 0 0; border-top: 1px solid var(--border); }
+  .rs-row:last-child  { border-radius: 0 0 6px 6px; }
+  .rs-num {
+    background: var(--surface2); border-right: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 11px; color: var(--text3); font-weight: 500;
+  }
+  .rs-body { padding: 11px 16px; font-size: 13px; line-height: 1.65; }
+  .rs-body .rs-eq { font-family: var(--mono); font-size: 13px; color: var(--blue); background: var(--blue-bg); padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
+  .rs-body .rs-read { color: var(--text); }
+  .rs-body .rs-why  { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+  /* ── EQUATION BLOCK ── */
+  .eq-block { border: 1px solid var(--blue-border); border-radius: 8px; background: var(--surface); margin-bottom: 20px; overflow: hidden; }
+  .eq-head { background: var(--blue-bg); padding: 10px 18px; display: flex; align-items: center; gap: 12px; }
+  .eq-head .eq-label { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
+  .eq-head .eq-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .eq-body { padding: 20px 18px; }
+  .eq-formula {
+    font-family: var(--mono); font-size: 18px; font-weight: 500;
+    color: var(--text); background: var(--surface2); border-radius: 6px;
+    padding: 14px 20px; text-align: center; letter-spacing: .04em; margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .eq-formula .hi-y { color: var(--red); }
+  .eq-formula .hi-f { color: var(--blue); }
+  .eq-formula .hi-x { color: var(--green); }
+  .eq-formula .hi-b { color: var(--amber); }
+  .eq-formula .hi-e { color: var(--text3); }
+  .eq-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+  .eq-part { border-radius: 5px; padding: 9px 11px; border: 1px solid var(--border); background: var(--surface); }
+  .eq-part .part-sym { font-family: var(--mono); font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .eq-part .part-name { font-size: 12px; font-weight: 500; }
+  .eq-part .part-desc { font-size: 11px; color: var(--text2); line-height: 1.55; margin-top: 2px; }
+
+  /* ── ARGMIN 분해 ── */
+  .argmin-breakdown {
+    display: grid; grid-template-columns: auto 1fr; gap: 0;
+    border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 16px;
+  }
+  .ab-sym {
+    background: var(--blue-bg); border-right: 1px solid var(--blue-border);
+    padding: 16px 20px; display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 13px; color: var(--blue); font-weight: 500;
+    white-space: nowrap;
+  }
+  .ab-rows { display: flex; flex-direction: column; }
+  .ab-row { padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.65; }
+  .ab-row:last-child { border-bottom: none; }
+  .ab-row .ab-part { font-family: var(--mono); font-size: 12px; color: var(--blue); margin-right: 8px; }
+  .ab-row .ab-desc { color: var(--text); }
+  .ab-row .ab-sub  { font-size: 11px; color: var(--text3); display: block; margin-top: 2px; }
+
+  /* ── FLOW WITH MATH ── */
+  .math-flow { display: flex; flex-direction: column; gap: 0; margin-bottom: 20px; }
+  .mf-step {
+    display: grid; grid-template-columns: 200px 1fr; border: 1px solid var(--border);
+    border-top: none; background: var(--surface);
+  }
+  .mf-step:first-child { border-radius: 6px 6px 0 0; border-top: 1px solid var(--border); }
+  .mf-step:last-child  { border-radius: 0 0 6px 6px; }
+  .mf-left {
+    padding: 12px 16px; background: var(--surface2); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; gap: 3px; justify-content: center;
+  }
+  .mf-left .mf-num  { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+  .mf-left .mf-name { font-size: 13px; font-weight: 500; }
+  .mf-right { padding: 12px 16px; display: flex; flex-direction: column; gap: 6px; justify-content: center; }
+  .mf-math { font-family: var(--mono); font-size: 13px; color: var(--blue); background: var(--blue-bg); border-radius: 4px; padding: 5px 10px; display: inline-block; }
+  .mf-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .mf-step.warn .mf-left { background: var(--amber-bg); }
+  .mf-step.warn .mf-name { color: var(--amber); }
+  .mf-step.warn .mf-num  { color: var(--amber); }
+  .mf-step.warn .mf-math { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  @media (max-width: 580px) { .mf-step { grid-template-columns: 1fr; } .mf-left { border-right: none; border-bottom: 1px solid var(--border); } }
+
+  /* ── COMPARE ── */
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .cp { border-radius: 6px; padding: 14px 16px; border: 1px solid var(--border); }
+  .cp-r1 { background: var(--surface2); }
+  .cp-r2 { background: var(--blue-bg); border-color: var(--blue-border); }
+  .cp .cp-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; font-weight: 500; margin-bottom: 6px; color: var(--text3); text-transform: uppercase; }
+  .cp-r2 .cp-tag { color: var(--blue); }
+  .cp .cp-main { font-size: 13px; line-height: 1.65; }
+  @media (max-width: 580px) { .compare-row { grid-template-columns: 1fr; } }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+  .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; }
+  .checklist li .icon { color: var(--text3); margin-top: 1px; flex-shrink: 0; font-size: 13px; }
+  .checklist li .icon.ok   { color: var(--green); }
+  .checklist li .body { line-height: 1.6; }
+  .checklist li .body .sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ── MOTIVATION ── */
+  .motiv-why { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+  .mw-card { border: 1px solid var(--border); border-radius: 6px; padding: 18px 16px; background: var(--surface); display: flex; flex-direction: column; gap: 6px; }
+  .mw-card .mw-icon { font-size: 18px; }
+  .mw-card .mw-title { font-size: 13px; font-weight: 500; }
+  .mw-card .mw-body { font-size: 12px; color: var(--text2); line-height: 1.65; }
+  @media (max-width: 640px) { .motiv-why { grid-template-columns: 1fr; } }
+
+  /* ── FUNCTION CONCEPT ── */
+  .func-io { display: grid; grid-template-columns: 1fr 40px 1fr 40px 1fr; align-items: center; gap: 0; margin-bottom: 16px; }
+  .func-box { border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; background: var(--surface2); text-align: center; }
+  .func-box .fb-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .func-box .fb-val { font-family: var(--mono); font-size: 18px; font-weight: 500; }
+  .func-box .fb-desc { font-size: 11px; color: var(--text2); margin-top: 4px; line-height: 1.5; }
+  .func-box.in  { border-color: var(--green-border); background: var(--green-bg); }
+  .func-box.out { border-color: var(--red-border);   background: var(--red-bg);   }
+  .func-box.fn  { border-color: var(--blue-border);  background: var(--blue-bg);  }
+  .func-box.in  .fb-val { color: var(--green); }
+  .func-box.out .fb-val { color: var(--red); }
+  .func-box.fn  .fb-val { color: var(--blue); }
+  .func-arrow { text-align: center; font-size: 20px; color: var(--border2); }
+  .func-examples { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 16px; }
+  .fe-card { border: 1px solid var(--border); border-radius: 6px; padding: 13px 15px; background: var(--surface); }
+  .fe-card .fe-ctx { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 6px; letter-spacing: .05em; }
+  .fe-card .fe-row { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-bottom: 4px; }
+  .fe-card .fe-in  { font-family: var(--mono); color: var(--green); font-size: 12px; }
+  .fe-card .fe-arr { color: var(--border2); flex-shrink: 0; }
+  .fe-card .fe-out { font-family: var(--mono); color: var(--red); font-size: 12px; }
+  .fe-card .fe-rule { font-size: 11px; color: var(--text3); margin-top: 6px; padding-top: 6px; border-top: 1px solid var(--border); line-height: 1.6; }
+  @media (max-width: 580px) { .func-examples { grid-template-columns: 1fr; } }
+
+  /* ── RECAP GRID ── */
+  .recap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  .rc-card { border: 1px solid var(--border); border-radius: 6px; padding: 14px 14px; background: var(--surface); }
+  .rc-card .rc-week { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .rc-card .rc-title { font-size: 12px; font-weight: 500; margin-bottom: 6px; }
+  .rc-card .rc-body  { font-size: 11px; color: var(--text2); line-height: 1.6; }
+  .rc-card .rc-eq    { font-family: var(--mono); font-size: 11px; color: var(--blue); margin-top: 6px; display: block; }
+  .rc-card.today { border-color: var(--blue-border); background: var(--blue-bg); }
+  .rc-card.today .rc-week { color: var(--blue); }
+  @media (max-width: 700px) { .recap-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 400px) { .recap-grid { grid-template-columns: 1fr; } }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-badge">ROUND 2</span>
+  <div class="nav-title">Week 1 — 수식으로 다시 보는 ML</div>
+  <a href="#recap">R1 복습</a>
+  <a href="#why">왜 수식인가</a>
+  <a href="#func">함수란</a>
+  <a href="#notation">Notation</a>
+  <a href="#case">대/소문자</a>
+  <a href="#howtoread">읽는 법</a>
+  <a href="#fxy">f(X)=ŷ</a>
+  <a href="#flow">ML흐름×수식</a>
+  <a href="#loss">학습이란</a>
+</nav>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Round 2 · Week 1 · Session 1</div>
+      <h1 class="hero-title">수식으로 다시 보는<br><em>ML 전체 흐름</em></h1>
+      <p class="hero-sub">
+        Round 1에서 "감"으로 이해한 것들을 수식 언어로 다시 표현합니다.
+        먼저 수식에서 자주 쓰는 기호(notation)를 잡고,
+        그다음 ML의 핵심 질문인 <strong>f(X) = ŷ</strong> 가 무엇을 의미하는지 봅니다.
+      </p>
+    </div>
+    <div class="hero-eq">
+      <div class="eq-main">ŷ = f(X)</div>
+      <div class="eq-desc">
+        X — 입력 변수들<br>
+        f — 알고리즘(모델)<br>
+        ŷ — 예측값
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SESSION TIMELINE ── -->
+  <div class="timeline">
+    <div class="tl-item">
+      <span class="tl-num">도입</span>
+      <span class="tl-name">R1 복습 + 왜 수식인가</span>
+      <span class="tl-time">10 min</span>
+    </div>
+    <div class="tl-item">
+      <span class="tl-num">기초 1</span>
+      <span class="tl-name">함수 개념 + Notation</span>
+      <span class="tl-time">18 min</span>
+    </div>
+    <div class="tl-item">
+      <span class="tl-num">기초 2</span>
+      <span class="tl-name">대/소문자 + 기호 읽는 법</span>
+      <span class="tl-time">12 min</span>
+    </div>
+    <div class="tl-item highlight">
+      <span class="tl-num">핵심</span>
+      <span class="tl-name">f(X)=ŷ + ML흐름×수식</span>
+      <span class="tl-time">25 min</span>
+    </div>
+    <div class="tl-item">
+      <span class="tl-num">마무리</span>
+      <span class="tl-name">학습이란 — 손실함수</span>
+      <span class="tl-time">10 min</span>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       R1 복습
+  ══════════════════════════════ -->
+  <div class="section-block" id="recap">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-title">Round 1 복습 — 6단계 흐름 재확인</span>
+      <span class="section-time">5 min</span>
+    </div>
+
+    <div class="note">
+      Round 2의 모든 수식은 Round 1 흐름 위에 얹히는 것입니다. 오늘부터 각 단계에 수식을 붙여나갑니다.
+    </div>
+
+    <div class="math-flow">
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">01</span><span class="mf-name">데이터 수집</span></div>
+        <div class="mf-right"><span class="mf-desc">어떤 변수(X)를 모을지, 무엇을 맞출지(y) 결정. 도메인 지식이 가장 많이 필요한 단계.</span></div>
+      </div>
+      <div class="mf-step warn">
+        <div class="mf-left"><span class="mf-num">02</span><span class="mf-name">전처리</span></div>
+        <div class="mf-right"><span class="mf-desc">결측 처리, 이상치 처리, 스케일링. 데이터를 모델이 다룰 수 있는 형태로 변환.</span></div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">03</span><span class="mf-name">모델 학습</span></div>
+        <div class="mf-right"><span class="mf-desc">알고리즘이 X→y 패턴을 학습. 선형 회귀, 트리, 앙상블 등 f의 형태를 결정하는 단계.</span></div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">04</span><span class="mf-name">예측</span></div>
+        <div class="mf-right"><span class="mf-desc">학습된 모델에 새 X를 넣어 ŷ를 출력. 모델이 본 적 없는 데이터에 적용하는 단계.</span></div>
+      </div>
+      <div class="mf-step warn">
+        <div class="mf-left"><span class="mf-num">05</span><span class="mf-name">평가</span></div>
+        <div class="mf-right"><span class="mf-desc">예측값(ŷ)과 실제값(y)을 비교. RMSE, R², Accuracy 등 지표로 성능 측정.</span></div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">06</span><span class="mf-name">해석·적용</span></div>
+        <div class="mf-right"><span class="mf-desc">모델 결과를 실무에 연결. 변수 중요도, 계수 해석, 한계 파악.</span></div>
+      </div>
+    </div>
+
+    <div class="label">Round 2 전체 커리큘럼 — 주차별 수식</div>
+    <div class="recap-grid">
+      <div class="rc-card today">
+        <div class="rc-week">WEEK 1 · 오늘</div>
+        <div class="rc-title">ML 흐름과 수식 언어</div>
+        <div class="rc-body">Notation, f(X)=ŷ, 손실함수 개념</div>
+        <span class="rc-eq">ŷ = f(X) + ε</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 2</div>
+        <div class="rc-title">선형 회귀 수식</div>
+        <div class="rc-body">β 계산, R², 다중공선성</div>
+        <span class="rc-eq">ŷ = β₀ + β₁x₁ + β₂x₂</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 3</div>
+        <div class="rc-title">트리 & 앙상블 수식</div>
+        <div class="rc-body">Gini, Boosting 잔차학습</div>
+        <span class="rc-eq">Gini = 1 − Σpₖ²</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 4</div>
+        <div class="rc-title">클러스터링 & 유사도</div>
+        <div class="rc-body">K-means 목적함수, 코사인 유사도</div>
+        <span class="rc-eq">argmin Σ‖xᵢ − μₖ‖²</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 5</div>
+        <div class="rc-title">성과지표 수식</div>
+        <div class="rc-body">RMSE, R², Precision/Recall/F1</div>
+        <span class="rc-eq">F1 = 2PR / (P+R)</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 6</div>
+        <div class="rc-title">모델 실패 수식</div>
+        <div class="rc-body">Bias-Variance, 정규화, 분포 변화</div>
+        <span class="rc-eq">E[error] = Bias² + Var + ε</span>
+      </div>
+      <div class="rc-card">
+        <div class="rc-week">WEEK 7</div>
+        <div class="rc-title">시계열 수식</div>
+        <div class="rc-body">자기상관, i.i.d 가정, 시점 기반 검증</div>
+        <span class="rc-eq">yₜ = φ₁yₜ₋₁ + εₜ</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       왜 수식인가
+  ══════════════════════════════ -->
+  <div class="section-block" id="why">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-title">왜 수식을 읽을 줄 알아야 하는가</span>
+      <span class="section-time">5 min</span>
+    </div>
+
+    <div class="note">
+      이 세션은 수학자가 되기 위한 게 아닙니다. <strong>수식을 "직접 푸는 것"이 아니라 "읽고 해석하는 것"</strong>이 목표입니다.
+    </div>
+
+    <div class="motiv-why">
+      <div class="mw-card">
+        <div class="mw-icon">📄</div>
+        <div class="mw-title">논문·문서를 읽을 때</div>
+        <div class="mw-body">
+          모델 스펙, 알고리즘 설명, 성능 보고서에는 수식이 섞입니다.
+          기호가 낯설면 핵심을 건너뛰게 됩니다.
+          기호를 알면 "이 모델이 무엇을 최소화하는지" 한 줄로 파악됩니다.
+        </div>
+      </div>
+      <div class="mw-card">
+        <div class="mw-icon">🔍</div>
+        <div class="mw-title">결과가 이상할 때</div>
+        <div class="mw-body">
+          R²가 0.99가 나왔을 때 "좋다"고 넘길지, "leakage 의심"을 할지는
+          손실함수가 어떻게 생겼는지 알아야 판단할 수 있습니다.
+          수식을 읽으면 "왜 이 숫자가 나왔는지"를 역추적하는 힘이 생깁니다.
+        </div>
+      </div>
+      <div class="mw-card">
+        <div class="mw-icon">💬</div>
+        <div class="mw-title">설명하고 설득할 때</div>
+        <div class="mw-body">
+          "이상치 하나에 모델이 왜곡됐다"고 말할 때,
+          잔차 제곱이 이상치를 얼마나 크게 반영하는지 수식 근거로 말할 수 있으면 신뢰도가 달라집니다.
+          수식은 설명의 근거가 됩니다.
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">이 세션이 기대하는 것 — 딱 이 수준</div>
+      <p>
+        <strong>ŷ = f(X)</strong>를 보고 "X를 넣으면 f라는 규칙으로 ŷ가 나온다"고 읽을 수 있는 것.<br>
+        <strong>L = Σ(yᵢ − ŷᵢ)²</strong>를 보고 "잔차 제곱을 다 더한 것"이라고 말할 수 있는 것.<br><br>
+        직접 미분하거나 계산할 필요 없습니다. <strong>읽고, 해석하고, 실무에 연결하는 것</strong>이 전부입니다.
+      </p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       함수란 무엇인가
+  ══════════════════════════════ -->
+  <div class="section-block" id="func">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-title">함수(function)란 무엇인가</span>
+      <span class="section-time">8 min</span>
+    </div>
+
+    <div class="note">f(X)에서 f는 함수입니다. 함수를 한 문장으로 정의하면 — <strong>"입력을 받아서 출력을 내보내는 규칙"</strong>입니다.</div>
+
+    <div class="label">함수의 구조</div>
+    <div class="func-io">
+      <div class="func-box in">
+        <div class="fb-label">INPUT</div>
+        <div class="fb-val">X</div>
+        <div class="fb-desc">함수에 넣는 값<br>온도, 압력, 투입량 ...</div>
+      </div>
+      <div class="func-arrow">→</div>
+      <div class="func-box fn">
+        <div class="fb-label">FUNCTION</div>
+        <div class="fb-val">f( )</div>
+        <div class="fb-desc">변환 규칙<br>알고리즘이 여기에 해당</div>
+      </div>
+      <div class="func-arrow">→</div>
+      <div class="func-box out">
+        <div class="fb-label">OUTPUT</div>
+        <div class="fb-val">ŷ</div>
+        <div class="fb-desc">함수가 내보내는 값<br>예측값</div>
+      </div>
+    </div>
+
+    <div class="label">일상 속 함수 — 수식 없이 먼저 보기</div>
+    <div class="func-examples">
+      <div class="fe-card">
+        <div class="fe-ctx">자판기</div>
+        <div class="fe-row">
+          <span class="fe-in">500원 투입</span>
+          <span class="fe-arr">→ f( ) →</span>
+          <span class="fe-out">콜라 1캔</span>
+        </div>
+        <div class="fe-rule">규칙: "500원이 들어오면 콜라를 내보낸다"<br>같은 입력 → 항상 같은 출력</div>
+      </div>
+      <div class="fe-card">
+        <div class="fe-ctx">온도 변환</div>
+        <div class="fe-row">
+          <span class="fe-in">100°C</span>
+          <span class="fe-arr">→ f( ) →</span>
+          <span class="fe-out">212°F</span>
+        </div>
+        <div class="fe-rule">규칙: f(C) = C × 9/5 + 32<br>입력이 정해지면 출력이 딱 하나로 결정됨</div>
+      </div>
+      <div class="fe-card">
+        <div class="fe-ctx">선형 회귀 모델</div>
+        <div class="fe-row">
+          <span class="fe-in">온도=72, 압력=3.1</span>
+          <span class="fe-arr">→ f( ) →</span>
+          <span class="fe-out">수율 예측값</span>
+        </div>
+        <div class="fe-rule">규칙: f(X) = β₀ + β₁×온도 + β₂×압력<br>β값은 학습으로 결정됨</div>
+      </div>
+      <div class="fe-card">
+        <div class="fe-ctx">Decision Tree 모델</div>
+        <div class="fe-row">
+          <span class="fe-in">온도=72, 압력=3.1</span>
+          <span class="fe-arr">→ f( ) →</span>
+          <span class="fe-out">수율 예측값</span>
+        </div>
+        <div class="fe-rule">규칙: if 온도 &gt; 70 then ... else ...<br>같은 입력, 같은 출력 — 하지만 f의 규칙 형태가 다름</div>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">확인 질문</div>
+      <div class="q-text">"지금 쓰거나 본 적 있는 모델에서 — 입력(X)은 무엇이고, 출력(ŷ)은 무엇인가요? f는 어떤 규칙이었나요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       NOTATION
+  ══════════════════════════════ -->
+  <div class="section-block" id="notation">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <span class="section-title">Notation — 수식에서 쓰는 기호<span class="section-badge">신규</span></span>
+      <span class="section-time">10 min</span>
+    </div>
+
+    <div class="note">수식은 새로운 언어입니다. 단어를 먼저 알아야 문장을 읽을 수 있듯이, 기호 의미를 잡아두면 이후 수식이 훨씬 빠르게 읽힙니다.</div>
+
+    <div class="label">핵심 기호 정리</div>
+    <table class="n-table">
+      <thead>
+        <tr>
+          <th style="width:70px">기호</th>
+          <th style="width:160px">이름</th>
+          <th>의미 & 예시</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="sym">y</td>
+          <td class="meaning">실제값 (target)</td>
+          <td>
+            모델이 맞춰야 하는 정답. 데이터에 이미 존재하는 값.
+            <span class="note-inline">예: 오늘 실제 불량 수, 실제 수율, 실제 판매량</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">ŷ</td>
+          <td class="meaning">예측값 (y-hat)</td>
+          <td>
+            모델이 출력한 값. y와 비교해서 얼마나 틀렸는지 측정.
+            <span class="note-inline">ŷ − y = 잔차(residual). 이 차이를 줄이는 방향으로 f를 조정하는 게 학습.</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">X</td>
+          <td class="meaning">입력 변수 행렬</td>
+          <td>
+            모델에 넣는 변수 전체. 대문자 X는 변수가 여러 개(행렬)임을 의미.
+            <span class="note-inline">예: [온도, 압력, 습도, 투입량, ...] — 행: 관측값 하나 / 열: 변수 하나</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">x<sub>j</sub></td>
+          <td class="meaning">j번째 변수</td>
+          <td>
+            X 안에서 특정 변수 하나를 가리킬 때. 소문자 + 아래첨자.
+            <span class="note-inline">예: x₁ = 온도, x₂ = 압력</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">n</td>
+          <td class="meaning">데이터 건수</td>
+          <td>
+            학습에 사용한 관측값의 수. 행(row) 수와 같음.
+            <span class="note-inline">예: n = 10,000이면 1만 건의 관측 데이터</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">β</td>
+          <td class="meaning">계수 (coefficient)</td>
+          <td>
+            선형 모델에서 "X가 1 증가할 때 y가 얼마나 변하는지" 나타내는 숫자.
+            <span class="note-inline">학습을 통해 결정됨. β₀ = 절편(intercept), β₁, β₂ ... = 각 변수의 기울기</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">ε</td>
+          <td class="meaning">오차항 (error)</td>
+          <td>
+            모델이 설명하지 못한 나머지. 현실의 노이즈.
+            <span class="note-inline">수식엔 항상 ε이 붙음 — "f(X)로 완벽히 설명되지 않는 부분이 있다"는 선언</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">i</td>
+          <td class="meaning">i번째 관측값</td>
+          <td>
+            데이터 한 행(row)을 가리키는 인덱스.
+            <span class="note-inline">yᵢ = i번째 실제값, ŷᵢ = i번째 예측값. i는 1부터 n까지</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="sym">Σ</td>
+          <td class="meaning">합산 (sum)</td>
+          <td>
+            "전부 더해라"는 기호. 손실함수 등에서 자주 등장.
+            <span class="note-inline">Σᵢ(yᵢ − ŷᵢ)² = "모든 i에서 잔차²를 구해서 다 더해라"</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════
+       대문자 vs 소문자
+  ══════════════════════════════ -->
+  <div class="section-block" id="case">
+    <div class="section-header">
+      <span class="section-num">00-A</span>
+      <span class="section-title">수식에서 대문자와 소문자의 차이<span class="section-badge">신규</span></span>
+      <span class="section-time">6 min</span>
+    </div>
+
+    <div class="note">
+      수식에서 같은 알파벳이라도 대문자냐 소문자냐에 따라 의미가 달라집니다.
+      가장 자주 헷갈리는 쌍을 정리합니다.
+    </div>
+
+    <table class="case-table">
+      <thead>
+        <tr>
+          <th style="width:54px">대문자</th>
+          <th>뜻</th>
+          <th style="width:54px">소문자</th>
+          <th>뜻</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="upper">X</td>
+          <td>
+            <span class="upper-desc">입력 변수 전체 — 행렬(표 전체)</span>
+            <span class="ex">예: 온도·압력·투입량이 모두 들어있는 데이터 표</span>
+          </td>
+          <td class="lower">x<sub style="font-size:11px">j</sub></td>
+          <td>
+            <span class="lower-desc">그 안의 변수 하나 — 열(column) 하나</span>
+            <span class="ex">예: x₁ = 온도 열, x₂ = 압력 열</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="upper">L</td>
+          <td>
+            <span class="upper-desc">손실함수(Loss function) — 전체 오차를 하나의 숫자로 요약</span>
+            <span class="ex">예: L = Σ(yᵢ − ŷᵢ)²</span>
+          </td>
+          <td class="lower">ℓ</td>
+          <td>
+            <span class="lower-desc">관측값 하나의 개별 손실</span>
+            <span class="ex">예: ℓᵢ = (yᵢ − ŷᵢ)² — i번째 한 건의 오차</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="upper">N, P</td>
+          <td>
+            <span class="upper-desc">전체 수 — 데이터 건수(N) 또는 변수 수(P)</span>
+            <span class="ex">N = 10,000건, P = 15개 변수</span>
+          </td>
+          <td class="lower">n, p</td>
+          <td>
+            <span class="lower-desc">실제 계산에서 쓰이는 구체적인 수 (의미는 같지만 스케일 표시 용도)</span>
+            <span class="ex">논문마다 혼용하는 경우 있음 — 맥락으로 확인</span>
+          </td>
+        </tr>
+        <tr>
+          <td class="upper">β̂</td>
+          <td>
+            <span class="upper-desc" style="color:var(--amber)">학습으로 구한 계수 — "추정값"을 의미하는 hat(^) 기호</span>
+            <span class="ex">β̂ = 학습 완료 후 확정된 값. 예측에 실제로 쓰이는 계수.</span>
+          </td>
+          <td class="lower">β</td>
+          <td>
+            <span class="lower-desc" style="color:var(--text2)">참값(true value) — 실제로는 알 수 없는 이론적 계수</span>
+            <span class="ex">우리가 β̂로 β를 추정하는 것. β 자체는 관측 불가.</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box box-amber">
+      <div class="box-title">hat(^) 기호 — "추정했다"는 표시</div>
+      <p>
+        수식에서 기호 위에 ^ (hat)이 붙으면 <strong>"학습이나 계산을 통해 추정한 값"</strong>이라는 뜻입니다.<br><br>
+        ŷ (y-hat) = 모델이 예측한 값 (실제 y가 아님)<br>
+        β̂ (beta-hat) = 학습으로 구한 계수 (참값 β가 아님)<br><br>
+        현실에서 y와 β는 완벽히 알 수 없습니다. 우리가 다루는 건 항상 추정값인 ŷ와 β̂입니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">확인 질문</div>
+      <div class="q-text">"X와 xⱼ의 차이를 실무 데이터로 설명해보세요. 지금 쓰는 데이터에서 X는 어떤 표이고, x₁은 어떤 열인가요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       기호 읽는 법
+  ══════════════════════════════ -->
+  <div class="section-block" id="howtoread">
+    <div class="section-header">
+      <span class="section-num">00-B</span>
+      <span class="section-title">수식 기호를 읽는 법<span class="section-badge">신규</span></span>
+      <span class="section-time">6 min</span>
+    </div>
+
+    <div class="note">
+      수식을 처음 볼 때 어디서부터 읽어야 할지 모르면 멈추게 됩니다.
+      <strong>왼쪽에서 오른쪽으로, 기호를 하나씩 말로 바꾸는 것</strong>이 전부입니다.
+    </div>
+
+    <div class="label">읽기 훈련 — 단계별로 풀어보기</div>
+    <div class="read-steps">
+      <div class="rs-row">
+        <div class="rs-num">1</div>
+        <div class="rs-body">
+          <span class="rs-eq">ŷᵢ</span>
+          <span class="rs-read">"i번째 예측값"</span>
+          <span class="rs-why">ŷ = 예측값, 아래첨자 i = i번째 관측값</span>
+        </div>
+      </div>
+      <div class="rs-row">
+        <div class="rs-num">2</div>
+        <div class="rs-body">
+          <span class="rs-eq">β₀ + β₁x₁ᵢ</span>
+          <span class="rs-read">"절편 + (β₁ × i번째 관측의 첫 번째 변수 값)"</span>
+          <span class="rs-why">β₀ = 절편, β₁ = 첫 번째 변수의 계수, x₁ᵢ = x₁의 i번째 값</span>
+        </div>
+      </div>
+      <div class="rs-row">
+        <div class="rs-num">3</div>
+        <div class="rs-body">
+          <span class="rs-eq">Σᵢ (yᵢ − ŷᵢ)²</span>
+          <span class="rs-read">"모든 i에 대해, 실제값과 예측값의 차이를 제곱한 것을 다 더한다"</span>
+          <span class="rs-why">Σ = 전부 더해라, (yᵢ − ŷᵢ) = 잔차, ² = 제곱</span>
+        </div>
+      </div>
+      <div class="rs-row">
+        <div class="rs-num">4</div>
+        <div class="rs-body">
+          <span class="rs-eq">β̂ = argmin L(β)</span>
+          <span class="rs-read">"L을 가장 작게 만드는 β를 β̂라고 부른다" → 이것이 학습</span>
+          <span class="rs-why">argmin = 최솟값을 만드는 β, hat(^) = 학습으로 구한 추정값</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">낯선 수식을 만났을 때 하는 세 가지 질문</div>
+      <p>
+        <strong>① 왼쪽은 무엇인가?</strong> — 이 수식이 구하려는 값 (ŷᵢ, L, β̂ ...)<br>
+        <strong>② 오른쪽의 기호들은 각각 무엇인가?</strong> — 하나씩 말로 바꿔보기<br>
+        <strong>③ 전체를 한 문장으로 말하면?</strong> — "X를 하면 Y가 된다" 형태로 요약<br><br>
+        이 세 질문에 답할 수 있으면 그 수식을 "읽은" 것입니다. 계산은 못 해도 됩니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">읽기 연습</div>
+      <div class="q-text">"RMSE = √(1/n · Σ(yᵢ − ŷᵢ)²) 를 세 질문으로 풀어보세요. 왼쪽은 무엇이고, 오른쪽 기호들은 각각 무엇이며, 전체를 한 문장으로 말하면?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       f(X) = ŷ 란
+  ══════════════════════════════ -->
+  <div class="section-block" id="fxy">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">f(X) = ŷ 란 무엇인가</span>
+      <span class="section-time">10 min</span>
+    </div>
+
+    <div class="note">ML에서 알고리즘은 <strong>f에 해당합니다.</strong> 어떤 알고리즘을 쓰느냐 = f의 형태를 무엇으로 결정하느냐의 문제입니다.</div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">핵심 수식</span>
+        <span class="eq-name">ML의 공통 목표</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          <span class="hi-y">y</span> = <span class="hi-f">f</span>(<span class="hi-x">X</span>) + <span class="hi-e">ε</span>
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part" style="border-color:var(--red-border); background:var(--red-bg)">
+            <div class="part-sym" style="color:var(--red)">y</div>
+            <div class="part-name">실제값</div>
+            <div class="part-desc">데이터에 존재하는 정답. 우리가 맞춰야 할 목표.</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--blue-border); background:var(--blue-bg)">
+            <div class="part-sym" style="color:var(--blue)">f(X)</div>
+            <div class="part-name">알고리즘의 출력</div>
+            <div class="part-desc">X를 넣었을 때 나오는 예측. 알고리즘이 바뀌면 f의 형태가 달라짐.</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym" style="color:var(--text3)">ε</div>
+            <div class="part-name">설명 못 한 나머지</div>
+            <div class="part-desc">어떤 모델도 y를 완벽히 설명할 수 없음. 노이즈, 미측정 변수.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="label">알고리즘마다 f의 모양이 다르다</div>
+    <table>
+      <thead>
+        <tr><th>알고리즘</th><th>f(X)의 형태</th><th>핵심 아이디어</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>선형 회귀</strong></td>
+          <td class="mono">β₀ + β₁x₁ + β₂x₂ + ...</td>
+          <td class="muted">X와 y 사이를 직선(평면)으로 요약. β가 학습으로 결정됨.</td>
+        </tr>
+        <tr>
+          <td><strong>Decision Tree</strong></td>
+          <td class="mono">if x₁ &gt; 70 then ... else ...</td>
+          <td class="muted">f가 if-else 분기 구조. 각 분기 기준이 학습으로 결정됨.</td>
+        </tr>
+        <tr>
+          <td><strong>Random Forest</strong></td>
+          <td class="mono">avg(f₁(X), f₂(X), ..., fₖ(X))</td>
+          <td class="muted">트리 여러 개의 f를 평균. 한 f의 실수를 다른 f들이 상쇄.</td>
+        </tr>
+        <tr>
+          <td><strong>K-means</strong></td>
+          <td class="mono">argmin‖xᵢ − μₖ‖²</td>
+          <td class="muted">예측이 아니라 군집 할당. 가장 가까운 중심(μₖ)에 배정.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="compare-row">
+      <div class="cp cp-r1">
+        <div class="cp-tag">1라운드에서 본 것</div>
+        <div class="cp-main">
+          "알고리즘은 X → y 패턴을 찾는 도구"<br>
+          "트리는 if-else로 나눈다"<br>
+          "앙상블은 여러 모델을 합친다"
+        </div>
+      </div>
+      <div class="cp cp-r2">
+        <div class="cp-tag">2라운드에서 보는 것</div>
+        <div class="cp-main">
+          "알고리즘 = f의 형태를 결정하는 것"<br>
+          "f(X) = β₀ + β₁x₁ + ..." vs "if x &gt; θ then ..."<br>
+          "앙상블 = 여러 f를 결합해 최종 ŷ"
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">알고리즘 선택 = 데이터 관계의 형태를 가정하는 것</div>
+      <p>
+        "선형 회귀를 쓴다"는 결정에는 하나의 가정이 숨어 있습니다:<br>
+        <strong>"내 데이터에서 X와 y의 관계가 대략 직선에 가깝다."</strong><br><br>
+        만약 실제 관계가 직선이 아니라 구간마다 달라지는 패턴이라면, 선형 회귀는 그 패턴을 다 담지 못합니다.
+        이럴 때 트리를 선택하는 것은 "구간별로 따로따로 규칙을 만든다"는 다른 가정을 택하는 것입니다.<br><br>
+        <strong>결국 알고리즘 선택은 수식 선택이고, 수식 선택은 가정 선택입니다.</strong>
+        데이터를 먼저 이해해야 올바른 가정을 고를 수 있습니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"지금 쓰거나 봤던 모델에서 f는 어떤 형태였나요? 그 알고리즘을 선택할 때 어떤 가정을 한 셈인지 말해보세요."</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       ML 흐름 × 수식
+  ══════════════════════════════ -->
+  <div class="section-block" id="flow">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">ML 전체 흐름 — 수식 관점으로</span>
+      <span class="section-time">15 min</span>
+    </div>
+
+    <div class="note">Round 1의 6단계 흐름 위에 수식을 얹어봅니다. 각 단계에서 수식적으로 무슨 일이 벌어지는지 연결합니다.</div>
+
+    <div class="math-flow">
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">01</span><span class="mf-name">데이터 수집</span></div>
+        <div class="mf-right">
+          <span class="mf-math">(X, y) = {(x⁽¹⁾, y₁), ..., (x⁽ⁿ⁾, yₙ)}</span>
+          <span class="mf-desc">n개의 (입력, 정답) 쌍을 모읍니다. X는 n×p 행렬, y는 n차원 벡터.<br>어떤 변수를 X에 넣을지 결정하는 것 자체가 도메인 지식 — 수식 이전 단계에서의 판단이 전체 성능을 좌우합니다.</span>
+        </div>
+      </div>
+      <div class="mf-step warn">
+        <div class="mf-left"><span class="mf-num">02</span><span class="mf-name">전처리</span></div>
+        <div class="mf-right">
+          <span class="mf-math">x_scaled = (x − μ) / σ</span>
+          <span class="mf-desc">결측 처리, 이상치 처리, 스케일링. 스케일링은 "변수들의 단위를 통일"하는 것.<br>안 하면 단위가 큰 변수(연봉 등)가 β를 왜곡합니다. 수식 입장에서 공정한 비교가 불가능해집니다.</span>
+        </div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">03</span><span class="mf-name">모델 학습</span></div>
+        <div class="mf-right">
+          <span class="mf-math">β̂ = argmin L(y, f(X; β))</span>
+          <span class="mf-desc">손실함수 L이 최소가 되는 β를 찾는 것 = 학습. 이 수식을 아래에서 자세히 봅니다.</span>
+        </div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">04</span><span class="mf-name">예측</span></div>
+        <div class="mf-right">
+          <span class="mf-math">ŷ_new = f(X_new ; β̂)</span>
+          <span class="mf-desc">학습으로 구한 β̂를 새 X에 적용. 모델 입장에서 처음 보는 데이터(unseen data)에 적용하는 단계.<br>"β̂를 구했으니 이제 새 X를 넣으면 ŷ가 나온다."</span>
+        </div>
+      </div>
+      <div class="mf-step warn">
+        <div class="mf-left"><span class="mf-num">05</span><span class="mf-name">평가</span></div>
+        <div class="mf-right">
+          <span class="mf-math">RMSE = √(1/n · Σ(yᵢ − ŷᵢ)²)</span>
+          <span class="mf-desc">test 데이터에서 yᵢ와 ŷᵢ 차이를 집계. 평가 기준(L)이 잘못되면 잘못된 모델을 좋다고 판단.<br>불균형 데이터에서 Accuracy만 보면 안 되는 이유 — L이 현실을 반영 못 하기 때문입니다.</span>
+        </div>
+      </div>
+      <div class="mf-step">
+        <div class="mf-left"><span class="mf-num">06</span><span class="mf-name">해석·적용</span></div>
+        <div class="mf-right">
+          <span class="mf-math">β̂ 값, ∂f/∂xⱼ (변수 영향)</span>
+          <span class="mf-desc">β̂를 읽거나 각 변수가 ŷ에 얼마나 기여하는지 분해. 선형 모델은 β 자체로 해석.<br>트리/앙상블은 Feature Importance로 "분기에 얼마나 자주 쓰였는지"를 보는 방식.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"03단계에서 L(손실함수)을 잘못 정하면 어떤 일이 생길까요? 실무에서 떠오르는 예시가 있나요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       학습이란 무엇인가 — 손실함수
+  ══════════════════════════════ -->
+  <div class="section-block" id="loss">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">학습이란 무엇인가 — 손실함수</span>
+      <span class="section-time">10 min</span>
+    </div>
+
+    <div class="note">"모델이 학습한다" = <strong>손실함수가 최소가 되는 파라미터 β를 찾는다.</strong> 이것이 ML에서 학습의 수학적 정의입니다.</div>
+
+    <div class="label">학습 수식 분해 — β̂ = argmin L(y, f(X; β))</div>
+
+    <div class="argmin-breakdown">
+      <div class="ab-sym">β̂ = argmin L(y, f(X; β))</div>
+      <div class="ab-rows">
+        <div class="ab-row">
+          <span class="ab-part">β̂ =</span>
+          <span class="ab-desc">학습이 끝난 뒤 확정되는 계수. hat(^)이 붙어 "우리가 추정한 값"임을 표시.</span>
+        </div>
+        <div class="ab-row">
+          <span class="ab-part">argmin</span>
+          <span class="ab-desc">"뒤에 오는 식을 가장 작게 만드는 β를 찾아라"는 명령어.
+            <span class="ab-sub">argument of the minimum — 최솟값을 만드는 β를 반환</span>
+          </span>
+        </div>
+        <div class="ab-row">
+          <span class="ab-part">L(y, f(X; β))</span>
+          <span class="ab-desc">손실함수. 현재 β로 예측했을 때 실제값 y와 얼마나 차이나는지를 숫자 하나로 요약.
+            <span class="ab-sub">β가 달라지면 f(X; β)가 달라지고, 그러면 L이 달라짐. β를 조정해 L을 최소화하는 것이 학습.</span>
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">한 문장으로 읽기</div>
+      <p>
+        <strong>β̂ = argmin L(y, f(X; β))</strong><br><br>
+        → "실제값 y와 예측값 f(X; β)의 차이(손실 L)를 가장 작게 만드는 β를 찾아라. 그게 β̂다."<br><br>
+        이것이 학습의 전부입니다. 알고리즘마다 f의 모양(선형이냐, 트리냐)과 L의 계산 방식(제곱합이냐, 불순도냐)이 다를 뿐,
+        <strong>"L을 최소화하는 파라미터를 찾는다"는 구조는 모든 알고리즘이 동일합니다.</strong>
+      </p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">손실함수 예시</span>
+        <span class="eq-name">SSE — 선형 회귀의 학습 기준</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          L = <span class="hi-e">Σᵢ</span> (<span class="hi-y">yᵢ</span> − <span class="hi-f">ŷᵢ</span>)²
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">(yᵢ − ŷᵢ)</div>
+            <div class="part-name">잔차</div>
+            <div class="part-desc">i번째 관측에서 실제값과 예측값의 차이. 양수/음수 모두 가능.</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--amber-border); background:var(--amber-bg)">
+            <div class="part-sym" style="color:var(--amber)">(yᵢ − ŷᵢ)²</div>
+            <div class="part-name">제곱</div>
+            <div class="part-desc">음수를 없애고, 큰 오차에 더 큰 페널티. 이상치에 민감해지는 이유.</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--blue-border); background:var(--blue-bg)">
+            <div class="part-sym" style="color:var(--blue)">Σ</div>
+            <div class="part-name">전부 더하기</div>
+            <div class="part-desc">n개 관측값 전체의 오차를 합산. β를 조정할 때 전체 데이터를 고려.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="label">학습의 흐름 — β를 어떻게 찾는가</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon ok">①</span>
+        <div class="body">β를 임의의 값으로 초기화
+          <div class="sub">아직 f(X)가 형편없는 상태. ŷ와 y의 차이(잔차)가 크다.</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">②</span>
+        <div class="body">현재 β로 L(손실) 계산
+          <div class="sub">L = Σ(yᵢ − ŷᵢ)² — 숫자 하나로 "지금 β가 얼마나 나쁜지" 표현</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">③</span>
+        <div class="body">L이 줄어드는 방향으로 β 조정
+          <div class="sub">선형 회귀는 수식으로 β를 직접 계산 가능. 딥러닝은 반복(gradient descent)으로 찾음.</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">④</span>
+        <div class="body">L이 충분히 작아지면 β̂ 확정 = 학습 완료
+          <div class="sub">이 β̂가 이후 예측(04단계)에서 쓰는 파라미터.</div>
+        </div>
+      </li>
+    </ul>
+
+    <hr class="divider">
+
+    <div class="box box-red">
+      <div class="box-title">이상치가 회귀선을 당기는 수식적 이유</div>
+      <p>
+        이상치 yᵢ = 1000, ŷᵢ = 50이면 잔차 = 950, 잔차² = 902,500.<br>
+        정상 포인트 yᵢ = 52, ŷᵢ = 50이면 잔차 = 2, 잔차² = 4.<br><br>
+        L에서 이상치 하나의 기여가 정상 포인트의 수십만 배. β를 이상치 쪽으로 당기는 힘이 압도적으로 강해집니다.<br>
+        Round 1에서 "이상치가 있으면 회귀선이 왜곡된다"고 한 것의 수식적 이유가 바로 이것입니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">세션 마무리 질문</div>
+      <div class="q-text">"Round 1에서 봤던 ML 흐름 중, 오늘 수식 관점으로 봤을 때 다르게 보이는 부분이 있나요?"</div>
+    </div>
+
+    <div class="box box-amber" style="margin-top: 24px;">
+      <div class="box-title">다음 세션 예고 — Week 2 · 선형 회귀 수식</div>
+      <p>
+        Week 2에서는 선형 회귀를 수식으로 완전히 분해합니다.<br>
+        β가 어떻게 계산되는지, R²의 분자·분모가 무엇을 측정하는지,<br>
+        다중공선성이 수식에서 어떻게 나타나는지(계수 불안정, 부호 반전)를 다룹니다.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

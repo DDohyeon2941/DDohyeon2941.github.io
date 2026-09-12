@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 4 — 성과지표</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+  .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;height:48px;overflow-x:auto;gap:0}
+  .nav-title{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;margin-right:24px;padding-right:24px;border-right:1px solid var(--border)}
+  .nav a{font-size:12px;color:var(--text3);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+  .nav a:hover{color:var(--text)}
+  .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+  .page{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+  .section-block{margin-bottom:56px}
+  .section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px}
+  .section-title{font-size:18px;font-weight:500}
+  .section-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap}
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;margin-top:16px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7;color:var(--text)}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:12px}
+  .q-box{border:1px solid var(--border);border-radius:6px;padding:12px 16px;background:var(--surface2);margin-bottom:8px}
+  .q-box .q-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .q-box .q-text{font-size:13px;font-style:italic}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+  @media(max-width:640px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:500}td.neg{color:var(--red);font-weight:500}
+  td.warn-td{color:var(--amber);font-weight:500}td.muted{color:var(--text3);font-size:12px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+  .checklist li .icon{margin-top:1px;flex-shrink:0;font-size:13px}
+  .checklist li .icon.ok{color:var(--green)}.checklist li .icon.warn{color:var(--amber)}.checklist li .icon.bad{color:var(--red)}
+  .checklist li .body{line-height:1.6}
+  .checklist li .body .sub{font-size:11px;color:var(--text3);margin-top:2px}
+  .metric{background:var(--surface2);border-radius:6px;padding:12px 14px;border:1px solid var(--border)}
+  .metric .m-label{font-size:11px;color:var(--text3);margin-bottom:4px;font-family:var(--mono)}
+  .metric .m-val{font-size:22px;font-weight:500;font-family:var(--mono)}
+  .metric .m-desc{font-size:11px;color:var(--text2);margin-top:4px;line-height:1.5}
+  .metric.danger{background:var(--red-bg);border-color:var(--red-border)}
+  .metric.danger .m-label,.metric.danger .m-val{color:var(--red)}
+  .metric.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+  .metric.warn .m-label,.metric.warn .m-val{color:var(--amber)}
+  .metric.good{background:var(--green-bg);border-color:var(--green-border)}
+  .metric.good .m-label,.metric.good .m-val{color:var(--green)}
+  .metric.info{background:var(--blue-bg);border-color:var(--blue-border)}
+  .metric.info .m-label,.metric.info .m-val{color:var(--blue)}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+  /* 지표 카드 */
+  .metric-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px}
+  .metric-card .mc-head{padding:14px 18px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border)}
+  .metric-card .mc-badge{font-family:var(--mono);font-size:10px;font-weight:500;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px}
+  .metric-card .mc-name{font-size:15px;font-weight:500;margin-bottom:2px}
+  .metric-card .mc-essence{font-size:13px;color:var(--text2);line-height:1.6}
+  .metric-card .mc-body{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)}
+  @media(max-width:640px){.metric-card .mc-body{grid-template-columns:1fr}}
+  .metric-card .mc-col{padding:12px 16px}
+  .metric-card .mc-col:first-child{border-right:1px solid var(--border)}
+  .metric-card .mc-col-label{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .metric-card .mc-eq{font-family:var(--mono);font-size:12px;background:var(--surface2);padding:8px 12px;border-radius:4px;line-height:2;overflow-x:auto;margin-bottom:6px}
+  .metric-card .mc-eq .hi{color:var(--blue);font-weight:500}
+  .metric-card .mc-eq .hi-r{color:var(--red);font-weight:500}
+  .metric-card .mc-eq .hi-g{color:var(--green);font-weight:500}
+  .metric-card .mc-eq .hi-a{color:var(--amber);font-weight:500}
+  .metric-card .mc-desc{font-size:12px;color:var(--text2);line-height:1.65}
+  .metric-card .mc-foot{padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:640px){.metric-card .mc-foot{grid-template-columns:1fr}}
+  .mc-tag{font-size:12px;padding:7px 10px;border-radius:4px;line-height:1.6}
+  .mc-tag.ok{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+  .mc-tag.bad{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+  .mc-tag.warn{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+  .mc-tag .mt-label{font-family:var(--mono);font-size:10px;margin-bottom:2px;font-weight:500}
+
+  /* 배지 색상 */
+  .badge-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+  .badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+  .badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .badge-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+  /* Confusion Matrix */
+  .cm-wrap{display:flex;justify-content:center;margin:16px 0}
+  .cm-table{border-collapse:collapse;font-size:13px}
+  .cm-table th{padding:8px 16px;font-size:11px;font-family:var(--mono);font-weight:500;color:var(--text3);text-align:center;letter-spacing:.04em}
+  .cm-table td{padding:16px 24px;text-align:center;border:1px solid var(--border);font-size:14px;font-weight:500;min-width:110px}
+  .cm-tp{background:var(--green-bg);color:var(--green)}
+  .cm-tn{background:var(--blue-bg);color:var(--blue)}
+  .cm-fp{background:var(--amber-bg);color:var(--amber)}
+  .cm-fn{background:var(--red-bg);color:var(--red)}
+  .cm-label{font-size:11px;font-family:var(--mono);font-weight:500;letter-spacing:.06em}
+  .cm-axis-label{font-size:11px;color:var(--text3);font-family:var(--mono);text-transform:uppercase;letter-spacing:.05em}
+
+  /* ROC / PR 곡선 SVG 설명 박스 */
+  .curve-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  @media(max-width:640px){.curve-row{grid-template-columns:1fr}}
+
+  /* 시나리오 박스 */
+  .scenario{border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:10px;background:var(--surface)}
+  .scenario .sc-q{font-size:13px;font-weight:500;margin-bottom:6px}
+  .scenario .sc-why{font-size:12px;color:var(--text2);line-height:1.65;padding:8px 10px;background:var(--surface2);border-radius:4px;border-left:3px solid var(--border2)}
+  .scenario .sc-ans{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:3px;margin-top:7px}
+  .scenario .sc-ans.red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+  .scenario .sc-ans.amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .scenario .sc-ans.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+  @media print{.nav{display:none}.page{padding:24px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">Week 4 — 성과지표</div>
+  <a href="#s0">지난주 복습</a>
+  <a href="#s1">지표란</a>
+  <a href="#s2">회귀 지표</a>
+  <a href="#s3">분류 지표①</a>
+  <a href="#s4">분류 지표②</a>
+  <a href="#s4b">목표 달성 판단</a>
+  <a href="#s5">한계 & 현업</a>
+  <a href="#s6">해석 연습</a>
+  <a href="#s7">Q&A</a>
+</nav>
+
+<div class="page">
+
+<!-- ── 00: 지난주 복습 ── -->
+<div class="section-block" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">지난주 핵심 복습 — Week 3 클러스터링 & 유사도</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Week 3 세션 요약</div>
+    <p>
+      클러스터링은 정답을 주지 않습니다. 데이터를 나눠줄 뿐입니다.<br>
+      그 나눔이 의미 있는지 판단하는 건 알고리즘이 아니라 사람의 몫입니다.<br><br>
+      군집 결과가 나왔을 때 올바른 보고 방식:<br>
+      ❌ "군집 1이 위험 군집입니다"<br>
+      ✅ "고온·고압·저유량 조건에서 불량률이 높게 나타나는 패턴을 발견했고, 이 조건을 모니터링 기준으로 활용할 수 있습니다"
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div class="box box-red">
+      <div class="box-title">인과 ≠ 상관</div>
+      <p style="font-size:12px;">클러스터링이 찾은 건 "이 조건에서 불량이 많았다"는 패턴. "이 조건이 불량을 만든다"는 원인이 아닙니다. 이번 주 지표도 동일합니다 — 숫자가 좋다고 모델이 옳은 건 아닙니다.</p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">도메인 검증 필수</div>
+      <p style="font-size:12px;">결과에 이름을 붙일 수 있는지, 현장에서 말이 되는지 항상 검증해야 합니다. 지표가 아무리 좋아도 현장 맥락과 맞지 않으면 신뢰할 수 없습니다.</p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">이번 주 연결</div>
+      <p style="font-size:12px;">Week 3: "군집이 의미 있는가?" 판단 기준<br>Week 4: "모델 성능 숫자가 의미 있는가?" 판단 기준<br>— 같은 질문의 다른 버전입니다</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 01: 지표란 무엇인가 ── -->
+<div class="section-block" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">지표를 보는 관점 — "평균 성적표"의 함정</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="note"><strong>핵심 질문:</strong> 모델이 "전체적으로" 잘 맞는 것과 "중요한 구간에서" 잘 맞는 것은 다릅니다. 지표는 어느 쪽을 보여주는가?</div>
+
+  <div class="box box-amber">
+    <div class="box-title">지표 = 전체 데이터의 평균 요약</div>
+    <p>
+      RMSE 1.2, Accuracy 97%, AUC 0.93 — 이 숫자들은 모두 <strong>전체 데이터에 걸친 평균</strong>입니다.<br><br>
+      문제는 제조 현장에서 중요한 건 "전체 평균"이 아닌 경우가 많다는 겁니다.<br><br>
+      불량률 0.5% 공정에서 불량 케이스 50개를 다 놓쳐도 → 정상 9950개를 맞히면 Accuracy 99.5%<br>
+      수율 예측에서 정상 구간(85~95%)은 잘 맞추지만 → 위험 구간(60% 이하)은 체계적으로 틀려도 R² 0.92
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">지표 하나로 결론 내리면 안 되는 이유</div>
+      <p style="font-size:12px;">
+        지표가 좋아도 잘못된 경우:<br>
+        • 중요한 소수 케이스(불량)를 체계적으로 놓침<br>
+        • 특정 공정 조건 구간에서만 틀림<br>
+        • 학습 데이터 누수로 인한 착시<br>
+        • 공정 조건이 바뀐 데이터에 적용
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">지표를 제대로 쓰는 방법</div>
+      <p style="font-size:12px;">
+        지표를 시작점으로 쓰되:<br>
+        • 어느 구간에서 오차가 큰지 잔차 확인<br>
+        • 불량 케이스만 따로 성능 측정<br>
+        • Train vs Test 차이 얼마인지 확인<br>
+        • 현업 기준(Cpk, 스펙 한계)과 비교
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 02: 회귀 지표 ── -->
+<div class="section-block" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">회귀 지표 — MAE / RMSE / R² / Adjusted R²</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>공통 시나리오:</strong> 공정 수율(%) 예측 모델. y = 실제 수율, ŷ = 예측 수율. 정상 범위 85~95%, 위험 구간 70% 이하</div>
+
+  <!-- MAE -->
+  <div class="metric-card">
+    <div class="mc-head">
+      <span class="mc-badge badge-blue">MAE</span>
+      <div>
+        <div class="mc-name">Mean Absolute Error — 평균 절대 오차</div>
+        <div class="mc-essence">오차의 절댓값 평균. 단위가 y와 같다. 이상치에 둔감하다.</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-col">
+        <div class="mc-col-label">수식</div>
+        <div class="mc-eq">MAE = <span class="hi">(1/n)</span> × Σ|<span class="hi-r">y</span> - <span class="hi-g">ŷ</span>|</div>
+        <div class="mc-desc">
+          예측값이 평균적으로 얼마나 빗나가는지 직관적으로 보여줍니다.<br>
+          수율 예측 MAE = 2.1% → "평균적으로 ±2.1% 오차가 난다"
+        </div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-label">제조 해석</div>
+        <div class="mc-desc" style="margin-top:4px">
+          <strong>장점:</strong> 오차 크기를 현업이 바로 이해 가능<br>
+          "MAE 2%면 수율 예측이 평균 2% 빗나간다" — 직관적<br><br>
+          <strong>한계:</strong> 큰 오차와 작은 오차를 동일한 비중으로 봄<br>
+          수율 90%를 92%로 예측한 오차(2%)와<br>
+          수율 60%를 62%로 예측한 오차(2%)를 같게 취급
+        </div>
+      </div>
+    </div>
+    <div class="mc-foot">
+      <div class="mc-tag ok"><div class="mt-label">✓ 적합한 경우</div>이상치가 많거나 극값이 중요하지 않을 때. 현업에게 오차 크기를 설명할 때</div>
+      <div class="mc-tag warn"><div class="mt-label">! 주의</div>큰 오차가 치명적인 상황(불량 감지, 위험 구간 예측)에서는 RMSE를 함께 봐야 함</div>
+    </div>
+  </div>
+
+  <!-- RMSE -->
+  <div class="metric-card">
+    <div class="mc-head">
+      <span class="mc-badge badge-amber">RMSE</span>
+      <div>
+        <div class="mc-name">Root Mean Squared Error — 평균 제곱근 오차</div>
+        <div class="mc-essence">오차 제곱의 평균에 루트. 큰 오차에 더 민감하다. 단위는 y와 같다.</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-col">
+        <div class="mc-col-label">수식</div>
+        <div class="mc-eq">RMSE = √(<span class="hi">(1/n)</span> × Σ(<span class="hi-r">y</span> - <span class="hi-g">ŷ</span>)²)</div>
+        <div class="mc-desc">
+          오차를 제곱하기 때문에 큰 오차 하나가 RMSE를 크게 끌어올립니다.<br>
+          MAE보다 항상 크거나 같습니다 (RMSE ≥ MAE).
+        </div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-label">MAE vs RMSE — 차이</div>
+        <div class="mc-desc" style="margin-top:4px">
+          오차가 [1, 1, 1, 1, 10] 이라면:<br>
+          → MAE = (1+1+1+1+10)/5 = <strong>2.8</strong><br>
+          → RMSE = √((1+1+1+1+100)/5) = <strong>4.6</strong><br><br>
+          큰 오차 하나(10)가 RMSE를 크게 키웁니다.<br>
+          RMSE ≫ MAE이면 → <strong>큰 오차가 간헐적으로 발생</strong>한다는 신호
+        </div>
+      </div>
+    </div>
+    <div class="mc-foot">
+      <div class="mc-tag ok"><div class="mt-label">✓ 적합한 경우</div>큰 오차가 치명적인 상황. 위험 구간 예측, 설비 이상 감지에서 큰 빗나감을 벌칙으로 줘야 할 때</div>
+      <div class="mc-tag bad"><div class="mt-label">✕ 주의</div>이상치 데이터가 오염된 경우 RMSE가 이상치에 끌려다닐 수 있음. 데이터 품질 먼저 확인</div>
+    </div>
+  </div>
+
+  <!-- R² -->
+  <div class="metric-card">
+    <div class="mc-head">
+      <span class="mc-badge badge-blue">R²</span>
+      <div>
+        <div class="mc-name">R-squared — 결정계수</div>
+        <div class="mc-essence">모델이 y의 분산을 얼마나 설명하는가. 0~1 (음수도 가능). 단위 없음.</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-col">
+        <div class="mc-col-label">수식</div>
+        <div class="mc-eq">R² = 1 - <span class="hi-r">SS_res</span> / <span class="hi-g">SS_tot</span><br><br><span class="hi-r">SS_res</span> = Σ(y - ŷ)²  ← 모델 오차<br><span class="hi-g">SS_tot</span> = Σ(y - ȳ)²  ← 전체 분산</div>
+        <div class="mc-desc">
+          R² = 1.0 → 완벽한 예측<br>
+          R² = 0.0 → 평균값만 예측하는 것과 같음<br>
+          R² &lt; 0.0 → 평균값보다도 못한 예측 (가능함!)
+        </div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-label">R² 함정 3가지</div>
+        <div class="mc-desc" style="margin-top:4px">
+          <strong>① 변수를 추가할수록 R²은 무조건 오른다</strong><br>
+          쓸모없는 변수를 넣어도 R²은 절대 떨어지지 않음<br>
+          → 이유는 아래 박스 참고<br><br>
+          <strong>② 음수가 나올 수 있다</strong><br>
+          train 범위 밖 데이터에 적용하면 음수 R² 가능<br><br>
+          <strong>③ 구간 편향을 숨긴다</strong><br>
+          정상 구간에서 잘 맞고 위험 구간에서 틀려도<br>
+          전체 R² 0.95가 나올 수 있음
+        </div>
+      </div>
+    </div>
+    <div class="mc-foot">
+      <div class="mc-tag warn"><div class="mt-label">! R² 0.9x를 볼 때 반드시 확인</div>잔차 플롯에서 수율 위험 구간(70% 이하)의 오차는 얼마인가? 그 구간만 따로 RMSE를 계산해보면 전혀 다른 그림이 나올 수 있음</div>
+      <div class="mc-tag bad"><div class="mt-label">✕ 주의</div>변수 개수가 다른 모델끼리 R²로만 비교하면 안 됨 → Adjusted R² 필요</div>
+    </div>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">왜 변수를 추가하면 R²이 무조건 오르는가 — 본질</div>
+    <p>
+      모델에 변수를 하나 추가하면 모델 입장에서 선택지는 두 가지입니다.<br><br>
+      <strong>이 변수가 유용하면</strong> → 써서 오차를 줄인다 → R² 오름<br>
+      <strong>이 변수가 쓸모없으면</strong> → 계수를 0에 가깝게 만들어서 사실상 무시한다 → R² 그대로<br><br>
+      두 경우 모두 R²는 내려가지 않습니다. 최악의 경우 제자리입니다.<br>
+      즉 변수를 추가하는 것은 모델에게 "더 잘할 기회"를 주는 것이지, "더 잘해야 할 의무"를 주는 게 아닙니다.<br><br>
+      <strong>문제는 "우연히 발견한 패턴"입니다.</strong><br>
+      수율과 무관한 변수(예: 작업자 사번 뒷자리, 측정 순서 번호)를 25개 추가하면<br>
+      모델이 훈련 데이터에서만 존재하는 우연한 패턴을 학습합니다.<br>
+      → 훈련 데이터 R² = 0.91 (올라감)<br>
+      → 새 데이터 R² = 0.74 (오히려 떨어짐)<br><br>
+      R²만 보고 "변수를 더 넣을수록 좋다"고 판단하면 과적합으로 이어집니다.<br>
+      <strong>변수를 추가할 때는 반드시 Test R²와 Adjusted R²를 함께 봐야 합니다.</strong>
+    </p>
+  </div>
+
+  <!-- Adjusted R² -->
+  <div class="metric-card">
+    <div class="mc-head">
+      <span class="mc-badge badge-green">Adj R²</span>
+      <div>
+        <div class="mc-name">Adjusted R² — 수정 결정계수</div>
+        <div class="mc-essence">변수 개수에 대한 패널티를 반영한 R². 모델 간 공정한 비교.</div>
+      </div>
+    </div>
+    <div class="mc-body">
+      <div class="mc-col">
+        <div class="mc-col-label">수식 — 어떻게 보완하는가</div>
+        <div class="mc-eq">Adj R² = 1 - <span class="hi-r">SS_res / (n-p-1)</span><br>              ────────────────<br>              <span class="hi-g">SS_tot / (n-1)</span><br><br>n = 샘플 수 / p = 변수 개수</div>
+        <div class="mc-desc">
+          R²와 차이는 하나입니다.<br>
+          SS_res를 <strong>(n-p-1)</strong>로 나눕니다.<br><br>
+          변수(p)가 늘면 → (n-p-1)이 작아짐<br>
+          → SS_res/(n-p-1)이 커짐<br>
+          → Adj R²가 내려감<br><br>
+          변수 추가의 이득(SS_res 감소)이<br>
+          패널티(n-p-1 감소)보다 작으면<br>
+          Adj R²는 내려갑니다.
+        </div>
+      </div>
+      <div class="mc-col">
+        <div class="mc-col-label">수치 예시</div>
+        <div class="mc-desc" style="margin-top:4px">
+          <strong>모델 A:</strong> 변수 5개, R² = 0.88, Adj R² = 0.87<br>
+          <strong>모델 B:</strong> 변수 30개, R² = 0.91, Adj R² = 0.84<br><br>
+          R²만 보면 B가 좋아보입니다.<br>
+          Adj R²로 보면 A가 더 낫습니다.<br><br>
+          B는 변수 25개를 추가해서 R² 0.03을 올렸지만,<br>
+          실제 설명력 증가보다 패널티가 더 컸다는 뜻입니다.<br><br>
+          <strong>Adj R²가 내려갔다</strong> = 방금 추가한 변수가<br>
+          모델에 실질적 도움이 안 됐다는 신호
+        </div>
+      </div>
+    </div>
+    <div class="mc-foot">
+      <div class="mc-tag ok"><div class="mt-label">✓ 사용 상황</div>변수 개수가 다른 모델끼리 비교. 센서가 많은 제조 데이터에서 변수 선택할 때 참고 지표로 활용</div>
+      <div class="mc-tag bad"><div class="mt-label">✕ 한계 — 패널티가 정확하지 않다</div>(n-p-1) 보정은 자유도 기반 추정값입니다. "변수 1개 = 정확히 이만큼 패널티"가 현실에서 항상 맞지 않습니다. 변수 간 상관이 높거나 n이 작으면 불안정합니다. → 더 신뢰할 수 있는 방법은 Train/Test 분리 또는 Cross-Validation으로 직접 측정하는 것</div>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">(n-p-1)의 근거 — 방정식, OLS, 자유도</div>
+    <p>
+      <strong>Step 1 — 방정식이란</strong><br>
+      "모르는 값(미지수)을 포함한 등식"입니다.<br>
+      미지수를 알아내려면 방정식이 미지수 수만큼 있어야 합니다.<br><br>
+
+      <strong>Step 2 — 데이터 1개 = 방정식 1개</strong><br>
+      변수 2개짜리 모델: <span style="font-family:var(--mono);font-size:12px">수율 = a×온도 + b×압력 + c</span><br>
+      미지수 a, b, c — 3개<br><br>
+      데이터 1개(온도=85, 압력=3.2, 수율=91)를 넣으면:<br>
+      <span style="font-family:var(--mono);font-size:12px">91 = a×85 + b×3.2 + c</span><br>
+      숫자가 확정되고 a, b, c만 모릅니다 → 방정식 1개<br>
+      데이터가 1개 추가될 때마다 방정식이 1개씩 생깁니다.<br><br>
+
+      <strong>Step 3 — 방정식 수와 미지수 수의 관계</strong><br>
+      방정식 &lt; 미지수 → 해가 무한히 많음 (모델 성립 안 됨)<br>
+      방정식 = 미지수 → 해가 딱 하나 → SS_res = 0 → 데이터를 외운 것<br>
+      방정식 &gt; 미지수 → 완벽한 해가 없음 → 잔차 발생 → 진짜 오차 측정 가능<br><br>
+      회귀에서는 항상 세 번째 경우를 원합니다.<br>
+      데이터 100개, 미지수 3개 → 100개 방정식을 동시에 만족하는 해가 없음<br>
+      → OLS가 <strong>"잔차 제곱합을 가장 작게 하는 a, b, c"</strong>를 행렬 연산으로 한 번에 구합니다.<br><br>
+
+      <strong>Step 4 — OLS로 구하면 잔차에 제약이 생긴다</strong><br>
+      OLS는 SS_res를 각 파라미터로 미분해서 0으로 놓습니다.<br>
+      <span style="font-family:var(--mono);font-size:12px">∂SS_res/∂c = 0  →  Σeᵢ = 0</span><br>
+      <span style="font-family:var(--mono);font-size:12px">∂SS_res/∂a = 0  →  Σ(온도ᵢ × eᵢ) = 0</span><br>
+      <span style="font-family:var(--mono);font-size:12px">∂SS_res/∂b = 0  →  Σ(압력ᵢ × eᵢ) = 0</span><br><br>
+      파라미터 3개 → 잔차에 제약 조건 3개가 자동으로 걸립니다.<br><br>
+
+      <strong>Step 5 — 잔차 예시로 제약 확인 (절편만 있는 단순 모델)</strong><br>
+      <span style="font-family:var(--mono);font-size:12px">수율 = c</span>, 데이터 4개: [80, 85, 90, 95]<br>
+      OLS → c = 평균 = 87.5<br>
+      잔차: e₁=-7.5, e₂=-2.5, e₃=+2.5, e₄=+7.5<br><br>
+      제약: Σeᵢ = 0<br>
+      e₁, e₂, e₃을 아무렇게나 정하면 e₄는 자동으로 결정됩니다.<br>
+      <span style="font-family:var(--mono);font-size:12px">e₄ = -(e₁+e₂+e₃) = -(-7.5-2.5+2.5) = 7.5</span><br>
+      e₄는 선택의 여지가 없습니다.<br><br>
+      파라미터가 늘수록 제약이 늘고 → 자유롭게 움직일 수 있는 잔차가 줄어듭니다.<br><br>
+
+      <strong>자유도 = 독립적으로 움직일 수 있는 잔차의 수 = n - (p+1) = n-p-1</strong><br>
+      SS_res를 이 숫자로 나누는 건 "독립적인 정보 1개당 오차가 얼마인가"로 단위를 맞추는 겁니다.<br>
+      100개 잔차 중 독립적인 건 97개뿐이므로 100이 아닌 97로 나눠야 오차를 제대로 추정합니다.
+    </p>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">그런데 (n-p-1) 보정이 정확하지 않은 이유</div>
+    <p>
+      이 보정은 "변수 1개 = 방정식 1개 소비"라고 가정합니다.<br>
+      하지만 현실에서는 세 가지 상황에서 부정확해집니다.<br><br>
+      • 변수들이 서로 상관이 높을 때(다중공선성) → 두 변수가 사실상 같은 정보인데 방정식 2개로 취급<br>
+      • 변수의 노이즈 강도를 반영 못 함 → 유용한 변수 1개와 쓸모없는 변수 1개의 패널티가 동일<br>
+      • n이 작을수록 → (n-p-1)이 작아져 보정 자체가 불안정해짐<br><br>
+      <strong>그래서 실무에서는</strong><br>
+      Adjusted R²는 "변수를 추가했을 때 방향이 맞는지" 빠르게 확인하는 참고 지표로만 씁니다.<br>
+      최종 판단은 <strong>Test R² 또는 Cross-Validation</strong>으로 합니다.<br>
+      새 데이터에서 실제 성능이 어떻게 나오는지 직접 측정하는 게 수식 보정보다 훨씬 신뢰할 수 있습니다.
+    </p>
+  </div>
+
+  <div class="label">회귀 지표 비교 요약</div>
+  <table>
+    <thead>
+      <tr><th>지표</th><th>단위</th><th>이상치 민감도</th><th>변수 수 패널티</th><th>제조에서 주 용도</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>MAE</strong></td><td class="pos">y와 같음</td><td class="pos">낮음</td><td class="muted">없음</td><td>현업에게 오차 설명</td></tr>
+      <tr><td><strong>RMSE</strong></td><td class="pos">y와 같음</td><td class="neg">높음</td><td class="muted">없음</td><td>큰 오차 발생 여부 감지</td></tr>
+      <tr><td><strong>R²</strong></td><td class="muted">없음 (0~1)</td><td class="warn-td">중간</td><td class="neg">없음 (부풀기 쉬움)</td><td>모델 전체 설명력</td></tr>
+      <tr><td><strong>Adj R²</strong></td><td class="muted">없음 (0~1)</td><td class="warn-td">중간</td><td class="pos">있음</td><td>모델 간 공정 비교</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 1</div>
+    <div class="q-text">"수율 예측 모델의 MAE = 1.8%, RMSE = 4.2%입니다. 이 차이가 의미하는 건 무엇인가요? 현업에 어떻게 설명하겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 03: 분류 지표 ① ── -->
+<div class="section-block" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">분류 지표 ① — Confusion Matrix 기반</span>
+    <span class="section-time">12 min</span>
+  </div>
+
+  <div class="note"><strong>공통 시나리오:</strong> 불량 감지 이진 분류. 1 = 불량, 0 = 정상. 전체 1000개 중 불량 20개 (불량률 2%)</div>
+
+  <div class="label">Confusion Matrix — 기본 구조</div>
+
+  <div class="cm-wrap">
+    <table class="cm-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th></th>
+          <th colspan="2" class="cm-axis-label">예측값</th>
+        </tr>
+        <tr>
+          <th></th>
+          <th></th>
+          <th class="cm-axis-label">불량 (1)</th>
+          <th class="cm-axis-label">정상 (0)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td rowspan="2" style="font-family:var(--mono);font-size:10px;color:var(--text3);writing-mode:vertical-rl;text-orientation:mixed;letter-spacing:.05em;padding:8px;text-transform:uppercase;border:1px solid var(--border)">실제값</td>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--text3);padding:8px 14px;border:1px solid var(--border);text-align:center">불량 (1)</td>
+          <td class="cm-tp">
+            <div class="cm-label" style="color:var(--green)">TP</div>
+            <div style="font-size:20px;margin:4px 0">15</div>
+            <div style="font-size:11px;color:var(--green)">진짜 불량을<br>불량으로 감지</div>
+          </td>
+          <td class="cm-fn">
+            <div class="cm-label" style="color:var(--red)">FN</div>
+            <div style="font-size:20px;margin:4px 0">5</div>
+            <div style="font-size:11px;color:var(--red)">불량인데<br>정상이라 놓침<br>→ <strong>Miss</strong></div>
+          </td>
+        </tr>
+        <tr>
+          <td style="font-family:var(--mono);font-size:11px;color:var(--text3);padding:8px 14px;border:1px solid var(--border);text-align:center">정상 (0)</td>
+          <td class="cm-fp">
+            <div class="cm-label" style="color:var(--amber)">FP</div>
+            <div style="font-size:20px;margin:4px 0">30</div>
+            <div style="font-size:11px;color:var(--amber)">정상인데<br>불량이라 오경보<br>→ <strong>False Alarm</strong></div>
+          </td>
+          <td class="cm-tn">
+            <div class="cm-label" style="color:var(--blue)">TN</div>
+            <div style="font-size:20px;margin:4px 0">950</div>
+            <div style="font-size:11px;color:var(--blue)">진짜 정상을<br>정상으로 분류</div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="label">각 지표 계산 — 위 예시 기준</div>
+
+  <div class="grid-4">
+    <div class="metric warn">
+      <div class="m-label">Accuracy</div>
+      <div class="m-val">96.5%</div>
+      <div class="m-desc">(TP+TN)/전체<br>= (15+950)/1000<br>전체 중 맞춘 비율</div>
+    </div>
+    <div class="metric info">
+      <div class="m-label">Precision</div>
+      <div class="m-val">33.3%</div>
+      <div class="m-desc">TP/(TP+FP)<br>= 15/(15+30)<br>불량이라 한 것 중<br>실제 불량 비율</div>
+    </div>
+    <div class="metric danger">
+      <div class="m-label">Recall</div>
+      <div class="m-val">75.0%</div>
+      <div class="m-desc">TP/(TP+FN)<br>= 15/(15+5)<br>실제 불량 중<br>잡아낸 비율</div>
+    </div>
+    <div class="metric">
+      <div class="m-label">F1 Score</div>
+      <div class="m-val">0.46</div>
+      <div class="m-desc">2×(P×R)/(P+R)<br>Precision과 Recall의<br>조화 평균</div>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">Accuracy 96.5%의 함정 — 불량 5개를 놓쳤다</div>
+    <p>
+      Accuracy 96.5%만 보면 "매우 좋은 모델"처럼 보입니다.<br>
+      그런데 실제 불량 20개 중 <strong>5개를 정상으로 분류(FN = 5)</strong>했습니다.<br><br>
+      불량품이 공정을 통과해서 고객에게 출하되거나 다음 공정으로 넘어갑니다.<br>
+      Accuracy는 "대부분 맞췄다"고 말하지만, 현업 관점에서는 치명적인 실패입니다.<br><br>
+      → <strong>불량 감지에서 Accuracy 하나만 보는 건 위험합니다.</strong>
+    </p>
+  </div>
+
+  <div class="label">Precision vs Recall — 무엇을 우선해야 하는가</div>
+
+  <div class="grid-2">
+    <div class="box box-amber">
+      <div class="box-title">Precision 우선 — 오경보 비용이 클 때</div>
+      <p style="font-size:12px;">
+        "불량이라고 판정한 것 중 실제 불량 비율"<br><br>
+        Precision이 낮으면 → 정상품을 불량으로 오판 → 라인 불필요한 정지, 양품 폐기 비용<br><br>
+        <strong>적합한 상황:</strong> 불량 판정 시 라인 정지 비용이 매우 클 때, 고비용 재검사가 필요할 때
+      </p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">Recall 우선 — 불량 누출 비용이 클 때 ← 제조 불량 감지</div>
+      <p style="font-size:12px;">
+        "실제 불량 중 잡아낸 비율"<br><br>
+        Recall이 낮으면 → 불량이 공정 통과 → 고객 클레임, 리콜, 안전 사고<br><br>
+        <strong>대부분의 불량 감지 시나리오는 Recall이 더 중요합니다.</strong><br>
+        FN(불량을 놓치는 것)의 비용이 FP(오경보)보다 훨씬 크기 때문입니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">F1 Score — Precision과 Recall의 균형</div>
+    <p>
+      F1 = 2 × (Precision × Recall) / (Precision + Recall)<br><br>
+      Precision과 Recall 중 하나가 극단적으로 낮으면 F1도 낮아집니다 (조화 평균의 특성).<br>
+      불균형이 심한 데이터에서 Accuracy 대신 F1을 주 지표로 쓰는 경우가 많습니다.<br><br>
+      단, F1도 한계가 있습니다 — Precision과 Recall의 <em>상대적 중요도</em>를 반영하지 않습니다.<br>
+      불량 감지처럼 Recall이 훨씬 중요하면 F1보다 Recall을 직접 기준으로 삼는 게 맞습니다.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 2</div>
+    <div class="q-text">"불량 감지 모델 A: Precision 80%, Recall 60% / 모델 B: Precision 50%, Recall 90% — 어떤 모델을 선택하겠습니까? 이유는?"</div>
+  </div>
+</div>
+
+<!-- ── 04: 분류 지표 ② ── -->
+<div class="section-block" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">분류 지표 ② — ROC-AUC / PR-AUC</span>
+    <span class="section-time">8 min</span>
+  </div>
+
+  <div class="note">Precision, Recall, F1은 분류 임계값(threshold)을 고정했을 때의 성능입니다. ROC-AUC와 PR-AUC는 <strong>모든 임계값에서의 성능을 종합</strong>합니다.</div>
+
+  <div class="label">임계값(Threshold)이란</div>
+  <div class="box">
+    <p>
+      분류 모델은 보통 "불량 확률"을 출력합니다. 예: P(불량) = 0.73<br>
+      이 확률이 임계값(예: 0.5) 이상이면 "불량"으로 판정합니다.<br><br>
+      임계값을 낮추면(예: 0.3) → 더 많이 불량으로 판정 → Recall↑, Precision↓<br>
+      임계값을 높이면(예: 0.7) → 더 적게 불량으로 판정 → Recall↓, Precision↑<br><br>
+      <strong>ROC 곡선과 PR 곡선은 임계값을 0~1로 바꿔가며 성능이 어떻게 변하는지 보여줍니다.</strong>
+    </p>
+  </div>
+
+  <div class="label">왜 Recall을 높이면 Precision이 떨어지는가 — 본질</div>
+
+  <div class="box box-amber">
+    <div class="box-title">임계값을 낮춘다 = 그물을 더 넓게 친다</div>
+    <p>
+      모델은 각 샘플에 대해 "불량일 확률"을 0~1 사이 숫자로 출력합니다.<br>
+      임계값 0.5 → "확률 50% 이상이면 불량 판정"<br>
+      임계값 0.3 → "확률 30% 이상이면 불량 판정"<br><br>
+      임계값을 낮추면 더 많은 샘플이 "불량 판정"을 받습니다.<br>
+      그 안에는 진짜 불량도 더 많이 포함되지만(Recall↑),<br>
+      애매한 정상 샘플도 더 많이 끌려들어옵니다(FP↑ → Precision↓).
+    </p>
+  </div>
+
+  <div class="label">수치로 보는 트레이드오프 — 전체 1000개, 실제 불량 20개</div>
+
+  <div style="overflow-x:auto;margin-bottom:12px">
+    <table style="min-width:620px">
+      <thead>
+        <tr>
+          <th>임계값</th>
+          <th>불량 판정 수</th>
+          <th>그 중 진짜 불량 (TP)</th>
+          <th>오경보 (FP)</th>
+          <th>놓친 불량 (FN)</th>
+          <th>Recall</th>
+          <th>Precision</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="muted">0.7 (높음)</td>
+          <td>12</td>
+          <td>10</td>
+          <td>2</td>
+          <td>10</td>
+          <td class="neg">10/20 = <strong>50%</strong></td>
+          <td class="pos">10/12 = <strong>83%</strong></td>
+        </tr>
+        <tr style="background:var(--surface2)">
+          <td class="muted">0.5 (기본)</td>
+          <td>25</td>
+          <td>15</td>
+          <td>10</td>
+          <td>5</td>
+          <td class="warn-td">15/20 = <strong>75%</strong></td>
+          <td class="warn-td">15/25 = <strong>60%</strong></td>
+        </tr>
+        <tr>
+          <td class="muted">0.3 (낮음)</td>
+          <td>69</td>
+          <td>19</td>
+          <td>50</td>
+          <td>1</td>
+          <td class="pos">19/20 = <strong>95%</strong></td>
+          <td class="neg">19/69 = <strong>28%</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">임계값 0.7 — "확실한 것만 불량 판정"</div>
+      <p style="font-size:12px;">
+        불량 20개 중 10개를 놓칩니다(FN=10).<br>
+        하지만 불량이라 판정한 12개 중 10개는 진짜 불량입니다(Precision 83%).<br><br>
+        <strong>문제:</strong> 놓친 불량 10개가 공정을 통과합니다.<br>
+        제조 불량 감지에서 이건 허용하기 어렵습니다.
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">임계값 0.3 — "조금이라도 의심스러우면 불량 판정"</div>
+      <p style="font-size:12px;">
+        불량 20개 중 19개를 잡습니다(Recall 95%).<br>
+        하지만 불량 판정 69개 중 50개는 사실 정상품입니다(FP=50).<br><br>
+        <strong>결과:</strong> 오경보가 많아 라인이 자주 멈추지만,<br>
+        불량 누출은 거의 없습니다. 제조 불량 감지에서는 이쪽이 대체로 낫습니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">핵심 — Precision과 Recall은 같은 파이를 나눠 갖는다</div>
+    <p>
+      임계값을 어떻게 설정하든 <strong>모델의 실제 판별 능력 자체는 바뀌지 않습니다.</strong><br>
+      임계값은 그 능력을 어떤 방향으로 쓸지 결정하는 것뿐입니다.<br><br>
+      Recall을 올리려면 → 더 많이 불량 판정 → FP가 늘어남 → Precision 하락<br>
+      Precision을 올리려면 → 더 적게 불량 판정 → FN이 늘어남 → Recall 하락<br><br>
+      <strong>둘 다 100%로 만들 수 있는 유일한 방법:</strong> 모델의 판별 능력 자체를 높이는 것.<br>
+      더 좋은 특성(Feature)을 쓰거나, 더 좋은 모델을 쓰는 것 — 임계값 조정으로는 불가능합니다.<br><br>
+      → ROC/PR 곡선이 이 "능력 자체"를 보여줍니다. 임계값이 달라져도 같은 곡선 위에 있습니다.
+    </p>
+  </div>
+
+  <div class="curve-row">
+    <!-- ROC 곡선 -->
+    <div>
+      <div class="label">ROC Curve &amp; AUC</div>
+      <div class="box">
+        <svg width="100%" viewBox="0 0 260 200" style="display:block;margin-bottom:8px">
+          <defs>
+            <marker id="arrowX" viewBox="0 0 10 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 0L10 4L0 8" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="arrowY" viewBox="0 0 8 10" refX="4" refY="0" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 10L4 0L8 10" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+          <!-- 축 -->
+          <line x1="40" y1="160" x2="240" y2="160" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrowX)"/>
+          <line x1="40" y1="160" x2="40" y2="20" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrowY)"/>
+          <!-- 축 레이블 -->
+          <text x="140" y="182" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">FPR (False Positive Rate)</text>
+          <text x="14" y="90" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" transform="rotate(-90,14,90)">TPR (Recall)</text>
+          <!-- 랜덤 기준선 -->
+          <line x1="40" y1="160" x2="230" y2="30" stroke="#e2e0d8" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="180" y="105" font-family="IBM Plex Mono,monospace" font-size="9" fill="#ccc9be">Random</text>
+          <!-- 좋은 ROC 곡선 -->
+          <path d="M40,160 C60,80 100,35 160,30 S210,32 230,30" fill="none" stroke="#1a4f8a" stroke-width="2"/>
+          <!-- AUC 영역 -->
+          <path d="M40,160 C60,80 100,35 160,30 S210,32 230,30 L230,160 Z" fill="#1a4f8a" fill-opacity="0.08"/>
+          <!-- AUC 레이블 -->
+          <text x="140" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#1a4f8a" font-weight="500">AUC = 0.93</text>
+          <!-- 축 눈금 -->
+          <text x="40" y="174" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">0</text>
+          <text x="230" y="174" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">1</text>
+          <text x="28" y="163" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">0</text>
+          <text x="28" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">1</text>
+        </svg>
+        <div style="font-size:12px;color:var(--text2);line-height:1.65">
+          <strong>X축 — FPR (오경보율)</strong><br>
+          FPR = FP / (FP + TN)<br>
+          "정상 샘플 중 불량으로 잘못 판정한 비율"<br>
+          X가 커진다 = 오경보가 늘어난다<br><br>
+          <strong>Y축 — TPR = Recall (감지율)</strong><br>
+          TPR = TP / (TP + FN)<br>
+          "실제 불량 중 잡아낸 비율"<br>
+          Y가 커진다 = 불량을 더 많이 잡는다<br><br>
+          임계값을 낮출수록 → X도↑, Y도↑ (오른쪽 위로 이동)<br>
+          임계값을 높일수록 → X도↓, Y도↓ (왼쪽 아래로 이동)<br><br>
+          <strong>이상적 모델:</strong> 왼쪽 위 꼭짓점(FPR=0, Recall=1)<br>
+          오경보 없이 불량 100% 감지<br><br>
+          <strong>랜덤 기준선 = 0.5 — 왜?</strong><br>
+          랜덤 모델은 데이터를 보지 않고 확률을 뽑습니다.<br>
+          임계값을 낮추면 불량도 더 잡지만(TPR↑),<br>
+          정상도 똑같은 비율로 오경보가 납니다(FPR↑).<br>
+          → TPR과 FPR이 항상 같이 움직임<br>
+          → 곡선이 대각선(y=x) 위에 찍힘<br>
+          → 대각선 아래 면적 = 0.5<br><br>
+          단, 이는 데이터가 충분할 때의 기댓값입니다.<br>
+          불량 샘플이 적으면 랜덤 모델도 AUC가 0.5에서 벗어날 수 있습니다(큰 수의 법칙).
+        </div>
+      </div>
+    </div>
+
+    <!-- PR 곡선 -->
+    <div>
+      <div class="label">PR Curve &amp; PR-AUC</div>
+      <div class="box">
+        <svg width="100%" viewBox="0 0 260 200" style="display:block;margin-bottom:8px">
+          <defs>
+            <marker id="arrowX2" viewBox="0 0 10 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 0L10 4L0 8" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+            <marker id="arrowY2" viewBox="0 0 8 10" refX="4" refY="0" markerWidth="5" markerHeight="5" orient="auto">
+              <path d="M0 10L4 0L8 10" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+            </marker>
+          </defs>
+          <!-- 축 -->
+          <line x1="40" y1="160" x2="240" y2="160" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrowX2)"/>
+          <line x1="40" y1="160" x2="40" y2="20" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrowY2)"/>
+          <!-- 축 레이블 -->
+          <text x="140" y="182" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">Recall</text>
+          <text x="14" y="90" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" transform="rotate(-90,14,90)">Precision</text>
+          <!-- 기준선 (불량 비율) -->
+          <line x1="40" y1="152" x2="230" y2="152" stroke="#e2e0d8" stroke-width="1" stroke-dasharray="4,3"/>
+          <text x="200" y="147" font-family="IBM Plex Mono,monospace" font-size="8" fill="#ccc9be">baseline=0.02</text>
+          <!-- PR 곡선 -->
+          <path d="M40,32 C70,34 110,50 155,90 S200,140 230,152" fill="none" stroke="#8a1a2a" stroke-width="2"/>
+          <!-- PR AUC 영역 -->
+          <path d="M40,32 C70,34 110,50 155,90 S200,140 230,152 L230,160 L40,160 Z" fill="#8a1a2a" fill-opacity="0.07"/>
+          <!-- PR-AUC 레이블 -->
+          <text x="110" y="110" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="11" fill="#8a1a1a" font-weight="500">PR-AUC = 0.61</text>
+          <!-- 축 눈금 -->
+          <text x="40" y="174" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">0</text>
+          <text x="230" y="174" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">1</text>
+          <text x="28" y="163" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">0</text>
+          <text x="28" y="33" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="8" fill="#9b9890">1</text>
+        </svg>
+        <div style="font-size:12px;color:var(--text2);line-height:1.65">
+          <strong>X축 — Recall (감지율)</strong><br>
+          "실제 불량 중 잡아낸 비율"<br>
+          X가 커진다 = 불량을 더 많이 잡는다<br><br>
+          <strong>Y축 — Precision (정밀도)</strong><br>
+          "불량이라 판정한 것 중 실제 불량 비율"<br>
+          Y가 커진다 = 오경보가 줄어든다<br><br>
+          임계값을 낮출수록 → X↑(더 잡음), Y↓(오경보 증가)<br>
+          임계값을 높일수록 → X↓(더 놓침), Y↑(오경보 감소)<br><br>
+          <strong>이상적 모델:</strong> 오른쪽 위 꼭짓점(Recall=1, Precision=1)<br>
+          오경보 없이 불량 100% 감지<br><br>
+          <strong>랜덤 기준선 = 불량 비율(2%) — 왜 0.5가 아닌가</strong><br>
+          랜덤 모델은 Recall과 무관하게<br>
+          Precision = 불량 비율에 수렴합니다.<br>
+          불량 판정을 아무리 많이 내려도,<br>
+          그 안에서 진짜 불량 비율은 2%뿐이기 때문입니다.<br>
+          → 곡선이 y=0.02 수평선에 붙어버림<br><br>
+          ROC와 달리 PR-AUC 랜덤 기준선은<br>
+          데이터마다 다릅니다 (= 불량 비율).
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">ROC-AUC의 착시 — 불균형 데이터에서 왜 과대평가되는가</div>
+    <p>
+      핵심은 <strong>FPR 분모에 TN이 들어간다</strong>는 겁니다.<br><br>
+      <span style="font-family:var(--mono);font-size:12px">FPR = FP / (FP + TN)</span><br>
+      <span style="font-family:var(--mono);font-size:12px">TPR = TP / (TP + FN)</span><br><br>
+      정상 9980개, 불량 20개인 데이터에서 오경보(FP)가 100개 나도:<br>
+      FPR = 100 / (100 + 9880) = <strong>1%</strong><br><br>
+      TN이 크면 FPR이 작게 유지됩니다. X축이 거의 움직이지 않습니다.<br>
+      곡선이 왼쪽에 붙어 있어서 AUC가 높아 보입니다.<br><br>
+      TPR은 분모가 실제 불량 수(20개)라 TN 크기와 무관합니다.<br>
+      결국 <strong>TN이 크면 FPR만 낮게 유지</strong>되고 → X축이 잘 안 움직이고 → AUC가 실제보다 높게 나옵니다.<br><br>
+      불량을 전혀 못 잡는 나쁜 모델도 TN이 크면 ROC-AUC가 높게 나올 수 있습니다.<br><br>
+      <strong>PR-AUC가 더 엄격한 이유:</strong><br>
+      <span style="font-family:var(--mono);font-size:12px">Precision = TP / (TP + FP)</span><br>
+      <span style="font-family:var(--mono);font-size:12px">Recall &nbsp;&nbsp;= TP / (TP + FN)</span><br><br>
+      Precision 분모는 TP + FP입니다. TN이 분모에 직접 들어가지 않습니다.<br>
+      Recall 분모도 TP + FN입니다. 마찬가지로 TN과 무관합니다.<br><br>
+      Negative가 아무리 많아도 TN이 PR 곡선 계산에 직접 개입하지 않습니다.<br>
+      모델이 FP를 얼마나 내는지, FN을 얼마나 내는지만 반영됩니다.<br><br>
+      ROC-AUC와의 구조적 차이가 바로 이겁니다.<br>
+      FPR = FP / (FP + <strong>TN</strong>) — TN이 분모에 직접 들어갑니다.<br>
+      Negative가 많으면 모델 성능과 무관하게 FPR이 자동으로 작아집니다.<br>
+      모델이 아무리 FP를 많이 내도, TN이 크면 FPR이 작게 유지되어 X축이 안 움직입니다.<br><br>
+      <strong>요약:</strong> ROC-AUC는 TN이 지표 계산에 직접 개입해서 Negative가 많을수록 구조적으로 과대평가됩니다.<br>
+      PR-AUC는 TN이 계산에 개입하지 않아 그 편향이 없습니다.
+    </p>
+  </div>
+
+  <div class="label">언제 어떤 지표를 쓰는가</div>
+  <table>
+    <thead>
+      <tr><th>상황</th><th>추천 지표</th><th>이유</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>균형 잡힌 데이터 (불량률 30~70%)</td><td class="pos">ROC-AUC, F1</td><td>클래스 간 비율이 비슷해 신뢰 가능</td></tr>
+      <tr><td>불균형 데이터 (불량률 1~5%) ← 제조</td><td class="neg">PR-AUC, Recall</td><td>ROC-AUC가 과대평가됨. PR-AUC가 실제 성능 반영</td></tr>
+      <tr><td>불량 누출 비용이 훨씬 클 때</td><td class="neg">Recall 직접 기준</td><td>FN 최소화가 목표. Recall 90% 이상 등 구체적 기준</td></tr>
+      <tr><td>임계값 최적화가 필요할 때</td><td class="warn-td">PR 곡선 시각화</td><td>비용 구조에 맞는 임계값 선택</td></tr>
+    </tbody>
+  </table>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 3</div>
+    <div class="q-text">"불량 감지 모델 ROC-AUC = 0.95, PR-AUC = 0.38입니다. 이 모델을 믿을 수 있습니까? 두 숫자의 차이가 의미하는 건 무엇인가요?"</div>
+  </div>
+</div>
+
+<!-- ── 04+: 목표 지표 달성 가능 여부 판단 ── -->
+<div class="section-block" id="s4b">
+  <div class="section-header">
+    <span class="section-num">04+</span>
+    <span class="section-title">현업이 목표 지표를 요구할 때 — 달성 가능 여부 판단</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note">
+    달성 가능 여부 판단은 두 단계로 나뉩니다.<br>
+    <strong>Stage 1</strong> — 애초에 AI 모델로 해결 가능한 문제인가 (모델 개발 전)<br>
+    <strong>Stage 2</strong> — 요구하는 지표 수준이 현실적인가 (모델 개발 후)
+  </div>
+
+  <!-- Stage 1 -->
+  <div class="label">Stage 1 — AI 모델 개발이 가능한 상황인가 (모델 개발 전)</div>
+
+  <div class="box box-amber">
+    <div class="box-title">이 단계는 성과지표의 영역이 아닙니다</div>
+    <p>
+      "Recall 95% 달성 가능한가?"를 묻기 전에, 더 근본적인 질문이 있습니다.<br>
+      <strong>"불량과 정상이 데이터로 구분 가능한 문제인가?"</strong><br><br>
+      아무리 좋은 모델을 써도, 불량과 정상의 특성값 분포가 완전히 겹쳐 있으면 어떤 지표 목표도 달성할 수 없습니다.<br>
+      이 판단은 모델을 만들기 전, 데이터를 탐색하는 단계에서 해야 합니다.<br><br>
+      <strong>모델 개발 전 확인 방법:</strong><br>
+      • 핵심 특성 1~2개를 골라 불량/정상 샘플 분포를 같은 축에 시각화 — 겹치는 정도를 직접 봅니다<br>
+      • 특성 하나씩 불량/정상의 평균과 분산을 비교 — 평균 차이가 크고 분산이 작으면 구분 가능성이 높습니다<br>
+      • 도메인 전문가에게 물어봅니다 — "이 센서값만 보고 사람이 불량인지 판단할 수 있는가?"<br>
+      사람도 구분 못 하는 데이터라면 모델도 구분하기 어렵습니다.<br><br>
+      이 탐색 과정(EDA)은 추후 별도 세션에서 다룹니다.<br>
+      지금 단계에서는 <strong>"모델 개발 전 이 검토가 반드시 선행돼야 한다"</strong>는 것만 기억하면 됩니다.
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- Stage 2 -->
+  <div class="label">Stage 2 — 요구하는 지표 수준이 현실적인가 (모델 개발 후)</div>
+
+  <div class="note">
+    Stage 1을 통과해서 모델을 만들었습니다.<br>
+    이제 "Recall 95% 달성해주세요"라는 요구에 근거 있게 답할 수 있어야 합니다.
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">PR 곡선으로 목표 달성 가능 여부를 읽는 방법</div>
+    <p>
+      PR 곡선은 임계값을 바꿔가며 Recall과 Precision이 어떻게 변하는지 보여줍니다.<br>
+      Recall을 높이면 Precision이 얼마나 빠르게 떨어지는지가 곡선의 모양에 나타납니다.<br><br>
+      <strong>곡선이 완만하게 내려온다</strong> → Recall을 올려도 Precision이 크게 안 떨어짐 → 목표 달성 가능성 높음<br>
+      <strong>곡선이 급격히 내려온다</strong> → Recall을 조금만 올려도 Precision이 급락 → 불량/정상 구분이 어려운 상황
+    </p>
+  </div>
+
+  <div style="overflow-x:auto;margin-bottom:12px">
+    <svg width="100%" viewBox="0 0 640 260" style="display:block">
+      <defs>
+        <marker id="arrFeas" viewBox="0 0 10 8" refX="8" refY="4" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 0L10 4L0 8" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+        <marker id="arrFeasY" viewBox="0 0 8 10" refX="4" refY="0" markerWidth="5" markerHeight="5" orient="auto">
+          <path d="M0 10L4 0L8 10" fill="none" stroke="#9b9890" stroke-width="1.5" stroke-linecap="round"/>
+        </marker>
+      </defs>
+
+      <!-- 왼쪽: 달성 가능 -->
+      <text x="130" y="18" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a5a2a">달성 가능</text>
+      <text x="130" y="32" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9b9890">Recall↑ 해도 Precision 완만하게 하락</text>
+      <line x1="40" y1="210" x2="230" y2="210" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrFeas)"/>
+      <line x1="40" y1="210" x2="40" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrFeasY)"/>
+      <text x="130" y="225" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">Recall</text>
+      <text x="16" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" transform="rotate(-90,16,130)">Precision</text>
+      <!-- 완만한 PR 곡선 -->
+      <path d="M40,60 C80,63 130,75 175,105 S210,165 220,208" fill="none" stroke="#1a5a2a" stroke-width="2"/>
+      <!-- Recall=0.9 수직선 -->
+      <line x1="184" y1="210" x2="184" y2="135" stroke="#1a5a2a" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="184" y="222" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">0.9</text>
+      <line x1="40" y1="135" x2="184" y2="135" stroke="#1a5a2a" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="36" y="138" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">0.6</text>
+      <circle cx="184" cy="135" r="4" fill="#1a5a2a"/>
+      <text x="150" y="88" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">곡선이 완만</text>
+      <text x="193" y="128" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">Recall 90%→</text>
+      <text x="193" y="140" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">Precision 60%</text>
+      <text x="193" y="152" font-family="IBM Plex Sans KR,sans-serif" font-size="10" fill="#1a5a2a">운영 가능</text>
+
+      <!-- 오른쪽: 달성 어려움 -->
+      <text x="450" y="18" text-anchor="middle" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#8a1a1a">달성 어려움</text>
+      <text x="450" y="32" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9b9890">Recall↑ 하면 Precision 급격히 하락</text>
+      <line x1="360" y1="210" x2="550" y2="210" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrFeas)"/>
+      <line x1="360" y1="210" x2="360" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arrFeasY)"/>
+      <text x="450" y="225" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">Recall</text>
+      <text x="336" y="130" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" transform="rotate(-90,336,130)">Precision</text>
+      <!-- 급격한 PR 곡선 -->
+      <path d="M360,65 C368,90 385,145 415,175 S470,200 540,208" fill="none" stroke="#8a1a1a" stroke-width="2"/>
+      <!-- Recall=0.9 수직선 -->
+      <line x1="504" y1="210" x2="504" y2="193" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="504" y="222" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">0.9</text>
+      <line x1="360" y1="193" x2="504" y2="193" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="4,3"/>
+      <text x="356" y="196" text-anchor="end" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">0.06</text>
+      <circle cx="504" cy="193" r="4" fill="#8a1a1a"/>
+      <text x="370" y="88" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">초반부터 급락</text>
+      <text x="420" y="173" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">Recall 90%→</text>
+      <text x="420" y="185" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">Precision 6%</text>
+      <text x="420" y="160" font-family="IBM Plex Sans KR,sans-serif" font-size="10" fill="#8a1a1a">오경보 너무 많음</text>
+    </svg>
+  </div>
+
+  <div class="note">
+    PR 곡선에서 목표 Recall 지점을 찍었을 때 Precision이 얼마인지 읽으면 됩니다.<br>
+    Precision이 너무 낮으면 → 기술적으로 가능해도 운영 불가능.<br>
+    이 판단을 현업과 함께 해야 합니다 — "이 수준에서 오경보가 N배 늘어납니다. 감수하시겠습니까?"
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">불량 샘플이 충분한가 — 샘플 수도 상한을 결정한다</div>
+    <p>
+      불량 샘플이 20개밖에 없는데 Recall 95%를 요구하면, 모델이 그 20개의 패턴을 일반화하기 어렵습니다.<br><br>
+      • 불량 샘플 100개 미만 → 높은 Recall 목표는 불안정. 데이터 추가 수집이 선행돼야 합니다<br>
+      • SMOTE 등 오버샘플링은 보완책이지 근본 해결책이 아닙니다<br><br>
+      <strong>현업에게 말해야 할 것:</strong> "불량 샘플이 N개입니다. 목표 수준을 달성하려면 최소 M개가 필요합니다."
+    </p>
+  </div>
+
+  <div class="label">현업 요구에 대응하는 3단계 답변 구조</div>
+
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Step 1 — 현재 모델의 PR 곡선을 먼저 보여준다</div>
+    <p style="font-size:12px;">
+      "현재 모델에서 Recall을 90%로 설정하면 Precision은 X%입니다."<br>
+      숫자를 먼저 제시해야 논의가 시작됩니다. 가능/불가능 판단 전에 현황을 공유합니다.
+    </p>
+  </div>
+  <div class="box box-amber" style="margin-bottom:10px">
+    <div class="box-title">Step 2 — 목표 달성을 막는 제약 조건을 명시한다</div>
+    <p style="font-size:12px;">
+      "현재 불량 샘플이 N개라 Recall 95%에서 Precision이 X% 이하로 떨어집니다."<br>
+      "불량/정상 특성값 분포가 겹치는 구간이 있어 이 이상은 데이터 수준의 한계입니다."<br>
+      — 모델의 문제가 아니라 <strong>데이터 또는 문제 자체의 구조적 한계</strong>임을 명확히 합니다.
+    </p>
+  </div>
+  <div class="box box-green">
+    <div class="box-title">Step 3 — 달성 가능한 조건 또는 대안을 제시한다</div>
+    <p style="font-size:12px;">
+      "불량 샘플을 N개 이상 추가 수집하면 목표 수준에 근접할 수 있습니다."<br>
+      "Recall 95% 대신 90%로 낮추면 Precision을 X%로 유지할 수 있습니다."<br>
+      "2단계 검사(1차 모델 → 의심 샘플만 2차 정밀 검사) 구조로 목표를 충족할 수 있습니다."<br>
+      — "안 된다"로 끝내는 게 아니라 <strong>무엇이 바뀌면 가능한지</strong>를 함께 제시합니다.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 4</div>
+    <div class="q-text">"현업 담당자가 'Recall 95% 이상은 돼야 현장에 쓸 수 있다'고 합니다. 현재 모델은 Recall 78%, PR-AUC 0.41입니다. 어떻게 대응하겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 05: 지표의 한계 + 현업 비교 ── -->
+<div class="section-block" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">지표의 한계 & 현업 기준과의 비교</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="label">지표가 좋아도 모델이 틀리는 3가지 경우</div>
+
+  <ul class="checklist">
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body"><strong>① 구간 편향 — 중요한 구간에서만 체계적으로 틀린다</strong>
+        <div class="sub">전체 R² 0.93이지만 수율 70% 이하 구간(위험 영역)에서만 RMSE가 3배 높을 수 있습니다. 전체 평균 지표는 정상 구간이 대부분이어서 위험 구간의 오차를 희석합니다. → 구간별 RMSE, 구간별 Recall을 따로 측정해야 합니다</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body"><strong>② 공정 변화 — 지표는 학습 데이터 기준</strong>
+        <div class="sub">R² 0.91은 "학습 데이터와 비슷한 조건"에서의 성능입니다. 설비 교체, 원자재 변경, 계절 변화 후에는 같은 모델이 전혀 다른 성능을 냅니다. → 정기적으로 성능 재측정 필요. 지표가 갑자기 떨어지면 공정 변화 신호로 읽어야 합니다</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body"><strong>③ 데이터 누수 — 지표가 좋으면 오히려 의심해야 한다</strong>
+        <div class="sub">불량 발생 후에만 측정되는 변수가 특성으로 들어가 있으면, 모델이 "정답을 미리 아는 것"처럼 학습됩니다. AUC 0.99, Recall 98%가 나와도 실제로는 쓸 수 없는 모델. Train R²이 0.99인데 Test R²이 0.72이면 누수 또는 과적합을 강하게 의심해야 합니다</div>
+      </div>
+    </li>
+  </ul>
+
+  <hr>
+
+  <div class="label">현업 기준과의 비교 — Cpk / Ppk vs ML 지표</div>
+
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">공정 능력 지표 — Cpk / Ppk</div>
+      <p style="font-size:12px;">
+        <strong>질문: "공정이 스펙 범위 안에 드는가?"</strong><br><br>
+        Cpk = min(USL-μ, μ-LSL) / (3σ)<br>
+        → 공정 중심이 스펙 중앙에서 얼마나 벗어났는지 포함<br><br>
+        Cpk ≥ 1.33 → 일반적으로 양호<br>
+        Cpk &lt; 1.0 → 스펙 이탈 발생 가능<br><br>
+        Ppk는 단기 변동(σ_within) 대신 전체 변동(σ_overall) 사용 → 더 보수적
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">ML 성과 지표 — RMSE / Recall</div>
+      <p style="font-size:12px;">
+        <strong>질문: "모델이 실제값을 얼마나 잘 예측하는가?"</strong><br><br>
+        RMSE = 예측값과 실제값의 평균 오차 크기<br>
+        Recall = 불량을 얼마나 빠짐없이 잡는가<br><br>
+        "모델 성능이 좋다" ≠ "공정이 안정적이다"<br>
+        "공정 Cpk가 높다" ≠ "ML 모델이 필요 없다"<br><br>
+        두 기준은 <strong>다른 질문에 답하는 것</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">ML 지표가 좋아도 Cpk/Ppk가 안 좋을 수 있다 — 왜?</div>
+    <p>
+      ML 모델이 y를 잘 맞췄다고 해서 Cpk/Ppk가 자동으로 좋아지지 않습니다.<br><br>
+      이유는 간단합니다. <strong>ML 모델이 맞추는 y가 Cpk/Ppk와 연결되지 않는 y일 수 있기 때문입니다.</strong><br><br>
+      예를 들어 모델이 "수율 예측 RMSE 1.2%"를 달성했어도 — 그 수율이 스펙 한계(USL/LSL)와 어떤 관계인지는 별개의 문제입니다.<br>
+      모델이 평균 구간에서는 잘 맞추지만, 스펙 이탈이 발생하는 극단 구간에서 체계적으로 틀린다면 Cpk는 여전히 낮습니다.
+    </p>
+  </div>
+
+  <div class="box box-green">
+    <div class="box-title">해결책 — y를 현장 지표와 연결되도록 설정해야 한다</div>
+    <p>
+      ML 지표(RMSE, Recall)와 현장 지표(Cpk, Ppk)가 함께 좋아지려면,<br>
+      <strong>애초에 y를 잘 설정하는 것이 핵심입니다.</strong><br><br>
+      <strong>잘못된 y 설정:</strong> "수율 평균값 예측"<br>
+      → RMSE가 낮아도 스펙 이탈 여부와 무관 → Cpk 개선 안 됨<br><br>
+      <strong>올바른 y 설정:</strong> "스펙 이탈 여부 예측" 또는 "스펙 대비 편차 예측"<br>
+      → 모델이 잘 맞출수록 스펙 이탈이 줄어듦 → Cpk/Ppk 개선과 직결<br><br>
+      즉 y를 설정할 때 "이 y를 잘 맞추면 현장에서 어떤 변화가 생기는가?"를 먼저 생각해야 합니다.<br>
+      ML 지표가 좋은 모델을 만드는 것보다, <strong>현장 지표와 연결되는 y를 정의하는 것이 더 앞선 문제</strong>입니다.
+    </p>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">현업에게 지표를 설명할 때 번역이 필요한 이유</div>
+    <p>
+      "RMSE 1.8%입니다" → 현업: "그게 좋은 건가요?"<br>
+      "Cpk 기준으로 ±3σ = ±2.4%이고, 모델 오차가 그 범위 안에 있습니다" → 이해 가능<br><br>
+      "Recall 85%입니다" → 현업: "그게 무슨 뜻이죠?"<br>
+      "불량 100개 중 85개는 잡고, 15개는 통과시킵니다" → 이해 가능<br><br>
+      <strong>지표 숫자보다 그 숫자가 현업 비용 구조에서 어떤 의미인지 연결하는 것이 핵심입니다.</strong>
+    </p>
+  </div>
+</div>
+
+<!-- ── 06: 해석 연습 ── -->
+<div class="section-block" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">해석 연습 — 숫자만 보고 판단하는 함정</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="note">아래 시나리오 각각에 대해 "이 모델 써도 됩니까?"를 판단해보세요</div>
+
+  <div class="scenario">
+    <div class="sc-q">시나리오 A — 수율 예측 회귀 모델<br>
+      <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">Train R² = 0.97 / Test R² = 0.71 / MAE = 1.9% / RMSE = 5.1%</span>
+    </div>
+    <div class="sc-why">MAE(1.9%)와 RMSE(5.1%) 격차가 큽니다 — 간헐적으로 매우 큰 오차가 발생합니다. Train/Test R² 차이(0.26)도 큽니다 — 과적합 또는 누수를 강하게 의심해야 합니다. 지표 자체보다 이 차이의 원인을 먼저 파악해야 합니다.</div>
+    <span class="sc-ans red">사용 보류 — Train/Test 차이 원인 확인 필요</span>
+  </div>
+
+  <div class="scenario">
+    <div class="sc-q">시나리오 B — 불량 감지 분류 모델<br>
+      <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">Accuracy = 98.2% / Precision = 72% / Recall = 51% / ROC-AUC = 0.94 / PR-AUC = 0.43</span>
+    </div>
+    <div class="sc-why">Recall 51% — 실제 불량의 절반가량을 놓칩니다. ROC-AUC(0.94)는 좋아 보이지만 불균형 데이터에서 과대평가된 지표입니다. PR-AUC(0.43)가 실제 성능. 불량 누출 비용이 크다면 이 모델은 현장에 적용하기 어렵습니다.</div>
+    <span class="sc-ans red">사용 불가 — Recall이 허용 기준 미달</span>
+  </div>
+
+  <div class="scenario">
+    <div class="sc-q">시나리오 C — 불량 감지 분류 모델 (개선 후)<br>
+      <span style="font-family:var(--mono);font-size:12px;color:var(--text3)">Accuracy = 95.1% / Precision = 48% / Recall = 92% / PR-AUC = 0.71</span>
+    </div>
+    <div class="sc-why">Accuracy가 B보다 낮아졌지만 Recall이 92%로 올라갔습니다. 불량의 92%를 잡습니다. Precision(48%)이 낮아 오경보가 늘었지만 — 불량 누출 비용과 오경보 비용 중 어느 쪽이 더 큰지에 따라 판단이 달라집니다. 대부분의 불량 감지 상황에서는 C가 B보다 훨씬 낫습니다.</div>
+    <span class="sc-ans green">조건부 사용 가능 — 오경보 비용 감수 여부 현업 확인</span>
+  </div>
+
+  <div class="box box-blue" style="margin-top:16px">
+    <div class="box-title">이번 주 전체를 관통하는 메시지</div>
+    <p>
+      지표는 모델을 판단하는 <strong>시작점</strong>이지 <strong>결론</strong>이 아닙니다.<br><br>
+      좋은 지표를 봤을 때 물어야 할 것들:<br>
+      → "어느 구간에서 잘 맞는가? 중요한 구간에서는?"<br>
+      → "Train과 Test 성능 차이는 얼마인가?"<br>
+      → "불균형 데이터라면 AUC보다 PR-AUC를 봤는가?"<br>
+      → "현업 비용 구조에서 이 Recall/Precision 수준이 허용 가능한가?"<br><br>
+      지표 숫자를 현장 언어로 번역할 수 있어야 합니다.
+    </p>
+  </div>
+</div>
+
+<!-- ── 07: 사전질문 Q&A ── -->
+<div class="section-block" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">사전질문 Q&A</span>
+    <span class="section-time"></span>
+  </div>
+
+  <!-- Q1 -->
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q1. 지표 해석 순서 — AUROC → PR-AUC → Recall → Train/Test 차이 순서가 실무에서 유효한가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      순차적으로 보는 것도 좋지만, 복합적으로 함께 고려하는 게 더 맞습니다.<br><br>
+      AUROC와 PR-AUC는 둘 다 임계값을 0부터 1까지 바꿔가면서 X축과 Y축이 어떻게 변하는지를 보는 지표입니다. 결국 모델의 전반적인 판별 능력을 보는 거라 두 지표를 함께 본 뒤, 임계값을 고정해서 Recall/Precision을 확인하는 흐름이 자연스럽습니다.<br><br>
+      과적합/누수 여부는 마지막에 보되, 구체적인 기준을 갖는 게 중요합니다.<br>
+      <strong>Train/Test AUC 차이가 0.1 이상이면</strong> 과적합이나 누수를 의심하는 것이 실무에서 쓸 수 있는 기준입니다. "설명이 안 될 만큼 성능이 좋다"는 주관적 판단보다 이 숫자 차이를 먼저 봐야 합니다.
+    </p>
+  </div>
+
+  <!-- Q2 -->
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q2. 데이터를 추가해도 성능이 안 올라갈 때 — 데이터 문제인지, 모델 문제인지 어떻게 구분하는가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      우선 "X와 y가 어떤 연관이 있는가"를 먼저 봐야 합니다.<br><br>
+      데이터를 추가하기 전에, 기존 모델이 어떤 데이터를 못 맞추는지를 먼저 분석합니다. 회귀는 극단값(extreme)을 못 맞추는 경향, 분류는 소수 범주를 못 맞추는 경향이 있습니다. 어떤 공정 조건에서 집중적으로 틀리는지, 특정 시간대나 설비에서 편향이 있는지를 보면 어떤 데이터가 부족한지가 보입니다.<br><br>
+      y를 잘 설명하는 X를 가진 데이터를 추가하는 게 가장 좋습니다. 다만 제조 현장에서는 불량이 발생해야 불량 데이터가 생기기 때문에, 능동적으로 선택하기 어려운 경우가 많습니다. 이때는 기존 특성 중 y와 관계가 있는 변수를 발굴하는 방향을 먼저 시도합니다. 도메인 전문가와 함께 "이 불량이 발생하기 전에 어떤 공정 조건이 달랐는가"를 찾는 게 실질적인 첫 단계입니다.<br><br>
+      모델 문제인지를 보려면, 모델 자체의 구조적 한계 때문인지 아니면 HPO 같은 조정 가능한 요소 때문인지를 먼저 구분해야 합니다. 모델 고유의 구조적 한계라면 HPO로는 해결이 안 되기 때문에, 데이터 구조를 바꾸거나 모델 자체를 교체해야 합니다.
+    </p>
+  </div>
+
+  <!-- Q3 -->
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q3. PR 곡선 기준 최적 임계값을 찾았는데 Precision이 너무 낮아 운영 불가능하다면?</div>
+    <p style="font-size:13px;margin-top:8px">
+      임계값을 결정할 때는 라이브러리에서 바로 predict를 쓰는 게 아니라, predict_proba 같은 메소드로 확률을 뽑아서 직접 임계값을 조정해야 합니다.<br><br>
+      그런데 임계값 조정보다 우선순위는 모델 자체의 판별 능력입니다. 정상은 불량일 확률이 0에 가깝고, 불량은 불량일 확률이 1에 가깝도록 출력하는 능력을 높이는 것이 먼저입니다.<br><br>
+      그 능력을 높였음에도 Precision이 너무 낮아 운영이 불가능하다면 — 이건 모델이 FP를 너무 많이 만들어낸다는 뜻입니다. 데이터 관점의 대응 방향은 두 가지입니다.<br><br>
+      첫째, FP가 많이 발생하는 구간을 분석합니다. 어떤 정상 샘플이 불량으로 오판되는지를 보면, 불량과 경계가 모호한 정상 케이스들이 있을 겁니다. 이 케이스들의 레이블을 재검토하거나, 이 구간을 더 잘 구분할 수 있는 특성을 추가로 수집합니다.<br><br>
+      둘째, 2단계 구조를 고려합니다. 1차 모델은 Recall 우선으로 넓게 잡고, 1차에서 불량 판정된 것만 2차 모델에서 정밀 검사하는 방식입니다. Precision과 Recall을 단일 모델로 동시에 만족하기 어려울 때 현장에서 실제로 쓰는 구조입니다.
+    </p>
+  </div>
+
+  <!-- Q4 -->
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q4. ROC-AUC 0.99 같은 높은 성능이 나오면 반드시 누수인가? 누수 예방과 실무 패턴은?</div>
+    <p style="font-size:13px;margin-top:8px">
+      ROC-AUC 0.99가 반드시 누수는 아닙니다. 학습 데이터와 테스트 데이터의 분포 차이가 크지 않으면 충분히 발생할 수 있습니다.<br><br>
+      가장 명확한 기준은 <strong>Train/Test 성능 차이</strong>입니다. Train AUC 0.99, Test AUC 0.97이면 문제없습니다. Train AUC 0.99, Test AUC 0.71이면 누수 또는 과적합을 강하게 의심해야 합니다.<br><br>
+      누수를 예방하려면 각 특성이 무엇을 의미하는지를 봐야 합니다. 핵심은 그 특성이 <strong>타겟값이 산출되기 전에 반드시 수집 가능한 값인가</strong>입니다. 추론 시점에 알 수 없는 정보가 학습에 포함된 것이 누수의 본질입니다.<br><br>
+      실무에서 자주 발생하는 누수 패턴을 추가하면 — 타겟값 산출 이후에만 생성되는 변수 외에, 전처리 과정에서 전체 데이터의 통계값(평균, 표준편차)을 계산할 때 Test 데이터 정보가 섞이는 경우(Data Leakage in preprocessing), 그리고 시계열 데이터에서 미래 시점 데이터가 학습에 포함되는 경우가 대표적입니다.
+    </p>
+  </div>
+
+  <!-- Q5 -->
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q5. 구간별 RMSE가 높을 때 해당 구간 데이터에 가중치를 주는 방식이 맞는가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      그 방식은 적절하지 않습니다. 해당 데이터를 틀렸을 때 더 많은 가중치를 주면, 반대로 그 구간에 편향적으로 학습되어 오히려 다른 구간에서 성능이 나빠질 수 있습니다. 어떤 모델을 쓰는지에 따라서도 달라집니다.<br><br>
+      올바른 접근은 먼저 <strong>왜 그 구간에서 틀리는지 원인을 찾는 것</strong>이 선행돼야 합니다.<br><br>
+      • 해당 구간의 학습 데이터 샘플이 충분한지 확인합니다. 샘플이 부족한 거라면 해당 구간 데이터를 추가 수집하는 게 맞습니다.<br>
+      • 그 구간에서만 나타나는 특성 패턴이 있는지 봅니다. 그 구간을 잘 설명하는 변수가 빠져 있다면, 관련 특성을 새로 발굴해야 합니다.<br>
+      • 데이터나 특성 문제가 아닌 경우에 한해서, 그때 모델 구조 변경이나 구간별 별도 모델을 고려합니다.
+    </p>
+  </div>
+
+</div><!-- s7 -->
+
+</div><!-- .page -->
+
+<script>
+  // 스크롤 기반 nav active
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

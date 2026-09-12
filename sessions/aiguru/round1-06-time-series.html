@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 6 — 시계열 데이터</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+  .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;height:48px;overflow-x:auto;gap:0}
+  .nav-title{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;margin-right:24px;padding-right:24px;border-right:1px solid var(--border)}
+  .nav a{font-size:12px;color:var(--text3);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+  .nav a:hover{color:var(--text)}
+  .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+  .page{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+  .section-block{margin-bottom:56px}
+  .section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px}
+  .section-title{font-size:18px;font-weight:500}
+  .section-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap}
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;margin-top:16px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7;color:var(--text)}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:12px}
+  .q-box{border:1px solid var(--border);border-radius:6px;padding:12px 16px;background:var(--surface2);margin-bottom:8px}
+  .q-box .q-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .q-box .q-text{font-size:13px;font-style:italic}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+  @media(max-width:640px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:500}td.neg{color:var(--red);font-weight:500}
+  td.warn-td{color:var(--amber);font-weight:500}td.muted{color:var(--text3);font-size:12px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+  .checklist li .icon{margin-top:1px;flex-shrink:0;font-size:13px}
+  .checklist li .icon.ok{color:var(--green)}.checklist li .icon.warn{color:var(--amber)}.checklist li .icon.bad{color:var(--red)}
+  .checklist li .body{line-height:1.6}
+  .checklist li .body .sub{font-size:11px;color:var(--text3);margin-top:2px}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+  /* 개념 카드 */
+  .concept-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:14px}
+  .concept-card .cc-head{padding:14px 18px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border)}
+  .concept-card .cc-badge{font-family:var(--mono);font-size:10px;font-weight:500;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px}
+  .concept-card .cc-name{font-size:15px;font-weight:500;margin-bottom:2px}
+  .concept-card .cc-essence{font-size:13px;color:var(--text2);line-height:1.6}
+  .concept-card .cc-body{padding:14px 18px}
+  .concept-card .cc-body p{font-size:13px;line-height:1.7;color:var(--text)}
+  .concept-card .cc-foot{padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px;border-top:1px solid var(--border)}
+  @media(max-width:640px){.concept-card .cc-foot{grid-template-columns:1fr}}
+  .cc-tag{font-size:12px;padding:7px 10px;border-radius:4px;line-height:1.6}
+  .cc-tag.ok{background:var(--green-bg);border:1px solid var(--green-border);color:var(--green)}
+  .cc-tag.bad{background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)}
+  .cc-tag.warn{background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)}
+  .cc-tag .ct-label{font-family:var(--mono);font-size:10px;margin-bottom:2px;font-weight:500}
+
+  /* 배지 색상 */
+  .badge-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+  .badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+  .badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .badge-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+  /* 타임라인 비교 */
+  .timeline-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  @media(max-width:640px){.timeline-row{grid-template-columns:1fr}}
+  .tl-card{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .tl-card .tl-head{padding:10px 14px;font-size:12px;font-weight:500;border-bottom:1px solid var(--border)}
+  .tl-card.ok .tl-head{background:var(--green-bg);color:var(--green)}
+  .tl-card.bad .tl-head{background:var(--red-bg);color:var(--red)}
+  .tl-card .tl-body{padding:12px 14px;font-size:12px;line-height:1.65;color:var(--text2)}
+
+  /* 검증 방식 비교 흐름 */
+  .split-vis{background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:12px}
+  .split-vis .sv-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:10px;text-transform:uppercase;letter-spacing:.06em}
+  .split-bar{display:flex;height:36px;border-radius:4px;overflow:hidden;margin-bottom:6px;gap:2px}
+  .split-bar .sb-train{background:var(--blue-bg);border:1px solid var(--blue-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);color:var(--blue);font-weight:500}
+  .split-bar .sb-test{background:var(--amber-bg);border:1px solid var(--amber-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);color:var(--amber);font-weight:500}
+  .split-bar .sb-val{background:var(--green-bg);border:1px solid var(--green-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);color:var(--green);font-weight:500}
+  .split-bar .sb-leak{background:var(--red-bg);border:1px solid var(--red-border);display:flex;align-items:center;justify-content:center;font-size:11px;font-family:var(--mono);color:var(--red);font-weight:500}
+  .sv-caption{font-size:11px;color:var(--text3);margin-top:4px}
+
+  @media print{.nav{display:none}.page{padding:24px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">Week 6 — 시계열 데이터</div>
+  <a href="#s0">지난주 복습</a>
+  <a href="#s1">시계열이란</a>
+  <a href="#s2">일반 데이터와 차이</a>
+  <a href="#s3">데이터 누수</a>
+  <a href="#s4">시점 기반 검증</a>
+  <a href="#s4b">학습 범위 & 재학습</a>
+  <a href="#s5">제조 × 시계열</a>
+  <a href="#s5b">배포 후 입력 문제</a>
+  <a href="#s6">해석 연습</a>
+  <a href="#s6b">모델 선택</a>
+  <a href="#s7">Q&A</a>
+</nav>
+
+<div class="page">
+
+<!-- ── 00: 지난주 복습 ── -->
+<div class="section-block" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">지난주 핵심 복습 — Week 5 결과를 믿으면 안 되는 경우</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Week 5 세션 요약</div>
+    <p>
+      모델 성능이 좋아 보여도 신뢰할 수 없는 경우가 있습니다.<br>
+      Leakage(미래 정보 유출), Bias(특정 구간 편향), 분포 변화(배포 후 데이터가 달라짐), 과적합(학습 데이터에만 맞춤).<br><br>
+      공통 판단 기준:<br>
+      ❌ "Test R² 0.95 → 이 모델 믿을 수 있다"<br>
+      ✅ "Train과 Test 차이 확인 → 잔차 패턴 확인 → 학습 데이터 구성 확인 → 그 다음 숫자를 본다"
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div class="box box-red">
+      <div class="box-title">Leakage 핵심</div>
+      <p style="font-size:12px;">미래 정보가 학습에 들어가면 성능이 비정상적으로 높아집니다. 실제 배포 후 성능이 갑자기 떨어지는 원인 1순위입니다. 이번 주 시계열에서 가장 자주 발생합니다.</p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">분포 변화</div>
+      <p style="font-size:12px;">공정 조건이 바뀌거나 계절성이 있으면 학습 시점 데이터와 예측 시점 데이터의 분포가 달라집니다. 시계열에서는 이것이 구조적으로 발생합니다.</p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">이번 주 연결</div>
+      <p style="font-size:12px;">Week 5: "결과를 믿으면 안 되는 일반 케이스"<br>Week 6: "시계열에서만 발생하는 특수 케이스"<br>— Leakage와 분포 변화가 구조적으로 발생하는 이유</p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 01: 시계열이란 ── -->
+<div class="section-block" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">시계열이란 무엇인가 — 순서 ≠ 시계열</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note"><strong>핵심 질문:</strong> "행 간에 시간 의존성이 있는가?" — 이전 행의 값이 다음 행에 영향을 주는가. 순서대로 쌓였다고 자동으로 시계열이 되지는 않습니다.</div>
+
+  <div class="box box-blue">
+    <div class="box-title">시계열의 정의 — 순서가 아니라 의존성</div>
+    <p>
+      시계열(Time Series)은 시간 순서대로 기록된 데이터입니다.<br>
+      그런데 <strong>"순서대로 적재됐다"는 것과 "시계열이다"는 같은 말이 아닙니다.</strong><br><br>
+      진짜 기준은 하나입니다 — <strong>이전 시점의 값이 다음 시점에 영향을 주는가.</strong><br>
+      이 의존성이 있으면 시계열처럼 다뤄야 합니다.<br>
+      없으면 순서대로 쌓였어도 일반 표 데이터로 다뤄도 됩니다.
+    </p>
+  </div>
+
+  <!-- 순서 ≠ 시계열 핵심 비교 -->
+  <div class="box box-amber">
+    <div class="box-title">흔한 오해 — "순서대로 쌓이면 시계열이다"</div>
+    <p>
+      제조 현장에서 데이터는 대부분 시간 순서로 적재됩니다.<br>
+      그런데 Lot 번호 순서로 쌓인 검사 결과가 반드시 시계열은 아닙니다.<br><br>
+      <strong>Lot 001 → Lot 002 → Lot 003…</strong><br>
+      각 Lot이 서로 독립적으로 생산됐다면 → <strong>순서를 바꿔도 모델 결과가 달라지지 않습니다.</strong><br>
+      이 경우는 시계열이 아니라 <strong>그냥 표 데이터</strong>입니다.<br><br>
+      반대로 같은 설비에서 연속으로 돌아가는 배치라면 → 열 누적, 마모, 원자재 연속 사용으로 인해<br>
+      이전 Lot 조건이 다음 Lot에 영향을 줄 수 있습니다. 이 경우는 시계열입니다.
+    </p>
+  </div>
+
+  <div class="label">판단 기준 — 어떤 경우가 시계열인가</div>
+  <table>
+    <thead>
+      <tr><th>데이터 유형</th><th>시계열?</th><th>판단 근거</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>연속 공정 센서 로그 (1초 간격)</td>
+        <td class="pos">✅ 시계열</td>
+        <td>t-1 온도가 t 온도에 직접 영향. 연속성·자기상관 있음</td>
+      </tr>
+      <tr>
+        <td>Lot별 검사 결과 — Lot 간 설비 초기화</td>
+        <td class="neg">❌ 아님</td>
+        <td>각 Lot이 독립적으로 시작. 이전 Lot 결과가 다음 Lot에 영향 없음</td>
+      </tr>
+      <tr>
+        <td>Lot별 검사 결과 — 같은 설비 연속 가동</td>
+        <td class="warn-td">⚠️ 확인 필요</td>
+        <td>설비 열 누적·마모가 있으면 Lot 간 의존성 발생 → 시계열처럼 다뤄야</td>
+      </tr>
+      <tr>
+        <td>배치 공정 (각 배치 독립)</td>
+        <td class="neg">❌ 배치 간은 아님</td>
+        <td>배치 내부는 시계열. 배치 간은 독립이면 순서 무관</td>
+      </tr>
+      <tr>
+        <td>고객 주문 이력 (시간순 적재)</td>
+        <td class="warn-td">⚠️ 목적에 따라</td>
+        <td>수요 예측이 목적이면 시계열. 고객 특성 분석이면 일반 데이터</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">시계열로 잘못 다룰 때 문제</div>
+      <p style="font-size:12px;">
+        독립적인 Lot 데이터에 Lag 변수를 추가하면<br>
+        → 실제로는 의미 없는 변수가 모델에 들어감<br>
+        → Feature importance에 lag_1이 높게 잡히는 착시<br>
+        → 모델이 실제 없는 패턴을 학습
+      </p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">일반 데이터로 잘못 다룰 때 문제</div>
+      <p style="font-size:12px;">
+        의존성이 있는 데이터를 random split하면<br>
+        → Leakage 발생 (미래 Lot이 Train에 포함)<br>
+        → 설비 노후화 패턴을 모델이 놓침<br>
+        → 배포 후 성능이 갑자기 저하
+      </p>
+    </div>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">판단 연습</div>
+    <div class="q-text">"우리 공정의 데이터를 하나 떠올려 보세요. 그 데이터에서 이전 행의 값이 다음 행에 영향을 줄 가능성이 있나요? 있다면 어떤 메커니즘으로요?"</div>
+  </div>
+
+  <!-- SVG: 시계열 vs 일반 데이터 개념 -->
+  <svg width="100%" viewBox="0 0 720 200" role="img" style="margin-bottom:16px">
+    <title>시계열 데이터와 일반 데이터의 차이</title>
+    <desc>왼쪽은 순서가 있는 시계열 데이터, 오른쪽은 순서가 없는 일반 데이터</desc>
+
+    <!-- 왼쪽: 시계열 -->
+    <rect x="20" y="20" width="310" height="160" rx="8" fill="none" stroke="#b8ccdf" stroke-width="1"/>
+    <text x="175" y="44" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a4f8a" font-weight="500">시계열 데이터 — 순서가 의미 있음</text>
+    <!-- 시간축 화살표 -->
+    <line x1="44" y1="160" x2="310" y2="160" stroke="#b8ccdf" stroke-width="1"/>
+    <polygon points="310,155 320,160 310,165" fill="#b8ccdf"/>
+    <text x="185" y="178" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">시간 →</text>
+    <!-- 데이터 포인트 연결 -->
+    <polyline points="50,140 100,110 150,125 200,80 250,95 300,60" fill="none" stroke="#1a4f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="50" cy="140" r="5" fill="#1a4f8a"/>
+    <circle cx="100" cy="110" r="5" fill="#1a4f8a"/>
+    <circle cx="150" cy="125" r="5" fill="#1a4f8a"/>
+    <circle cx="200" cy="80" r="5" fill="#1a4f8a"/>
+    <circle cx="250" cy="95" r="5" fill="#1a4f8a"/>
+    <circle cx="300" cy="60" r="5" fill="#1a4f8a"/>
+    <!-- 순서 표시 -->
+    <text x="50" y="155" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">t1</text>
+    <text x="100" y="125" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">t2</text>
+    <text x="200" y="95" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">t4</text>
+    <text x="300" y="75" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">t6</text>
+    <!-- 주석 -->
+    <text x="175" y="136" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">순서 바꾸면 의미 손실</text>
+
+    <!-- 오른쪽: 일반 데이터 -->
+    <rect x="390" y="20" width="310" height="160" rx="8" fill="none" stroke="#b8d8bf" stroke-width="1"/>
+    <text x="545" y="44" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a5a2a" font-weight="500">일반 데이터 — 순서 무관</text>
+    <!-- 점들 랜덤 배치 -->
+    <circle cx="430" cy="90" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="470" cy="130" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="510" cy="75" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="550" cy="115" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="590" cy="85" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="630" cy="140" r="5" fill="#1a5a2a" opacity=".7"/>
+    <circle cx="660" cy="95" r="5" fill="#1a5a2a" opacity=".7"/>
+    <!-- 주석 -->
+    <text x="545" y="168" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">순서 바꿔도 결과 동일</text>
+  </svg>
+
+  <div class="label">시계열의 핵심 특징</div>
+  <table>
+    <thead>
+      <tr><th>특징</th><th>설명</th><th>제조 예시</th><th>영향</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>자기상관 (Autocorrelation)</strong></td>
+        <td>지금 값이 이전 값과 연관됨</td>
+        <td>이번 시간 온도는 이전 시간 온도와 비슷한 경향</td>
+        <td class="warn-td">과거 값을 변수로 사용해야 함</td>
+      </tr>
+      <tr>
+        <td><strong>추세 (Trend)</strong></td>
+        <td>장기적으로 증가 또는 감소</td>
+        <td>설비 노후화로 진동 수치가 서서히 상승</td>
+        <td class="warn-td">모델이 추세를 "패턴"으로 학습하면 안 됨</td>
+      </tr>
+      <tr>
+        <td><strong>계절성 (Seasonality)</strong></td>
+        <td>일정 주기로 반복되는 패턴</td>
+        <td>여름철 냉각수 온도 상승, 교대 시간대별 품질 차이</td>
+        <td class="warn-td">검증 시 같은 계절 포함 여부 확인</td>
+      </tr>
+      <tr>
+        <td><strong>비정상성 (Non-stationarity)</strong></td>
+        <td>시간에 따라 통계적 특성이 변함</td>
+        <td>공정 조건 변경 후 센서 분포가 달라짐</td>
+        <td class="neg">학습-배포 시점 분포가 달라 성능 저하</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 02: 일반 데이터와 차이 ── -->
+<div class="section-block" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">일반 데이터와의 차이 — 무엇이 달라지는가</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note">같은 RandomForest를 쓰더라도, 시계열 데이터에 그대로 적용하면 반드시 문제가 생깁니다. 왜 그런지 구체적으로 확인합니다.</div>
+
+  <!-- 차이 1: 독립성 가정 -->
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-red">차이 1</span>
+      <div>
+        <div class="cc-name">독립성 가정이 깨진다</div>
+        <div class="cc-essence">대부분의 ML 모델은 각 행(샘플)이 서로 독립이라고 가정합니다. 시계열은 이 가정을 위반합니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        선형회귀, 트리, XGBoost 모두 "오늘의 불량률과 어제의 불량률은 관계없다"고 가정합니다.<br>
+        하지만 공정 데이터에서 <strong>연속된 시점은 서로 강하게 연관</strong>됩니다.<br><br>
+        이 가정이 깨지면 두 가지 문제가 생깁니다.<br>
+        ① 모델이 시간 패턴을 활용하지 못함 → 예측 정확도 손실<br>
+        ② 검증 결과가 실제 성능보다 과대 추정 → 믿을 수 없는 숫자
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">일반 ML 방식</div>행 순서 무시. "오늘 불량 = f(온도, 압력)" 만으로 학습</div>
+      <div class="cc-tag ok"><div class="ct-label">시계열 대응 방식</div>과거 값을 변수로 추가. "오늘 불량 = f(온도, 압력, 어제 불량, 3일 평균 온도)"</div>
+    </div>
+  </div>
+
+  <!-- 차이 2: 입력 변수 구성 -->
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-amber">차이 2</span>
+      <div>
+        <div class="cc-name">입력 변수를 다르게 구성해야 한다</div>
+        <div class="cc-essence">시계열에서는 "지금 시점의 값" 외에 "과거 패턴을 요약한 값"이 중요한 변수가 됩니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        시계열에서 유용한 변수 유형:<br><br>
+        <strong>Lag 변수:</strong> t-1 시점 값, t-2 시점 값 등. "어제 온도"가 "오늘 불량"을 예측하는 데 도움이 됨.<br>
+        <strong>Rolling 통계:</strong> 최근 N개 시점의 평균, 표준편차, 최댓값. "지난 1시간 평균 온도 상승" 같은 패턴 포착.<br>
+        <strong>시간 특성:</strong> 교대 시간대, 요일, 설비 가동 후 경과 시간 등.<br><br>
+        단, 이 변수들을 만들 때 <strong>미래 시점의 값을 사용하면 Leakage</strong>가 발생합니다.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">Leakage 예시</div>t+1 시점 값을 Lag 변수로 잘못 계산 → 미래를 보고 현재 예측</div>
+      <div class="cc-tag ok"><div class="ct-label">올바른 방식</div>변수 생성 시 항상 "이 시점에서 알 수 있는 정보인가?" 확인</div>
+    </div>
+  </div>
+
+  <!-- SVG: Lag 변수 개념 -->
+  <div class="label">Lag 변수 / Rolling 통계 개념</div>
+  <svg width="100%" viewBox="0 0 720 180" role="img" style="margin-bottom:16px">
+    <title>Lag 변수와 Rolling 통계 개념</title>
+
+    <!-- 타임라인 -->
+    <line x1="30" y1="50" x2="690" y2="50" stroke="#e2e0d8" stroke-width="1"/>
+    <text x="360" y="24" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#9b9890">시간 흐름 →</text>
+
+    <!-- 시점 마커 -->
+    <circle cx="100" cy="50" r="6" fill="#e2e0d8"/>
+    <circle cx="200" cy="50" r="6" fill="#e2e0d8"/>
+    <circle cx="300" cy="50" r="6" fill="#e2e0d8"/>
+    <circle cx="400" cy="50" r="6" fill="#e2e0d8"/>
+    <circle cx="500" cy="50" r="6" fill="#1a4f8a"/>
+    <circle cx="600" cy="50" r="6" fill="#8a1a1a"/>
+
+    <!-- 시점 레이블 -->
+    <text x="100" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">t-4</text>
+    <text x="200" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">t-3</text>
+    <text x="300" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">t-2</text>
+    <text x="400" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">t-1</text>
+    <text x="500" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a4f8a" font-weight="500">t (현재)</text>
+    <text x="600" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">t+1 ⚠</text>
+
+    <!-- Lag 브라켓 -->
+    <line x1="400" y1="90" x2="400" y2="110" stroke="#1a4f8a" stroke-width="1" stroke-dasharray="3 2"/>
+    <line x1="500" y1="90" x2="500" y2="110" stroke="#1a4f8a" stroke-width="1" stroke-dasharray="3 2"/>
+    <line x1="400" y1="100" x2="500" y2="100" stroke="#1a4f8a" stroke-width="1.5"/>
+    <text x="450" y="125" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a4f8a">lag_1</text>
+
+    <!-- Rolling 브라켓 -->
+    <line x1="200" y1="135" x2="200" y2="155" stroke="#1a5a2a" stroke-width="1" stroke-dasharray="3 2"/>
+    <line x1="500" y1="135" x2="500" y2="155" stroke="#1a5a2a" stroke-width="1" stroke-dasharray="3 2"/>
+    <line x1="200" y1="145" x2="500" y2="145" stroke="#1a5a2a" stroke-width="1.5"/>
+    <text x="350" y="168" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a5a2a">rolling_mean(window=4)</text>
+
+    <!-- Leakage 경고 -->
+    <rect x="560" y="82" width="100" height="30" rx="4" fill="#f8eaea" stroke="#dfb8b8"/>
+    <text x="610" y="101" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">미래 정보 = Leakage</text>
+  </svg>
+
+  <!-- 차이 3: 검증 방식 -->
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-red">차이 3</span>
+      <div>
+        <div class="cc-name">검증 방식이 달라야 한다</div>
+        <div class="cc-essence">일반 ML의 무작위 분리(random split)를 시계열에 쓰면 Leakage가 구조적으로 발생합니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        가장 흔한 실수: sklearn의 <code>train_test_split(shuffle=True)</code>를 시계열에 그대로 사용.<br><br>
+        무작위로 섞으면 Train에 2024년 12월 데이터가 들어가고, Test에 2024년 6월 데이터가 들어갑니다.<br>
+        모델은 미래를 이미 본 상태에서 과거를 예측하게 됩니다.<br>
+        결과는 "비정상적으로 높은 성능" — 실제 배포 후 성능과 크게 괴리됩니다.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">잘못된 방식 (Random Split)</div>순서 무시하고 무작위로 Train/Test 분리 → 미래 데이터가 Train에 포함</div>
+      <div class="cc-tag ok"><div class="ct-label">올바른 방식 (Time-based Split)</div>특정 시점 기준으로 앞은 Train, 뒤는 Test → 시간 순서 유지</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 03: 데이터 누수 ── -->
+<div class="section-block" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">시계열 데이터 누수 — 어디서 미래 정보가 들어오는가</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> 시계열 Leakage는 의도적이지 않습니다. "코드가 틀렸는데 결과가 너무 좋게 나오는" 상황이 Leakage의 신호입니다.</div>
+
+  <div class="box box-red">
+    <div class="box-title">시계열 Leakage가 위험한 이유</div>
+    <p>
+      일반 ML에서도 Leakage가 발생하지만, 시계열에서는 <strong>코드 한 줄 실수로 구조적으로 발생</strong>합니다.<br><br>
+      특히 위험한 이유:<br>
+      • 모델 성능 지표가 아주 좋게 나옴 → 잘못된 신뢰 형성<br>
+      • 배포 후 성능이 갑자기 떨어짐 → 원인 파악이 어려움<br>
+      • 잔차 플롯이 정상적으로 보일 수 있음 → 시각적으로도 속음
+    </p>
+  </div>
+
+  <div class="label">시계열 Leakage 발생 유형</div>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-red">유형 1</span>
+      <div>
+        <div class="cc-name">스케일링 / 정규화 Leakage</div>
+        <div class="cc-essence">전체 데이터로 StandardScaler를 fit하면 Test 데이터의 통계가 Train에 영향을 줍니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>발생 상황:</strong><br>
+        Train+Test 전체 데이터에 MinMaxScaler().fit_transform() 적용<br>
+        → Scaler가 Test 데이터의 최댓값/최솟값을 이미 알고 있음<br>
+        → Train 데이터 변환 시 미래(Test) 통계가 반영됨<br><br>
+        <strong>올바른 방법:</strong><br>
+        Train에만 .fit() → Train과 Test 모두 .transform()
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">잘못된 코드</div>scaler.fit_transform(X_all) → split</div>
+      <div class="cc-tag ok"><div class="ct-label">올바른 코드</div>split → scaler.fit(X_train) → scaler.transform(X_test)</div>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-red">유형 2</span>
+      <div>
+        <div class="cc-name">Rolling / Lag 변수 생성 순서 오류</div>
+        <div class="cc-essence">전체 데이터에서 Rolling 통계를 계산하면, Train 시점 데이터가 Test 시점 정보를 포함하게 됩니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>발생 상황:</strong><br>
+        전체 DataFrame에 rolling(window=7).mean() 계산 후 split<br>
+        → 만약 t 시점에 t+1, t+2 데이터가 window에 포함되면 미래 정보 유출<br><br>
+        <strong>주의할 점:</strong><br>
+        pandas의 rolling()은 기본적으로 과거 값만 사용하지만,<br>
+        center=True 옵션을 쓰면 앞뒤 값을 모두 포함 → 미래 정보 유출
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">위험 코드</div>df['rolling_mean'] = df['temp'].rolling(7, center=True).mean()</div>
+      <div class="cc-tag ok"><div class="ct-label">안전한 코드</div>df['rolling_mean'] = df['temp'].rolling(7).mean() (기본값: 과거만)</div>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-amber">유형 3</span>
+      <div>
+        <div class="cc-name">타겟 인코딩 / 집계 변수 Leakage</div>
+        <div class="cc-essence">결과 변수(y)를 이용해 만든 변수를 입력으로 사용할 때 발생합니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>발생 상황:</strong><br>
+        "설비 A의 평균 불량률"을 변수로 만들 때, 전체 기간 평균을 사용<br>
+        → Test 시점 불량률이 "평균 불량률" 변수에 이미 반영됨<br><br>
+        <strong>제조 현장 예시:</strong><br>
+        "지난 1개월 평균 수율"을 변수로 쓸 때 → 학습 기간 vs 예측 기간 경계 주의
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag bad"><div class="ct-label">위험</div>전체 기간 통계 사용 → 미래 포함</div>
+      <div class="cc-tag ok"><div class="ct-label">안전</div>예측 시점 이전 데이터만으로 집계 → expanding window 사용</div>
+    </div>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문</div>
+    <div class="q-text">"우리 공정에서 지금 사용 중인 예측 모델이 있다면, 학습 데이터에 미래 정보가 들어가지 않았다고 어떻게 확인할 수 있을까요?"</div>
+  </div>
+</div>
+
+<!-- ── 04: 시점 기반 검증 ── -->
+<div class="section-block" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">시점 기반 검증 — 올바른 검증이란</span>
+    <span class="section-time">20 min</span>
+  </div>
+
+  <div class="note">검증 방식이 잘못되면 성능 숫자 자체가 신뢰할 수 없습니다. 어떻게 분리하느냐가 모델 평가의 핵심입니다.</div>
+
+  <!-- Random Split 문제 시각화 -->
+  <div class="label">❌ 잘못된 방식: Random Split</div>
+  <div class="split-vis">
+    <div class="sv-label">전체 데이터를 무작위로 분리 — 시간 순서가 섞임</div>
+    <div class="split-bar">
+      <div class="sb-leak" style="flex:1">Test (6월)</div>
+      <div class="sb-train" style="flex:1">Train (12월)</div>
+      <div class="sb-train" style="flex:1">Train (3월)</div>
+      <div class="sb-leak" style="flex:1">Test (9월)</div>
+      <div class="sb-train" style="flex:1">Train (11월)</div>
+      <div class="sb-leak" style="flex:1">Test (1월)</div>
+      <div class="sb-train" style="flex:1">Train (8월)</div>
+    </div>
+    <div class="sv-caption">⚠ Train에 12월 데이터가 포함 → Test(1월, 6월) 예측 시 미래 정보를 이미 본 상태</div>
+  </div>
+
+  <!-- Time-based Split -->
+  <div class="label">✅ 올바른 방식: Time-based Split</div>
+  <div class="split-vis">
+    <div class="sv-label">시간 기준으로 앞/뒤 분리 — 순서 유지</div>
+    <div class="split-bar">
+      <div class="sb-train" style="flex:4">Train (2024년 1월~9월)</div>
+      <div class="sb-test" style="flex:2">Test (2024년 10월~12월)</div>
+    </div>
+    <div class="sv-caption">✓ Train은 항상 Test보다 이전 시점. 모델은 과거만 보고 미래를 예측</div>
+  </div>
+
+  <!-- Walk-forward Validation -->
+  <div class="label">Walk-forward Validation (시계열 교차검증)</div>
+  <div class="split-vis">
+    <div class="sv-label">Fold 1</div>
+    <div class="split-bar">
+      <div class="sb-train" style="flex:3">Train</div>
+      <div class="sb-val" style="flex:1">Val</div>
+      <div style="flex:3;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text3);font-family:var(--mono)">미사용</div>
+    </div>
+    <div class="sv-label" style="margin-top:8px">Fold 2</div>
+    <div class="split-bar">
+      <div class="sb-train" style="flex:4">Train (앞 fold 포함)</div>
+      <div class="sb-val" style="flex:1">Val</div>
+      <div style="flex:2;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text3);font-family:var(--mono)">미사용</div>
+    </div>
+    <div class="sv-label" style="margin-top:8px">Fold 3</div>
+    <div class="split-bar">
+      <div class="sb-train" style="flex:5">Train (앞 fold 포함)</div>
+      <div class="sb-val" style="flex:1">Val</div>
+      <div style="flex:1;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--text3);font-family:var(--mono)">미사용</div>
+    </div>
+    <div class="sv-caption">Train 구간이 점점 확장. Val은 항상 Train 이후 시점. 일반 K-fold와 달리 시간 순서를 절대 위반하지 않음</div>
+  </div>
+
+  <div class="label">검증 방식 비교</div>
+  <table>
+    <thead>
+      <tr><th>방식</th><th>시계열 적합성</th><th>Leakage 위험</th><th>언제 사용</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Random Split</strong></td>
+        <td class="neg">부적합</td>
+        <td class="neg">높음 — 미래가 Train에 포함</td>
+        <td class="muted">일반 ML(이미지, 정형 독립 데이터)</td>
+      </tr>
+      <tr>
+        <td><strong>Time-based Split</strong></td>
+        <td class="pos">적합</td>
+        <td class="pos">없음</td>
+        <td>기본 시계열 검증, 데이터 충분할 때</td>
+      </tr>
+      <tr>
+        <td><strong>Walk-forward</strong></td>
+        <td class="pos">가장 적합</td>
+        <td class="pos">없음</td>
+        <td>성능 안정성 확인, 실제 운영 시뮬레이션</td>
+      </tr>
+      <tr>
+        <td><strong>K-fold</strong></td>
+        <td class="neg">부적합</td>
+        <td class="neg">높음 — 순서 무시</td>
+        <td class="muted">시계열에 절대 사용 금지</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-amber">
+    <div class="box-title">실무에서 확인해야 할 체크리스트</div>
+    <p>
+      모델 검증 보고서나 코드를 받았을 때 반드시 확인:<br><br>
+      □ train_test_split에 shuffle=False를 명시했는가?<br>
+      □ 또는 시점 기준으로 수동 분리했는가?<br>
+      □ Scaler를 Train에만 fit하고 Test에 transform했는가?<br>
+      □ Rolling/Lag 변수 생성 시 미래 값이 포함되지 않았는가?<br>
+      □ Train 성능과 Test 성능 차이가 합리적인가? (너무 비슷하면 의심)
+    </p>
+  </div>
+</div>
+
+<!-- ── 04b: 학습 데이터 범위 & 재학습 주기 ── -->
+<div class="section-block" id="s4b">
+  <div class="section-header">
+    <span class="section-num">04+</span>
+    <span class="section-title">학습 데이터 범위와 재학습 주기 — 어떻게 결정하는가</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> "최근 1년치"나 "10만 건"처럼 직관으로 정하는 경우가 많습니다. 하지만 이 결정은 근거가 있어야 하고, 근거는 데이터에서 찾아야 합니다.</div>
+
+  <!-- 학습 범위 -->
+  <div class="label">① 학습 데이터 범위 — 얼마나 오래된 데이터까지 쓸 것인가</div>
+
+  <div class="box box-amber">
+    <div class="box-title">왜 이게 중요한가</div>
+    <p>
+      너무 짧게 잡으면 — 계절성, 비정상 이벤트를 못 배움. 모델이 불안정.<br>
+      너무 길게 잡으면 — 이미 유효하지 않은 공정 조건이 학습에 섞임. 오히려 성능 저하.<br><br>
+      <strong>핵심 질문: 지금 공정과 과거 공정이 "같은 패턴"인가?</strong><br>
+      레시피 변경, 설비 교체, 원자재 변경이 있었다면 — 그 이전 데이터는 다른 공정의 데이터입니다.
+    </p>
+  </div>
+
+  <div class="label">범위 결정 근거 — 세 가지 분석</div>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-blue">분석 1</span>
+      <div>
+        <div class="cc-name">공정 안정성 확인 — 언제부터 지금과 같은 공정인가</div>
+        <div class="cc-essence">가장 먼저 확인해야 합니다. 공정이 바뀐 시점이 있으면 그 이전 데이터는 원칙적으로 제외합니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>확인 방법:</strong><br>
+        공정 변경 이력 조회 (레시피 버전, 설비 교체 일자, 원자재 변경 이력)<br>
+        시계열 시각화 — 평균·분산이 특정 시점에 급격히 바뀌는 구간 찾기<br>
+        월별·분기별 데이터 분포 비교 (히스토그램 겹쳐보기)<br><br>
+        <strong>판단:</strong> "분포가 바뀐 시점" 이후 데이터만 학습에 사용하는 것이 원칙.<br>
+        그 이전 데이터는 참고용으로만 쓰거나, 공정 변경 플래그를 변수로 추가해 함께 사용.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag ok"><div class="ct-label">실무 기준</div>공정 변경 이력이 없다면 → 최소 1~2년치. 계절성이 있으면 반드시 1년 이상.</div>
+      <div class="cc-tag bad"><div class="ct-label">흔한 실수</div>공정 변경을 모른 채 3년 전 데이터까지 사용 → 다른 공정 패턴이 섞임</div>
+    </div>
+  </div>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-blue">분석 2</span>
+      <div>
+        <div class="cc-name">Walk-forward 성능 곡선 — 학습 구간이 길어질수록 성능이 좋아지는가</div>
+        <div class="cc-essence">학습 데이터를 늘려가면서 성능 변화를 직접 측정합니다. 성능이 더 이상 오르지 않는 지점이 적정 범위입니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        Walk-forward 검증을 응용합니다.<br>
+        학습 구간을 3개월 → 6개월 → 1년 → 2년으로 늘려가며 각각 Test 성능을 측정.<br><br>
+
+        <strong>해석 패턴 3가지:</strong><br><br>
+        ① <strong>계속 오름</strong> — 데이터가 많을수록 좋다. 가능한 최대 범위 사용.<br>
+        ② <strong>일정 구간 후 정체</strong> — 그 지점이 적정 범위. 이후 데이터는 추가 이득이 없음.<br>
+        ③ <strong>오르다가 하락</strong> — 어느 시점 이전 데이터가 노이즈로 작용. 그 시점까지만 사용.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag ok"><div class="ct-label">이 분석의 가치</div>직관이 아니라 데이터로 범위를 결정. "왜 1년인가?" 에 근거를 댈 수 있음.</div>
+      <div class="cc-tag warn"><div class="ct-label">한계</div>공정 변경이 있으면 이 분석 전에 반드시 공정 안정성부터 확인해야 함.</div>
+    </div>
+  </div>
+
+  <!-- Walk-forward 성능 곡선 SVG -->
+  <svg width="100%" viewBox="0 0 720 200" role="img" style="margin-bottom:16px">
+    <title>학습 구간 길이에 따른 Test 성능 변화 패턴</title>
+
+    <!-- 공통 축 -->
+    <!-- 패턴 1 -->
+    <rect x="20" y="10" width="210" height="170" rx="6" fill="none" stroke="#b8d8bf" stroke-width="1"/>
+    <text x="125" y="28" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a5a2a" font-weight="500">① 계속 오름 → 최대 범위</text>
+    <line x1="40" y1="155" x2="215" y2="155" stroke="#e2e0d8" stroke-width="0.8"/>
+    <line x1="40" y1="155" x2="40" y2="40" stroke="#e2e0d8" stroke-width="0.8"/>
+    <text x="127" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">학습 구간 →</text>
+    <polyline points="50,145 80,130 110,112 140,96 170,82 200,70" fill="none" stroke="#1a5a2a" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="200" cy="70" r="4" fill="#1a5a2a"/>
+    <text x="195" y="63" font-family="IBM Plex Mono, monospace" font-size="8" fill="#1a5a2a">최대↑</text>
+
+    <!-- 패턴 2 -->
+    <rect x="255" y="10" width="210" height="170" rx="6" fill="none" stroke="#b8ccdf" stroke-width="1"/>
+    <text x="360" y="28" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a4f8a" font-weight="500">② 정체 → 그 지점까지</text>
+    <line x1="275" y1="155" x2="450" y2="155" stroke="#e2e0d8" stroke-width="0.8"/>
+    <line x1="275" y1="155" x2="275" y2="40" stroke="#e2e0d8" stroke-width="0.8"/>
+    <text x="362" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">학습 구간 →</text>
+    <polyline points="285,145 315,125 345,100 375,84 405,80 435,79" fill="none" stroke="#1a4f8a" stroke-width="2" stroke-linecap="round"/>
+    <line x1="375" y1="45" x2="375" y2="155" stroke="#1a4f8a" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+    <text x="377" y="55" font-family="IBM Plex Mono, monospace" font-size="8" fill="#1a4f8a">적정 범위</text>
+    <circle cx="375" cy="84" r="4" fill="#1a4f8a"/>
+
+    <!-- 패턴 3 -->
+    <rect x="490" y="10" width="210" height="170" rx="6" fill="none" stroke="#dfb8b8" stroke-width="1"/>
+    <text x="595" y="28" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">③ 하락 → 이전 데이터가 노이즈</text>
+    <line x1="510" y1="155" x2="685" y2="155" stroke="#e2e0d8" stroke-width="0.8"/>
+    <line x1="510" y1="155" x2="510" y2="40" stroke="#e2e0d8" stroke-width="0.8"/>
+    <text x="597" y="170" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#9b9890">학습 구간 →</text>
+    <polyline points="520,145 550,120 580,92 610,85 640,90 670,102" fill="none" stroke="#8a1a1a" stroke-width="2" stroke-linecap="round"/>
+    <line x1="610" y1="45" x2="610" y2="155" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+    <text x="612" y="55" font-family="IBM Plex Mono, monospace" font-size="8" fill="#8a1a1a">여기까지만</text>
+    <circle cx="610" cy="85" r="4" fill="#8a1a1a"/>
+  </svg>
+
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-amber">분석 3</span>
+      <div>
+        <div class="cc-name">예측 목표 기간과의 균형 — 얼마나 앞을 볼 것인가</div>
+        <div class="cc-essence">예측하려는 기간(horizon)과 학습 데이터 범위 사이에는 경험적인 비율이 있습니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>예측 horizon이 길수록 더 많은 학습 데이터가 필요합니다.</strong><br><br>
+        1시간 뒤 수율 예측 → 최근 수일~수주치로도 충분할 수 있음<br>
+        다음 달 생산량 예측 → 최소 1~2년치 필요 (계절성 포함)<br>
+        6개월 뒤 수요 예측 → 3년 이상 필요할 수 있음<br><br>
+        <strong>경험적 기준: 학습 데이터 길이 ÷ 예측 horizon ≥ 10</strong><br>
+        1개월 앞을 예측하고 싶다면 → 최소 10개월치 학습 데이터.<br>
+        단, 이건 출발점이지 절대 기준이 아닙니다. 분석 1, 2로 검증해야 합니다.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag ok"><div class="ct-label">실무 순서</div>공정 안정성 확인 → horizon 기준 최소 범위 설정 → Walk-forward로 실제 범위 결정</div>
+      <div class="cc-tag bad"><div class="ct-label">하지 말 것</div>horizon 고려 없이 "일단 많이" 쓰기. 또는 데이터 부족을 이유로 horizon 대비 너무 짧게 잡기</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 재학습 주기 -->
+  <div class="label">② 재학습 주기 — 언제 다시 학습해야 하는가</div>
+
+  <div class="box box-red">
+    <div class="box-title">왜 재학습이 필요한가</div>
+    <p>
+      모델은 학습한 시점의 패턴만 알고 있습니다.<br>
+      공정이 조금씩 변하거나, 계절이 바뀌거나, 설비가 노후화되면 — 모델이 보지 못한 상황이 생깁니다.<br>
+      재학습 없이 계속 쓰면 성능이 서서히, 또는 갑자기 떨어집니다.<br><br>
+      <strong>핵심 질문: "이 모델이 지금도 유효한가?"를 어떻게 판단할 것인가.</strong>
+    </p>
+  </div>
+
+  <div class="label">재학습 주기 결정 방식 — 세 가지 접근</div>
+  <table>
+    <thead>
+      <tr><th>방식</th><th>어떻게</th><th>장점</th><th>단점 / 주의</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>일정 주기 재학습</strong><br><span style="font-size:11px;color:var(--text3)">매월, 매분기</span></td>
+        <td>달력 기준으로 고정 주기 재학습</td>
+        <td class="muted">관리 단순. 예측 가능</td>
+        <td class="neg">공정이 빨리 바뀌면 늦음. 바뀌지 않으면 불필요한 재학습</td>
+      </tr>
+      <tr>
+        <td><strong>성능 모니터링 기반</strong><br><span style="font-size:11px;color:var(--text3)">권장</span></td>
+        <td>실제 예측 오차를 지속 모니터링 → 오차가 임계값 초과 시 재학습</td>
+        <td class="pos">필요할 때만 재학습. 성능 저하 즉시 대응</td>
+        <td class="warn-td">모니터링 체계 구축 필요. 임계값 설정이 어려움</td>
+      </tr>
+      <tr>
+        <td><strong>이벤트 기반</strong></td>
+        <td>공정 변경·설비 교체·원자재 변경 발생 시 즉시 재학습</td>
+        <td class="pos">분포 변화에 가장 빠른 대응</td>
+        <td class="warn-td">변경 이력 관리 체계 필요. 소규모 변경은 판단 어려움</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 성능 모니터링 시각화 -->
+  <div class="label">성능 모니터링 기반 재학습 — 개념</div>
+  <svg width="100%" viewBox="0 0 720 160" role="img" style="margin-bottom:12px">
+    <title>성능 모니터링 기반 재학습 흐름</title>
+
+    <!-- 축 -->
+    <line x1="30" y1="120" x2="700" y2="120" stroke="#e2e0d8" stroke-width="0.8"/>
+    <line x1="30" y1="120" x2="30" y2="20" stroke="#e2e0d8" stroke-width="0.8"/>
+    <text x="365" y="138" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890">운영 시간 →</text>
+    <text x="18" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890" transform="rotate(-90,18,72)">예측 오차</text>
+
+    <!-- 임계값 선 -->
+    <line x1="30" y1="60" x2="700" y2="60" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="5 3" opacity=".5"/>
+    <text x="705" y="63" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">임계값</text>
+
+    <!-- 오차 곡선 1 (배포 직후 안정) -->
+    <polyline points="40,95 80,90 120,88 160,92 200,89 240,85" fill="none" stroke="#1a5a2a" stroke-width="2" stroke-linecap="round"/>
+    <!-- 오차 상승 -->
+    <polyline points="240,85 280,82 320,75 360,68 400,63 440,58 460,52" fill="none" stroke="#7a4a00" stroke-width="2" stroke-linecap="round"/>
+    <!-- 임계값 초과 표시 -->
+    <circle cx="460" cy="52" r="5" fill="#8a1a1a"/>
+    <text x="462" y="44" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">임계값 초과 → 재학습 트리거</text>
+
+    <!-- 재학습 후 선 -->
+    <line x1="490" y1="20" x2="490" y2="120" stroke="#1a4f8a" stroke-width="1.5" stroke-dasharray="4 3"/>
+    <text x="492" y="32" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a4f8a">재학습</text>
+    <polyline points="490,95 530,91 570,88 610,87 650,86 690,84" fill="none" stroke="#1a5a2a" stroke-width="2" stroke-linecap="round"/>
+
+    <!-- 배포 레이블 -->
+    <text x="42" y="112" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a5a2a">배포</text>
+    <text x="492" y="112" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a4f8a">재배포</text>
+  </svg>
+
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">임계값은 어떻게 정하는가</div>
+      <p style="font-size:12px;">
+        초기 배포 시점의 Test 성능을 기준으로 설정합니다.<br><br>
+        예: 배포 시 RMSE = 2.1 → 임계값 = 3.0 (50% 이상 악화 시 재학습)<br><br>
+        또는 비즈니스 기준으로 — "수율 예측 오차가 5%p 초과하면 운영에 지장"이라면<br>
+        RMSE 5 이상을 임계값으로 설정.<br><br>
+        정답은 없습니다. 비즈니스 영향도 기준으로 정하는 게 가장 현실적입니다.
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">재학습 시 학습 데이터는 어떻게?</div>
+      <p style="font-size:12px;">
+        <strong>Rolling window:</strong> 항상 최근 N개월치만 사용. 오래된 데이터 제거.<br>
+        → 공정 변화 빠를 때 적합. 과거 데이터가 노이즈일 때.<br><br>
+        <strong>Expanding window:</strong> 처음부터 누적해서 계속 추가.<br>
+        → 데이터가 많을수록 성능이 오를 때 적합. 공정이 안정적일 때.<br><br>
+        어느 방식이 맞는지는 분석 2(Walk-forward 성능 곡선)에서 이미 확인된 패턴으로 결정합니다.
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-green">
+    <div class="box-title">실무 권장 순서 — 처음 모델을 만들 때부터 재학습까지</div>
+    <p>
+      <strong>Step 1</strong> — 공정 변경 이력 확인 → 학습 데이터 시작 시점 결정<br>
+      <strong>Step 2</strong> — 예측 horizon 확인 → 최소 학습 데이터 범위 설정<br>
+      <strong>Step 3</strong> — Walk-forward로 학습 구간별 성능 비교 → 적정 범위 확정<br>
+      <strong>Step 4</strong> — 배포 후 예측 오차 모니터링 체계 구축<br>
+      <strong>Step 5</strong> — 임계값 초과 또는 공정 변경 이벤트 발생 시 재학습 트리거<br>
+      <strong>Step 6</strong> — 재학습 시 Rolling vs Expanding 중 맞는 방식으로 데이터 범위 재설정
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문</div>
+    <div class="q-text">"배포한 모델의 성능이 서서히 떨어지고 있습니다. 재학습을 결정하기 전에 먼저 확인해야 할 것은 무엇인가요? 공정 변화인지, 단순 노이즈인지 어떻게 구분하겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 05: 제조 × 시계열 ── -->
+<div class="section-block" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">제조 현장 × 시계열 — 실무에서 주의할 것</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note">제조 공정 데이터는 대부분 시계열입니다. 그런데 이를 일반 ML처럼 다루는 경우가 많습니다. 어떤 문제가 생기는지 구체적으로 봅니다.</div>
+
+  <!-- 제조 특수 케이스들 -->
+  <div class="label">제조 시계열 특수 케이스</div>
+
+  <div class="grid-2">
+    <div class="box box-amber">
+      <div class="box-title">공정 변경 이벤트</div>
+      <p style="font-size:12px;">
+        레시피 변경, 설비 교체, 원자재 로트 변경이 발생하면 데이터 분포가 급격히 달라집니다.<br><br>
+        문제: 변경 이전 데이터로 학습한 모델이 변경 이후 예측 불가<br><br>
+        대응: 공정 변경 이벤트를 변수로 명시적으로 추가하거나, 변경 후 데이터를 재학습 기준으로 설정
+      </p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">센서 이상 / 결측</div>
+      <p style="font-size:12px;">
+        제조 센서는 종종 일정 시간 동안 결측이 발생합니다.<br><br>
+        문제: 결측 구간을 단순 보간(평균 채우기)하면 Lag 변수가 오염됨<br><br>
+        대응: 결측 여부 자체를 변수로 추가. 결측 비율이 높은 구간은 학습에서 제외
+      </p>
+    </div>
+    <div class="box box-blue">
+      <div class="box-title">다중 센서 시계열 동기화</div>
+      <p style="font-size:12px;">
+        센서마다 측정 주기가 다릅니다. 온도는 1분, 압력은 10초, 품질 측정은 배치 단위.<br><br>
+        문제: 다른 주기 센서를 같은 시점으로 합치면 보간이 필요하고 이 과정에서 오류 발생<br><br>
+        대응: 어떤 센서를 기준 주기로 쓸지, 보간 방법은 무엇인지 명시
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">배치 vs 연속 공정</div>
+      <p style="font-size:12px;">
+        배치 공정은 각 배치가 독립적일 수 있음. 연속 공정은 시점 간 강한 의존성.<br><br>
+        배치 공정: 배치 내 시계열 + 배치 간 독립성 고려<br>
+        연속 공정: 전형적인 시계열 분석<br><br>
+        혼동하면 불필요한 Lag 변수 추가 또는 배치 경계 무시 오류 발생
+      </p>
+    </div>
+  </div>
+
+  <!-- 실제 시나리오 -->
+  <div class="label">해석 시나리오: 수율 예측 모델 — 무엇이 잘못됐는가</div>
+
+  <div class="box box-red">
+    <div class="box-title">상황</div>
+    <p>
+      수율 예측 모델 개발. XGBoost 사용. 학습 데이터: 2024년 전체 (1월~12월). <br>
+      결과: Train R² = 0.97, Test R² = 0.95 — 우수한 성능.<br>
+      배포 후 2025년 1월부터 실제 성능이 급격히 저하됨.<br><br>
+      <strong>진단 질문들:</strong><br>
+      ① train_test_split을 어떻게 했는가? (random? time-based?)<br>
+      ② Scaler fit을 어디에서 했는가?<br>
+      ③ Rolling 변수 계산 시 전체 데이터를 먼저 계산했는가?<br>
+      ④ 2024년과 2025년 공정 조건이 다른가?
+    </p>
+  </div>
+
+  <div class="timeline-row">
+    <div class="tl-card bad">
+      <div class="tl-head">❌ 문제였을 경우</div>
+      <div class="tl-body">
+        random split 사용 → 2024년 12월 데이터가 Train에 포함<br>
+        전체 데이터로 Scaler fit → Test 분포가 이미 반영<br>
+        → R² 0.95는 실제 성능이 아닌 Leakage 착시<br>
+        → 2025년 새 데이터는 이 Leakage의 혜택을 받지 못함
+      </div>
+    </div>
+    <div class="tl-card ok">
+      <div class="tl-head">✅ 올바른 재설계</div>
+      <div class="tl-body">
+        시점 기준 split: 1~10월 Train, 11~12월 Test<br>
+        Train에만 Scaler fit<br>
+        Rolling 변수는 t 시점 이전 데이터만 사용<br>
+        → 검증 성능이 낮아지더라도 신뢰할 수 있는 숫자
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 05b: 배포 후 입력 데이터 문제 ── -->
+<div class="section-block" id="s5b">
+  <div class="section-header">
+    <span class="section-num">05+</span>
+    <span class="section-title">배포 후 입력 데이터 문제 — 변수가 달라지면 어떻게 되는가</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> 모델은 학습 때의 입력 형태를 기억합니다. 배포 후 입력이 달라지면 — 새 값이 생기거나, 변수가 사라지거나 — 모델은 대부분 조용히 틀립니다.</div>
+
+  <!-- 두 가지 문제 유형 개요 -->
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">문제 유형 A — 새 카테고리 등장</div>
+      <p style="font-size:12px;">
+        학습 때 없던 카테고리 값이 배포 후 들어오는 경우.<br><br>
+        신규 설비 라인, 새 원자재 공급사, 새 제품 코드, 새 작업자 코드 등 — 운영 중에 계속 생깁니다.<br><br>
+        일반 ML은 배포 전 전체 카테고리를 파악할 수 있습니다.<br>
+        시계열은 미래에 어떤 값이 생길지 알 수 없습니다.
+      </p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">문제 유형 B — 변수 소실</div>
+      <p style="font-size:12px;">
+        학습 때 쓴 변수가 배포 후 사라지는 경우.<br><br>
+        센서 고장, 측정 중단, 시스템 오류로 인한 컬럼 결측 — 예고 없이 발생합니다.<br><br>
+        모델은 학습 때의 변수 목록 그대로 입력을 받습니다.<br>
+        변수 하나가 빠지면 shape 불일치 에러 또는 조용한 오예측이 발생합니다.
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 유형 A: 새 카테고리 -->
+  <div class="label">문제 유형 A — 새 카테고리 등장 시 인코딩별 결과</div>
+  <table>
+    <thead>
+      <tr><th>인코딩 방식</th><th>새 카테고리가 들어왔을 때</th><th>결과</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>One-hot encoding</strong></td>
+        <td>해당 컬럼이 아예 없음</td>
+        <td class="neg">에러 발생 또는 전부 0 처리 → "해당 없음"으로 해석</td>
+      </tr>
+      <tr>
+        <td><strong>Label encoding</strong></td>
+        <td>학습 때 없던 숫자 임의 할당</td>
+        <td class="neg">에러 없이 의미 없는 숫자로 예측 → <strong>조용히 틀림</strong></td>
+      </tr>
+      <tr>
+        <td><strong>Target encoding</strong></td>
+        <td>인코딩 값 자체가 없음</td>
+        <td class="neg">NaN 처리 → 에러 또는 전체 평균으로 대체</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="label">유형 A 대응 방식</div>
+  <div class="grid-3">
+    <div class="box box-amber">
+      <div class="box-title">방식 1 — Unknown 버킷</div>
+      <p style="font-size:12px;">
+        학습 시 "기타/UNKNOWN" 카테고리를 미리 포함.<br>
+        새 값 → 여기로 배정 → 에러 없이 동작.<br><br>
+        ✓ 구현 단순, 즉시 적용 가능<br>
+        ✕ 새 카테고리 특성은 전혀 반영 못 함
+      </p>
+    </div>
+    <div class="box box-blue">
+      <div class="box-title">방식 2 — 빈도 기반 인코딩</div>
+      <p style="font-size:12px;">
+        카테고리 이름 대신 등장 횟수로 인코딩.<br>
+        새 값 → 자동으로 0 처리.<br><br>
+        ✓ 새 값 자동 처리, 희귀도 신호 포함<br>
+        ✕ 카테고리 자체의 의미 반영 안 됨
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">방식 3 — 재학습 트리거</div>
+      <p style="font-size:12px;">
+        새 카테고리 등장을 이벤트로 감지.<br>
+        단기: 방식 1/2 임시 처리<br>
+        데이터 충분히 쌓이면 → 재학습<br><br>
+        ✓ 장기적으로 가장 정확<br>
+        ✕ 즉각 대응 불가
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- 유형 B: 변수 소실 -->
+  <div class="label">문제 유형 B — 센서 고장으로 변수가 사라질 때</div>
+  <table>
+    <thead>
+      <tr><th>처리 방식</th><th>어떻게 되는가</th><th>위험도</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>컬럼을 아예 안 넘김</strong></td>
+        <td>입력 shape 불일치 → 모델 에러, 예측 불가</td>
+        <td class="neg">즉시 발견됨 — 차라리 낫다</td>
+      </tr>
+      <tr>
+        <td><strong>NaN으로 채워서 넘김</strong></td>
+        <td>에러 없이 동작하지만 예측 품질 저하</td>
+        <td class="warn-td">모델에 따라 다름. 트리 계열은 NaN 처리 가능</td>
+      </tr>
+      <tr>
+        <td><strong>0으로 채워서 넘김</strong></td>
+        <td>0이 실제 센서 값처럼 해석됨</td>
+        <td class="neg">조용히 틀림 — 가장 위험. 온도 0°C처럼 해석</td>
+      </tr>
+      <tr>
+        <td><strong>직전 값으로 채움 (Forward fill)</strong></td>
+        <td>단기 고장 시 합리적 대체</td>
+        <td class="pos">단기(수 시점)는 안전. 장기 고장엔 부적합</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 성능 영향 개념 SVG -->
+  <div class="label">변수 중요도에 따른 성능 영향</div>
+  <svg width="100%" viewBox="0 0 720 130" role="img" style="margin-bottom:12px">
+    <title>센서 고장 시 Feature importance에 따른 성능 영향</title>
+    <defs>
+      <marker id="arrfi" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#ccc9be" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+    </defs>
+
+    <!-- 케이스 1: 낮은 중요도 -->
+    <rect x="10" y="10" width="210" height="110" rx="6" fill="none" stroke="#b8d8bf" stroke-width="1"/>
+    <text x="115" y="30" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a5a2a" font-weight="500">Feature importance 낮은 변수 고장</text>
+    <!-- 성능 바 -->
+    <rect x="30" y="44" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="30" y="44" width="90" height="14" rx="3" fill="#1a5a2a" opacity=".7"/>
+    <text x="115" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#fff">고장 전 성능</text>
+    <rect x="30" y="66" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="30" y="66" width="84" height="14" rx="3" fill="#1a5a2a" opacity=".5"/>
+    <text x="115" y="78" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#fff">고장 후 성능</text>
+    <text x="115" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a5a2a">성능 영향 미미</text>
+    <text x="115" y="114" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">다른 변수로 보완 가능</text>
+
+    <!-- 케이스 2: 높은 중요도 -->
+    <rect x="255" y="10" width="210" height="110" rx="6" fill="none" stroke="#dfb8b8" stroke-width="1"/>
+    <text x="360" y="30" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">Feature importance 높은 변수 고장</text>
+    <rect x="275" y="44" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="275" y="44" width="150" height="14" rx="3" fill="#8a1a1a" opacity=".7"/>
+    <text x="360" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#fff">고장 전 성능</text>
+    <rect x="275" y="66" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="275" y="66" width="60" height="14" rx="3" fill="#8a1a1a" opacity=".4"/>
+    <text x="360" y="78" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">고장 후 성능</text>
+    <text x="360" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a">성능 급락</text>
+    <text x="360" y="114" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">즉시 재학습 또는 대체 필요</text>
+
+    <!-- 케이스 3: 상관 높은 변수 -->
+    <rect x="500" y="10" width="210" height="110" rx="6" fill="none" stroke="#e8cc98" stroke-width="1"/>
+    <text x="605" y="30" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#7a4a00" font-weight="500">다른 변수와 상관 높은 변수 고장</text>
+    <rect x="520" y="44" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="520" y="44" width="130" height="14" rx="3" fill="#7a4a00" opacity=".7"/>
+    <text x="605" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#fff">고장 전 성능</text>
+    <rect x="520" y="66" width="170" height="14" rx="3" fill="#e2e0d8"/>
+    <rect x="520" y="66" width="105" height="14" rx="3" fill="#7a4a00" opacity=".5"/>
+    <text x="605" y="78" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#fff">고장 후 성능</text>
+    <text x="605" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#7a4a00">부분 보완됨</text>
+    <text x="605" y="114" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">상관 변수가 간접 보완</text>
+  </svg>
+
+  <div class="label">유형 B 대응 방식 — 고장 기간에 따라</div>
+  <table>
+    <thead>
+      <tr><th>고장 기간</th><th>권장 대응</th><th>이유</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>수 시점 ~ 수 시간</strong><br><span style="font-size:11px;color:var(--text3)">일시적 오류</span></td>
+        <td class="pos">Forward fill (직전 값 유지)</td>
+        <td class="muted">센서 값은 연속적 — 직전 값이 합리적 추정치</td>
+      </tr>
+      <tr>
+        <td><strong>수 일 ~ 수 주</strong><br><span style="font-size:11px;color:var(--text3)">장기 고장</span></td>
+        <td class="warn-td">상관 변수로 회귀 추정 또는 해당 변수 제외 후 재학습</td>
+        <td class="muted">Forward fill 오차 누적. Feature importance 확인 후 판단</td>
+      </tr>
+      <tr>
+        <td><strong>영구 철거 / 측정 중단</strong></td>
+        <td class="neg">해당 변수 제외하고 반드시 재학습</td>
+        <td class="muted">없는 변수를 NaN/0으로 계속 채우면 모델이 체계적으로 틀림</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <!-- 두 문제 공통 원칙 -->
+  <div class="label">두 문제의 공통 원칙 — 입력 모니터링이 성능 모니터링만큼 중요하다</div>
+  <div class="box box-blue">
+    <div class="box-title">입력 데이터 모니터링 체계</div>
+    <p>
+      배포 후 예측 오차만 보는 것으로는 부족합니다.<br>
+      오차가 나빠지기 <strong>전에</strong> 입력 데이터 자체를 모니터링해야 합니다.<br><br>
+      모니터링 항목:<br>
+      □ 학습 때 없던 카테고리 값이 들어오는가?<br>
+      □ 특정 컬럼에 NaN 비율이 갑자기 높아지는가?<br>
+      □ 각 변수의 분포가 학습 시점과 크게 달라지는가? (평균, 표준편차 비교)<br>
+      □ 입력 shape(컬럼 수)이 바뀌었는가?<br><br>
+      이 중 하나라도 발생하면 → 성능 오차가 나빠지기 전에 알림 발송.
+    </p>
+  </div>
+
+  <!-- 공통 대응 흐름 SVG -->
+  <svg width="100%" viewBox="0 0 720 90" role="img" style="margin-bottom:12px">
+    <title>입력 데이터 문제 공통 대응 흐름</title>
+    <defs>
+      <marker id="arrinp" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#ccc9be" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+    </defs>
+    <rect x="10" y="15" width="150" height="58" rx="6" fill="#f8eaea" stroke="#dfb8b8"/>
+    <text x="85" y="38" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">입력 이상 감지</text>
+    <text x="85" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">새 카테고리 / NaN 급증</text>
+    <text x="85" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">/ 컬럼 소실</text>
+
+    <line x1="160" y1="44" x2="183" y2="44" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrinp)"/>
+
+    <rect x="185" y="15" width="165" height="58" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="268" y="38" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#7a4a00" font-weight="500">즉시 임시 처리</text>
+    <text x="268" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#7a4a00">Unknown 버킷 / Forward fill</text>
+    <text x="268" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#7a4a00">+ 성능 모니터링 강화</text>
+
+    <line x1="350" y1="44" x2="373" y2="44" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrinp)"/>
+
+    <rect x="375" y="15" width="165" height="58" rx="6" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="458" y="38" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a4f8a" font-weight="500">중요도 / 기간 판단</text>
+    <text x="458" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">Feature importance 확인</text>
+    <text x="458" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">고장 지속 기간 예상</text>
+
+    <line x1="540" y1="44" x2="563" y2="44" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrinp)"/>
+
+    <rect x="565" y="15" width="145" height="58" rx="6" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="638" y="38" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a5a2a" font-weight="500">재학습 여부 결정</text>
+    <text x="638" y="52" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a5a2a">중요도 높거나 장기화 →</text>
+    <text x="638" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a5a2a">PHASE 2로 돌아가 재학습</text>
+  </svg>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문</div>
+    <div class="q-text">"핵심 온도 센서가 갑자기 고장났습니다. Feature importance 1위 변수입니다. 센서 수리까지 3일이 걸립니다. 이 3일 동안 모델을 어떻게 운영하겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 06: 해석 연습 ── -->
+<div class="section-block" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">해석 연습 — 시계열 결과 설명하기</span>
+    <span class="section-time">20 min</span>
+  </div>
+
+  <div class="note">코드를 짤 수 없어도, 결과를 받았을 때 "이 결과가 신뢰할 수 있는가?"를 판단하고 설명할 수 있어야 합니다.</div>
+
+  <!-- 결과 보고서 예시 -->
+  <div class="label">예시 시나리오: AI팀에서 아래 결과를 보고했습니다</div>
+  <div class="box">
+    <div class="box-title" style="color:var(--text2)">보고 내용</div>
+    <p>
+      모델: XGBoost<br>
+      데이터: 2023~2024년 센서 데이터 (24개월)<br>
+      변수: 온도, 압력, 유량, 전류, rolling_mean_7일, lag_1<br>
+      검증: 80/20 random split<br>
+      Train R²: 0.96 / Test R²: 0.94<br>
+      결론: "높은 예측 정확도로 수율 예측 가능. 즉시 배포 추천"
+    </p>
+  </div>
+
+  <div class="label">여러분이 확인해야 할 것들</div>
+  <ul class="checklist">
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body">"80/20 random split" — 시계열에 random split 사용
+        <div class="sub">24개월 데이터를 무작위로 섞었다면, 2024년 데이터가 Train에 들어가고 2023년 데이터가 Test에 들어간 상태. 미래를 보고 과거를 예측하는 구조. R² 0.94는 신뢰 불가.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body">rolling_mean_7일 — 계산 순서 확인 필요
+        <div class="sub">전체 데이터에서 먼저 rolling을 계산한 후 split했다면, center=True가 아니더라도 split 경계 근처 데이터에서 오염 가능. 언제 rolling을 계산했는지 코드 확인 필요.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">Train R² 0.96 vs Test R² 0.94 — 차이가 너무 작을 수 있음
+        <div class="sub">일반적으로 Train이 Test보다 높은 게 정상. 차이가 0.02라면 Leakage로 인해 Test 성능이 부풀려진 것일 수 있음. 또는 모델이 충분히 복잡하지 않아 과적합이 없는 것일 수 있음 — 양쪽 가능성 모두 확인.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">2023~2024 데이터 — 공정 변경 이벤트 없었는지 확인
+        <div class="sub">2년간 레시피 변경, 설비 교체, 원자재 변경이 있었다면 초기 모델이 후기 공정을 제대로 반영 못할 수 있음.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">lag_1 변수 사용 — 시계열 특성을 반영하려는 시도 자체는 올바름
+        <div class="sub">다만 lag 변수 계산 시 split 이후에 했는지 확인. 올바른 lag 계산이었다면 이 변수는 유의미한 정보를 담고 있을 가능성이 높음.</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="box box-blue">
+    <div class="box-title">올바른 피드백 방식</div>
+    <p>
+      ❌ "이 결과는 잘못됐습니다. 못 믿겠습니다."<br><br>
+      ✅ "검증 방식을 시점 기준으로 재설계하면 좋겠습니다. random split을 사용하셨는데, 시계열 데이터에서는 시간 순서를 유지해야 실제 운영 환경의 성능을 올바르게 추정할 수 있습니다. 1~20개월 Train / 21~24개월 Test 방식으로 재검증 후 결과를 다시 보면, 지금 0.94보다 낮게 나올 수 있지만 그게 실제 성능에 더 가깝습니다."
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">그룹 토론 (핵심)</div>
+    <div class="q-text">"시점 기준으로 재검증했더니 R²가 0.94 → 0.78로 낮아졌습니다. 이 결과를 어떻게 해석하고, 경영진에게 어떻게 보고하시겠습니까? '모델이 나빠진 것'인가요, 아니면 '더 정직한 숫자를 얻은 것'인가요?"</div>
+  </div>
+</div>
+
+<!-- ── 06b: 모델 선택 ── -->
+<div class="section-block" id="s6b">
+  <div class="section-header">
+    <span class="section-num">06+</span>
+    <span class="section-title">시계열 전용 모델 vs 일반 ML — 어떤 걸 쓸 것인가</span>
+    <span class="section-time">25 min</span>
+  </div>
+
+  <div class="note"><strong>핵심 질문:</strong> "시계열이면 ARIMA 써야 하나요?" — 정답은 없습니다. 어떤 문제냐에 따라 달라집니다. 판단 기준을 익히는 게 목표입니다.</div>
+
+  <!-- 두 진영 개요 -->
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">시계열 전용 모델</div>
+      <p style="font-size:13px;">
+        <strong>대표:</strong> ARIMA, SARIMA, Prophet, Exponential Smoothing<br><br>
+        <strong>핵심 원리:</strong> "과거 값의 패턴만으로 미래를 예측한다"<br>
+        y 자체의 시간 구조(추세, 계절성, 자기상관)를 수식으로 모델링<br><br>
+        <strong>입력:</strong> y 시계열 하나 (또는 소수의 외부 변수)<br>
+        <strong>강점:</strong> 외부 변수 없어도 동작. 결과 해석이 직관적. 불확실성 구간 제공<br>
+        <strong>약점:</strong> 외부 요인(공정 조건 변화) 반영이 제한적. 변수가 많을 때 약함
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">일반 ML + 시계열 피처</div>
+      <p style="font-size:13px;">
+        <strong>대표:</strong> XGBoost + Lag/Rolling 변수, LinearRegression + 시계열 피처<br><br>
+        <strong>핵심 원리:</strong> "과거 패턴을 변수로 만들어서 일반 모델에 넣는다"<br>
+        lag_1, rolling_mean_7 같은 피처를 직접 설계해서 기존 모델에 투입<br><br>
+        <strong>입력:</strong> y의 lag/rolling + 외부 변수 (온도, 압력, 설비 조건 등) 함께<br>
+        <strong>강점:</strong> 외부 요인과 시계열 패턴을 동시에 활용. 변수 많을 때 강함<br>
+        <strong>약점:</strong> 피처 설계를 직접 해야 함. Leakage 위험. 불확실성 구간 없음
+      </p>
+    </div>
+  </div>
+
+  <!-- 원리 시각화: ARIMA -->
+  <div class="label">시계열 전용 모델 원리 — ARIMA 직관</div>
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-blue">ARIMA</span>
+      <div>
+        <div class="cc-name">AR + I + MA — 세 가지 메커니즘의 조합</div>
+        <div class="cc-essence">과거 값, 과거 오차, 차분(differencing)을 조합해서 다음 시점을 예측합니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        <strong>AR (AutoRegressive) — 자기 자신의 과거 값으로 예측</strong><br>
+        "오늘 온도 = 어제 온도 × 0.7 + 그제 온도 × 0.2 + 상수"<br>
+        주식, 센서 신호처럼 직전 값이 다음 값에 강하게 영향을 줄 때 유효<br><br>
+        <strong>I (Integrated) — 차분으로 추세 제거</strong><br>
+        원래 값이 계속 올라가는 추세라면 → "이번 값 - 저번 값"의 차이(변화량)로 변환<br>
+        변화량은 추세 없이 일정한 범위 안에서 움직임 → 모델이 학습하기 쉬워짐<br><br>
+        <strong>MA (Moving Average) — 과거 예측 오차로 보정</strong><br>
+        "이번 예측 오차 = 지난번 예측이 얼마나 틀렸는지 × 가중치"<br>
+        갑작스러운 충격(이벤트) 이후 값을 보정하는 역할
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag ok"><div class="ct-label">잘 맞는 상황</div>y 자체의 패턴이 강하고 반복적일 때. 외부 변수 없이 순수 시계열만 있을 때.</div>
+      <div class="cc-tag bad"><div class="ct-label">잘 안 맞는 상황</div>공정 조건 변경처럼 외부 요인이 y를 결정할 때. 설명 변수가 많을 때.</div>
+    </div>
+  </div>
+
+  <!-- 원리 시각화: ARIMA 수식 SVG -->
+  <svg width="100%" viewBox="0 0 720 130" role="img" style="margin-bottom:16px">
+    <title>ARIMA 구성 요소 직관 시각화</title>
+    <!-- AR 박스 -->
+    <rect x="20" y="20" width="200" height="90" rx="6" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="120" y="44" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a4f8a" font-weight="500">AR — 자기회귀</text>
+    <text x="120" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a1917">y(t) ≈ φ₁·y(t-1) + φ₂·y(t-2)</text>
+    <text x="120" y="82" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">과거 값의 가중합</text>
+    <text x="120" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">→ p개 lag 사용</text>
+
+    <!-- 더하기 기호 -->
+    <text x="238" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="20" fill="#ccc9be">+</text>
+
+    <!-- I 박스 -->
+    <rect x="258" y="20" width="200" height="90" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="358" y="44" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#7a4a00" font-weight="500">I — 차분</text>
+    <text x="358" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a1917">Δy(t) = y(t) − y(t-1)</text>
+    <text x="358" y="82" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">추세 제거 → 정상성 확보</text>
+    <text x="358" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">→ d번 차분</text>
+
+    <!-- 더하기 기호 -->
+    <text x="476" y="72" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="20" fill="#ccc9be">+</text>
+
+    <!-- MA 박스 -->
+    <rect x="496" y="20" width="200" height="90" rx="6" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="596" y="44" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a5a2a" font-weight="500">MA — 이동평균 오차</text>
+    <text x="596" y="64" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a1917">y(t) ≈ μ + θ₁·ε(t-1)</text>
+    <text x="596" y="82" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">과거 오차로 보정</text>
+    <text x="596" y="100" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#6b6860">→ q개 오차항 사용</text>
+  </svg>
+
+  <!-- 원리: ML + 피처 -->
+  <div class="label">일반 ML + 시계열 피처 원리 — "직접 변수를 설계한다"</div>
+  <div class="concept-card">
+    <div class="cc-head">
+      <span class="cc-badge badge-green">ML + Lag/Rolling</span>
+      <div>
+        <div class="cc-name">시계열 패턴을 변수로 손수 만들어서 기존 모델에 투입</div>
+        <div class="cc-essence">ARIMA가 수식으로 자동 처리하는 것을, 사람이 직접 피처로 만들어 넣는 방식입니다.</div>
+      </div>
+    </div>
+    <div class="cc-body">
+      <p>
+        ARIMA의 AR 효과 → <strong>lag 변수</strong>로 구현: <code>lag_1 = y(t-1)</code>, <code>lag_2 = y(t-2)</code><br>
+        ARIMA의 추세 효과 → <strong>rolling 통계</strong>로 구현: <code>rolling_mean_7 = 최근 7시점 평균</code><br>
+        그 외 → 공정 조건, 설비 상태, 시간대, 요일 등 <strong>외부 변수</strong> 함께 투입<br><br>
+        만들어진 피처 테이블을 XGBoost, LinearRegression에 그냥 넣으면 됩니다.<br>
+        모델 입장에서는 "그냥 숫자 테이블" — 시계열인지 모릅니다.<br><br>
+        <strong>핵심 장점:</strong> 외부 변수와 시계열 패턴을 동시에 반영할 수 있습니다.<br>
+        공정 온도·압력 같은 제어 가능한 변수와 과거 수율 패턴을 함께 쓸 수 있다는 게 제조 현장에서 강점입니다.
+      </p>
+    </div>
+    <div class="cc-foot">
+      <div class="cc-tag ok"><div class="ct-label">잘 맞는 상황</div>외부 변수(공정 조건)가 y를 강하게 설명할 때. 변수가 많을 때. 기존 ML 파이프라인 재사용 가능할 때.</div>
+      <div class="cc-tag bad"><div class="ct-label">주의할 것</div>피처 설계 실수 → Leakage. 외부 변수가 없고 순수 패턴만 있다면 ARIMA가 더 단순하고 안전.</div>
+    </div>
+  </div>
+
+  <!-- 핵심 비교: 판단 기준 -->
+  <div class="label">어떤 걸 선택할지 — 판단 기준</div>
+  <table>
+    <thead>
+      <tr><th>판단 기준</th><th>시계열 전용 모델 (ARIMA 등)</th><th>일반 ML + 시계열 피처</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>외부 변수 있는가?</strong></td>
+        <td class="muted">없거나 소수 → 적합</td>
+        <td class="pos">많을수록 → 강함</td>
+      </tr>
+      <tr>
+        <td><strong>y 자체의 패턴이 강한가?</strong></td>
+        <td class="pos">강할수록 → 적합 (자기상관 높음)</td>
+        <td class="muted">약해도 외부 변수로 보완 가능</td>
+      </tr>
+      <tr>
+        <td><strong>불확실성 구간이 필요한가?</strong></td>
+        <td class="pos">기본 제공 (신뢰구간 출력)</td>
+        <td class="neg">기본 없음 (별도 구현 필요)</td>
+      </tr>
+      <tr>
+        <td><strong>공정 변경 / 이벤트 반영?</strong></td>
+        <td class="warn-td">제한적 (Prophet은 일부 가능)</td>
+        <td class="pos">변수로 직접 추가 가능</td>
+      </tr>
+      <tr>
+        <td><strong>해석 용이성</strong></td>
+        <td class="pos">파라미터 의미가 명확</td>
+        <td class="warn-td">Feature importance로 간접 확인</td>
+      </tr>
+      <tr>
+        <td><strong>데이터 양</strong></td>
+        <td class="pos">적은 데이터에서도 동작</td>
+        <td class="warn-td">Lag/Rolling 피처 생성에 충분한 데이터 필요</td>
+      </tr>
+      <tr>
+        <td><strong>Leakage 위험</strong></td>
+        <td class="pos">모델 내부에서 처리 → 낮음</td>
+        <td class="neg">피처 설계 실수 → 높음</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- 결정 흐름도 SVG — 확장판 -->
+  <div class="label">모델 선택 → 학습 범위 → 재학습 전체 흐름도</div>
+  <svg width="100%" viewBox="0 0 860 760" role="img" style="margin-bottom:16px">
+    <title>시계열 모델 선택부터 재학습까지 전체 흐름도</title>
+    <defs>
+      <marker id="arrf" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#ccc9be" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arrf-blue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#b8ccdf" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arrf-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#b8d8bf" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+      <marker id="arrf-red" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+        <path d="M2 2L8 5L2 8" fill="none" stroke="#dfb8b8" stroke-width="1.5" stroke-linecap="round"/>
+      </marker>
+    </defs>
+
+    <!-- ═══ PHASE 1: 모델 선택 ═══ -->
+    <rect x="320" y="8" width="220" height="22" rx="4" fill="#f0efe9"/>
+    <text x="430" y="23" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890" letter-spacing=".08em">PHASE 1 — 모델 선택</text>
+
+    <!-- 시작 -->
+    <rect x="305" y="36" width="250" height="36" rx="6" fill="#f0efe9" stroke="#ccc9be"/>
+    <text x="430" y="59" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#1a1917" font-weight="500">시계열 예측 문제 시작</text>
+
+    <line x1="430" y1="72" x2="430" y2="98" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- Q1 -->
+    <rect x="255" y="98" width="350" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="121" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">외부 변수(센서·공정 조건)가 많은가?</text>
+    <!-- Q1 YES -->
+    <line x1="605" y1="116" x2="660" y2="116" stroke="#b8d8bf" stroke-width="1.5" marker-end="url(#arrf-green)"/>
+    <text x="632" y="110" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a5a2a">YES</text>
+    <rect x="662" y="100" width="148" height="32" rx="5" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="736" y="117" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a5a2a" font-weight="500">ML + 피처</text>
+    <text x="736" y="129" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a5a2a">XGBoost / Linear + Lag</text>
+    <!-- Q1 NO -->
+    <line x1="430" y1="134" x2="430" y2="160" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+    <text x="442" y="151" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">NO</text>
+
+    <!-- Q2 -->
+    <rect x="240" y="160" width="380" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="183" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">y 자체의 계절성 / 추세가 뚜렷한가?</text>
+    <!-- Q2 YES -->
+    <line x1="620" y1="178" x2="660" y2="178" stroke="#b8ccdf" stroke-width="1.5" marker-end="url(#arrf-blue)"/>
+    <text x="640" y="172" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a4f8a">YES</text>
+    <rect x="662" y="162" width="148" height="32" rx="5" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="736" y="179" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a4f8a" font-weight="500">SARIMA / Prophet</text>
+    <text x="736" y="191" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">계절성 반영</text>
+    <!-- Q2 NO -->
+    <line x1="430" y1="196" x2="430" y2="222" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+    <text x="442" y="213" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">NO</text>
+
+    <!-- Q3 -->
+    <rect x="255" y="222" width="350" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="245" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">불확실성 구간(신뢰구간)이 필요한가?</text>
+    <!-- Q3 YES -->
+    <line x1="605" y1="240" x2="660" y2="240" stroke="#b8ccdf" stroke-width="1.5" marker-end="url(#arrf-blue)"/>
+    <text x="632" y="234" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a4f8a">YES</text>
+    <rect x="662" y="224" width="148" height="32" rx="5" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="736" y="241" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a4f8a" font-weight="500">ARIMA</text>
+    <text x="736" y="253" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">신뢰구간 기본 제공</text>
+    <!-- Q3 NO -->
+    <line x1="430" y1="258" x2="430" y2="284" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+    <text x="442" y="275" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">NO</text>
+
+    <!-- 모델 선택 최종 -->
+    <rect x="305" y="284" width="250" height="36" rx="6" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="430" y="303" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a5a2a" font-weight="500">ML + 시계열 피처</text>
+    <text x="430" y="316" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a5a2a">단순·외부변수 활용 용이</text>
+
+    <!-- 오른쪽 결과들에서 아래로 합류 화살표 -->
+    <!-- ML+피처(Q1) → 합류 -->
+    <line x1="736" y1="132" x2="736" y2="344" stroke="#b8d8bf" stroke-width="1" stroke-dasharray="3 2"/>
+    <line x1="736" y1="344" x2="592" y2="344" stroke="#b8d8bf" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrf-green)"/>
+    <!-- SARIMA → 합류 -->
+    <line x1="736" y1="194" x2="736" y2="344" stroke="#b8ccdf" stroke-width="0" />
+    <!-- ARIMA → 합류 -->
+    <line x1="736" y1="256" x2="736" y2="344" stroke="#b8ccdf" stroke-width="0"/>
+
+    <!-- 중앙선 → 합류 -->
+    <line x1="430" y1="320" x2="430" y2="344" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- ═══ PHASE 2 구분선 ═══ -->
+    <line x1="30" y1="356" x2="830" y2="356" stroke="#e2e0d8" stroke-width="0.8" stroke-dasharray="6 4"/>
+    <rect x="320" y="346" width="220" height="20" rx="4" fill="#f0efe9"/>
+    <text x="430" y="360" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890" letter-spacing=".08em">PHASE 2 — 학습 데이터 범위 결정</text>
+
+    <!-- 합류점 -->
+    <rect x="280" y="366" width="300" height="32" rx="6" fill="#f0efe9" stroke="#ccc9be"/>
+    <text x="430" y="387" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a1917" font-weight="500">모델 확정 → 학습 범위 결정 시작</text>
+
+    <line x1="430" y1="398" x2="430" y2="420" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- Step A: 공정 안정성 -->
+    <rect x="200" y="420" width="460" height="36" rx="6" fill="#f8eaea" stroke="#dfb8b8"/>
+    <text x="430" y="439" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#8a1a1a" font-weight="500">Step A — 공정 변경 이력 확인</text>
+    <text x="430" y="451" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">레시피·설비·원자재 변경 시점 → 그 이전 데이터는 원칙 제외</text>
+    <!-- StepA 분기 YES -->
+    <line x1="660" y1="438" x2="710" y2="438" stroke="#dfb8b8" stroke-width="1.5" marker-end="url(#arrf-red)"/>
+    <text x="685" y="432" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">변경 있음</text>
+    <rect x="712" y="424" width="116" height="28" rx="4" fill="#f8eaea" stroke="#dfb8b8"/>
+    <text x="770" y="438" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">변경 후 데이터만</text>
+    <text x="770" y="449" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">또는 플래그 추가</text>
+
+    <line x1="430" y1="456" x2="430" y2="478" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- Step B: Horizon 기준 최소치 -->
+    <rect x="200" y="478" width="460" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="497" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">Step B — 예측 horizon으로 최소 범위 설정</text>
+    <text x="430" y="509" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#7a4a00">경험 기준: 학습 길이 ÷ horizon ≥ 10 / 계절성 있으면 반드시 1년 이상</text>
+
+    <line x1="430" y1="514" x2="430" y2="536" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- Step C: Walk-forward 성능 곡선 -->
+    <rect x="200" y="536" width="460" height="36" rx="6" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="430" y="555" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a4f8a" font-weight="500">Step C — Walk-forward로 범위 실측</text>
+    <text x="430" y="567" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">구간 늘리며 성능 변화 측정 → 정체 or 하락 지점이 적정 범위</text>
+    <!-- StepC 분기 -->
+    <line x1="660" y1="554" x2="710" y2="554" stroke="#b8ccdf" stroke-width="1.5" marker-end="url(#arrf-blue)"/>
+    <text x="685" y="548" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" fill="#1a4f8a">하락하면</text>
+    <rect x="712" y="540" width="116" height="28" rx="4" fill="#eaf0f8" stroke="#b8ccdf"/>
+    <text x="770" y="554" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">Rolling window</text>
+    <text x="770" y="565" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#1a4f8a">(최근 N개월만)</text>
+
+    <line x1="430" y1="572" x2="430" y2="592" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- 학습 범위 확정 -->
+    <rect x="290" y="592" width="280" height="28" rx="5" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="430" y="611" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#1a5a2a" font-weight="500">학습 데이터 범위 확정 → 배포</text>
+
+    <!-- ═══ PHASE 3 구분선 ═══ -->
+    <line x1="30" y1="632" x2="830" y2="632" stroke="#e2e0d8" stroke-width="0.8" stroke-dasharray="6 4"/>
+    <rect x="320" y="622" width="220" height="20" rx="4" fill="#f0efe9"/>
+    <text x="430" y="636" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#9b9890" letter-spacing=".08em">PHASE 3 — 재학습 주기 관리</text>
+
+    <line x1="430" y1="620" x2="430" y2="644" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- 배포 후 모니터링 -->
+    <rect x="200" y="644" width="460" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="663" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">배포 후 — 예측 오차 지속 모니터링</text>
+    <text x="430" y="675" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#7a4a00">실제 오차 vs 배포 시점 기준 임계값 비교</text>
+
+    <line x1="430" y1="680" x2="430" y2="702" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+
+    <!-- 재학습 트리거 -->
+    <rect x="235" y="702" width="390" height="36" rx="6" fill="#fdf3e0" stroke="#e8cc98"/>
+    <text x="430" y="721" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="11" fill="#7a4a00" font-weight="500">재학습 트리거 발생?</text>
+    <text x="430" y="733" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#7a4a00">임계값 초과 / 공정 변경 이벤트 / 정기 주기 도달</text>
+
+    <!-- 트리거 NO -->
+    <line x1="235" y1="720" x2="170" y2="720" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+    <text x="202" y="714" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" fill="#1a5a2a">NO</text>
+    <rect x="30" y="706" width="140" height="28" rx="4" fill="#eaf5ec" stroke="#b8d8bf"/>
+    <text x="100" y="725" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#1a5a2a">계속 모니터링</text>
+    <!-- 루프 표시 -->
+    <path d="M100 706 Q100 660 200 660" fill="none" stroke="#b8d8bf" stroke-width="1" stroke-dasharray="3 2" marker-end="url(#arrf-green)"/>
+
+    <!-- 트리거 YES → 재학습 -->
+    <line x1="430" y1="738" x2="430" y2="756" stroke="#ccc9be" stroke-width="1.5" marker-end="url(#arrf)"/>
+    <text x="442" y="752" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a">YES</text>
+    <rect x="290" y="756" width="280" height="0" rx="0"/>
+
+    <!-- 재학습 방식 분기 -->
+    <!-- 공정 변화? -->
+    <rect x="240" y="756" width="380" height="32" rx="5" fill="#f8eaea" stroke="#dfb8b8"/>
+    <text x="430" y="772" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="10" fill="#8a1a1a" font-weight="500">공정 변경이 원인인가?</text>
+    <text x="430" y="783" text-anchor="middle" font-family="IBM Plex Sans KR, sans-serif" font-size="9" fill="#8a1a1a">YES → PHASE 2로 돌아가 학습 범위 재결정 / NO → 데이터 추가 후 재학습</text>
+
+    <!-- PHASE 2로 루프 -->
+    <path d="M620 772 Q840 772 840 430 Q840 366 660 380" fill="none" stroke="#dfb8b8" stroke-width="1.2" stroke-dasharray="4 3" marker-end="url(#arrf-red)"/>
+    <text x="844" y="580" font-family="IBM Plex Mono, monospace" font-size="9" fill="#8a1a1a" transform="rotate(90,844,580)">공정 변경 → 범위 재결정</text>
+  </svg>
+
+  <!-- 제조 현장 시나리오 -->
+  <div class="label">제조 현장 시나리오별 판단</div>
+  <table>
+    <thead>
+      <tr><th>시나리오</th><th>추천 접근</th><th>이유</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>"다음 시간 수율을 예측하고 싶다. 센서 20개가 있다."</td>
+        <td class="pos">ML + 피처</td>
+        <td class="muted">외부 변수(센서 20개)가 많음. XGBoost + lag_1~3 + rolling 조합</td>
+      </tr>
+      <tr>
+        <td>"월별 생산량을 6개월 뒤까지 예측하고 싶다. 공정 데이터는 없고 생산량 이력만 있다."</td>
+        <td class="pos">SARIMA / Prophet</td>
+        <td class="muted">외부 변수 없음. 월별 계절성 뚜렷. y 자체의 패턴만 사용</td>
+      </tr>
+      <tr>
+        <td>"설비 이상을 미리 감지하고 싶다. 진동·전류 센서 있음."</td>
+        <td class="pos">ML + 피처</td>
+        <td class="muted">다변량 센서 + 이상 패턴 조합. rolling std(표준편차 급증)를 피처로 추가</td>
+      </tr>
+      <tr>
+        <td>"원자재 입고 수량을 예측해서 발주 최적화하고 싶다."</td>
+        <td class="warn-td">SARIMA → ML 순서로</td>
+        <td class="muted">계절성 있으면 SARIMA 먼저. 공급사·가격 변수 추가 시 ML로 확장</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-amber">
+    <div class="box-title">현실적인 조언 — 둘 다 해보는 것이 정답</div>
+    <p>
+      "ARIMA냐 XGBoost냐"를 이론으로 고르려 하면 막힙니다.<br>
+      실무에서는 <strong>둘 다 돌려보고 성능을 비교</strong>하는 게 표준입니다.<br><br>
+      단, 비교할 때 검증 방식은 반드시 동일하게 — 둘 다 시점 기반 split으로 평가해야 합니다.<br>
+      ARIMA는 시점 기반, XGBoost는 random split으로 비교하면 XGBoost가 불공정하게 유리해집니다.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문</div>
+    <div class="q-text">"현재 담당하시는 업무에서 예측이 필요한 지표가 있다면, 외부 변수가 있는가 없는가를 기준으로 어떤 접근을 쓸 것인지 한 가지만 말씀해 주세요."</div>
+  </div>
+</div>
+
+<!-- ── 07: Q&A ── -->
+<div class="section-block" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">정리 & Q&A</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Week 6 핵심 메시지</div>
+    <p>
+      시계열 데이터는 "행 순서에 의미가 있는 데이터"입니다.<br>
+      이 특성을 무시하면 모델 성능이 과대 추정되고, 실제 배포 후 성능이 떨어집니다.<br><br>
+      네 가지만 기억하세요:<br><br>
+      <strong>1. 검증은 반드시 시점 기준으로</strong> — random split은 시계열에 금지<br>
+      <strong>2. Leakage는 코드 한 줄에서 발생</strong> — Scaler, Rolling, Lag 변수 순서 확인<br>
+      <strong>3. 성능 숫자보다 검증 방식을 먼저 확인</strong> — R² 0.95도 Leakage가 있으면 무의미<br>
+      <strong>4. 외부 변수 유무가 모델 선택의 첫 번째 기준</strong> — 있으면 ML+피처, 없으면 전용 모델
+    </p>
+  </div>
+
+  <div class="label">Week 6 전체 흐름 요약</div>
+  <div class="grid-2">
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">이번 세션에서 다룬 것</div>
+      <p style="font-size:12px;">
+        시계열의 특징 (자기상관, 추세, 계절성, 비정상성)<br>
+        일반 ML과의 3가지 차이 (독립성·변수구성·검증)<br>
+        Leakage 3가지 유형 (Scaler, Rolling, 집계)<br>
+        올바른 검증 방식 (시점 기반, Walk-forward)<br>
+        시계열 전용 모델 vs ML+피처 선택 기준
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">실무 판단 체크리스트</div>
+      <p style="font-size:12px;">
+        □ 외부 변수가 많다 → ML + Lag/Rolling 피처<br>
+        □ 계절성·추세가 뚜렷하다 → SARIMA / Prophet<br>
+        □ 불확실성 구간 필요 → ARIMA<br>
+        □ 검증 방식 확인 → 시점 기준 split 여부<br>
+        □ 결과가 좋으면 → Leakage 먼저 의심
+      </p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script>
+  // 네비게이션 active 처리
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 1 — ML 흐름 & 선형 회귀 v3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --border2: #ccc9be;
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9b9890;
+    --blue: #1a4f8a;
+    --blue-bg: #eaf0f8;
+    --blue-border: #b8ccdf;
+    --red: #8a1a1a;
+    --red-bg: #f8eaea;
+    --red-border: #dfb8b8;
+    --amber: #7a4a00;
+    --amber-bg: #fdf3e0;
+    --amber-border: #e8cc98;
+    --green: #1a5a2a;
+    --green-bg: #eaf5ec;
+    --green-border: #b8d8bf;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+  }
+
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.7; padding: 0; }
+
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; display: flex; align-items: center; height: 48px; overflow-x: auto; gap: 0;
+  }
+  .nav-title { font-size: 12px; font-weight: 500; color: var(--text2); white-space: nowrap; margin-right: 24px; padding-right: 24px; border-right: 1px solid var(--border); }
+  .nav a { font-size: 12px; color: var(--text3); text-decoration: none; padding: 0 14px; height: 48px; display: flex; align-items: center; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .15s; }
+  .nav a:hover { color: var(--text); }
+  .nav a.active { color: var(--text); border-bottom-color: var(--text); }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 48px 40px 80px; }
+
+  .section-block { margin-bottom: 56px; }
+  .section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 28px; }
+  .section-title { font-size: 18px; font-weight: 500; }
+  .section-time { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+
+  .label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; }
+
+  .box { border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; background: var(--surface); margin-bottom: 12px; }
+  .box-blue { border-color: var(--blue-border); background: var(--blue-bg); }
+  .box-red { border-color: var(--red-border); background: var(--red-bg); }
+  .box-amber { border-color: var(--amber-border); background: var(--amber-bg); }
+  .box-green { border-color: var(--green-border); background: var(--green-bg); }
+  .box .box-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 5px; }
+  .box-blue .box-title { color: var(--blue); }
+  .box-red .box-title { color: var(--red); }
+  .box-amber .box-title { color: var(--amber); }
+  .box-green .box-title { color: var(--green); }
+  .box p { font-size: 13px; line-height: 1.65; color: var(--text); }
+  .box-red p { color: var(--red); }
+  .box-amber p { color: var(--amber); }
+
+  .note { border-left: 3px solid var(--border2); padding: 10px 14px; background: var(--surface2); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+
+  .q-box { border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; background: var(--surface2); margin-bottom: 8px; }
+  .q-box .q-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .q-box .q-text { font-size: 13px; color: var(--text); font-style: italic; }
+
+  .flow-row { display: flex; align-items: stretch; gap: 0; margin-bottom: 16px; flex-wrap: nowrap; overflow-x: auto; }
+  .flow-step { flex: 1; min-width: 90px; border: 1px solid var(--border); background: var(--surface); padding: 10px 12px; border-radius: 6px; display: flex; flex-direction: column; gap: 3px; }
+  .flow-step.warn { border-color: var(--amber-border); background: var(--amber-bg); }
+  .flow-step.critical { border-color: var(--red-border); background: var(--red-bg); }
+  .flow-step .step-n { font-family: var(--mono); font-size: 10px; color: var(--text3); }
+  .flow-step.warn .step-n { color: var(--amber); }
+  .flow-step.critical .step-n { color: var(--red); }
+  .flow-step .step-name { font-size: 13px; font-weight: 500; }
+  .flow-step.warn .step-name { color: var(--amber); }
+  .flow-step.critical .step-name { color: var(--red); }
+  .flow-step .step-sub { font-size: 11px; color: var(--text3); }
+  .flow-arrow { display: flex; align-items: center; padding: 0 6px; font-size: 14px; color: var(--text3); flex-shrink: 0; }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; }
+  @media (max-width: 640px) { .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; } }
+
+  .metric { background: var(--surface2); border-radius: 6px; padding: 12px 14px; border: 1px solid var(--border); }
+  .metric .m-label { font-size: 11px; color: var(--text3); margin-bottom: 4px; }
+  .metric .m-val { font-size: 20px; font-weight: 500; }
+  .metric .m-desc { font-size: 11px; color: var(--text2); margin-top: 3px; line-height: 1.5; }
+  .metric.danger { background: var(--red-bg); border-color: var(--red-border); }
+  .metric.danger .m-label { color: var(--red); }
+  .metric.danger .m-val { color: var(--red); }
+  .metric.warn { background: var(--amber-bg); border-color: var(--amber-border); }
+  .metric.warn .m-label { color: var(--amber); }
+  .metric.warn .m-val { color: var(--amber); }
+  .metric.good { background: var(--green-bg); border-color: var(--green-border); }
+  .metric.good .m-label { color: var(--green); }
+  .metric.good .m-val { color: var(--green); }
+  .metric.info { background: var(--blue-bg); border-color: var(--blue-border); }
+  .metric.info .m-label { color: var(--blue); }
+  .metric.info .m-val { color: var(--blue); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  th { font-size: 11px; font-weight: 500; color: var(--text3); text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 8px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  td.pos { color: var(--green); font-weight: 500; }
+  td.neg { color: var(--red); font-weight: 500; }
+  td.muted { color: var(--text3); font-size: 12px; }
+
+  .assump { border: 1px solid var(--border); border-radius: 6px; overflow: hidden; margin-bottom: 10px; }
+  .assump.critical { border-color: var(--red-border); }
+  .assump-head { display: flex; align-items: baseline; gap: 10px; padding: 9px 14px; background: var(--surface2); border-bottom: 1px solid var(--border); }
+  .assump.critical .assump-head { background: var(--red-bg); border-color: var(--red-border); }
+  .assump-head .a-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 14px; }
+  .assump-head .a-title { font-size: 13px; font-weight: 500; }
+  .assump-head .a-sub { font-size: 12px; color: var(--text2); }
+  .assump.critical .assump-head .a-title { color: var(--red); }
+  .assump.critical .assump-head .a-num { color: var(--red); }
+  .badge { font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 3px; margin-left: auto; white-space: nowrap; }
+  .badge-red { background: var(--red-bg); color: var(--red); border: 1px solid var(--red-border); }
+  .badge-amber { background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border); }
+  .assump-body { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .assump-col { padding: 10px 14px; font-size: 12px; line-height: 1.6; color: var(--text); border-right: 1px solid var(--border); }
+  .assump-col:last-child { border-right: none; }
+  .assump-col .c-lbl { font-family: var(--mono); font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: .04em; margin-bottom: 4px; }
+
+  .plot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .plot-card { border: 1px solid var(--border); border-radius: 6px; padding: 10px 12px; background: var(--surface); }
+  .plot-card.bad { border-color: var(--red-border); }
+  .plot-card.good { border-color: var(--green-border); }
+  .plot-card .p-title { font-size: 11px; color: var(--text2); margin-bottom: 4px; font-weight: 500; }
+  .plot-card .p-desc { font-size: 11px; color: var(--text3); margin-bottom: 6px; line-height: 1.5; }
+  .plot-card.bad .p-title { color: var(--red); }
+  .plot-card.good .p-title { color: var(--green); }
+
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+  .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; }
+  .checklist li .icon { color: var(--text3); margin-top: 1px; flex-shrink: 0; font-size: 13px; }
+  .checklist li .icon.ok { color: var(--green); }
+  .checklist li .icon.warn { color: var(--amber); }
+  .checklist li .icon.bad { color: var(--red); }
+  .checklist li .body { line-height: 1.6; }
+  .checklist li .body .sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  .chart-wrap { position: relative; width: 100%; height: 220px; margin-bottom: 12px; }
+
+  .changed-tag {
+    display: inline-block; font-size: 10px; font-weight: 500;
+    background: var(--amber-bg); color: var(--amber); border: 1px solid var(--amber-border);
+    border-radius: 3px; padding: 1px 7px; margin-left: 8px; vertical-align: middle;
+  }
+
+  hr { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+
+  @media print { .nav { display: none; } .page { padding: 24px; } .section-block { page-break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">Week 1 — ML 흐름 & 선형 회귀 v3</div>
+  <a href="#s0">ML 흐름</a>
+  <a href="#s1">선형 회귀</a>
+  <a href="#s2">Coefficient</a>
+  <a href="#s3">과적합</a>
+  <a href="#s4">선형 조건</a>
+  <a href="#s5">다중공선성</a>
+  <a href="#s6">결과 해석</a>
+  <a href="#s7">R²</a>
+</nav>
+
+<div class="page">
+
+  <!-- ── SECTION 0: ML 전체 흐름 ── -->
+  <div class="section-block" id="s0">
+    <div class="section-header">
+      <span class="section-num">00</span>
+      <span class="section-title">ML 전체 흐름</span>
+      <span class="section-time">10–15 min</span>
+    </div>
+
+    <div class="label">데이터 → 예측 → 해석 → 적용</div>
+    <div class="flow-row">
+      <div class="flow-step critical">
+        <span class="step-n">01</span>
+        <span class="step-name">데이터 수집</span>
+        <span class="step-sub">무엇을 가져올지부터 결정</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step warn">
+        <span class="step-n">02</span>
+        <span class="step-name">전처리</span>
+        <span class="step-sub">결측·이상치·스케일</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-n">03</span>
+        <span class="step-name">모델 학습</span>
+        <span class="step-sub">패턴 찾기</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-n">04</span>
+        <span class="step-name">예측</span>
+        <span class="step-sub">미학습 데이터 적용</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step warn">
+        <span class="step-n">05</span>
+        <span class="step-name">평가</span>
+        <span class="step-sub">지표 확인</span>
+      </div>
+      <div class="flow-arrow">→</div>
+      <div class="flow-step">
+        <span class="step-n">06</span>
+        <span class="step-name">해석·적용</span>
+        <span class="step-sub">의사결정 반영</span>
+      </div>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title">수집(01) — 가장 근본적인 단계 <span class="changed-tag">수정됨</span></div>
+      <p>
+        어떤 데이터를 가져올지 자체가 의사결정의 시작입니다. 변수 선택이 잘못되면 이후 모든 단계가 의미 없어집니다.<br><br>
+        수집에서 자주 생기는 문제 세 가지:<br>
+        · 0이 진짜 0인지, 수집 실패인지 구분 불가 — 수집 시점에 메타데이터가 없으면 나중에 절대 알 수 없음<br>
+        · 소스가 다르면 정렬 기준 불일치 — 센서 A는 1초, 센서 B는 5초 단위로 찍히면 어떤 시점 기준으로 붙이냐에 따라 데이터가 달라짐<br>
+        · 어떤 데이터를 가져올지 자체가 도메인 지식 — ML 지식보다 공정 지식이 필요한 결정
+      </p>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">전처리(02) — 수집 문제를 수습하는 단계</div>
+      <p>전처리에서 문제가 많이 발생하는 건 맞지만, 그 원인은 대부분 수집 단계에서 이미 만들어집니다. 전처리는 수집의 결과를 수습하는 단계에 가깝습니다.</p>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">평가(05) — 기준을 잘못 잡으면 잘못된 모델을 자신있게 배포</div>
+      <p>불균형 데이터에서 Accuracy만 보면 전부 다수 클래스로 예측해도 95%가 나옵니다. 평가 기준이 잘못되면 좋은 모델인지 나쁜 모델인지 판단 자체가 틀립니다.</p>
+    </div>
+
+    <div class="label" style="margin-top:8px">핵심 용어 정의 — 먼저 맞춰두기</div>
+    <table>
+      <thead>
+        <tr><th>용어</th><th>정확한 의미</th><th>자주 쓰는 애매한 표현</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>학습 (training)</strong></td>
+          <td>모델이 데이터의 X→y 패턴을 수치(계수)로 요약하는 과정. 정답(y)이 있는 데이터로 진행</td>
+          <td class="muted">"AI가 공부한다" — 맞지만 불명확</td>
+        </tr>
+        <tr>
+          <td><strong>미학습 데이터 (unseen data)</strong></td>
+          <td>모델이 학습에 전혀 사용하지 않은 데이터. 모델 입장에서 처음 보는 입력값</td>
+          <td class="muted">"새 데이터" — 새로 수집한 데이터로 오해될 수 있음</td>
+        </tr>
+        <tr>
+          <td><strong>훈련 데이터 (train set)</strong></td>
+          <td>모델 학습에 사용한 데이터. 이 데이터로 계수를 계산</td>
+          <td class="muted">"학습 데이터" — 동의어로 써도 무방</td>
+        </tr>
+        <tr>
+          <td><strong>테스트 데이터 (test set)</strong></td>
+          <td>학습에 사용하지 않고 성능 평가에만 쓰는 데이터. 학습 전에 따로 분리해둠</td>
+          <td class="muted">"검증 데이터" — 엄밀히는 validation과 다름</td>
+        </tr>
+        <tr>
+          <td><strong>예측값 (ŷ, y-hat)</strong></td>
+          <td>모델이 X를 입력받아 출력하는 숫자. 정답(y)과 비교해서 성능을 측정</td>
+          <td class="muted">"결과값" — 어떤 결과인지 불명확</td>
+        </tr>
+        <tr>
+          <td><strong>잔차 (residual)</strong></td>
+          <td>실제값(y) − 예측값(ŷ). 모델이 얼마나, 어떻게 틀렸는지를 나타내는 수치</td>
+          <td class="muted">"오차" — error와 혼용되지만 잔차가 더 구체적</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 1</div>
+      <div class="q-text">"보통 어느 단계에서 문제가 가장 많이 생긴다고 생각하세요? 그리고 왜 그럴까요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 1: 선형 회귀 ── -->
+  <div class="section-block" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">선형 회귀</span>
+      <span class="section-time">15 min</span>
+    </div>
+
+    <div class="note">X가 증가하면 y가 얼마나 변하는지, 그 관계를 <strong>직선 하나로 요약</strong>하는 모델</div>
+
+    <div class="label">선형이다 = X가 1 증가할 때 y의 변화량이 항상 일정하다 <span class="changed-tag">수정됨</span></div>
+    <div class="box box-blue">
+      <div class="box-title">선형의 정확한 의미</div>
+      <p>
+        X가 1에서 2가 될 때 y가 10 증가하고, X가 50에서 51이 될 때도 똑같이 10 증가하면 선형입니다. X가 어느 구간에 있든 변화량이 일정해야 합니다.<br><br>
+        비선형은 구간마다 변화량이 다른 것입니다. 온도가 10→20도일 때 반응속도가 2 증가하고, 60→70도일 때 15 증가한다면 비선형입니다.<br><br>
+        계수는 전체 데이터를 한꺼번에 사용해서 산출합니다. 구간별로 분리해서 계수를 만들지 않습니다. 그래서 계수가 유효한 X의 범위는 모델이 알려주지 않고, 사용자가 데이터 범위와 잔차 플롯을 보고 직접 판단해야 합니다.
+      </p>
+    </div>
+
+    <div class="grid-3">
+      <div class="box box-green">
+        <div class="box-title">잘 맞는 경우</div>
+        <p>X와 y 관계가 실제로 선형에 가까울 때. 변수가 적고 해석이 중요할 때</p>
+      </div>
+      <div class="box box-red">
+        <div class="box-title">잘 안 맞는 경우</div>
+        <p>비선형 관계 (곡선, 역U자)<br>이상치가 많을 때 — 이상치 하나가 회귀선 전체를 자기 쪽으로 당겨버림<br>변수 간 상호작용이 강할 때</p>
+      </div>
+      <div class="box">
+        <div class="box-title" style="color:var(--text2)">선형 회귀를 쓰는 이유</div>
+        <p>계수가 의미를 가짐 — "X가 1 증가하면 y가 β만큼 변한다"고 설명 가능. 해석이 필요한 상황에서 강점</p>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 2</div>
+      <div class="q-text">"이런 모델은 어떤 상황에서 잘 안 맞을까요? 실무에서 접한 데이터 중 떠오르는 게 있나요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 2: Coefficient ── -->
+  <div class="section-block" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">Coefficient (계수) 해석</span>
+      <span class="section-time">10 min</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="metric info">
+        <div class="m-label">기울기 (coefficient)</div>
+        <div class="m-val">β</div>
+        <div class="m-desc">X가 1 단위 증가할 때 y의 평균 변화량<br>양수 = 같이 증가 / 음수 = 반대 방향</div>
+      </div>
+      <div class="metric">
+        <div class="m-label">절편 (intercept)</div>
+        <div class="m-val">α</div>
+        <div class="m-desc">X = 0일 때 y의 시작값<br>실무적 의미가 없는 경우도 많음</div>
+      </div>
+    </div>
+
+    <div class="label" style="margin-top:8px">계수 해석 시 주의사항</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">
+          <strong>계수 크기 ≠ 변수 중요도</strong>
+          <div class="sub">나이(0~100) vs 연봉(0~100,000,000) — 단위 차이로 계수 크기가 달라짐. 단위가 다른 변수끼리 계수를 직접 비교하면 안 됨</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">
+          <strong>R²가 낮으면 계수도 신뢰 불가</strong>
+          <div class="sub">계수 값이 나왔어도 R²가 낮으면 그 숫자 자체를 믿기 어려움</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon warn">!</span>
+        <div class="body">
+          <strong>다중회귀에서는 "다른 변수를 고정한 상태"로 읽어야</strong>
+          <div class="sub">"X가 1 증가하면 y가 β 변한다" → 정확히는 "나머지 변수가 동일할 때" 조건이 붙음</div>
+        </div>
+      </li>
+    </ul>
+
+    <hr>
+
+    <div class="label">다중회귀 — 부호 반전 예시 (나이 + 경력 → 연봉) <span class="changed-tag">수정됨</span></div>
+    <table>
+      <thead>
+        <tr><th>상황</th><th>나이 계수</th><th>경력 계수</th><th>이유</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>나이만 투입</td>
+          <td class="pos">+250만</td>
+          <td class="muted">—</td>
+          <td class="muted">나이↑ → 연봉↑ (경력 효과까지 흡수해서 양수)</td>
+        </tr>
+        <tr>
+          <td>경력만 투입</td>
+          <td class="muted">—</td>
+          <td class="pos">+320만</td>
+          <td class="muted">경력↑ → 연봉↑ (정상적인 양의 관계)</td>
+        </tr>
+        <tr>
+          <td>둘 다 투입</td>
+          <td class="neg">−80만 ← 반전</td>
+          <td class="pos">+410만</td>
+          <td class="muted">나이·경력 r=0.88 → 나이 몫이 경력에 넘어감</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="box box-amber">
+      <div class="box-title">부호 반전은 다중공선성의 결과 중 하나</div>
+      <p>
+        다중공선성의 정의: 한 변수를 다른 변수로 설명할 수 있는 상태 (나이를 알면 경력을 거의 예측 가능)<br>
+        부호 반전은 다중공선성이 있을 때 나타날 수 있는 현상 중 하나입니다. 항상 일어나는 건 아닙니다.<br><br>
+        다중공선성이 있을 때 나타나는 현상들:<br>
+        · 계수가 불안정해짐 — 데이터를 조금만 바꿔도 계수가 크게 흔들림<br>
+        · 부호가 반전될 수 있음<br>
+        · R²는 높아도 개별 계수를 신뢰할 수 없음
+      </p>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title">잘못된 해석 vs 올바른 독법</div>
+      <p>
+        ✕ "나이가 많으면 연봉이 낮다"<br>
+        ✓ "경력이 동일한 사람들 사이에서, 나이만 1살 많으면 연봉이 −80만" — 단, 이 계수 자체를 신뢰하기 어려운 상태<br><br>
+        진단 방법: 변수 하나 제거 후 다시 돌렸을 때 다른 변수 계수가 크게 바뀌면 다중공선성 신호. 변수 간 상관관계 |r| > 0.8 이상 쌍 확인
+      </p>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: 과적합 / 일반화 ── -->
+  <div class="section-block" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">과적합 / 일반화</span>
+      <span class="section-time">15 min</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="metric good">
+        <div class="m-label">훈련 성능 (train)</div>
+        <div class="m-val">↑ 높음</div>
+        <div class="m-desc">학습 데이터를 외운 상태</div>
+      </div>
+      <div class="metric danger">
+        <div class="m-label">테스트 성능 (test)</div>
+        <div class="m-val">↓ 낮음</div>
+        <div class="m-desc">새 데이터엔 맞지 않음</div>
+      </div>
+    </div>
+
+    <div class="chart-wrap">
+      <canvas id="ofChart" role="img" aria-label="모델 복잡도에 따른 훈련/테스트 성능 변화"></canvas>
+    </div>
+
+    <div class="note">과적합 = 학습 데이터의 <strong>노이즈까지 외워버린</strong> 상태. 모델이 복잡해질수록 훈련 성능은 오르지만 테스트 성능은 어느 순간부터 떨어짐</div>
+
+    <div class="box box-amber">
+      <div class="box-title">과적합 vs 공정 변화 — 구분이 중요 <span class="changed-tag">추가됨</span></div>
+      <p>
+        둘 다 "train에서 학습한 패턴이 새 데이터에서 안 맞는다"는 현상은 동일합니다. 그런데 원인이 다르고 대응도 완전히 달라집니다.<br><br>
+        과적합: 패턴 자체는 유효한데 모델이 노이즈까지 외움 → 데이터를 더 모으거나 모델을 단순하게<br>
+        공정 변화: 패턴 자체가 바뀜 → 새로운 조건으로 데이터를 다시 수집하고 모델을 다시 학습<br><br>
+        구분 방법: "공정에 실제 변화가 있었는가?" — 설비 교체, 원자재 변경, 계절 변화 등 이벤트가 있었으면 공정 변화. 아무것도 바뀐 게 없는데 성능이 떨어지면 과적합을 먼저 의심
+      </p>
+    </div>
+
+    <div class="label">데이터를 늘리면 과적합이 해결되는가</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">부분적으로 맞음
+          <div class="sub">데이터가 많아지면 노이즈들이 서로 상쇄되고 진짜 패턴만 남음</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">편향된 방식으로 수집되면 의미 없음
+          <div class="sub">정상 공정 데이터만 10만 건 있어도 불량 조건 데이터가 없으면 불량 예측 불가</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">모델 자체가 너무 복잡하면 한계 있음
+          <div class="sub">이 경우는 데이터보다 모델 복잡도를 줄이는 게 맞음</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 3</div>
+      <div class="q-text">"왜 이런 현상이 생긴다고 생각하세요? 학습 데이터를 늘리면 해결될까요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: 선형 조건 ── -->
+  <div class="section-block" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">선형 회귀가 작동하는 조건</span>
+      <span class="section-time">15 min</span>
+    </div>
+
+    <div class="note">잔차 = 실제값 − 예측값. 잔차를 보는 목적은 "얼마나 틀렸냐"가 아니라 <strong>"어떻게 틀렸냐"</strong>를 보는 것</div>
+
+    <!-- 조건 1 -->
+    <div class="assump">
+      <div class="assump-head">
+        <span class="a-num">1</span>
+        <span class="a-title">선형성</span>
+        <span class="a-sub">— X와 y 사이에 직선 관계가 있어야</span>
+        <span class="badge badge-amber">자주 위반</span>
+      </div>
+      <div class="assump-body">
+        <div class="assump-col">
+          <div class="c-lbl">직관</div>
+          나이와 생산성이 역U자 곡선인데 모델은 직선으로만 맞추려 함.<br>→ 중간 구간은 과대예측, 양 끝은 과소예측.<br>→ 잔차에 U자 패턴이 생김
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">진단</div>
+          산점도(X vs y) 눈으로 확인.<br>잔차 플롯에서 U자·곡선 패턴 여부
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">대응</div>
+          변수 변환 (log, sqrt) 시도.<br>또는 <strong>트리 계열 모델로 전환</strong> — 가장 현실적
+        </div>
+      </div>
+    </div>
+
+    <!-- 조건 2 -->
+    <div class="assump">
+      <div class="assump-head">
+        <span class="a-num">2</span>
+        <span class="a-title">잔차 독립성</span>
+        <span class="a-sub">— 앞의 오차가 뒤의 오차에 영향을 주면 안 됨</span>
+      </div>
+      <div class="assump-body">
+        <div class="assump-col">
+          <div class="c-lbl">직관</div>
+          시계열 매출 예측: 어제 재고 부족 → 오늘 매출도 영향.<br>오차가 연쇄되는 상황.<br>→ 신뢰구간 계산이 틀려짐
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">진단</div>
+          잔차를 시간 순서로 플롯.<br>물결 모양·추세가 보이면 위반 신호
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">대응</div>
+          시계열 전용 모델 사용.<br>(Week 6에서 다룸)
+        </div>
+      </div>
+    </div>
+
+    <!-- 조건 3 -->
+    <div class="assump">
+      <div class="assump-head">
+        <span class="a-num">3</span>
+        <span class="a-title">등분산성</span>
+        <span class="a-sub">— 예측값에 관계없이 오차 크기가 일정해야</span>
+      </div>
+      <div class="assump-body">
+        <div class="assump-col">
+          <div class="c-lbl">직관</div>
+          연봉 예측: 2,000~3,000만 원 구간은 오차 작음.<br>1억~5억 구간은 오차가 훨씬 큼.<br>→ RMSE 하나로 평가하면 높은 구간 문제를 가려버림
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">진단</div>
+          잔차 플롯에서 <strong>나팔 모양</strong> 확인.<br>예측값이 클수록 오차도 커지는 패턴
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">대응</div>
+          y에 log 변환.<br>또는 구간별 모델 분리
+        </div>
+      </div>
+    </div>
+
+    <!-- 조건 4 -->
+    <div class="assump critical">
+      <div class="assump-head">
+        <span class="a-num">4</span>
+        <span class="a-title">다중공선성 없음</span>
+        <span class="a-sub">— 변수들이 서로 독립이어야</span>
+        <span class="badge badge-red">해석에 치명적</span>
+      </div>
+      <div class="assump-body">
+        <div class="assump-col">
+          <div class="c-lbl">직관</div>
+          "나이 때문에 y가 변한 건지, 경력이 같이 변했기 때문인지" 모델이 구분 못 함.<br>→ 계수 배분이 불안정해지고 부호 반전 발생 가능
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">진단</div>
+          잔차 플롯으로는 <strong>보이지 않음</strong>.<br>변수 간 상관관계 직접 확인 (|r| > 0.8).<br>변수 하나 빼고 계수가 크게 바뀌면 신호
+        </div>
+        <div class="assump-col">
+          <div class="c-lbl">대응</div>
+          상관 높은 변수 하나 제거.<br>또는 두 변수를 하나로 합치기
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="label">잔차 플롯을 보는 목적 <span class="changed-tag">수정됨</span></div>
+    <div class="box box-blue">
+      <div class="box-title">랜덤 vs 패턴 — 의미가 다름</div>
+      <p>
+        랜덤하게 흩어짐 = 모델이 잡을 수 있는 패턴은 다 잡았고, 남은 건 예측 불가능한 노이즈. 더 이상 개선할 구조적 패턴이 없음<br><br>
+        패턴이 있음 (U자, 나팔형 등) = 모델이 아직 잡지 못한 구조가 남아있음. 개선 가능하다는 신호.<br><br>
+        U자 패턴이 보이면 나쁜 게 아니라 <strong>"아직 할 일이 남아있다"</strong>는 신호입니다. 뭘 놓쳤는지 방향이 생긴 거고, 그걸 찾아서 개선하면 됩니다.
+      </p>
+    </div>
+
+    <div class="plot-grid">
+      <div class="plot-card good">
+        <div class="p-title">정상 — 랜덤하게 흩어짐</div>
+        <div class="p-desc">더 개선할 구조적 패턴 없음. 모델이 할 수 있는 건 다 함</div>
+        <svg width="100%" viewBox="0 0 260 90" role="img"><title>정상 잔차 플롯</title>
+          <line x1="15" y1="45" x2="248" y2="45" stroke="#e2e0d8" stroke-width="0.8"/>
+          <line x1="15" y1="10" x2="15" y2="80" stroke="#e2e0d8" stroke-width="0.8"/>
+          <text font-family="IBM Plex Mono" font-size="8" fill="#9b9890" x="130" y="88" text-anchor="middle">예측값 →</text>
+          <circle cx="35"  cy="30" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="55"  cy="57" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="75"  cy="36" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="95"  cy="60" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="115" cy="28" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="135" cy="52" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="155" cy="38" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="175" cy="63" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="195" cy="32" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="215" cy="55" r="3" fill="#1a5a2a" opacity=".6"/>
+          <circle cx="235" cy="40" r="3" fill="#1a5a2a" opacity=".6"/>
+        </svg>
+      </div>
+      <div class="plot-card bad">
+        <div class="p-title">U자 → 선형성 위반 — 개선 가능</div>
+        <div class="p-desc">아직 잡지 못한 구조 있음. 변수 변환 또는 트리 모델 전환 검토</div>
+        <svg width="100%" viewBox="0 0 260 90" role="img"><title>U자 잔차 플롯</title>
+          <line x1="15" y1="45" x2="248" y2="45" stroke="#e2e0d8" stroke-width="0.8"/>
+          <line x1="15" y1="10" x2="15" y2="80" stroke="#e2e0d8" stroke-width="0.8"/>
+          <text font-family="IBM Plex Mono" font-size="8" fill="#9b9890" x="130" y="88" text-anchor="middle">예측값 →</text>
+          <path d="M30,25 Q130,78 235,22" fill="none" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+          <circle cx="35"  cy="27" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="57"  cy="42" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="79"  cy="58" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="101" cy="70" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="123" cy="76" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="145" cy="70" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="167" cy="55" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="189" cy="38" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="211" cy="25" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="233" cy="20" r="3" fill="#8a1a1a" opacity=".75"/>
+        </svg>
+      </div>
+      <div class="plot-card bad">
+        <div class="p-title">나팔 모양 → 등분산성 위반</div>
+        <div class="p-desc">특정 구간 오차 큼. RMSE 하나로 평가하면 이 문제가 가려짐</div>
+        <svg width="100%" viewBox="0 0 260 90" role="img"><title>나팔형 잔차 플롯</title>
+          <line x1="15" y1="45" x2="248" y2="45" stroke="#e2e0d8" stroke-width="0.8"/>
+          <line x1="15" y1="10" x2="15" y2="80" stroke="#e2e0d8" stroke-width="0.8"/>
+          <text font-family="IBM Plex Mono" font-size="8" fill="#9b9890" x="130" y="88" text-anchor="middle">예측값 →</text>
+          <circle cx="35"  cy="42" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="55"  cy="50" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="55"  cy="38" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="80"  cy="57" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="80"  cy="32" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="108" cy="64" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="108" cy="24" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="138" cy="72" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="138" cy="16" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="168" cy="78" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="168" cy="10" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="198" cy="82" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="198" cy="7"  r="3" fill="#8a1a1a" opacity=".75"/>
+          <path d="M20,45 L210,5"  fill="none" stroke="#8a1a1a" stroke-width="0.7" stroke-dasharray="3 3" opacity=".3"/>
+          <path d="M20,45 L210,84" fill="none" stroke="#8a1a1a" stroke-width="0.7" stroke-dasharray="3 3" opacity=".3"/>
+        </svg>
+      </div>
+      <div class="plot-card bad">
+        <div class="p-title">추세선 → 잔차 독립성 위반</div>
+        <div class="p-desc">시계열 데이터에서 오차가 연쇄되는 패턴. 시계열 모델로 전환 필요</div>
+        <svg width="100%" viewBox="0 0 260 90" role="img"><title>추세 잔차 플롯</title>
+          <line x1="15" y1="45" x2="248" y2="45" stroke="#e2e0d8" stroke-width="0.8"/>
+          <line x1="15" y1="10" x2="15" y2="80" stroke="#e2e0d8" stroke-width="0.8"/>
+          <text font-family="IBM Plex Mono" font-size="8" fill="#9b9890" x="130" y="88" text-anchor="middle">시간 →</text>
+          <path d="M30,75 Q130,45 235,14" fill="none" stroke="#8a1a1a" stroke-width="1" stroke-dasharray="4 3" opacity=".4"/>
+          <circle cx="35"  cy="73" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="57"  cy="65" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="79"  cy="57" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="101" cy="49" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="123" cy="41" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="145" cy="33" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="167" cy="26" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="189" cy="19" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="211" cy="14" r="3" fill="#8a1a1a" opacity=".75"/>
+          <circle cx="233" cy="10" r="3" fill="#8a1a1a" opacity=".75"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 4</div>
+      <div class="q-text">"잔차 플롯을 봤더니 U자 패턴이 나왔습니다. 이 모델 결과를 그대로 보고해도 될까요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: 다중공선성 ── -->
+  <div class="section-block" id="s5">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">다중공선성</span>
+      <span class="section-time">10 min</span>
+    </div>
+
+    <div class="note">정의: 입력 변수(X)들 사이에 강한 상관관계가 있어, 한 변수를 다른 변수로 거의 예측할 수 있는 상태 — 나이를 알면 경력을 거의 예측할 수 있을 때 <span class="changed-tag">수정됨</span></div>
+
+    <div class="label">왜 문제가 되는가 — 두 가지 관점</div>
+    <div class="grid-2">
+      <div class="box box-red">
+        <div class="box-title">① 계수 해석이 망가진다</div>
+        <p>
+          "나이가 올라서 y가 변한 건지, 경력이 같이 올라서 그런 건지" 모델이 구분하지 못합니다.<br><br>
+          결과적으로 계수를 어디에 배분할지 불안정해지고, 데이터를 조금만 바꿔도 계수 값이 크게 흔들립니다. 같은 데이터로 돌려도 변수 하나 추가하면 다른 변수 계수가 완전히 바뀔 수 있습니다.
+        </p>
+      </div>
+      <div class="box box-amber">
+        <div class="box-title">② R²가 멀쩡해 보여서 모른다</div>
+        <p>
+          다중공선성은 예측 정확도 자체를 크게 망치지 않습니다. R²가 0.9가 나와도 계수는 틀려져 있을 수 있습니다.<br><br>
+          잔차 플롯도 깨끗하게 보일 수 있습니다. 수치로는 발견되지 않아서 넘어가기 쉬운 문제입니다.
+        </p>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">언제 특히 문제가 되는가</div>
+      <p>
+        예측만 하면 되는 경우 → 다중공선성이 있어도 예측 정확도는 괜찮을 수 있음. 문제 없이 쓸 수도 있음<br><br>
+        <strong>계수를 해석해야 하는 경우 → 치명적.</strong> "어떤 변수가 y에 영향을 주는가", "X를 1 올리면 y가 얼마나 변하는가"를 말해야 한다면 계수 자체를 신뢰할 수 없게 됨<br><br>
+        실무 예시: "공정 온도를 1도 올리면 불량률이 얼마나 바뀌는가?" — 온도와 압력이 함께 움직이는 공정이라면 각각의 계수를 따로 해석할 수 없음
+      </p>
+    </div>
+
+    <div class="label">계수 변화 예시 — 나이 + 경력 → 연봉</div>
+    <table>
+      <thead>
+        <tr><th>상황</th><th>나이 계수</th><th>경력 계수</th><th>설명</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>나이만 투입</td>
+          <td class="pos">+250만</td>
+          <td class="muted">—</td>
+          <td class="muted">경력 효과까지 흡수해서 양수로 나옴</td>
+        </tr>
+        <tr>
+          <td>경력만 투입</td>
+          <td class="muted">—</td>
+          <td class="pos">+320만</td>
+          <td class="muted">정상적인 양의 관계</td>
+        </tr>
+        <tr>
+          <td>둘 다 투입</td>
+          <td class="neg">−80만 ← 부호 반전</td>
+          <td class="pos">+410만</td>
+          <td class="muted">나이·경력 r=0.88 → 나이 몫이 경력에 전가됨</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="note" style="margin-bottom:16px">부호 반전은 다중공선성의 결과 중 하나일 뿐, 항상 일어나는 건 아닙니다. 계수가 반전되지 않아도 값이 불안정하게 흔들리고 있을 수 있습니다.</div>
+
+    <div class="label">진단 방법 — VIF (분산팽창지수)</div>
+    <div class="box box-blue">
+      <div class="box-title">VIF란?</div>
+      <p>
+        VIF (Variance Inflation Factor) = 다중공선성의 정도를 수치로 나타내는 지표.<br>
+        계산 원리: "이 변수를 나머지 변수들로 회귀분석했을 때 R²가 얼마나 높은가" — R²가 높을수록 이 변수는 다른 변수들로 설명 가능하다는 뜻이므로 VIF가 커짐<br><br>
+        VIF = 1 / (1 − R²), R²가 0.9이면 VIF = 10, R²가 0.95이면 VIF = 20
+      </p>
+    </div>
+    <div class="grid-4" style="margin-bottom:16px;">
+      <div class="metric good">
+        <div class="m-label">VIF 1 ~ 5</div>
+        <div class="m-val" style="font-size:16px;">문제 없음</div>
+        <div class="m-desc">변수 간 독립성 확보</div>
+      </div>
+      <div class="metric warn">
+        <div class="m-label">VIF 5 ~ 10</div>
+        <div class="m-val" style="font-size:16px;">주의 필요</div>
+        <div class="m-desc">계수 해석 시 주의</div>
+      </div>
+      <div class="metric danger">
+        <div class="m-label">VIF 10 이상</div>
+        <div class="m-val" style="font-size:16px;">조치 권장</div>
+        <div class="m-desc">변수 제거 또는 결합 검토</div>
+      </div>
+      <div class="metric info">
+        <div class="m-label">빠른 진단</div>
+        <div class="m-val" style="font-size:16px;">r > 0.8</div>
+        <div class="m-desc">변수 간 상관계수로 1차 확인</div>
+      </div>
+    </div>
+
+    <div class="label">대응 방법</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">상관 높은 변수 중 하나 제거
+          <div class="sub">나이·경력 중 더 직접적인 인과관계가 있는 변수를 남기고 나머지 제거. 도메인 판단이 필요</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">두 변수를 하나로 합치기
+          <div class="sub">나이와 경력이 사실상 같은 개념이라면 "근무 연수"처럼 하나로 합산. 정보 손실 없이 공선성 해소</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon warn">!</span>
+        <div class="body">변수 하나 제거 후 다른 계수가 크게 바뀌면 → 공선성 신호
+          <div class="sub">VIF 계산 전에 쓸 수 있는 가장 빠른 진단법. 변수 제거 전후 계수 변화를 비교</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 5</div>
+      <div class="q-text">"나이 계수가 +250만에서 −80만으로 바뀌었는데, 이걸 고객에게 어떻게 설명하시겠어요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: 결과 해석 연습 ── -->
+  <div class="section-block" id="s6">
+    <div class="section-header">
+      <span class="section-num">06</span>
+      <span class="section-title">결과 해석 연습</span>
+      <span class="section-time">15–20 min</span>
+    </div>
+
+    <div class="grid-2">
+      <div class="metric good">
+        <div class="m-label">모델 결과</div>
+        <div class="m-val">RMSE 낮음</div>
+        <div class="m-desc">R² = 0.92</div>
+      </div>
+      <div class="metric warn">
+        <div class="m-label">진짜 좋은 모델인가?</div>
+        <div class="m-val">대화의 시작</div>
+        <div class="m-desc">R² 0.92는 결론이 아님</div>
+      </div>
+    </div>
+
+    <div class="label">지표 비교 — 무엇을 보고 싶냐에 따라 다르다</div>
+    <table>
+      <thead>
+        <tr><th>지표</th><th>질문</th><th>단위</th><th>강점</th><th>주의점</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>RMSE</strong></td>
+          <td>평균적으로 얼마나 틀리나?</td>
+          <td>y와 동일 (만원, kg 등)</td>
+          <td>큰 오차에 민감 — 이상치 탐지에 유리</td>
+          <td class="muted">y 규모에 따라 해석이 달라짐. 500만원 오차가 크냐 작냐는 y 범위를 봐야 판단 가능</td>
+        </tr>
+        <tr>
+          <td><strong>R²</strong></td>
+          <td>모델이 y 분산을 얼마나 설명하나?</td>
+          <td>없음 (0~1, 음수 가능)</td>
+          <td>스케일 무관하게 비교 가능</td>
+          <td class="muted">0.9가 항상 좋은 건 아님. 도메인·목적에 따라 기준이 다름</td>
+        </tr>
+        <tr>
+          <td><strong>MAPE</strong></td>
+          <td>평균적으로 몇 % 틀리나?</td>
+          <td>% (비율)</td>
+          <td>직관적. "평균 8% 오차" — 고객에게 설명하기 쉬움</td>
+          <td class="neg">실제값이 0에 가까우면 % 자체가 폭발. 0 근처 데이터에서 쓰면 안 됨</td>
+        </tr>
+        <tr>
+          <td><strong>sMAPE</strong></td>
+          <td>대칭적으로 몇 % 틀리나?</td>
+          <td>% (비율)</td>
+          <td>MAPE의 0 문제를 일부 완화. 과대/과소 예측에 대칭적</td>
+          <td class="muted">MAPE보다 덜 직관적. 실제값+예측값이 모두 0이면 여전히 문제</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="label">MAPE 계산 방식 — 직관적으로 이해하기</div>
+    <div class="box box-blue">
+      <div class="box-title">MAPE = Mean Absolute Percentage Error</div>
+      <p>
+        각 데이터 포인트마다 "실제값 대비 오차가 몇 %인지" 계산하고 평균을 냄<br><br>
+        예시: 실제 연봉 5,000만원 → 예측 4,600만원 → 오차 400만 → 8%<br>
+        실제 연봉 3,000만원 → 예측 2,850만원 → 오차 150만 → 5%<br>
+        → MAPE = (8% + 5%) / 2 = 6.5%<br><br>
+        해석: "이 모델은 평균적으로 실제값의 6.5%만큼 틀린다"<br><br>
+        <strong>RMSE와 차이:</strong> RMSE는 오차 절대값(만원)이라 y 규모 모르면 좋은지 나쁜지 판단 어려움. MAPE는 % 오차라 규모 무관하게 바로 해석 가능
+      </p>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title">MAPE를 쓰면 안 되는 상황</div>
+      <p>
+        실제값(y)이 0이거나 0에 가까운 경우: 0으로 나누기 문제 또는 % 오차가 수천 %로 폭등<br><br>
+        예시: 실제 불량 수 = 0, 예측 = 0.5 → 오차 0.5 / 0 → 계산 불가<br>
+        실제 재고 = 1개, 예측 = 3개 → 오차 2 / 1 = 200% → 숫자 자체는 맞아도 지표가 왜곡<br><br>
+        이런 경우: RMSE나 MAE(절대 오차 평균)를 먼저 쓰고, 필요하면 sMAPE 검토
+      </p>
+    </div>
+
+    <div class="label">상황별 지표 선택 기준</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">고객·경영진에게 설명해야 할 때 → MAPE
+          <div class="sub">"평균 8% 오차"가 "RMSE 420만원"보다 훨씬 직관적. 단, y가 0에 가깝지 않은 경우만</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">큰 오차가 특히 치명적인 경우 → RMSE
+          <div class="sub">RMSE는 큰 오차를 제곱해서 더 크게 반영. 1건의 대형 오류가 결정적으로 위험한 경우에 적합</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">모델 간 비교, 설명력 확인 → R²
+          <div class="sub">스케일 무관하게 비교 가능. 단독으로 쓰지 말고 RMSE 또는 MAPE와 함께 볼 것</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon warn">!</span>
+        <div class="body">지표 하나만 보는 건 항상 위험
+          <div class="sub">R² 높고 RMSE도 낮은데 MAPE가 이상하면 → 특정 구간(y가 작은 구간)에서 예측이 나쁠 수 있음</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="label">R² 0.92가 나왔을 때 확인해야 할 것들 <span class="changed-tag">수정됨</span></div>
+    <ul class="checklist">
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">데이터 누수(leakage)는 없는가?
+          <div class="sub">미래 정보가 학습에 포함됐다면 R²가 높을 수 있음. R²가 0.99, 1.0에 가까울수록 오히려 먼저 의심해야 함</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">train R²와 test R² 차이가 크지 않은가?
+          <div class="sub">train 0.92, test 0.45라면 과적합. test R²가 중요</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">잔차 플롯에 패턴이 없는가?
+          <div class="sub">U자나 나팔 모양이 있으면 특정 구간에서 체계적으로 틀리고 있는 것</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon bad">✕</span>
+        <div class="body">학습 데이터와 실제 적용 환경의 분포가 비슷한가?
+          <div class="sub">공정이 바뀌었거나 다른 라인에 적용한다면 분포가 달라질 수 있음</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon warn">!</span>
+        <div class="body">R² 하나보다 MAPE 같은 지표를 함께 보는 게 좋음
+          <div class="sub">MAPE는 "평균적으로 몇 % 틀리는지"를 보여줌. 고객 입장에서 R²보다 직관적. 단, 실제값이 0에 가까우면 MAPE도 왜곡됨</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 6 (핵심)</div>
+      <div class="q-text">"R² 0.92면 충분히 좋은 모델이라고 할 수 있을까요? 어떤 조건이 있어야 그렇게 말할 수 있을까요?"</div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7: R² 완전 정리 ── -->
+  <div class="section-block" id="s7">
+    <div class="section-header">
+      <span class="section-num">07</span>
+      <span class="section-title">R² 완전 정리</span>
+      <span class="section-time">참고</span>
+    </div>
+
+    <div class="note">R² = "평균으로 예측하는 것보다 얼마나 나은가" — 0이면 평균과 동일, 1이면 완벽, <strong>음수면 평균보다도 못한 예측</strong> <span class="changed-tag">수정됨</span></div>
+
+    <div class="box box-red">
+      <div class="box-title">R²는 0~1 사이가 아닙니다 — 음수가 나올 수 있음</div>
+      <p>
+        R²가 음수 = 모델이 "그냥 평균으로 예측하는 것"보다도 못하다는 신호. 이 모델은 사용하면 안 됩니다.<br>
+        계산 오류가 아닙니다. train/test 분포 차이, 잘못된 변수 선택, 스케일링 누락 등이 원인입니다.
+      </p>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title">R² 1에 가까울수록 좋다? — 오히려 의심해야 <span class="changed-tag">수정됨</span></div>
+      <p>
+        R²가 0.99, 1.0에 가깝게 나오면 먼저 세 가지를 확인하세요.<br><br>
+        · 데이터 누수: 예측 대상이 학습 데이터에 직접 포함된 경우. 미래를 알고 맞추는 거라 당연히 높음<br>
+        · 타깃 변수가 변수로 들어간 경우: y를 예측하는데 y와 거의 동일한 변수가 X로 들어간 경우<br>
+        · train/test가 섞인 경우: 같은 데이터로 학습하고 평가하면 당연히 높음
+      </p>
+    </div>
+
+    <div class="grid-4" style="margin-bottom:16px;">
+      <div class="metric danger">
+        <div class="m-label">음수 (< 0)</div>
+        <div class="m-val" style="font-size:16px;">사용 불가</div>
+        <div class="m-desc">평균보다도 못함</div>
+      </div>
+      <div class="metric warn">
+        <div class="m-label">0 ~ 0.3</div>
+        <div class="m-val" style="font-size:16px;">낮음</div>
+        <div class="m-desc">도메인 따라 판단</div>
+      </div>
+      <div class="metric good">
+        <div class="m-label">0.6 ~ 0.9</div>
+        <div class="m-val" style="font-size:16px;">양호</div>
+        <div class="m-desc">대부분 실용적</div>
+      </div>
+      <div class="metric warn">
+        <div class="m-label">0.95 이상</div>
+        <div class="m-val" style="font-size:16px;">의심</div>
+        <div class="m-desc">누수·과적합 확인</div>
+      </div>
+    </div>
+
+    <div class="label">R² 낮아도 괜찮은 경우</div>
+    <ul class="checklist">
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">원래 노이즈가 많은 도메인
+          <div class="sub">사람 행동, 금융 시장, 의료 — R² 0.2~0.3도 의미 있을 수 있음</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">목적이 정확한 수치가 아니라 순서·방향 예측
+          <div class="sub">"A가 B보다 높을 것"이 맞으면 충분한 경우</div>
+        </div>
+      </li>
+      <li>
+        <span class="icon ok">✓</span>
+        <div class="body">이전 모델 대비 개선이 기준
+          <div class="sub">기존 R² 0.1 → 신규 R² 0.25도 큰 개선</div>
+        </div>
+      </li>
+    </ul>
+
+    <div class="box box-amber">
+      <div class="box-title">세션 전체를 관통하는 메시지</div>
+      <p>
+        R², RMSE, MAPE, 계수 — 어떤 숫자도 단독으로는 "좋다 나쁘다"를 말할 수 없습니다.<br>
+        그 숫자가 어떤 조건에서 나왔는지, 어떤 가정 위에 있는지를 같이 봐야 합니다.<br><br>
+        모델 결과를 그대로 전달하는 것과, 모델의 한계를 포함해서 설명하는 것의 차이가 실무에서 신뢰를 만드는 차이입니다.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  });
+
+  const labels = ['단순', '적당', '복잡↑', '매우 복잡', '과복잡'];
+  const train  = [68, 80, 91, 97, 99];
+  const test   = [66, 79, 84, 72, 55];
+  new Chart(document.getElementById('ofChart'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: '훈련 성능', data: train, borderColor: '#1a4f8a', borderWidth: 2, pointRadius: 4, fill: false },
+        { label: '테스트 성능', data: test, borderColor: '#8a1a1a', borderWidth: 2, pointRadius: 4, fill: false, borderDash: [5,4] }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y + '%' } }
+      },
+      scales: {
+        y: { min: 40, max: 105, ticks: { callback: v => v + '%', font: { size: 11, family: 'IBM Plex Mono' }, color: '#9b9890' }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { font: { size: 11, family: 'IBM Plex Mono' }, color: '#9b9890' }, grid: { display: false } }
+      }
+    }
+  });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

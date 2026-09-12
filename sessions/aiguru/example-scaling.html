@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>스케일링 비교 — MinMax vs 표준화</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:13px;line-height:1.6;padding:20px}
+  h2{font-size:15px;font-weight:500;margin-bottom:4px}
+  .subtitle{font-size:12px;color:var(--text2);margin-bottom:16px}
+  .controls{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;align-items:center}
+  .btn{font-family:var(--mono);font-size:11px;padding:5px 14px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);transition:all .15s}
+  .btn.active{background:var(--blue-bg);border-color:var(--blue-border);color:var(--blue);font-weight:500}
+  .btn:hover:not(.active){background:var(--surface2)}
+  .seed-btn{font-family:var(--mono);font-size:11px;padding:5px 14px;border-radius:4px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text2);margin-left:auto}
+  .seed-btn:hover{background:var(--surface2)}
+  .charts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
+  @media(max-width:600px){.charts{grid-template-columns:1fr}}
+  .chart-wrap{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:12px}
+  .chart-wrap.active-raw{border-color:var(--border);background:var(--surface2)}
+  .chart-wrap.active-minmax{border-color:var(--blue-border);background:var(--blue-bg)}
+  .chart-wrap.active-std{border-color:var(--green-border);background:var(--green-bg)}
+  .chart-title{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .chart-wrap.active-raw .chart-title{color:var(--text3)}
+  .chart-wrap.active-minmax .chart-title{color:var(--blue)}
+  .chart-wrap.active-std .chart-title{color:var(--green)}
+  canvas{display:block;width:100%;height:200px}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+  .stat-box{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:10px 12px}
+  .stat-box.minmax{background:var(--blue-bg);border-color:var(--blue-border)}
+  .stat-box.std{background:var(--green-bg);border-color:var(--green-border)}
+  .stat-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .stat-box.minmax .stat-label{color:var(--blue)}
+  .stat-box.std .stat-label{color:var(--green)}
+  .stat-vals{display:flex;gap:12px;flex-wrap:wrap}
+  .stat-item{font-size:11px;color:var(--text2)}
+  .stat-item b{font-family:var(--mono);color:var(--text)}
+  .note-box{background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:6px;padding:10px 14px;font-size:12px;color:var(--amber);line-height:1.65}
+  .note-box b{font-weight:500}
+  .outlier-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;user-select:none}
+  .outlier-toggle input{cursor:pointer;accent-color:var(--red)}
+</style>
+</head>
+<body>
+
+<h2>스케일링 비교 — 원본 · MinMax · 표준화</h2>
+<div class="subtitle">1,000개 샘플 (온도·압력 두 변수) — 산포도로 스케일링 효과 확인</div>
+
+<div class="controls">
+  <label class="outlier-toggle">
+    <input type="checkbox" id="outlierToggle"> 이상치 5개 추가
+  </label>
+  <button class="seed-btn" onclick="regenerate()">🎲 데이터 재생성</button>
+</div>
+
+<div class="charts">
+  <div class="chart-wrap active-raw">
+    <div class="chart-title">원본 (Raw)</div>
+    <canvas id="rawChart"></canvas>
+  </div>
+  <div class="chart-wrap active-minmax">
+    <div class="chart-title">MinMax 스케일링</div>
+    <canvas id="minmaxChart"></canvas>
+  </div>
+  <div class="chart-wrap active-std">
+    <div class="chart-title">표준화 (Z-score)</div>
+    <canvas id="stdChart"></canvas>
+  </div>
+</div>
+
+<div class="stats" id="statsArea"></div>
+
+<div class="note-box" id="noteBox"></div>
+
+<script>
+const N = 1000;
+let seed = 42;
+let data = [];
+
+// 간단한 seeded random
+function seededRandom(s) {
+  let x = Math.sin(s) * 10000;
+  return x - Math.floor(x);
+}
+
+function generateData(withOutliers) {
+  const result = [];
+  for (let i = 0; i < N; i++) {
+    seed++;
+    const u1 = seededRandom(seed);
+    seed++;
+    const u2 = seededRandom(seed);
+    // Box-Muller 변환으로 정규분포
+    const z0 = Math.sqrt(-2 * Math.log(u1 + 1e-10)) * Math.cos(2 * Math.PI * u2);
+    seed++;
+    const u3 = seededRandom(seed);
+    seed++;
+    const u4 = seededRandom(seed);
+    const z1 = Math.sqrt(-2 * Math.log(u3 + 1e-10)) * Math.cos(2 * Math.PI * u4);
+
+    const temp = 80 + z0 * 8;      // 온도: 평균 80, std 8
+    const pressure = 5 + z1 * 1.5; // 압력: 평균 5, std 1.5
+    result.push([temp, pressure]);
+  }
+  if (withOutliers) {
+    result.push([160, 5.2], [155, 4.8], [158, 5.5], [10, 4.9], [12, 5.1]);
+  }
+  return result;
+}
+
+function stats(arr) {
+  const n = arr.length;
+  const mean = arr.reduce((a, b) => a + b, 0) / n;
+  const std = Math.sqrt(arr.reduce((a, b) => a + (b - mean) ** 2, 0) / n);
+  const min = Math.min(...arr);
+  const max = Math.max(...arr);
+  return { mean, std, min, max };
+}
+
+function minmaxScale(arr) {
+  const { min, max } = stats(arr);
+  return arr.map(v => (v - min) / (max - min + 1e-10));
+}
+
+function stdScale(arr) {
+  const { mean, std } = stats(arr);
+  return arr.map(v => (v - mean) / (std + 1e-10));
+}
+
+function drawScatter(canvasId, xs, ys, color, xRange, yRange) {
+  const canvas = document.getElementById(canvasId);
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  const W = rect.width, H = rect.height;
+  const pad = { t: 10, r: 10, b: 30, l: 40 };
+  const pw = W - pad.l - pad.r, ph = H - pad.t - pad.b;
+
+  const [xMin, xMax] = xRange;
+  const [yMin, yMax] = yRange;
+
+  // 배경
+  ctx.fillStyle = 'rgba(255,255,255,0)';
+  ctx.fillRect(0, 0, W, H);
+
+  // 격자
+  ctx.strokeStyle = '#e2e0d8';
+  ctx.lineWidth = 0.5;
+  for (let i = 0; i <= 4; i++) {
+    const x = pad.l + (pw * i / 4);
+    const y = pad.t + (ph * i / 4);
+    ctx.beginPath(); ctx.moveTo(x, pad.t); ctx.lineTo(x, pad.t + ph); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(pad.l + pw, y); ctx.stroke();
+  }
+
+  // 축 레이블
+  ctx.fillStyle = '#9b9890';
+  ctx.font = '9px IBM Plex Mono, monospace';
+  ctx.textAlign = 'center';
+  for (let i = 0; i <= 4; i++) {
+    const val = xMin + (xMax - xMin) * i / 4;
+    const x = pad.l + pw * i / 4;
+    ctx.fillText(val.toFixed(1), x, H - 8);
+  }
+  ctx.textAlign = 'right';
+  for (let i = 0; i <= 4; i++) {
+    const val = yMax - (yMax - yMin) * i / 4;
+    const y = pad.t + ph * i / 4;
+    ctx.fillText(val.toFixed(1), pad.l - 4, y + 3);
+  }
+
+  // 점 그리기
+  const alpha = xs.length > 500 ? 0.25 : 0.4;
+  ctx.fillStyle = color.replace(')', `, ${alpha})`).replace('rgb', 'rgba');
+
+  for (let i = 0; i < xs.length; i++) {
+    const px = pad.l + ((xs[i] - xMin) / (xMax - xMin)) * pw;
+    const py = pad.t + ((yMax - ys[i]) / (yMax - yMin)) * ph;
+    ctx.beginPath();
+    ctx.arc(px, py, 2, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+function getRanges(xs, ys, pad = 0.05) {
+  const xS = stats(xs), yS = stats(ys);
+  const xPad = (xS.max - xS.min) * pad;
+  const yPad = (yS.max - yS.min) * pad;
+  return [[xS.min - xPad, xS.max + xPad], [yS.min - yPad, yS.max + yPad]];
+}
+
+function updateStats(rawXs, rawYs, mmXs, mmYs, stXs, stYs) {
+  const rX = stats(rawXs), rY = stats(rawYs);
+  const mX = stats(mmXs), mY = stats(mmYs);
+  const sX = stats(stXs), sY = stats(stYs);
+
+  document.getElementById('statsArea').innerHTML = `
+    <div class="stat-box">
+      <div class="stat-label">원본 (Raw)</div>
+      <div class="stat-vals">
+        <div class="stat-item">온도 범위: <b>${rX.min.toFixed(1)} ~ ${rX.max.toFixed(1)}</b></div>
+        <div class="stat-item">압력 범위: <b>${rY.min.toFixed(2)} ~ ${rY.max.toFixed(2)}</b></div>
+      </div>
+      <div class="stat-vals" style="margin-top:4px">
+        <div class="stat-item">온도 std: <b>${rX.std.toFixed(1)}</b></div>
+        <div class="stat-item">압력 std: <b>${rY.std.toFixed(2)}</b></div>
+      </div>
+    </div>
+    <div class="stat-box minmax">
+      <div class="stat-label">MinMax 스케일링</div>
+      <div class="stat-vals">
+        <div class="stat-item">온도 범위: <b>${mX.min.toFixed(2)} ~ ${mX.max.toFixed(2)}</b></div>
+        <div class="stat-item">압력 범위: <b>${mY.min.toFixed(2)} ~ ${mY.max.toFixed(2)}</b></div>
+      </div>
+      <div class="stat-vals" style="margin-top:4px">
+        <div class="stat-item">온도 std: <b>${mX.std.toFixed(3)}</b></div>
+        <div class="stat-item">압력 std: <b>${mY.std.toFixed(3)}</b></div>
+      </div>
+    </div>
+    <div class="stat-box std">
+      <div class="stat-label">표준화 (Z-score)</div>
+      <div class="stat-vals">
+        <div class="stat-item">온도 범위: <b>${sX.min.toFixed(2)} ~ ${sX.max.toFixed(2)}</b></div>
+        <div class="stat-item">압력 범위: <b>${sY.min.toFixed(2)} ~ ${sY.max.toFixed(2)}</b></div>
+      </div>
+      <div class="stat-vals" style="margin-top:4px">
+        <div class="stat-item">온도 std: <b>${sX.std.toFixed(2)}</b></div>
+        <div class="stat-item">압력 std: <b>${sY.std.toFixed(2)}</b></div>
+      </div>
+    </div>
+  `;
+}
+
+function updateNote(withOutliers) {
+  const base = `
+    <b>세 산포도의 분포 모양이 같은 건 정상입니다.</b> MinMax와 표준화는 단조 변환 — 각 값에 같은 수식을 적용하기 때문에 데이터 간 상대적 순서와 간격 비율이 유지됩니다. 달라지는 건 분포 모양이 아니라 <b>축의 척도(scale)</b>입니다.<br><br>
+    <b>원본:</b> 온도는 60~100°C, 압력은 2~8 bar 수준. 단위와 범위가 완전히 다릅니다. 이 상태에서 유클리드 거리를 계산하면 온도가 압력을 지배합니다.<br><br>
+    <b>MinMax:</b> 두 변수 모두 0~1 범위로 압축. 범위는 같지만 <b>이상치가 0과 1을 결정</b>합니다. 이상치가 없을 때 적합합니다.<br><br>
+    <b>표준화(Z-score):</b> 평균=0, std=1로 변환. 이상치가 있어도 전체 분포 기준으로 변환하기 때문에 MinMax보다 안정적입니다.
+  `;
+  const outlierNote = withOutliers ? `<br><br>
+    <b>이상치 추가 시:</b> MinMax에서 이상치 하나가 전체 스케일을 결정해버립니다. 정상 데이터가 0~0.5 구간에 몰리게 됩니다. 표준화는 이상치 영향을 받지만 MinMax만큼 극단적이지 않습니다.
+  ` : '';
+  document.getElementById('noteBox').innerHTML = base + outlierNote;
+}
+
+let currentSeed = 42;
+
+function regenerate() {
+  currentSeed = Math.floor(Math.random() * 10000);
+  seed = currentSeed;
+  render();
+}
+
+function render() {
+  seed = currentSeed;
+  const withOutliers = document.getElementById('outlierToggle').checked;
+  data = generateData(withOutliers);
+
+  const rawXs = data.map(d => d[0]);
+  const rawYs = data.map(d => d[1]);
+  const mmXs = minmaxScale(rawXs);
+  const mmYs = minmaxScale(rawYs);
+  const stXs = stdScale(rawXs);
+  const stYs = stdScale(rawYs);
+
+  // 원본
+  const [rxRange, ryRange] = getRanges(rawXs, rawYs);
+  drawScatter('rawChart', rawXs, rawYs, 'rgb(107, 104, 96)', rxRange, ryRange);
+
+  // MinMax
+  drawScatter('minmaxChart', mmXs, mmYs, 'rgb(26, 79, 138)', [-0.05, 1.05], [-0.05, 1.05]);
+
+  // 표준화
+  const [sxRange, syRange] = getRanges(stXs, stYs);
+  drawScatter('stdChart', stXs, stYs, 'rgb(26, 90, 42)', sxRange, syRange);
+
+  updateStats(rawXs, rawYs, mmXs, mmYs, stXs, stYs);
+  updateNote(withOutliers);
+}
+
+document.getElementById('outlierToggle').addEventListener('change', render);
+window.addEventListener('resize', render);
+window.addEventListener('load', () => { setTimeout(render, 100); });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

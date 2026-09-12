@@ -1,0 +1,1691 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 3 — 클러스터링 & 유사도</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+  .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;height:48px;overflow-x:auto;gap:0}
+  .nav-title{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;margin-right:24px;padding-right:24px;border-right:1px solid var(--border)}
+  .nav a{font-size:12px;color:var(--text3);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+  .nav a:hover{color:var(--text)}
+  .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+  .page{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+  .section-block{margin-bottom:56px}
+  .section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px}
+  .section-title{font-size:18px;font-weight:500}
+  .section-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap}
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7;color:var(--text)}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:12px}
+  .q-box{border:1px solid var(--border);border-radius:6px;padding:12px 16px;background:var(--surface2);margin-bottom:8px}
+  .q-box .q-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .q-box .q-text{font-size:13px;font-style:italic}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px}
+  @media(max-width:640px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr 1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:500}td.neg{color:var(--red);font-weight:500}
+  td.warn-td{color:var(--amber);font-weight:500}td.muted{color:var(--text3);font-size:12px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+  .checklist li .icon{margin-top:1px;flex-shrink:0;font-size:13px}
+  .checklist li .icon.ok{color:var(--green)}.checklist li .icon.warn{color:var(--amber)}.checklist li .icon.bad{color:var(--red)}
+  .checklist li .body{line-height:1.6}
+  .checklist li .body .sub{font-size:11px;color:var(--text3);margin-top:1px}
+  .flow-row{display:flex;align-items:stretch;margin-bottom:16px;flex-wrap:nowrap;overflow-x:auto}
+  .flow-step{flex:1;min-width:90px;border:1px solid var(--border);background:var(--surface);padding:10px 12px;border-radius:6px;display:flex;flex-direction:column;gap:3px}
+  .flow-step.warn{border-color:var(--amber-border);background:var(--amber-bg)}
+  .flow-step.good{border-color:var(--green-border);background:var(--green-bg)}
+  .flow-step .step-n{font-family:var(--mono);font-size:10px;color:var(--text3)}
+  .flow-step.warn .step-n{color:var(--amber)}.flow-step.good .step-n{color:var(--green)}
+  .flow-step .step-name{font-size:12px;font-weight:500}
+  .flow-step.warn .step-name{color:var(--amber)}.flow-step.good .step-name{color:var(--green)}
+  .flow-step .step-sub{font-size:11px;color:var(--text3);line-height:1.4}
+  .flow-arrow{display:flex;align-items:center;padding:0 5px;font-size:14px;color:var(--text3);flex-shrink:0}
+  .metric{background:var(--surface2);border-radius:6px;padding:12px 14px;border:1px solid var(--border)}
+  .metric .m-label{font-size:11px;color:var(--text3);margin-bottom:4px}
+  .metric .m-val{font-size:20px;font-weight:500}
+  .metric .m-desc{font-size:11px;color:var(--text2);margin-top:3px;line-height:1.5}
+  .metric.danger{background:var(--red-bg);border-color:var(--red-border)}
+  .metric.danger .m-label,.metric.danger .m-val{color:var(--red)}
+  .metric.warn{background:var(--amber-bg);border-color:var(--amber-border)}
+  .metric.warn .m-label,.metric.warn .m-val{color:var(--amber)}
+  .metric.good{background:var(--green-bg);border-color:var(--green-border)}
+  .metric.good .m-label,.metric.good .m-val{color:var(--green)}
+  .metric.info{background:var(--blue-bg);border-color:var(--blue-border)}
+  .metric.info .m-label,.metric.info .m-val{color:var(--blue)}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+  /* 유사도 카드 — 본질 우선 레이아웃 */
+  .sim-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px}
+  .sim-card .sc-head{padding:14px 18px;display:flex;align-items:flex-start;gap:16px;border-bottom:1px solid var(--border)}
+  .sim-card .sc-icon{font-size:28px;line-height:1;flex-shrink:0;margin-top:2px}
+  .sim-card .sc-meta{}
+  .sim-card .sc-name{font-size:15px;font-weight:500;margin-bottom:2px}
+  .sim-card .sc-essence{font-size:13px;color:var(--text2);line-height:1.6}
+  .sim-card .sc-body{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)}
+  @media(max-width:640px){.sim-card .sc-body{grid-template-columns:1fr}}
+  .sim-card .sc-body .sc-col{padding:12px 16px}
+  .sim-card .sc-body .sc-col:first-child{border-right:1px solid var(--border)}
+  .sim-card .sc-col-label{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .sim-card .sc-eq{font-family:var(--mono);font-size:13px;background:var(--surface2);padding:8px 12px;border-radius:4px;line-height:1.9;overflow-x:auto;margin-bottom:6px}
+  .sim-card .sc-eq .hi{color:var(--blue);font-weight:500}
+  .sim-card .sc-eq .hi-r{color:var(--red);font-weight:500}
+  .sim-card .sc-eq .hi-g{color:var(--green);font-weight:500}
+  .sim-card .sc-elem{font-size:12px;color:var(--text2);line-height:1.65}
+  .sim-card .sc-elem b{color:var(--text);font-weight:500}
+  .sim-card .sc-foot{padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  @media(max-width:640px){.sim-card .sc-foot{grid-template-columns:1fr}}
+  .sim-card .sc-use{font-size:12px;padding:8px 10px;border-radius:4px;line-height:1.6}
+  .sim-card .sc-use.ok{background:var(--green-bg);border:1px solid var(--green-border)}
+  .sim-card .sc-use.bad{background:var(--red-bg);border:1px solid var(--red-border)}
+  .sim-card .sc-use .su-label{font-family:var(--mono);font-size:10px;margin-bottom:3px}
+  .sim-card .sc-use.ok .su-label{color:var(--green)}
+  .sim-card .sc-use.bad .su-label{color:var(--red)}
+
+  /* 파란/초록/노랑 카드 헤드 */
+  .sim-card.blue .sc-head{background:var(--blue-bg)}
+  .sim-card.green .sc-head{background:var(--green-bg)}
+  .sim-card.amber .sc-head{background:var(--amber-bg)}
+  .sim-card.red .sc-head{background:var(--red-bg)}
+
+  /* 알고리즘 비교 카드 */
+  .algo-strip{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .algo-strip .as-head{padding:10px 14px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border)}
+  .algo-strip .as-name{font-size:13px;font-weight:500}
+  .algo-strip .as-tag{font-family:var(--mono);font-size:10px;color:var(--text3);margin-left:auto}
+  .algo-strip .as-body{display:grid;grid-template-columns:repeat(4,1fr);gap:0}
+  @media(max-width:640px){.algo-strip .as-body{grid-template-columns:1fr 1fr}}
+  .algo-strip .as-cell{padding:10px 12px;border-right:1px solid var(--border);font-size:12px;line-height:1.6}
+  .algo-strip .as-cell:last-child{border-right:none}
+  .algo-strip .as-cell .ac-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:3px}
+  .algo-strip.hard .as-head{background:var(--blue-bg);border-color:var(--blue-border)}
+  .algo-strip.soft .as-head{background:var(--green-bg);border-color:var(--green-border)}
+  .algo-strip.density .as-head{background:var(--amber-bg);border-color:var(--amber-border)}
+  .algo-strip.hier .as-head{background:var(--surface2)}
+
+  /* 모델 선택 시나리오 */
+  .scenario{border:1px solid var(--border);border-radius:6px;padding:14px 16px;margin-bottom:10px;background:var(--surface)}
+  .scenario .sc-q{font-size:13px;font-weight:500;margin-bottom:6px}
+  .scenario .sc-why{font-size:12px;color:var(--text2);line-height:1.65;padding:8px 10px;background:var(--surface2);border-radius:4px;border-left:3px solid var(--border2)}
+  .scenario .sc-ans{display:inline-block;font-family:var(--mono);font-size:11px;padding:3px 9px;border-radius:3px;margin-top:7px}
+  .scenario .sc-ans.blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+  .scenario .sc-ans.green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+  .scenario .sc-ans.amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .scenario .sc-ans.red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+  .scenario .sc-note{font-size:11px;color:var(--text3);margin-top:5px}
+
+  @media print{.nav{display:none}.page{padding:24px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">Week 3 — 클러스터링 & 유사도</div>
+  <a href="#s0">지난주 복습</a>
+  <a href="#s1">클러스터링이란</a>
+  <a href="#s2">Hard Clustering</a>
+  <a href="#s3">Soft Clustering</a>
+  <a href="#s4">유사도 본질</a>
+  <a href="#s5">어떤 걸 쓸까</a>
+  <a href="#s6">결과 해석</a>
+  <a href="#s7">해석 연습</a>
+  <a href="#s8">제조 × 클러스터링</a>
+</nav>
+
+<div class="page">
+
+<!-- ── 00: 지난주 복습 ── -->
+<div class="section-block" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">지난주 핵심 복습 — Week 2 트리 & 앙상블</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Week 2 세션 요약</div>
+    <p>
+      트리는 데이터 공간을 축에 평행한 직각선으로 나눠 각 구간에 <strong>노드 안 정보의 평균</strong>을 예측값으로 저장합니다.<br>
+      무엇의 평균인지는 모델과 태스크마다 다릅니다.<br>
+      DT·RF 회귀 → 노드 안 y값들의 평균. 분류 → 노드 안 클래스 비율(확률).<br>
+      XGBoost → 노드 안 잔차(오차)들의 평균 (정규화 포함).<br><br>
+      이 구조가 비선형을 가능하게 하지만, 동시에 Extreme Value를 못 맞추고 이상치 하나가 노드 평균을 끌어당기는 한계를 만듭니다.<br><br>
+      앙상블(RF, XGBoost)은 단일 트리의 불안정함을 해결하지만, 해석 가능성을 포기하는 트레이드오프가 생깁니다.<br>
+      모델 선택의 기준은 R² 하나가 아닙니다 — 비즈니스적으로 중요한 구간에서 어떻게 예측하는가가 핵심입니다.
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div class="box box-red">
+      <div class="box-title">노드 안 정보의 평균 — 한계</div>
+      <p style="font-size:12px;">
+        트리 계열은 리프 노드에 도달한 데이터들의 정보를 평균 내어 예측값으로 씁니다.<br>
+        <strong>무엇의 평균인지는 모델마다 다릅니다.</strong><br>
+        DT·RF → 노드 안 y값들의 평균<br>
+        XGBoost → 노드 안 잔차(오차)들의 평균 (정규화 포함)<br><br>
+        공통 한계: 학습 y 범위를 벗어나는 예측 불가. 이상치 하나가 평균을 끌어당김. 노드 안 값 범위가 크면 평균 하나로 대표 불가.<br><br>
+        → 이번 주 클러스터링도 같은 구조. 군집 내 데이터를 "하나의 군집"으로 대표하는 게 얼마나 타당한지가 핵심 질문
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">train R²는 아무 의미 없다</div>
+      <p style="font-size:12px;">
+        트리는 분기를 깊게 할수록 train R²가 자동으로 올라감.<br>
+        test R²와의 차이가 실제 성능의 기준.<br><br>
+        → 클러스터링에도 똑같이 적용됨. Silhouette score가 높아도 실제 의미 있는 군집인지는 별개 문제
+      </p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">모델 선택 = 맥락 판단</div>
+      <p style="font-size:12px;">
+        "XGBoost가 더 좋다"는 맥락 없이 틀린 말.<br>
+        설명 필요성, 데이터 크기, 노이즈 수준, 극단값 중요성에 따라 달라짐.<br><br>
+        → 이번 주 클러스터링 알고리즘 선택도 동일. 공식은 없고, 데이터 성질과 목적으로 판단
+      </p>
+    </div>
+  </div>
+
+  <div class="note">
+    Week 2에서 배운 것: <strong>"모델이 뭔가를 찾아줬다"와 "그게 의미 있다"는 다르다.</strong> 이번 주 클러스터링에서 이 원칙이 가장 중요하게 등장합니다.
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">Week 2 연결 질문</div>
+    <div class="q-text">"RandomForest로 고객을 예측하는 모델과, 고객을 군집으로 나누는 클러스터링의 목적은 어떻게 다를까요?"</div>
+  </div>
+</div>
+
+<!-- ── 01: 클러스터링이란 ── -->
+<div class="section-block" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">클러스터링이란 — 정답 없이 묶는다</span>
+    <span class="section-time">8 min</span>
+  </div>
+
+  <div class="note">클러스터링 = 정답(y) 없이 데이터 스스로 <strong>비슷한 것끼리 묶는</strong> 작업. 지도학습과 가장 근본적으로 다른 점이 여기서 시작된다</div>
+
+  <table>
+    <thead><tr><th>구분</th><th>지도학습 (Week 1–2)</th><th>클러스터링 (이번 주)</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>정답(y)</strong></td>
+        <td>있음 — 수율, 불량 여부 등</td>
+        <td class="neg">없음. 어떤 군집이 "맞는" 건지 사전에 알 수 없음</td>
+      </tr>
+      <tr>
+        <td><strong>평가</strong></td>
+        <td>실제값 vs 예측값 (RMSE, R²)</td>
+        <td class="muted">군집 응집도·분리도 (Silhouette) — 간접 지표만 가능</td>
+      </tr>
+      <tr>
+        <td><strong>"잘 됐다"의 기준</strong></td>
+        <td>오차가 작으면 됨</td>
+        <td class="neg">수치만으로 판단 불가 — 도메인 검증 필수</td>
+      </tr>
+      <tr>
+        <td><strong>결과 형태</strong></td>
+        <td>숫자 or 클래스 예측값</td>
+        <td class="muted">각 데이터에 군집 번호 (Hard) 또는 소속 확률 (Soft)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-red">
+    <div class="box-title">클러스터링의 핵심 전제 — 먼저 인식하고 시작</div>
+    <p>
+      <strong>K-means는</strong> 어떤 데이터를 줘도 반드시 K개로 나눠줍니다. 나눠지지 않는 법이 없습니다.<br>
+      하지만 DBSCAN은 noise로 분류된 데이터는 어느 군집에도 안 들어가고, Hierarchical은 자르기 전까지 군집 수가 정해지지 않습니다.<br><br>
+      알고리즘마다 다르지만 공통적인 것은 — <strong>"나눠졌다"와 "의미 있게 나눠졌다"는 완전히 다른 이야기입니다.</strong><br><br>
+      Silhouette score 등 수치 지표는 "수학적으로 잘 나뉘었는가"만 말해줍니다.<br>
+      그 군집이 실제로 의미 있는지는 도메인 지식으로 검증해야 합니다.
+    </p>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">클러스터링은 연속형 변수만 쓰는 게 아닙니다</div>
+    <p>
+      클러스터링에 필요한 건 좌표가 아니라 <strong>"두 데이터가 얼마나 비슷한가"를 정의할 수 있는 것</strong>입니다.<br>
+      유사도만 정의할 수 있으면 텍스트, 이미지, 그래프 같은 비정형 데이터도 클러스터링이 가능합니다.<br><br>
+      <strong>연속형</strong> → 유클리드·맨해튼 거리로 직접 K-means, DBSCAN, Hierarchical 적용<br><br>
+      <strong>범주형이 섞였을 때</strong><br>
+      원핫인코딩 후 유클리드 → 잘못된 선택. 범주 간 거리가 항상 0 또는 √2만 나와서 거리 구조 왜곡<br>
+      Gower Distance → 연속형·범주형·순서형을 타입에 맞게 각각 다르게 거리 계산 후 합산. 혼합 데이터의 표준 선택<br>
+      K-modes → 범주형 전용. 센트로이드 대신 최빈값(mode)을 중심으로, 거리를 "불일치 개수"로 정의<br>
+      K-prototypes → 연속형 + 범주형 동시 처리. K-means + K-modes 결합<br><br>
+      <strong>비정형 데이터 (텍스트, 이미지, 그래프)</strong><br>
+      텍스트 → 임베딩 벡터로 변환 후 코사인 유사도<br>
+      이미지 → CNN 임베딩 후 거리 계산<br>
+      그래프 → 노드 간 연결 구조로 유사도 정의<br><br>
+      이 경우 <strong>유사도 행렬(pairwise similarity matrix)만 있으면 작동하는 알고리즘</strong>을 씁니다.<br>
+      K-means처럼 좌표 공간이 필요한 게 아니라, "A와 B가 얼마나 비슷한가"라는 쌍별 관계만 있으면 됩니다.<br>
+      Hierarchical, DBSCAN이 여기에 해당합니다. K-means는 센트로이드를 계산해야 하므로 좌표가 필요합니다.
+    </p>
+  </div>
+
+  <div class="label">Hard vs Soft — 소속 방식의 차이</div>
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">Hard Clustering — 하나에만 속한다</div>
+      <p>
+        각 데이터는 반드시 하나의 군집에만 배정됩니다.<br>
+        경계가 명확하다는 전제가 깔려 있습니다.<br><br>
+        이 고객은 "고가 구매 군집"이거나 "저가 구매 군집"이거나, 둘 중 하나.<br><br>
+        <strong>K-means, DBSCAN, Hierarchical</strong>
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">Soft Clustering — 확률로 속한다</div>
+      <p>
+        각 데이터가 여러 군집에 확률로 소속됩니다.<br>
+        경계가 모호한 데이터를 더 현실적으로 표현합니다.<br><br>
+        이 고객은 "고가 군집 70%, 중가 군집 30%".<br><br>
+        <strong>GMM (Gaussian Mixture Model)</strong>
+      </p>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="label">클러스터링의 활용 방식 — 세 가지</div>
+
+  <div class="grid-3">
+    <div class="box box-blue">
+      <div class="box-title">① 탐색·이해</div>
+      <p style="font-size:12px;">
+        데이터 안에 어떤 자연스러운 그룹이 있는지 파악.<br>
+        고객 세그먼트, 공정 패턴 분류.<br><br>
+        <strong>목적:</strong> "데이터가 어떻게 생겼는가" 이해. 결과가 직접 예측에 쓰이지 않아도 됨
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">② 이상 탐지 전처리</div>
+      <p style="font-size:12px;">
+        정상 패턴을 군집으로 정의하고, 어디에도 속하지 않는 데이터를 이상으로 탐지.<br><br>
+        <strong>목적:</strong> "이 데이터는 평소와 다르다"는 판단. DBSCAN의 noise 분류가 여기에 직접 활용됨
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">③ 군집 기반 계층 예측</div>
+      <p style="font-size:12px;">
+        군집으로 먼저 나누고 → 군집별로 별도 예측 모델 적용.<br>
+        y를 바로 예측하는 게 아니라, 중간 단계로 군집이 들어감.<br><br>
+        <strong>목적:</strong> 전체 데이터에 하나의 모델보다 군집별 특성에 맞는 모델이 더 유효할 때
+      </p>
+    </div>
+  </div>
+
+  <div class="label">③ 군집 기반 계층 예측 — 왜, 어떻게</div>
+
+  <div class="box box-blue">
+    <div class="box-title">전체 모델 하나 vs 군집별 모델 분리 — 언제 나누는 게 나은가</div>
+    <p>
+      전체 데이터에 하나의 선형 회귀나 XGBoost를 쓰면, 모델은 모든 패턴을 하나의 수식으로 설명하려 합니다.<br>
+      그런데 데이터 안에 <strong>근본적으로 다른 메커니즘이 섞여 있을 때</strong>, 하나의 모델이 양쪽을 동시에 잘 맞추기 어렵습니다.<br><br>
+      예: 동일 공장의 설비 A 라인(고온 공정)과 설비 B 라인(저온 공정)이 섞인 데이터.<br>
+      두 라인의 불량 메커니즘이 다르다면, 하나의 모델로 둘 다 잡으려 하면 둘 다 어중간하게 맞출 수 있습니다.<br><br>
+      → 먼저 클러스터링으로 라인 A / 라인 B를 분리하고, 각각 별도 모델을 적용하면 각 패턴에 더 잘 맞는 예측이 가능합니다.
+    </p>
+  </div>
+
+  <div class="label">파이프라인 구조</div>
+  <div class="flow-row">
+    <div class="flow-step good">
+      <span class="step-n">1단계</span>
+      <span class="step-name">클러스터링</span>
+      <span class="step-sub">전체 데이터를 군집으로 나눔 (K-means 등)</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step">
+      <span class="step-n">2단계</span>
+      <span class="step-name">군집 레이블 부여</span>
+      <span class="step-sub">각 데이터에 군집 번호 태깅</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step warn">
+      <span class="step-n">3단계</span>
+      <span class="step-name">군집별 예측 모델</span>
+      <span class="step-sub">군집 1 → 모델 A, 군집 2 → 모델 B, 군집 3 → 모델 C</span>
+    </div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step good">
+      <span class="step-n">최종</span>
+      <span class="step-name">세부 예측</span>
+      <span class="step-sub">각 군집 특성에 맞게 y 예측</span>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-green">
+      <div class="box-title">효과적인 경우</div>
+      <p style="font-size:12px;">
+        · 서로 다른 운전 조건(모드)이 섞인 공정 데이터<br>
+        · 고객 세그먼트별로 구매 패턴이 완전히 달라서 하나의 추천 모델이 모두를 못 잡을 때<br>
+        · 전체 모델의 잔차를 봤을 때 특정 구간에서 체계적 오차가 반복될 때<br>
+        · 도메인 지식으로 "이 두 그룹은 다른 메커니즘"이 확인될 때
+      </p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">주의점</div>
+      <p style="font-size:12px;">
+        · 1단계 군집이 잘못되면 2단계 예측 모델 전체가 잘못됨 — 클러스터링 품질이 파이프라인 전체를 좌우<br>
+        · 새 데이터가 들어왔을 때 먼저 어느 군집인지 분류해야 함 → 군집 분류 자체도 오류 가능성 있음<br>
+        · 군집 수가 많아질수록 각 군집 데이터가 적어져 개별 모델 학습이 불안정해질 수 있음<br>
+        · 단순히 군집을 변수(feature)로 추가하는 방법도 있음 — 분리 모델 대신 군집 번호를 x로 넣기
+      </p>
+    </div>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 1</div>
+    <div class="q-text">"공장에 구형 설비 라인과 신형 설비 라인이 섞여 있고, 전체 데이터로 불량 예측 모델을 만들었더니 신형 라인에서 오차가 큽니다. 군집 기반 계층 예측을 적용한다면 어떻게 접근하겠습니까?"</div>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 2</div>
+    <div class="q-text">"클러스터링 결과를 보고 '군집 3은 불량 위험 군집'이라고 말하려면 어떤 조건이 필요할까요?"</div>
+  </div>
+</div>
+
+<!-- ── 02: Hard Clustering ── -->
+<div class="section-block" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Hard Clustering — 3가지 알고리즘</span>
+    <span class="section-time">20 min</span>
+  </div>
+
+  <div class="note">알고리즘마다 "비슷하다"를 정의하는 방식이 다릅니다. 그 차이가 어떤 데이터에서 잘 작동하는지를 결정합니다</div>
+
+  <!-- K-means -->
+  <div class="label">① K-means — 가장 가까운 중심으로 모이기</div>
+
+  <div class="algo-strip hard">
+    <div class="as-head">
+      <span class="as-name">K-means</span>
+      <span class="as-tag">CENTROID-BASED</span>
+    </div>
+    <div class="as-body">
+      <div class="as-cell">
+        <div class="ac-lbl">원리</div>
+        K개 중심(센트로이드)을 임의로 잡고, 각 데이터를 가장 가까운 센트로이드에 배정. 센트로이드를 군집 평균으로 업데이트. 변화 없을 때까지 반복
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">강점</div>
+        빠르고 구현 쉬움. 대용량에서도 동작. 결과 해석이 직관적 (군집 중심값으로 특성 요약 가능)
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">약점</div>
+        K를 미리 정해야 함. 구형(원형) 군집만 잘 잡음. 이상치 하나가 센트로이드를 끌어당김. 스케일링 필수
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">핵심 주의</div>
+        초기 센트로이드 위치가 결과에 영향 줌 — 같은 데이터를 돌릴 때마다 결과가 조금씩 달라질 수 있음 (n_init 파라미터로 여러 번 돌리고 최선 선택)
+      </div>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">K-means 고유의 한계 — 다른 알고리즘은 해당 없음</div>
+    <p style="font-size:13px;">
+      아래는 클러스터링 전체의 한계가 아닙니다. <strong>K-means라는 알고리즘의 구조적 한계</strong>입니다.<br>
+      DBSCAN이나 Hierarchical은 이 문제들 중 상당수를 갖지 않습니다.<br><br>
+      · 구형(원형) 군집만 잡음 — 도넛형·초승달형은 원천적으로 못 잡음<br>
+      · 군집 크기·밀도가 다를 때 → 큰 군집을 억지로 쪼개거나 작은 군집을 흡수<br>
+      · 이상치 하나가 센트로이드를 끌어당김 — K-means에는 noise 개념이 없음<br>
+      · 스케일링 안 된 데이터 → 큰 단위 변수가 거리를 지배<br>
+      · K를 반드시 미리 정해야 함 — 데이터가 몇 개로 나뉘는지 모를 때 문제
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-amber">
+      <div class="box-title">K 선택 — Elbow Method의 한계</div>
+      <p style="font-size:12px;">
+        K를 1부터 늘려가며 군집 내 분산(WCSS) 감소폭을 관찰.<br>
+        감소폭이 꺾이는 "팔꿈치" 지점을 K로 선택하는 방법.<br><br>
+        <strong>실무에서 Elbow는 대부분 잘 안 꺾입니다.</strong><br>
+        완만하게 내려가기만 해서 K=3인지 K=5인지 수치로 판단이 안 되는 경우가 태반.<br>
+        "팔꿈치가 여기인 것 같다"는 주관적 판단이 들어갈 수밖에 없습니다.<br><br>
+        Elbow가 K=5를 가리켜도, 5개 군집 중 2개에 이름을 못 붙이면 의미가 없습니다.<br>
+        반대로 Elbow가 K=5인데 현장에서 "공정 상태는 워밍업·정상·고부하 3가지"라고 말할 수 있으면 K=3이 더 유효합니다.<br><br>
+        <strong>"각 군집을 한 줄로 설명할 수 있는가"가 K 선택의 실질적 기준입니다.</strong>
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">Silhouette로 K 고르기 — 또 다른 함정</div>
+      <p style="font-size:12px;">
+        Elbow 대신 K별 Silhouette score를 비교해서 K를 고르기도 합니다.<br><br>
+        <strong>문제: Silhouette 자체가 K-means에 구조적으로 유리합니다.</strong><br>
+        Silhouette는 거리 기반 지표 → K-means가 만든 구형 군집에서 당연히 높게 나옴.<br>
+        K-means로 군집을 만들고 K-means 친화적인 지표로 평가하는 꼴.<br><br>
+        Elbow와 Silhouette가 서로 다른 K를 가리킬 때도 많습니다.<br>
+        둘 다 "이 K가 맞다"는 보장은 없습니다.
+      </p>
+    </div>
+  </div>
+
+  <div style="width:100%; height:180px; margin-bottom:16px;">
+    <canvas id="elbowChart"></canvas>
+  </div>
+
+  <hr>
+
+  <!-- DBSCAN -->
+  <div class="label">② DBSCAN — 밀도가 높은 곳을 군집으로</div>
+
+  <div class="algo-strip density">
+    <div class="as-head">
+      <span class="as-name">DBSCAN</span>
+      <span class="as-tag">DENSITY-BASED</span>
+    </div>
+    <div class="as-body">
+      <div class="as-cell">
+        <div class="ac-lbl">원리</div>
+        반경 ε 안에 최소 MinPts개 이웃이 있으면 "밀집 지역"으로 판단. 밀집 지역끼리 연결해 군집 형성. 밀집 지역 밖 데이터는 이상치(noise)로 분류
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">강점</div>
+        K를 미리 안 정해도 됨. 비구형 군집 가능. 이상치를 군집으로 억지로 넣지 않음 → 이상 탐지에 유리
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">약점</div>
+        ε, MinPts 파라미터 설정이 어려움. 밀도가 다른 군집이 섞이면 잘 못 잡음. 고차원에서 거리 개념이 희미해짐
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">핵심 강점</div>
+        이상치를 명시적으로 noise로 분류해줌 → "군집에 안 들어간 데이터"가 분석 대상이 되기도 함. 공정 이상 탐지에 직접적으로 유용
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Hierarchical -->
+  <div class="label">③ Hierarchical — 합치면서 계층을 만든다</div>
+
+  <div class="algo-strip hier">
+    <div class="as-head">
+      <span class="as-name">Hierarchical Clustering</span>
+      <span class="as-tag">LINKAGE-BASED</span>
+    </div>
+    <div class="as-body">
+      <div class="as-cell">
+        <div class="ac-lbl">원리</div>
+        처음엔 각 데이터가 모두 개별 군집. 가장 가까운 군집 둘을 반복적으로 합쳐나감. 결과를 Dendrogram(수형도)으로 표현
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">강점</div>
+        K를 미리 정하지 않아도 됨. Dendrogram 보고 사후에 K 결정 가능. 군집 간 계층 관계 파악 가능
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">약점</div>
+        데이터 많으면 느리고 메모리 큼. 한 번 합쳐지면 되돌리기 불가. Linkage 방식(single/complete/average)에 따라 결과가 달라짐
+      </div>
+      <div class="as-cell">
+        <div class="ac-lbl">Dendrogram 읽기</div>
+        세로축 = 합쳐질 때의 거리. 높은 곳 절단 → 소수의 큰 군집. 세로 막대가 긴 구간 = 두 군집이 꽤 다르다는 신호. 그 위를 자르는 게 자연스러운 K
+      </div>
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Linkage — "두 군집 사이의 거리를 어떻게 정의하는가"</div>
+    <p>
+      Hierarchical은 가장 가까운 군집 둘을 반복해서 합칩니다. 그런데 군집이 여러 데이터 포인트로 이뤄지면 "군집 A와 군집 B의 거리"를 어떻게 잴지가 애매해집니다.<br>
+      Linkage는 그 애매함을 해결하는 방식입니다. 무엇을 기준으로 두 군집 사이의 거리를 측정하느냐에 따라 결과가 크게 달라집니다.<br><br>
+
+      <strong>Single Linkage (최단 거리)</strong><br>
+      두 군집에서 가장 가까운 점 한 쌍의 거리를 군집 간 거리로 사용.<br>
+      → 사슬처럼 연결되는 경향 있음. 하나만 가까우면 전혀 다른 군집이 합쳐져버림.<br>
+      이상치 하나가 다리 역할을 해서 엉뚱한 군집이 묶이는 "chaining" 문제 발생.<br><br>
+
+      <strong>Complete Linkage (최장 거리)</strong><br>
+      두 군집에서 가장 먼 점 한 쌍의 거리를 군집 간 거리로 사용.<br>
+      → 군집 내 모든 점이 비슷하게 가까워야 합쳐짐. 작고 촘촘한 군집을 선호.<br>
+      이상치에 민감 — 극단값 하나가 두 군집이 합쳐지는 걸 막을 수 있음.<br><br>
+
+      <strong>Average Linkage (평균 거리)</strong><br>
+      두 군집의 모든 점 쌍의 거리를 평균 내서 사용. 단일·최장 방식의 중간.<br>
+      → 실무에서 가장 무난하게 쓰임. Single의 chaining, Complete의 이상치 민감함을 둘 다 줄임.<br><br>
+
+      <strong>Ward Linkage</strong><br>
+      두 군집을 합쳤을 때 전체 분산 증가량이 가장 작은 쌍을 선택.<br>
+      → 군집 크기가 균등하게 나오는 경향. 실무에서 Average와 함께 가장 많이 쓰임.<br>
+      sklearn 기본값이 Ward입니다.
+    </p>
+  </div>
+
+  <div class="note">같은 데이터를 Hierarchical로 돌려도 Linkage 방식에 따라 군집이 완전히 달라질 수 있습니다. "어떤 Linkage를 썼는가"를 결과와 함께 항상 명시해야 합니다.</div>
+
+  <hr>
+
+  <div class="label">세 알고리즘 한눈에 비교</div>
+  <table>
+    <thead><tr><th>알고리즘</th><th>K 사전 지정</th><th>군집 모양</th><th>이상치 처리</th><th>대용량</th><th>주요 파라미터</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>K-means</strong></td>
+        <td class="neg">필요</td>
+        <td class="muted">구형만</td>
+        <td class="neg">센트로이드 왜곡</td>
+        <td class="pos">빠름</td>
+        <td class="muted">K</td>
+      </tr>
+      <tr>
+        <td><strong>DBSCAN</strong></td>
+        <td class="pos">불필요</td>
+        <td class="pos">자유로운 형태</td>
+        <td class="pos">noise로 분류</td>
+        <td class="muted">보통</td>
+        <td class="muted">ε, MinPts</td>
+      </tr>
+      <tr>
+        <td><strong>Hierarchical</strong></td>
+        <td class="pos">불필요 (사후 결정)</td>
+        <td class="muted">Linkage 방식에 따라</td>
+        <td class="muted">별도 처리 없음</td>
+        <td class="neg">느림</td>
+        <td class="muted">Linkage 방식</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 2</div>
+    <div class="q-text">"공정 데이터에서 '평소와 다른 패턴'을 찾고 싶다면, 세 알고리즘 중 어떤 걸 먼저 시도하겠습니까? 이유는요?"</div>
+  </div>
+</div>
+
+<!-- ── 03: Soft Clustering ── -->
+<div class="section-block" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Soft Clustering — GMM</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note">GMM = Gaussian Mixture Model. 데이터가 여러 개의 정규분포(가우시안)가 섞여서 나왔다고 가정하고, 각 분포에 소속될 확률을 계산</div>
+
+  <div class="box box-blue">
+    <div class="box-title">"각 군집이 가우시안 분포를 따른다"는 게 무슨 뜻인가</div>
+    <p>
+      군집 안 데이터가 <strong>중심에서 종 모양으로 퍼져 있다</strong>는 뜻입니다.<br>
+      중심에 가까울수록 데이터가 많고, 멀어질수록 점점 드물어집니다. 그 퍼짐이 타원형으로 정해진 모양을 갖습니다.<br><br>
+
+      GMM은 각 군집의 세 가지 파라미터를 학습합니다.<br><br>
+
+      <strong>평균(μ)</strong> — 군집의 중심이 어디인가. K-means의 센트로이드와 같은 역할.<br>
+      <strong>분산(σ²)</strong> — 군집이 얼마나 넓게 퍼져 있는가. 군집의 "크기".<br>
+      <strong>공분산(Σ)</strong> — 군집이 어느 방향으로 길쭉한가. 타원의 방향과 모양.<br><br>
+
+      이 세 가지를 알면 "이 데이터가 이 분포에서 나왔을 확률"을 계산할 수 있습니다.<br>
+      그 확률이 바로 소속 확률(70%, 30%)이 됩니다.<br><br>
+
+      <strong>K-means와 차이:</strong> K-means는 평균(μ)만 씁니다. 군집의 크기나 방향을 모릅니다.<br>
+      그래서 K-means는 모든 군집이 같은 크기의 원형이라고 암묵적으로 가정합니다.<br>
+      GMM은 군집마다 크기와 방향이 다를 수 있어서 타원형 군집도 잡을 수 있습니다.<br><br>
+
+      <strong>가정이 틀리면:</strong> 실제 데이터가 종 모양이 아니라 U자형이거나 경계가 뾰족하게 꺾이는 형태라면,<br>
+      GMM이 억지로 타원형 가우시안을 끼워 맞추려 합니다. 결과가 왜곡됩니다.
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-green">
+      <div class="box-title">GMM이 하는 일</div>
+      <p>
+        K-means는 "가장 가까운 센트로이드로 강제 배정".<br>
+        GMM은 "어느 분포에서 나왔을 가능성이 얼마나 되는가"를 계산.<br><br>
+        결과: "이 데이터는 군집 A 확률 70%, 군집 B 확률 30%"처럼 표현.<br><br>
+        K-means가 GMM의 특수한 경우입니다 — 모든 군집이 같은 크기의 구형이라고 가정한 GMM.
+      </p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">K-means vs GMM 핵심 차이</div>
+      <p style="font-size:13px;">
+        K-means: 거리만 봄 → 군집 크기·방향 무관하게 원형으로만 구분<br><br>
+        GMM: 분포의 평균 + 분산 + 방향(공분산)까지 학습 → 타원형 군집도 가능<br><br>
+        경계 근처 데이터: K-means는 강제 배정, GMM은 확률로 "경계에 있다"고 표현
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <thead><tr><th>데이터</th><th>K-means (Hard)</th><th>GMM (Soft)</th><th>해석 차이</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>데이터 A</td>
+        <td class="pos">군집 1</td>
+        <td class="muted">군집1: 92%, 군집2: 8%</td>
+        <td class="muted">차이 없음 — 명확하게 속하는 경우</td>
+      </tr>
+      <tr>
+        <td>데이터 B</td>
+        <td class="pos">군집 2 (강제)</td>
+        <td class="muted">군집1: 51%, 군집2: 49%</td>
+        <td class="neg">Hard는 단정, Soft는 "경계에 있다"고 표현</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-amber">
+    <div class="box-title">GMM의 한계</div>
+    <p>
+      각 군집이 정규분포를 따른다는 가정이 틀리면 결과 왜곡.<br>
+      K는 여전히 사전에 정해야 함 (BIC, AIC로 선택 가능하지만 판단 여전히 필요).<br>
+      확률값 해석이 어려움 — "51% vs 49%"를 경영진에게 어떻게 설명할 것인가.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 3</div>
+    <div class="q-text">"고객 세그먼트를 경영진에게 보고한다면, Hard(K-means)와 Soft(GMM) 중 어떤 결과가 더 설명하기 쉬울까요? 왜요?"</div>
+  </div>
+</div>
+
+<!-- ── 04: 유사도 본질 ── -->
+<div class="section-block" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">유사도 & 비유사도 — 본질부터</span>
+    <span class="section-time">20 min</span>
+  </div>
+
+  <div class="label">먼저 개념 구분 — 유사도, 거리(metric), 손실함수</div>
+
+  <div class="box box-red">
+    <div class="box-title">개념 구분 — 포함 관계로 이해하기</div>
+    <p>
+      <strong>유사도(similarity) ↔ 비유사도(dissimilarity)</strong><br>
+      방향만 다릅니다. 본질적으로 같은 정보입니다.<br>
+      유사도: 클수록 비슷함 / 비유사도: 클수록 다름<br>
+      코사인 유사도를 클러스터링에 쓰고 싶으면 1-코사인으로 변환해서 비유사도로 바꿔 넣습니다.<br><br>
+
+      <strong>비유사도 ⊃ 거리(metric)</strong><br>
+      비유사도는 "다름의 정도"를 수치로 표현한 것입니다. 수학적 조건이 없습니다.<br>
+      거리(metric)는 비유사도 중 조건 4개를 추가로 만족하는 특수한 경우입니다.<br>
+      &nbsp;&nbsp;① 비음수: d(A,B) ≥ 0<br>
+      &nbsp;&nbsp;② 동일성: d(A,A) = 0<br>
+      &nbsp;&nbsp;③ 대칭성: d(A,B) = d(B,A)<br>
+      &nbsp;&nbsp;④ 삼각 부등식: d(A,C) ≤ d(A,B) + d(B,C)<br>
+      유클리드·맨해튼은 네 조건을 모두 만족 → 진짜 metric.<br>
+      1-코사인은 삼각 부등식이 깨질 수 있음 → 비유사도이지만 metric은 아님.<br><br>
+
+      <strong>포함 관계 요약</strong><br>
+      <span style="font-family:var(--mono);font-size:12px">유사도 ↔ 비유사도 (같은 정보, 반대 방향)</span><br>
+      <span style="font-family:var(--mono);font-size:12px">비유사도 ⊃ 거리(metric) — 거리는 조건이 더 붙은 비유사도</span><br><br>
+
+      <strong>알고리즘마다 요구 조건이 다릅니다</strong><br>
+      K-means: 센트로이드 계산을 위해 metric 공간(유클리드) 필요. metric 아닌 비유사도 넣으면 수렴 보장 안 됨.<br>
+      DBSCAN·Hierarchical: pairwise 비유사도 행렬만 있으면 작동. metric 조건 불필요. 코사인·Pearson 기반 비유사도를 쓸 수 있는 이유.<br><br>
+
+      <strong>손실함수(loss function)는 위 셋과 다른 개념입니다</strong><br>
+      모델이 무엇을 최소화할지를 정의하는 학습 목적.<br>
+      설계할 때 거리 개념을 빌려 쓰는 경우가 있을 뿐 — MSE가 유클리드 형태인 것처럼. 손실함수가 거리라는 뜻이 아닙니다.
+    </p>
+  </div>
+
+  <div class="label">그럼 왜 유사도를 배우는가 — AI 모델과의 연결 지점</div>
+
+  <div class="box box-blue">
+    <div class="box-title">"비슷하다"의 정의가 모델의 동작을 결정합니다</div>
+    <p>
+      손실함수 자체는 유사도가 아닙니다. 하지만 손실함수를 설계할 때 "얼마나 다른가"를 수치화하는 방법이 필요하고, 거기서 거리·유사도 개념이 쓰입니다.<br><br>
+      K-means가 구형 군집만 잡는 이유가 여기에 있습니다.<br>
+      K-means의 목적함수(WCSS)가 유클리드 거리의 제곱합입니다 — "비슷하다 = 유클리드로 가깝다"로 정의했기 때문에, WCSS를 최소화하면 자연스럽게 구형 군집이 나옵니다.<br>
+      만약 코사인 거리로 목적함수를 만들었다면 다른 모양의 군집이 나왔을 것입니다.<br><br>
+      <strong>유사도 선택은 파라미터 설정이 아닙니다. "무엇을 비슷하다고 볼 것인가"를 결정하는 것이고, 그 결정이 모델의 동작 전체에 영향을 줍니다.</strong>
+    </p>
+  </div>
+
+  <table>
+    <thead><tr><th>모델</th><th>목적함수 / 손실함수</th><th>거기서 쓰는 거리·유사도</th><th>결과적 의미</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>선형 회귀</strong></td>
+        <td class="muted">MSE (손실함수)</td>
+        <td class="muted">유클리드 거리 제곱합 형태를 빌림</td>
+        <td class="muted">예측값-실제값 차이를 좌표 거리처럼 측정</td>
+      </tr>
+      <tr>
+        <td><strong>K-means</strong></td>
+        <td class="muted">WCSS (목적함수)</td>
+        <td class="muted">유클리드 거리 제곱합 — metric</td>
+        <td class="muted">이 정의 때문에 구형 군집만 잡힘</td>
+      </tr>
+      <tr>
+        <td><strong>텍스트 임베딩</strong></td>
+        <td class="muted">코사인 거리 기반 손실</td>
+        <td class="muted">코사인 유사도 — metric 아님</td>
+        <td class="muted">의미가 비슷한 문장을 같은 방향 벡터로 학습</td>
+      </tr>
+      <tr>
+        <td><strong>추천 시스템</strong></td>
+        <td class="muted">Pearson·코사인 기반</td>
+        <td class="muted">Pearson / 코사인 — metric 아님</td>
+        <td class="muted">취향 유사도가 추천의 근거. 손실함수와 직접 같지 않음</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <hr>
+
+  <div class="note">
+    수식을 보기 전에 먼저 물어야 할 것: <strong>"이 수식은 결국 무엇을 측정하는가?"</strong><br>
+    그리고 더 중요한 것: <strong>"데이터의 element(각 숫자)가 무엇을 의미하는가?"</strong><br>
+    같은 수식이라도 element가 다르면, 측정하는 것이 완전히 달라집니다. 각 유사도 카드에서 이 차이를 확인하세요.
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">유사도 vs 비유사도 — 방향이 반대일 뿐</div>
+    <p>
+      <strong>비유사도(거리, Distance):</strong> 클수록 다름. 0이면 완전히 같음.<br>
+      <strong>유사도(Similarity):</strong> 클수록 비슷함. 최댓값이면 완전히 같음.<br><br>
+      클러스터링 알고리즘은 내부적으로 거리(비유사도)를 씁니다. 코사인 유사도를 쓰고 싶으면 <span style="font-family:var(--mono);font-size:12px">1 − 코사인</span>으로 변환해서 넣습니다.
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- 유클리드 -->
+  <div class="sim-card blue">
+    <div class="sc-head">
+      <div class="sc-icon">📏</div>
+      <div class="sc-meta">
+        <div class="sc-name">유클리드 거리 (Euclidean Distance) — 비유사도</div>
+        <div class="sc-essence">
+          <strong>본질: "두 점 사이의 직선 거리"</strong><br>
+          좌표 공간에서 두 점이 얼마나 멀리 떨어져 있는가. 피타고라스 정리를 다차원으로 확장한 것.
+        </div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-col">
+        <div class="sc-col-label">수식</div>
+        <div class="sc-eq">d(A,B) = √( <span class="hi">Σ</span> (<span class="hi-r">aᵢ</span> − <span class="hi-g">bᵢ</span>)² )</div>
+        <div class="sc-elem">
+          <b>aᵢ − bᵢ</b> = 두 데이터의 i번째 값 차이<br>
+          제곱(²) = 방향 무관하게 양수화 + 큰 차이를 더 강하게 반영<br>
+          √ = 제곱을 원래 단위로 되돌림<br>
+          <b>결과: 0 ~ ∞ (작을수록 비슷)</b>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="sc-col-label">element 의미가 왜 중요한가</div>
+        <div class="sc-elem">
+          이 수식은 <b>각 element의 수치 크기 차이</b>를 봅니다.<br><br>
+          element가 온도(°C)면 → 10도 차이와 50도 차이가 거리에 반영됨. 자연스러움.<br><br>
+          element가 단어 빈도수면 → 문서 A(100단어)와 문서 B(10단어)가 같은 주제여도, 절대 빈도 차이로 "다른 문서"로 판단. 문서 길이가 거리를 지배해버림. 이건 원하는 게 아님.<br><br>
+          → <b>수치 크기 자체에 의미가 있을 때만 유클리드가 유효</b>
+        </div>
+      </div>
+    </div>
+    <div class="sc-foot">
+      <div class="sc-use ok">
+        <div class="su-label">잘 맞는 경우</div>
+        센서 측정값 (온도, 압력, 유량) — 크기 차이가 직접 의미. 스케일링 완료된 수치 데이터
+      </div>
+      <div class="sc-use bad">
+        <div class="su-label">잘 안 맞는 경우</div>
+        텍스트, 구매 패턴 — 절대적 크기보다 방향·패턴이 의미 있는 경우. 스케일링 안 된 혼합 데이터
+      </div>
+    </div>
+  </div>
+
+  <!-- 스케일링 시각화 -->
+  <div class="label">스케일링 효과 — 1,000개 샘플 산포도</div>
+  <div class="note">클러스터링 전 스케일링이 왜 필요한지, MinMax와 표준화가 어떻게 다른지 직접 확인하세요. <strong>세 산포도의 분포 모양이 같은 건 정상입니다</strong> — MinMax와 표준화는 모두 단조 변환(각 값에 같은 수식을 적용)이라 데이터 간 상대적 순서와 간격 비율이 유지됩니다. 달라지는 건 분포 모양이 아니라 <strong>축의 척도(scale)</strong>입니다. 이상치 토글을 켜면 척도 차이가 얼마나 중요한지 바로 보입니다.</div>
+
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">MinMax를 쓰는 경우</div>
+      <p style="font-size:12px;">
+        <strong>범위가 반드시 지켜져야 할 때</strong> — 신경망 입력층처럼 0~1 안에 값이 있어야 하는 모델.<br><br>
+        <strong>이미지에서 0~1로 맞추는 이유는 활성함수 때문입니다.</strong><br>
+        Sigmoid는 입력이 255처럼 크면 출력이 거의 1로 고정되고 기울기가 0에 가까워집니다 — gradient vanishing.<br>
+        ReLU는 입력이 255면 출력도 255, 레이어를 거칠수록 값이 폭발합니다 — gradient exploding.<br>
+        0~1로 맞추면 활성함수가 기울기가 살아있는 구간에서 작동하고 학습이 안정됩니다.<br><br>
+        단, ImageNet 기반 모델들은 0~1로 MinMax 후 채널별 평균·std로 표준화를 추가로 적용합니다.<br>
+        MinMax로 범위를 맞추고, 표준화로 분포 중심을 맞추는 두 단계를 함께 씁니다.<br><br>
+        <strong>이상치가 없다는 게 확인됐을 때만 안전합니다.</strong> 이상치 하나가 0과 1을 결정해버리면 정상 데이터가 좁은 구간에 몰립니다.
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">표준화를 쓰는 경우</div>
+      <p style="font-size:12px;">
+        <strong>범위가 딱히 중요하지 않을 때</strong> — 클러스터링, 선형 회귀, PCA 대부분의 경우.<br><br>
+        이상치가 있을 때 — MinMax보다 안정적입니다.<br><br>
+        <strong>제조 데이터는 이상치가 많고 범위가 0~1일 필요가 없는 경우가 대부분이라 표준화가 기본 선택입니다.</strong>
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">MinMax와 표준화는 변수별 기여도가 조금씩 다릅니다</div>
+    <p>
+      MinMax는 범위(max−min)로 나누고, 표준화는 std로 나눕니다.<br>
+      같은 데이터라도 두 방법이 각 변수에 부여하는 기여도가 달라집니다.<br><br>
+      예: 온도(범위 40, std 8)와 압력(범위 6, std 0.3)이 있을 때<br>
+      MinMax 후 std → 온도 0.20, 압력 0.05 — 온도가 4배 더 기여<br>
+      표준화 후 std → 온도 1.0, 압력 1.0 — 동등하게 기여<br><br>
+      어떤 스케일링을 쓰느냐에 따라 어느 변수가 거리를, 그리고 군집을 더 결정하는지가 달라집니다.<br>
+      <strong>도메인 지식으로 "이 변수가 군집 결정에 더 영향을 줬으면 좋겠다"는 판단이 있다면, 그 변수의 기여도가 높게 나오는 스케일링을 선택하는 근거가 됩니다.</strong><br><br>
+      반드시 하나가 정답이 아닙니다. 두 방법으로 각각 클러스터링해보고 결과가 어떻게 달라지는지 확인하는 것도 좋은 접근입니다.
+    </p>
+  </div>
+  <iframe src="example-scaling.html" title="MinMax 스케일링과 표준화 비교" width="100%" height="520" style="border:1px solid var(--border);border-radius:6px;display:block;margin-bottom:16px" scrolling="no"></iframe>
+
+  <!-- 맨해튼 -->
+  <div class="sim-card amber">
+    <div class="sc-head">
+      <div class="sc-icon">🏙️</div>
+      <div class="sc-meta">
+        <div class="sc-name">맨해튼 거리 (Manhattan Distance) — 비유사도</div>
+        <div class="sc-essence">
+          <strong>본질: "바둑판 도로에서 이동하는 거리"</strong><br>
+          대각선 지름길 없이, 수직·수평으로만 이동할 때의 총 거리. 유클리드보다 큰 차이(이상치)를 덜 과장한다.
+        </div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-col">
+        <div class="sc-col-label">수식</div>
+        <div class="sc-eq">d(A,B) = <span class="hi">Σ</span> |<span class="hi-r">aᵢ</span> − <span class="hi-g">bᵢ</span>|</div>
+        <div class="sc-elem">
+          <b>|aᵢ − bᵢ|</b> = 차이의 절댓값 — 제곱 없이 절댓값만 합산<br>
+          유클리드와 element 구조는 같지만 합산 방식이 다름<br>
+          제곱을 안 하기 때문에 큰 차이(이상치)를 덜 과장함<br>
+          <b>결과: 0 ~ ∞ (작을수록 비슷)</b>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="sc-col-label">유클리드와 무엇이 다른가</div>
+        <div class="sc-elem">
+          예: A = [1, 1], B = [1, 10]<br>
+          유클리드: √(0² + 9²) = 9<br>
+          맨해튼: |0| + |9| = 9 — 2차원에서는 같음<br><br>
+          예: A = [1, 1], B = [4, 5]<br>
+          유클리드: √(9 + 16) = 5<br>
+          맨해튼: 3 + 4 = 7 — 차이 발생<br><br>
+          <b>유클리드는 제곱 때문에 큰 차이가 있는 차원을 강하게 반영.</b><br>
+          이상치 하나가 특정 차원에서 극단값이면 유클리드 거리가 폭발. 맨해튼은 그걸 선형적으로만 반영해서 더 안정적.
+        </div>
+      </div>
+    </div>
+    <div class="sc-foot">
+      <div class="sc-use ok">
+        <div class="su-label">잘 맞는 경우</div>
+        이상치가 있는 수치 데이터. 고차원 데이터 (유클리드는 고차원에서 거리 구분이 흐릿해짐). 각 차원을 동등하게 보고 싶을 때
+      </div>
+      <div class="sc-use bad">
+        <div class="su-label">잘 안 맞는 경우</div>
+        크기보다 방향·패턴이 의미 있는 경우에는 거리 계열 자체가 부적합
+      </div>
+    </div>
+  </div>
+
+  <!-- 코사인 -->
+  <div class="sim-card green">
+    <div class="sc-head">
+      <div class="sc-icon">🧭</div>
+      <div class="sc-meta">
+        <div class="sc-name">코사인 유사도 (Cosine Similarity) — 유사도</div>
+        <div class="sc-essence">
+          <strong>본질: "두 벡터 사이의 각도가 얼마나 작은가"</strong><br>
+          이름이 코사인인 이유 — 두 벡터 사이 각도(θ)의 코사인값을 계산하기 때문입니다.<br>
+          각이 작을수록(방향이 가까울수록) cos(θ)가 1에 가까워집니다. 각이 90°면 0, 180°면 −1.<br>
+          크기(규모)는 완전히 무시하고 방향만 봅니다.
+        </div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-col">
+        <div class="sc-col-label">수식</div>
+        <div class="sc-eq">cos(A,B) = <span class="hi">( Σ aᵢbᵢ )</span> / ( <span class="hi-g">||A||</span> × <span class="hi-r">||B||</span> )</div>
+        <div class="sc-elem">
+          <b>Σ aᵢbᵢ</b> = 내적(dot product). 같은 위치 element를 곱해서 합산. 같은 방향일수록 값이 커짐<br><br>
+          <b>||A||</b> = A 벡터의 norm = 벡터의 크기(길이) = √(a₁² + a₂² + ... + aₙ²)<br>
+          원점에서 점 A까지의 유클리드 거리와 같습니다.<br><br>
+          <b>||A|| × ||B||로 나누는 것</b> = 두 벡터의 크기를 각각 1로 정규화.<br>
+          크기를 제거하고 방향만 남기는 조작입니다.<br><br>
+          <b>결과: −1 ~ 1 (각이 작을수록 1, 직교하면 0, 반대 방향이면 −1)</b>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="sc-col-label">element 의미가 왜 중요한가</div>
+        <div class="sc-elem">
+          element가 <b>단어 빈도수</b>이면:<br>
+          문서 A "머신러닝" 10번, 문서 B "머신러닝" 1번<br>
+          절대 빈도는 10배 차이지만 다른 단어 비율이 같으면 코사인 유사도 = 1<br>
+          두 벡터의 방향(각도)이 같기 때문. 크기(norm)는 달라도 무방.<br>
+          "같은 주제를 얘기하고 있다" → 원하는 결과<br><br>
+          element가 <b>구매 횟수</b>이면:<br>
+          VIP 고객 A: 전자제품 50번, 의류 30번<br>
+          일반 고객 B: 전자제품 5번, 의류 3번<br>
+          두 벡터의 각도가 같음 → 코사인 유사도 = 1<br>
+          구매량(norm)보다 구매 방향(각도)을 보고 싶을 때 유효
+        </div>
+      </div>
+    </div>
+    <div class="sc-foot">
+      <div class="sc-use ok">
+        <div class="su-label">잘 맞는 경우</div>
+        텍스트 분석 (TF-IDF 벡터 비교). 추천 시스템 (구매 패턴의 방향 비교). 규모보다 방향·각도가 중요한 경우
+      </div>
+      <div class="sc-use bad">
+        <div class="su-label">잘 안 맞는 경우</div>
+        수치 크기 자체가 의미 있을 때 — 온도 10°C와 100°C는 각도는 같아도 의미가 다름. 절대량이 중요한 경우
+      </div>
+    </div>
+  </div>
+
+  <!-- Pearson -->
+  <div class="sim-card red">
+    <div class="sc-head">
+      <div class="sc-icon">📈</div>
+      <div class="sc-meta">
+        <div class="sc-name">Pearson 상관 유사도 (Pearson Correlation) — 유사도</div>
+        <div class="sc-essence">
+          <strong>본질: "평균을 빼고 난 뒤, 같은 방향을 가리키는가"</strong><br>
+          코사인 유사도와 수식 구조가 완전히 같습니다. 차이는 하나 —<br>
+          <strong>각 데이터에서 평균을 먼저 빼고 코사인을 계산합니다.</strong><br>
+          평균을 빼면 각자의 기준선(오프셋)이 제거되고, 그 뒤의 방향 비교는 코사인과 동일합니다.
+        </div>
+      </div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-col">
+        <div class="sc-col-label">수식 — 코사인과 나란히 비교</div>
+        <div class="sc-eq">코사인:  Σ <span class="hi-r">aᵢ</span><span class="hi-g">bᵢ</span> / (||A|| × ||B||)<br>Pearson: Σ (<span class="hi-r">aᵢ</span>−<span class="hi-r">ā</span>)(<span class="hi-g">bᵢ</span>−<span class="hi-g">b̄</span>) / (||A−ā|| × ||B−b̄||)</div>
+        <div class="sc-elem">
+          구조가 완전히 동일합니다.<br>
+          Pearson은 aᵢ 대신 <b>(aᵢ−ā)</b>를 씁니다 — 평균을 뺀 값.<br>
+          평균을 빼면 각자의 기준선이 0으로 맞춰집니다.<br>
+          그 뒤에 하는 일은 코사인과 같습니다 — 방향 비교.<br>
+          <b>결과: −1 ~ 1 (1에 가까울수록 같은 방향)</b>
+        </div>
+      </div>
+      <div class="sc-col">
+        <div class="sc-col-label">코사인과 정확히 무엇이 다른가</div>
+        <div class="sc-elem">
+          <b>코사인:</b> 원점(0) 기준으로 방향 비교<br>
+          <b>Pearson:</b> 각자 평균 기준으로 방향 비교<br><br>
+          "변화 방향이 같다"는 표현은 엄밀하지 않습니다.<br>
+          정확하게는 <b>"평균 대비 편차의 방향이 같다"</b>입니다.<br><br>
+          예: 사용자 A는 모든 영화에 4~5점, 사용자 B는 모든 영화에 1~2점.<br>
+          그러나 둘 다 같은 영화에서 자기 평균 대비 높고 낮게 평가.<br><br>
+          코사인: 절대 점수 기준 → "다르다"<br>
+          Pearson: 평균 제거 후 편차 기준 → "같은 취향"<br><br>
+          <b>데이터의 "0"이 의미 있으면 코사인, 기준선이 각자 다르면 Pearson.</b><br>
+          단어 빈도에서 0은 "그 단어가 없다"는 실제 정보 → 코사인.<br>
+          사람마다 다른 평점 기준, 센서마다 다른 오프셋 → Pearson.
+        </div>
+      </div>
+    </div>
+    <div class="sc-foot">
+      <div class="sc-use ok">
+        <div class="su-label">잘 맞는 경우</div>
+        기준선(평균)이 각자 다를 때 — 평점 시스템, 센서 오프셋. 절대값보다 평균 대비 편차 패턴이 의미 있는 경우
+      </div>
+      <div class="sc-use bad">
+        <div class="su-label">잘 안 맞는 경우</div>
+        데이터의 0이 의미 있는 경우 (평균 빼면 0의 의미가 사라짐). element가 희소(0이 많음)한 경우 — 평균이 왜곡됨
+      </div>
+    </div>
+  </div>
+
+  <!-- 자카드 -->
+  <div class="sim-card" style="border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px">
+    <div class="sc-head" style="padding:14px 18px;display:flex;align-items:flex-start;gap:16px;border-bottom:1px solid var(--border);background:var(--surface2)">
+      <div class="sc-icon" style="font-size:28px;line-height:1;flex-shrink:0;margin-top:2px">🏷️</div>
+      <div class="sc-meta">
+        <div class="sc-name" style="font-size:15px;font-weight:500;margin-bottom:2px">자카드 유사도 (Jaccard Similarity) — 유사도</div>
+        <div class="sc-essence" style="font-size:13px;color:var(--text2);line-height:1.6">
+          <strong>본질: "공통으로 가진 것이 전체에서 얼마나 되는가"</strong><br>
+          element가 <strong>0 또는 1 (있다/없다)</strong>인 집합 데이터에 씁니다. 크기 개념이 없고 "겹치는가 안 겹치는가"만 봅니다.
+        </div>
+      </div>
+    </div>
+    <div class="sc-body" style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)">
+      <div class="sc-col" style="padding:12px 16px;border-right:1px solid var(--border)">
+        <div class="sc-col-label" style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">수식</div>
+        <div class="sc-eq" style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:8px 12px;border-radius:4px;line-height:1.9;margin-bottom:6px">J(A,B) = <span style="color:var(--blue);font-weight:500">|A ∩ B|</span> / <span style="color:var(--green);font-weight:500">|A ∪ B|</span></div>
+        <div class="sc-elem" style="font-size:12px;color:var(--text2);line-height:1.65">
+          <b>|A ∩ B|</b> = 둘 다 1인 element 수 (공통으로 가진 것)<br>
+          <b>|A ∪ B|</b> = 둘 중 하나라도 1인 element 수 (합집합)<br>
+          0을 공통점으로 계산하지 않습니다<br>
+          <b>결과: 0 ~ 1 (1에 가까울수록 비슷)</b>
+        </div>
+      </div>
+      <div class="sc-col" style="padding:12px 16px">
+        <div class="sc-col-label" style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">피어슨과 결정적으로 다른 점</div>
+        <div class="sc-elem" style="font-size:12px;color:var(--text2);line-height:1.65">
+          피어슨은 element가 연속형 수치여야 의미 있습니다.<br>
+          자카드는 element가 0/1이어야 의미 있습니다.<br><br>
+          <b>0이 많은 희소 데이터에서 자카드가 강합니다.</b><br>
+          상품 1000개 중 둘 다 999개를 안 샀다고 해서 취향이 같은 게 아닙니다. 피어슨은 이 "둘 다 0"을 공통점으로 반영하지만, 자카드는 분모를 "둘 중 하나라도 산 것"으로 한정해서 이 문제를 피합니다.<br><br>
+          이진 데이터에 피어슨을 쓰면 평균이 구매 비율(0~1 사이)이 되고 편차가 매우 작아져 결과가 불안정합니다.
+        </div>
+      </div>
+    </div>
+    <div class="sc-foot" style="padding:10px 16px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <div class="sc-use ok" style="font-size:12px;padding:8px 10px;border-radius:4px;line-height:1.6;background:var(--green-bg);border:1px solid var(--green-border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);margin-bottom:3px">잘 맞는 경우</div>
+        구매 여부, 클릭 여부, 태그 여부 등 0/1 이진 데이터. 0이 많은 희소 데이터 (상품 수천 개 중 일부만 구매)
+      </div>
+      <div class="sc-use bad" style="font-size:12px;padding:8px 10px;border-radius:4px;line-height:1.6;background:var(--red-bg);border:1px solid var(--red-border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--red);margin-bottom:3px">잘 안 맞는 경우</div>
+        연속형 수치 데이터 — 온도, 압력, 구매 금액처럼 크기가 의미 있는 데이터에는 쓸 수 없음
+      </div>
+    </div>
+  </div>
+
+  <!-- 자카드 vs 피어슨 인터랙티브 -->
+  <div class="label">자카드 vs 피어슨 — 100개 샘플로 직접 계산</div>
+  <div class="note">이진 데이터(구매 여부)에는 자카드, 연속형 데이터(센서값)에는 피어슨. 비교 탭에서 같은 이진 데이터에 두 유사도를 모두 적용하면 결과가 어떻게 달라지는지 확인하세요.</div>
+
+
+  <hr>
+
+  <div class="label">전체 정리 — 본질 비교</div>
+  <table>
+    <thead><tr><th>수식</th><th>본질 (한 줄)</th><th>크기 반영</th><th>기준선 보정</th><th>metric 여부</th><th>값 범위</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>유클리드 거리</strong></td>
+        <td class="muted">좌표 공간에서 직선 거리</td>
+        <td class="neg">반영</td>
+        <td class="neg">없음</td>
+        <td class="pos">metric</td>
+        <td class="muted">0 ~ ∞</td>
+      </tr>
+      <tr>
+        <td><strong>맨해튼 거리</strong></td>
+        <td class="muted">차원별 수치 차이의 합</td>
+        <td class="neg">반영 (덜 과장)</td>
+        <td class="neg">없음</td>
+        <td class="pos">metric</td>
+        <td class="muted">0 ~ ∞</td>
+      </tr>
+      <tr>
+        <td><strong>코사인 유사도</strong></td>
+        <td class="muted">원점 기준, 같은 방향인가</td>
+        <td class="pos">무시 (norm으로 나눔)</td>
+        <td class="neg">없음</td>
+        <td class="neg">metric 아님</td>
+        <td class="pos">−1 ~ 1</td>
+      </tr>
+      <tr>
+        <td><strong>Pearson 유사도</strong></td>
+        <td class="muted">평균 대비 편차의 방향이 같은가 (= 평균 빼고 코사인)</td>
+        <td class="pos">무시</td>
+        <td class="pos">있음 (평균 제거)</td>
+        <td class="neg">metric 아님</td>
+        <td class="pos">−1 ~ 1</td>
+      </tr>
+      <tr>
+        <td><strong>자카드 유사도</strong></td>
+        <td class="muted">공통으로 가진 것이 전체에서 얼마나 되는가</td>
+        <td class="neg">해당 없음 (0/1만)</td>
+        <td class="neg">없음</td>
+        <td class="pos">metric</td>
+        <td class="pos">0 ~ 1</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ── 05: 어떤 유사도를 쓸까 ── -->
+<div class="section-block" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">어떤 유사도·거리를 쓸 것인가</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note">
+    선택 기준은 하나입니다 — <strong>"이 맥락에서 '비슷하다'는 게 무엇을 의미하는가?"</strong><br>
+    그 답이 정해지면 수식은 따라옵니다. "텍스트면 코사인, 수치면 유클리드" 같은 공식은 위험합니다.<br>
+    데이터 타입이 아니라 <strong>element가 무엇을 의미하는지</strong>가 선택 기준이기 때문입니다.
+  </div>
+
+  <div class="label">상황별 사고 흐름 — 예시로 보기</div>
+
+  <div class="scenario">
+    <div class="sc-q">공정 센서 A, B, C의 시계열 데이터. "비슷하게 움직이는 센서끼리 묶고 싶다"</div>
+    <div class="sc-why">
+      "비슷하게 움직인다" = 같이 올라가고 같이 내려가는가.<br>
+      센서마다 측정 기준이나 오프셋이 다를 수 있음 (A는 항상 100 주변, B는 항상 10 주변).<br>
+      절대값 차이가 아니라 변화 방향의 동조가 의미 있음.
+    </div>
+    <span class="sc-ans red">→ Pearson</span>
+    <div class="sc-note">절대값과 기준선 차이를 모두 제거하고 변화 방향만 비교</div>
+  </div>
+
+  <div class="scenario">
+    <div class="sc-q">고객별 상품 카테고리 구매 횟수. "비슷한 구매 패턴의 고객끼리 묶고 싶다"</div>
+    <div class="sc-why">
+      VIP와 일반 고객의 구매량은 크게 다르지만, 어떤 카테고리를 주로 사는지 패턴이 같을 수 있음.<br>
+      절대적 구매량보다 "어느 방향으로 소비하는가"가 관심사.<br>
+      단, 개인별 전체 구매 스타일 차이(항상 많이 사는 vs 적게 사는)를 보정할 필요가 없다면 코사인으로 충분.
+    </div>
+    <span class="sc-ans green">→ 코사인 유사도</span>
+    <div class="sc-note">구매량(크기) 차이를 제거하고 구매 방향(패턴)만 비교</div>
+  </div>
+
+  <div class="scenario">
+    <div class="sc-q">공정 파라미터 (온도, 압력, 유량). "수치적으로 비슷한 공정 조건끼리 묶고 싶다". 이상치 데이터 포함</div>
+    <div class="sc-why">
+      수치 크기 자체가 공정 조건을 의미함 — 절대적 차이가 중요.<br>
+      이상치가 포함돼 있어 제곱 기반의 유클리드가 이상치를 과장할 수 있음.<br>
+      스케일링(온도·압력·유량 단위가 다름)은 어느 쪽이든 필수.
+    </div>
+    <span class="sc-ans amber">→ 맨해튼 거리</span>
+    <div class="sc-note">크기 차이 기반이지만 이상치를 덜 과장. 이상치 없고 클린한 데이터면 유클리드도 무방</div>
+  </div>
+
+  <div class="scenario">
+    <div class="sc-q">리뷰 텍스트 데이터 (TF-IDF 벡터). "주제가 비슷한 리뷰끼리 묶고 싶다"</div>
+    <div class="sc-why">
+      리뷰 길이가 다양함 — 짧은 리뷰와 긴 리뷰는 단어 빈도 절대값이 크게 다름.<br>
+      하지만 같은 주제를 얘기하면 단어 비율(방향)은 비슷.<br>
+      길이(크기)를 제거하고 주제(방향)만 비교하는 게 목적.
+    </div>
+    <span class="sc-ans green">→ 코사인 유사도</span>
+    <div class="sc-note">텍스트의 표준 선택. 문서 길이 차이를 자동으로 보정</div>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">자주 하는 실수 — 기본값만 쓰기</div>
+    <p>
+      sklearn, 대부분의 라이브러리에서 거리 기본값은 유클리드입니다.<br>
+      생각 없이 돌리면 항상 유클리드가 됩니다.<br><br>
+      텍스트에 유클리드를 쓰면 문서 길이가 유사도를 지배합니다.<br>
+      평점 데이터에 코사인을 쓰면 사람마다 다른 평점 기준이 보정되지 않습니다.<br><br>
+      항상 먼저 물어보세요: <strong>"이 데이터에서 element가 무엇을 의미하는가?"</strong>
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 5</div>
+    <div class="q-text">"같은 공정 데이터로 K-means를 돌렸을 때, 유클리드 거리로 묶은 군집과 Pearson 유사도로 묶은 군집이 다르게 나왔습니다. 어느 게 맞는 걸까요? 그리고 군집 기반 계층 예측 파이프라인을 구성한다면, 두 결과 중 어떤 걸 1단계로 쓰겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 06: 군집 결과 해석 ── -->
+<div class="section-block" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">군집 결과 해석 — "의미 있는 군집인가?"</span>
+    <span class="section-time">12 min</span>
+  </div>
+
+  <div class="note">수치 지표(Silhouette)는 "수학적으로 잘 나뉘었는가"만 말해줍니다. "실제로 의미 있는가"는 별개입니다</div>
+
+  <div class="label">Silhouette Score — 기준과 한계</div>
+  <div class="box box-blue">
+    <div class="box-title">Silhouette Score란</div>
+    <p>
+      각 데이터 포인트에 대해:<br>
+      a = 같은 군집 내 다른 데이터들과의 평균 거리 (작을수록 응집)<br>
+      b = 가장 가까운 다른 군집 데이터들과의 평균 거리 (클수록 분리)<br>
+      Silhouette = (b − a) / max(a, b)<br><br>
+      결과: −1 ~ 1. 1에 가까울수록 군집이 잘 나뉨. 0은 경계에 위치. 음수는 잘못 배정된 가능성
+    </p>
+  </div>
+
+  <div class="grid-4">
+    <div class="metric good"><div class="m-label">0.7 이상</div><div class="m-val" style="font-size:16px">양호</div><div class="m-desc">군집이 잘 분리됨</div></div>
+    <div class="metric info"><div class="m-label">0.5 ~ 0.7</div><div class="m-val" style="font-size:16px">보통</div><div class="m-desc">구조는 있으나 모호함</div></div>
+    <div class="metric warn"><div class="m-label">0.25 ~ 0.5</div><div class="m-val" style="font-size:16px">약함</div><div class="m-desc">도메인 검증 필요</div></div>
+    <div class="metric danger"><div class="m-label">0.25 미만</div><div class="m-val" style="font-size:16px">의미 없음</div><div class="m-desc">군집 수 재검토</div></div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">Silhouette Score의 구조적 한계 — 왜 믿으면 안 되는가</div>
+    <p>
+      <strong>① K-means에 구조적으로 유리한 지표입니다.</strong><br>
+      Silhouette는 거리 기반으로 계산됩니다. K-means가 만든 구형·볼록한 군집에서 당연히 높게 나옵니다.<br>
+      K-means로 군집을 만들고, K-means 친화적인 지표로 "잘 됐다"고 평가하는 순환 구조입니다.<br>
+      DBSCAN처럼 복잡한 형태의 군집은 실제로 잘 나뉘어도 Silhouette가 낮게 나올 수 있습니다.<br><br>
+
+      <strong>② Elbow와 Silhouette가 다른 K를 가리킬 때가 많습니다.</strong><br>
+      Elbow: K=3이 꺾임. Silhouette: K=4에서 최대. 어느 걸 믿어야 하는지 기준이 없습니다.<br>
+      두 지표 모두 "이 K가 맞다"는 보장이 아닙니다. 단지 후보일 뿐입니다.<br><br>
+
+      <strong>③ 점수가 높아도 군집이 현실과 안 맞을 수 있습니다.</strong><br>
+      수학적으로 잘 나뉜 것과, 현장에서 의미 있는 것은 다릅니다.<br>
+      Silhouette 0.75인데 군집 3개 모두 "정상 공정"인 경우 — 수치는 좋지만 쓸모가 없습니다.<br><br>
+
+      <strong>④ 점수가 낮아도 의미 있는 군집일 수 있습니다.</strong><br>
+      경계가 원래 모호한 데이터(현실에서 흔함)는 Silhouette가 낮게 나오는 게 당연합니다.<br>
+      0.3이 나왔다고 "군집이 잘못됐다"가 아닐 수 있습니다.<br><br>
+
+      결론: Silhouette는 여러 K 후보 중 상대 비교 참고용입니다. 절대적 기준으로 쓰면 안 됩니다.
+    </p>
+  </div>
+
+  <div class="label">의미 있는 군집인지 확인하는 방법</div>
+  <ul class="checklist">
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">각 군집의 특성을 수치로 요약하고 이름 붙이기
+        <div class="sub">군집 1: 평균 온도 높음·압력 낮음 → "고온 저압 군집". 이름이 붙어야 실제 의미가 있는 것</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">군집별 불량률·결과와 교차 확인
+        <div class="sub">군집 3에 불량이 몰려 있는가? 결과(y)와 연관이 없으면 예측 목적으로는 무용</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">도메인 전문가가 "이 군집은 이해된다"고 말할 수 있는가
+        <div class="sub">수치로는 좋아도 현장에서 말이 안 되는 군집은 신뢰하기 어려움</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">군집이 시간에 따라 안정적인가
+        <div class="sub">같은 알고리즘을 다음 달 데이터에 적용했을 때 군집이 크게 바뀌면 — 공정 변화인지 모델 불안정인지 판단 필요</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body">군집 번호 자체에 의미를 부여하면 안 됨
+        <div class="sub">군집 1이 군집 2보다 "좋은" 게 아님. 알고리즘이 임의로 붙인 번호. 특성을 직접 확인해야 함</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 5</div>
+    <div class="q-text">"Silhouette Score가 0.72로 나왔습니다. 이 클러스터링 결과를 현장에 적용해도 될까요?"</div>
+  </div>
+</div>
+
+<!-- ── 07: 해석 연습 ── -->
+<div class="section-block" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">결과 해석 연습</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="label">시나리오 — 공정 데이터 클러스터링 결과</div>
+  <div class="box">
+    <div class="box-title" style="color:var(--text2)">상황 설정</div>
+    <p>온도·압력·유량 3개 센서 데이터로 K-means(K=3, 유클리드 거리) 클러스터링 수행. Silhouette Score = 0.61.</p>
+  </div>
+
+  <table>
+    <thead><tr><th>군집</th><th>평균 온도 (°C)</th><th>평균 압력 (bar)</th><th>평균 유량 (L/min)</th><th>데이터 수</th><th>불량률</th></tr></thead>
+    <tbody>
+      <tr><td><strong>군집 0</strong></td><td>72</td><td>4.2</td><td>88</td><td>1,240</td><td class="pos">1.2%</td></tr>
+      <tr><td><strong>군집 1</strong></td><td>85</td><td>6.8</td><td>63</td><td>890</td><td class="neg">8.7%</td></tr>
+      <tr><td><strong>군집 2</strong></td><td>69</td><td>4.0</td><td>91</td><td>1,110</td><td class="pos">1.5%</td></tr>
+    </tbody>
+  </table>
+
+  <ul class="checklist">
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">군집 0과 군집 2가 수치적으로 매우 유사
+        <div class="sub">온도·압력·유량이 비슷한데 두 군집으로 나뉜 이유는? K=3이 적절한지 의심해야 함. K=2로 줄이면 어떻게 되는지 확인 필요</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon bad">✕</span>
+      <div class="body">"군집 1이 불량 군집이다"고 말할 수 없음
+        <div class="sub">군집 1은 고온·고압·저유량 조건에서 불량률이 높게 나타나는 패턴. 이 조건이 불량을 만든다는 인과관계는 클러스터링으로 판단 불가. 냉각수 부족이 원인이어서 온도가 높아진 것일 수도 있음</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">군집 1 조건(고온·고압)이 나타나면 모니터링 강화 → 활용 가능한 인사이트
+        <div class="sub">인과관계는 불명확해도, 이 조건과 불량이 함께 나타나는 패턴은 조기 경보 기준으로 활용 가능</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">스케일링 여부 확인 필수
+        <div class="sub">온도(69~85), 압력(4.0~6.8), 유량(63~91) — 단위가 달라 스케일링 없이 돌리면 유량이나 온도가 거리를 지배했을 수 있음</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="box box-amber">
+    <div class="box-title">이 세션 전체를 관통하는 메시지</div>
+    <p>
+      클러스터링은 "정답"을 주지 않습니다. 데이터를 나눠줄 뿐입니다.<br>
+      그 나눔이 의미 있는지 판단하는 건 알고리즘이 아니라 사람의 몫입니다.<br><br>
+      유사도 선택도 마찬가지입니다. "비슷하다"를 어떻게 정의할지는 데이터의 element가 무엇을 의미하는지에서 시작합니다. 수식을 먼저 고르는 게 아닙니다.<br><br>
+      결과 보고할 때:<br>
+      ❌ "군집 1이 위험 군집입니다"<br>
+      ✅ "고온·고압·저유량 조건에서 불량률이 높게 나타나는 패턴을 발견했고, 이 조건을 모니터링 기준으로 활용할 수 있습니다"
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">최종 토론 (핵심)</div>
+    <div class="q-text">"위 결과를 현장 담당자에게 설명한다면 어떻게 표현하겠습니까? 그리고 유클리드 거리 대신 Pearson 유사도로 바꿔서 다시 돌리면 군집이 달라질까요? 달라진다면 어느 결과를 믿겠습니까?"</div>
+  </div>
+</div>
+
+<!-- ── 08: 제조 × 클러스터링 ── -->
+<div class="section-block" id="s8">
+  <div class="section-header">
+    <span class="section-num">08</span>
+    <span class="section-title">제조 현장 × 클러스터링 — 실제로 쓸 때 무엇을 주의해야 하는가</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note">제조 데이터는 시계열이고, 센서가 많고, 오류가 많습니다. 이 조건들이 클러스터링을 그냥 돌리면 안 되는 이유입니다</div>
+
+  <!-- 시계열 -->
+  <div class="label">시계열이라서 생기는 문제</div>
+
+  <div class="box box-amber">
+    <div class="box-title">클러스터링은 기본적으로 데이터 포인트 하나하나를 독립적으로 봅니다</div>
+    <p>
+      시점 t의 온도·압력·유량을 하나의 점으로 보고, 그 점이 어느 군집에 속하는지 결정합니다.<br>
+      그런데 제조 공정에서 지금 이 시점 하나만 보면 의미가 없는 경우가 많습니다.<br>
+      온도가 85°C라는 사실보다, 지난 30분 동안 계속 올라가고 있었다는 게 더 중요할 수 있습니다.<br><br>
+      그냥 돌리면 클러스터링은 그 맥락을 모릅니다. 올라가는 중인 85°C와 안정적인 85°C를 같은 군집으로 묶어버립니다.<br><br>
+      이걸 해결하는 방법은 두 가지입니다.<br><br>
+      하나는 <strong>윈도우로 자르는 것</strong>입니다. "지금 이 시점" 대신 "지난 10분 구간"을 하나의 단위로 만들어서 클러스터링에 넣습니다. 구간의 평균·표준편차·최댓값 같은 통계를 벡터로 만들면 기존 알고리즘을 그대로 쓸 수 있습니다. 단, 윈도우 크기를 얼마로 잡느냐가 결과에 크게 영향을 줍니다. 이상 이벤트가 윈도우 경계에 걸리면 반쪽짜리 패턴이 됩니다.<br><br>
+      다른 하나는 <strong>시계열 전용 거리를 쓰는 것</strong>입니다. DTW(Dynamic Time Warping)는 패턴이 비슷하지만 시간이 약간 어긋난 경우도 유사하다고 봅니다. 같은 공정 이상이 어떤 날은 오전 10시에, 어떤 날은 오전 10시 20분에 나타나도 "같은 패턴"으로 묶을 수 있습니다. 유클리드는 시점이 정확히 맞아야 하지만 DTW는 시간 축을 유연하게 처리합니다. 다만 계산 비용이 높아서 대용량 데이터에서는 느립니다.
+    </p>
+  </div>
+
+  <!-- SVG 1: 올라가는 85°C vs 안정적인 85°C -->
+  <svg width="100%" viewBox="0 0 680 220" role="img" style="margin-bottom:12px">
+    <title>올라가는 85°C와 안정적인 85°C를 클러스터링이 같은 군집으로 묶는 문제</title>
+    <desc>왼쪽은 온도가 상승 중인 시계열, 오른쪽은 안정적인 시계열. 두 시계열의 끝값은 같지만 맥락이 다르다.</desc>
+    <defs>
+      <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- 왼쪽 패널: 올라가는 중 -->
+    <rect x="40" y="20" width="260" height="150" rx="8" fill="none" stroke="#e8cc98" stroke-width="0.5"/>
+    <text class="ts" x="170" y="42" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#7a4a00">상승 중인 온도</text>
+    <!-- 축 -->
+    <line x1="60" y1="148" x2="280" y2="148" stroke="#ccc9be" stroke-width="0.5"/>
+    <line x1="60" y1="148" x2="60"  y2="52"  stroke="#ccc9be" stroke-width="0.5"/>
+    <!-- 상승 라인 -->
+    <polyline points="70,145 100,138 130,128 160,115 190,100 220,84 250,70 270,62"
+      fill="none" stroke="#1a4f8a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 끝점 강조 -->
+    <circle cx="270" cy="62" r="5" fill="#1a4f8a"/>
+    <text class="ts" x="260" y="56" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a4f8a">85°C</text>
+    <!-- 시간 레이블 -->
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#9b9890" x="65" y="162">-30분</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#9b9890" x="258" y="162" text-anchor="end">지금</text>
+
+    <!-- 오른쪽 패널: 안정적 -->
+    <rect x="380" y="20" width="260" height="150" rx="8" fill="none" stroke="#b8d8bf" stroke-width="0.5"/>
+    <text class="ts" x="510" y="42" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a5a2a">안정적인 온도</text>
+    <!-- 축 -->
+    <line x1="400" y1="148" x2="620" y2="148" stroke="#ccc9be" stroke-width="0.5"/>
+    <line x1="400" y1="148" x2="400"  y2="52"  stroke="#ccc9be" stroke-width="0.5"/>
+    <!-- 안정 라인 -->
+    <polyline points="410,65 440,64 470,66 500,63 530,65 560,64 590,63 610,62"
+      fill="none" stroke="#1a5a2a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <!-- 끝점 강조 -->
+    <circle cx="610" cy="62" r="5" fill="#1a5a2a"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a5a2a" x="600" y="56" text-anchor="middle">85°C</text>
+    <!-- 시간 레이블 -->
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#9b9890" x="405" y="162">-30분</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#9b9890" x="598" y="162" text-anchor="end">지금</text>
+
+    <!-- 가운데 화살표 + 설명 -->
+    <text font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#8a1a1a" x="340" y="95" text-anchor="middle">클러스터링은</text>
+    <text font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#8a1a1a" x="340" y="111" text-anchor="middle">같은 군집으로</text>
+    <text font-family="IBM Plex Sans KR, sans-serif" font-size="12" fill="#8a1a1a" x="340" y="127" text-anchor="middle">묶어버림</text>
+    <line x1="302" y1="110" x2="320" y2="110" stroke="#8a1a1a" stroke-width="1" marker-end="url(#arr2)" stroke-dasharray="3 2"/>
+    <line x1="378" y1="110" x2="360" y2="110" stroke="#8a1a1a" stroke-width="1" marker-end="url(#arr2)" stroke-dasharray="3 2"/>
+  </svg>
+
+  <!-- SVG 2: DTW vs 유클리드 -->
+  <svg width="100%" viewBox="0 0 680 200" role="img" style="margin-bottom:12px">
+    <title>유클리드 거리와 DTW 거리 비교</title>
+    <desc>유클리드는 시점이 정확히 맞아야 유사하다고 판단하지만, DTW는 시간이 어긋나도 같은 패턴을 유사하다고 본다</desc>
+
+    <!-- 왼쪽: 유클리드 -->
+    <rect x="40" y="20" width="270" height="155" rx="8" fill="none" stroke="#dfb8b8" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="11" fill="#8a1a1a" x="175" y="40" text-anchor="middle">유클리드 — 시점이 맞아야 유사</text>
+    <!-- 패턴 A (빨강) -->
+    <polyline points="60,145 80,130 100,100 120,80 140,90 160,130 180,145 200,148"
+      fill="none" stroke="#1a4f8a" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- 패턴 B (시간 어긋남, 파랑) -->
+    <polyline points="80,145 100,142 120,130 140,100 160,80 180,90 200,120 280,148"
+      fill="none" stroke="#8a1a1a" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+    <!-- 수직 매칭선 (어긋남) -->
+    <line x1="120" y1="80"  x2="120" y2="130" stroke="#ccc9be" stroke-width="0.8" stroke-dasharray="2 2"/>
+    <line x1="140" y1="90"  x2="140" y2="100" stroke="#ccc9be" stroke-width="0.8" stroke-dasharray="2 2"/>
+    <line x1="160" y1="130" x2="160" y2="80"  stroke="#ccc9be" stroke-width="0.8" stroke-dasharray="2 2"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#8a1a1a" x="175" y="165">거리 크게 나옴 → "다른 패턴"</text>
+
+    <!-- 오른쪽: DTW -->
+    <rect x="380" y="20" width="270" height="155" rx="8" fill="none" stroke="#b8d8bf" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="11" fill="#1a5a2a" x="515" y="40" text-anchor="middle">DTW — 시간 축 유연하게 비교</text>
+    <!-- 패턴 A -->
+    <polyline points="400,145 420,130 440,100 460,80 480,90 500,130 520,145 540,148"
+      fill="none" stroke="#1a4f8a" stroke-width="1.5" stroke-linecap="round"/>
+    <!-- 패턴 B (시간 어긋남) -->
+    <polyline points="420,145 440,142 460,130 480,100 500,80 520,90 540,120 620,148"
+      fill="none" stroke="#1a5a2a" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="5 3"/>
+    <!-- DTW 매칭선 (유연하게 맞춤) -->
+    <line x1="440" y1="100" x2="460" y2="130" stroke="#b8d8bf" stroke-width="0.8"/>
+    <line x1="460" y1="80"  x2="480" y2="100" stroke="#b8d8bf" stroke-width="0.8"/>
+    <line x1="500" y1="80"  x2="480" y2="90"  stroke="#b8d8bf" stroke-width="0.8"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a5a2a" x="515" y="165">거리 작게 나옴 → "같은 패턴"</text>
+
+    <!-- 범례 -->
+    <line x1="260" y1="75"  x2="280" y2="75"  stroke="#1a4f8a" stroke-width="1.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#6b6860" x="283" y="78">패턴 A</text>
+    <line x1="260" y1="91"  x2="280" y2="91"  stroke="#8a1a1a" stroke-width="1.5" stroke-dasharray="5 3"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#6b6860" x="283" y="94">패턴 B (20분 지연)</text>
+  </svg>
+
+  <!-- 오류 -->
+  <div class="label">오류 데이터가 많아서 생기는 문제</div>
+
+  <div class="box box-red">
+    <div class="box-title">클러스터링은 오류 데이터를 오류라고 모릅니다</div>
+    <p>
+      센서가 잠깐 오작동해서 온도가 갑자기 200°C로 찍혔다가 돌아왔다고 합시다.<br>
+      클러스터링은 그게 센서 오류인지 진짜 공정 이상인지 알 수 없습니다. 그냥 데이터로 봅니다.<br><br>
+      오류 데이터가 충분히 많으면 클러스터링이 그 패턴을 하나의 군집으로 만들어버립니다.<br>
+      나중에 "군집 2는 어떤 공정 상태인가"를 분석하다가 결국 센서 오류 패턴이었음을 발견하는 경우가 실제로 많습니다.<br><br>
+      K-means는 이상치를 noise로 분류하는 개념 자체가 없기 때문에 오류 데이터가 센트로이드를 끌어당깁니다.<br>
+      DBSCAN은 밀집되지 않은 오류 데이터를 noise로 분류하는 경향이 있어서 그나마 낫지만, 오류가 반복적으로 비슷하게 나타나면 그것도 하나의 군집으로 묶힐 수 있습니다.<br><br>
+      <strong>클러스터링을 돌리기 전에 반드시 먼저 해야 할 것이 있습니다.</strong><br>
+      센서 오류(결측, 범위 이탈, 고착값)와 실제 공정 이상을 구분하는 전처리입니다.<br>
+      이 구분 없이 바로 클러스터링을 돌리면, 결과가 공정 패턴이 아니라 데이터 품질 패턴을 반영할 수 있습니다.
+    </p>
+  </div>
+
+  <!-- 센서 많음 -->
+  <div class="label">센서가 많아서 생기는 문제</div>
+
+  <div class="box box-blue">
+    <div class="box-title">센서 200개를 그냥 다 넣으면 거리가 의미를 잃습니다</div>
+    <p>
+      고차원에서 유클리드 거리는 구분이 흐릿해집니다. 변수가 많아질수록 모든 점 사이의 거리가 비슷해지는 경향이 있습니다. "가장 가까운 점"과 "가장 먼 점"의 거리 차이가 작아져서 군집이 잘 안 나뉩니다.<br><br>
+      그리고 센서 200개가 다 독립적이지 않습니다. 냉각수 온도와 배관 온도는 같이 올라가고 같이 내려갑니다. 이런 센서들이 군집 결과에 중복으로 영향을 줍니다.<br><br>
+      실용적인 접근은 두 단계로 나누는 것입니다.<br><br>
+      먼저 <strong>센서끼리 클러스터링</strong>을 해봅니다. 비슷하게 움직이는 센서를 묶어서 대표 센서를 선정하거나 그룹별로 하나씩만 씁니다. 이때 유사도는 Pearson이 적합합니다. 센서마다 단위가 다르고(온도 100°C, 압력 5 bar), 절대값보다 "함께 움직이는가"가 의미 있기 때문입니다. 유클리드를 쓰면 절대값이 큰 센서가 거리를 지배해서 실제로 동조하는 센서들이 안 묶힙니다.<br><br>
+      그 다음 축소된 변수로 <strong>공정 패턴 클러스터링</strong>을 합니다.
+    </p>
+  </div>
+
+  <!-- 제조에서 실제로 쓰는 상황 -->
+  <div class="label">그래서 제조에서 클러스터링을 언제 쓰는가</div>
+
+  <div class="note">상황을 먼저 정의하고, 그 상황에 맞는 방법을 고르는 순서입니다. 알고리즘을 먼저 고르는 게 아닙니다</div>
+
+  <ul class="checklist">
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">운전 모드가 섞여 있을 때 — 먼저 모드를 분리하고 싶다
+        <div class="sub">워밍업·정상·고부하가 섞인 데이터에 예측 모델을 바로 돌리면 모드 차이가 노이즈로 작용합니다. 클러스터링으로 모드를 먼저 분리하고, 모드별로 별도 모델을 쓰거나 다른 관리 기준을 적용합니다. 모드 수를 모른다면 Hierarchical로 Dendrogram을 먼저 확인합니다.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">평소와 다른 공정 패턴을 잡고 싶다 — 이상 탐지
+        <div class="sub">정상 데이터로 먼저 군집을 만들고, 새 데이터가 어느 군집에도 속하지 않으면 이상으로 탐지합니다. DBSCAN은 noise로 자동 분류해줘서 여기에 직접 활용됩니다. 단, 오류 데이터를 먼저 걸러내지 않으면 오류 패턴이 "이상"으로 잡힙니다.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon ok">✓</span>
+      <div class="body">센서 수를 줄이고 싶다 — 변수 축소
+        <div class="sub">비슷하게 움직이는 센서끼리 묶어서 대표 센서를 선정합니다. Pearson + Hierarchical 조합이 적합합니다. 이 작업을 먼저 하면 이후 모든 분석이 훨씬 깔끔해집니다.</div>
+      </div>
+    </li>
+    <li>
+      <span class="icon warn">!</span>
+      <div class="body">불량 원인을 찾겠다고 바로 클러스터링을 돌리는 경우
+        <div class="sub">오류 데이터 전처리, 운전 모드 분리, 변수 축소 없이 바로 돌리면 군집이 공정 패턴이 아니라 데이터 품질 문제나 운전 모드 차이를 반영할 가능성이 높습니다. 군집 결과가 나왔다고 해서 불량 원인이 나온 게 아닙니다.</div>
+      </div>
+    </li>
+  </ul>
+
+  <div class="box box-amber">
+    <div class="box-title">순서가 중요합니다</div>
+    <p>
+      제조 데이터에서 클러스터링을 제대로 쓰려면 보통 이 순서로 접근합니다.<br><br>
+      1. 센서 오류·결측 전처리 — 오류 데이터가 섞이면 이후 모든 게 왜곡됩니다<br>
+      2. 운전 모드 확인 — 모드가 섞여 있으면 먼저 분리합니다<br>
+      3. 센서 그룹핑으로 변수 축소 — 200개를 다 넣지 않습니다<br>
+      4. 목적에 맞는 알고리즘과 유사도 선택 — 이때야 비로소 알고리즘을 고릅니다<br>
+      5. 결과가 나왔을 때 — 군집에 이름을 붙일 수 있는지, 도메인에서 말이 되는지 검증합니다<br><br>
+      클러스터링은 이 과정의 4번입니다. 1·2·3 없이 4로 바로 가면 결과를 믿기 어렵습니다.
+    </p>
+  </div>
+
+  <!-- SVG 3: 전체 접근 순서 -->
+  <svg width="100%" viewBox="0 0 680 100" role="img" style="margin-bottom:16px">
+    <title>제조 데이터 클러스터링 접근 순서</title>
+    <desc>전처리 → 모드 분리 → 변수 축소 → 클러스터링 → 검증 순서로 진행</desc>
+    <defs>
+      <marker id="arr3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+        <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </marker>
+    </defs>
+
+    <!-- 단계 1: 전처리 -->
+    <rect x="20" y="28" width="108" height="44" rx="6" fill="#f8eaea" stroke="#dfb8b8" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#8a1a1a" x="74" y="47" text-anchor="middle">1. 전처리</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#8a1a1a" x="74" y="61" text-anchor="middle">센서 오류 제거</text>
+
+    <line x1="128" y1="50" x2="146" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arr3)"/>
+
+    <!-- 단계 2: 모드 분리 -->
+    <rect x="148" y="28" width="108" height="44" rx="6" fill="#fdf3e0" stroke="#e8cc98" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#7a4a00" x="202" y="47" text-anchor="middle">2. 모드 분리</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#7a4a00" x="202" y="61" text-anchor="middle">운전 구간 구분</text>
+
+    <line x1="256" y1="50" x2="274" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arr3)"/>
+
+    <!-- 단계 3: 변수 축소 -->
+    <rect x="276" y="28" width="108" height="44" rx="6" fill="#fdf3e0" stroke="#e8cc98" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#7a4a00" x="330" y="47" text-anchor="middle">3. 변수 축소</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#7a4a00" x="330" y="61" text-anchor="middle">센서 그룹핑</text>
+
+    <line x1="384" y1="50" x2="402" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arr3)"/>
+
+    <!-- 단계 4: 클러스터링 ← 핵심 강조 -->
+    <rect x="404" y="22" width="116" height="56" rx="6" fill="#eaf0f8" stroke="#b8ccdf" stroke-width="1.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a4f8a" x="462" y="44" text-anchor="middle" font-weight="500">4. 클러스터링</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#1a4f8a" x="462" y="58" text-anchor="middle">알고리즘·유사도 선택</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#1a4f8a" x="462" y="70" text-anchor="middle">← 이제야 여기</text>
+
+    <line x1="520" y1="50" x2="538" y2="50" stroke="#ccc9be" stroke-width="1" marker-end="url(#arr3)"/>
+
+    <!-- 단계 5: 검증 -->
+    <rect x="540" y="28" width="108" height="44" rx="6" fill="#eaf5ec" stroke="#b8d8bf" stroke-width="0.5"/>
+    <text font-family="IBM Plex Mono, monospace" font-size="10" fill="#1a5a2a" x="594" y="47" text-anchor="middle">5. 검증</text>
+    <text font-family="IBM Plex Mono, monospace" font-size="9"  fill="#1a5a2a" x="594" y="61" text-anchor="middle">도메인 확인</text>
+  </svg>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 (최종)</div>
+    <div class="q-text">"센서 200개짜리 공정 데이터가 있습니다. 불량 원인을 찾고 싶은데 레이블(불량 여부)이 일부만 있습니다. 클러스터링을 어떻게 활용하겠습니까? 어떤 순서로 접근하겠습니까?"</div>
+  </div>
+</div>
+
+</div><!-- /page -->
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  // nav active
+  const secs=document.querySelectorAll('.section-block'),links=document.querySelectorAll('.nav a');
+  window.addEventListener('scroll',()=>{
+    let c='';
+    secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)c=s.id});
+    links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)});
+  });
+
+  // Elbow chart
+  new Chart(document.getElementById('elbowChart'),{
+    type:'line',
+    data:{
+      labels:['K=1','K=2','K=3','K=4','K=5','K=6','K=7'],
+      datasets:[{
+        label:'군집 내 분산 (WCSS)',
+        data:[9200,5400,3100,2600,2350,2200,2100],
+        borderColor:'#1a4f8a',borderWidth:2,pointRadius:5,
+        fill:false,tension:0.3
+      }]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{
+        legend:{display:true,labels:{font:{size:11,family:'IBM Plex Mono'},color:'#6b6860'}},
+        tooltip:{callbacks:{label:c=>'WCSS: '+c.parsed.y.toLocaleString()}}
+      },
+      scales:{
+        y:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'},grid:{color:'rgba(0,0,0,0.05)'},
+           title:{display:true,text:'WCSS (군집 내 분산)',font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'}},
+        x:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'},grid:{display:false}}
+      }
+    }
+  });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

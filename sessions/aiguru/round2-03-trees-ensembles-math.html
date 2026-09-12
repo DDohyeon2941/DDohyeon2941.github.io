@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Round 2 — Session 3 | 트리 & 앙상블 수식</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #f7f6f2;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e2e0d8;
+    --border2: #ccc9be;
+    --text: #1a1917;
+    --text2: #6b6860;
+    --text3: #9b9890;
+    --blue: #1a4f8a;
+    --blue-bg: #eaf0f8;
+    --blue-border: #b8ccdf;
+    --red: #8a1a1a;
+    --red-bg: #f8eaea;
+    --red-border: #dfb8b8;
+    --amber: #7a4a00;
+    --amber-bg: #fdf3e0;
+    --amber-border: #e8cc98;
+    --green: #1a5a2a;
+    --green-bg: #eaf5ec;
+    --green-border: #b8d8bf;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans KR', sans-serif;
+  }
+
+  body { font-family: var(--sans); background: var(--bg); color: var(--text); font-size: 14px; line-height: 1.7; }
+
+  /* ── NAV ── */
+  .nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--surface); border-bottom: 1px solid var(--border);
+    padding: 0 40px; display: flex; align-items: center; height: 48px; overflow-x: auto; gap: 0;
+  }
+  .nav-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500;
+    background: var(--blue); color: #fff; padding: 2px 9px; border-radius: 3px;
+    margin-right: 16px; white-space: nowrap; letter-spacing: .04em;
+  }
+  .nav-title { font-size: 12px; font-weight: 500; color: var(--text2); white-space: nowrap; margin-right: 24px; padding-right: 24px; border-right: 1px solid var(--border); }
+  .nav a { font-size: 12px; color: var(--text3); text-decoration: none; padding: 0 14px; height: 48px; display: flex; align-items: center; white-space: nowrap; border-bottom: 2px solid transparent; transition: all .15s; }
+  .nav a:hover { color: var(--text); }
+  .nav a.active { color: var(--text); border-bottom-color: var(--text); }
+
+  .page { max-width: 900px; margin: 0 auto; padding: 56px 40px 100px; }
+
+  /* ── HERO ── */
+  .hero {
+    border: 1px solid var(--border); border-radius: 8px;
+    background: var(--surface); padding: 36px 40px; margin-bottom: 56px;
+    display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: start;
+  }
+  .hero-eyebrow { font-family: var(--mono); font-size: 10px; letter-spacing: .12em; color: var(--text3); text-transform: uppercase; margin-bottom: 10px; }
+  .hero-title { font-size: 26px; font-weight: 500; line-height: 1.3; margin-bottom: 10px; }
+  .hero-title em { font-style: normal; color: var(--blue); }
+  .hero-sub { font-size: 13px; color: var(--text2); line-height: 1.65; max-width: 480px; }
+  .hero-eq {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 6px;
+    padding: 20px 24px; text-align: center; white-space: nowrap;
+  }
+  .hero-eq .eq-main { font-family: var(--mono); font-size: 22px; font-weight: 500; color: var(--blue); }
+  .hero-eq .eq-desc { font-size: 11px; color: var(--text3); margin-top: 8px; line-height: 1.6; }
+  @media (max-width: 640px) { .hero { grid-template-columns: 1fr; } }
+
+  /* ── SECTIONS ── */
+  .section-block { margin-bottom: 64px; }
+  .section-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 24px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+  .section-num { font-family: var(--mono); font-size: 11px; color: var(--text3); min-width: 28px; }
+  .section-title { font-size: 18px; font-weight: 500; }
+  .section-badge {
+    font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .06em;
+    padding: 2px 8px; border-radius: 3px; margin-left: 8px;
+    background: var(--blue-bg); color: var(--blue); border: 1px solid var(--blue-border);
+  }
+  .section-time { font-family: var(--mono); font-size: 11px; color: var(--text3); margin-left: auto; white-space: nowrap; }
+
+  .label { font-family: var(--mono); font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--text3); margin-bottom: 8px; margin-top: 20px; }
+  .label:first-child { margin-top: 0; }
+
+  .note { border-left: 3px solid var(--border2); padding: 10px 14px; background: var(--surface2); border-radius: 0 6px 6px 0; font-size: 13px; color: var(--text); line-height: 1.65; margin-bottom: 12px; }
+
+  .box { border: 1px solid var(--border); border-radius: 6px; padding: 14px 16px; background: var(--surface); margin-bottom: 12px; }
+  .box-blue  { border-color: var(--blue-border);  background: var(--blue-bg);  }
+  .box-red   { border-color: var(--red-border);   background: var(--red-bg);   }
+  .box-amber { border-color: var(--amber-border); background: var(--amber-bg); }
+  .box-green { border-color: var(--green-border); background: var(--green-bg); }
+  .box .box-title { font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; color: var(--text2); }
+  .tag-proof, .tag-calc {
+    display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 500;
+    letter-spacing: .08em; padding: 1px 7px; border-radius: 3px; margin-right: 8px;
+    vertical-align: middle; text-transform: none;
+  }
+  .tag-proof { background: var(--red); color: #fff; }
+  .tag-calc  { background: var(--green); color: #fff; }
+  .box-blue  .box-title { color: var(--blue); }
+  .box-red   .box-title { color: var(--red); }
+  .box-amber .box-title { color: var(--amber); }
+  .box-green .box-title { color: var(--green); }
+  .box p { font-size: 13px; line-height: 1.7; }
+
+  .q-box { border: 1px solid var(--border); border-radius: 6px; padding: 12px 16px; background: var(--surface2); margin-bottom: 12px; }
+  .q-box .q-label { font-family: var(--mono); font-size: 10px; color: var(--text3); margin-bottom: 4px; }
+  .q-box .q-text { font-size: 13px; color: var(--text); font-style: italic; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 12px; }
+  th { font-size: 11px; font-weight: 500; color: var(--text3); text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--border); font-family: var(--mono); text-transform: uppercase; letter-spacing: .04em; }
+  td { padding: 9px 10px; border-bottom: 1px solid var(--border); color: var(--text); vertical-align: top; line-height: 1.6; }
+  tr:last-child td { border-bottom: none; }
+  td.mono { font-family: var(--mono); font-size: 12px; }
+  td.muted { color: var(--text3); font-size: 12px; }
+  td.blue { color: var(--blue); font-weight: 500; }
+  td.amber { color: var(--amber); }
+  td.pos { color: var(--green); font-weight: 500; font-family: var(--mono); }
+  td.neg { color: var(--red); font-weight: 500; font-family: var(--mono); }
+
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  @media (max-width: 580px) { .grid-2 { grid-template-columns: 1fr; } }
+
+  /* ── EQUATION BLOCK ── */
+  .eq-block {
+    border: 1px solid var(--blue-border); border-radius: 8px; background: var(--surface);
+    margin-bottom: 20px; overflow: hidden;
+  }
+  .eq-head { background: var(--blue-bg); padding: 10px 18px; display: flex; align-items: center; gap: 12px; }
+  .eq-head .eq-label { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: var(--blue); font-weight: 500; }
+  .eq-head .eq-name { font-size: 13px; font-weight: 500; color: var(--text); }
+  .eq-body { padding: 20px 18px; }
+  .eq-formula {
+    font-family: var(--mono); font-size: 18px; font-weight: 500;
+    color: var(--text); background: var(--surface2); border-radius: 6px;
+    padding: 14px 20px; text-align: center; letter-spacing: .04em; margin-bottom: 14px;
+    overflow-x: auto;
+  }
+  .eq-formula .hi-y { color: var(--red); }
+  .eq-formula .hi-f { color: var(--blue); }
+  .eq-formula .hi-x { color: var(--green); }
+  .eq-formula .hi-b { color: var(--amber); }
+  .eq-formula .hi-e { color: var(--text3); }
+  .eq-breakdown { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; }
+  .eq-part { border-radius: 5px; padding: 9px 11px; border: 1px solid var(--border); }
+  .eq-part .part-sym { font-family: var(--mono); font-size: 14px; font-weight: 500; margin-bottom: 3px; }
+  .eq-part .part-name { font-size: 12px; font-weight: 500; }
+  .eq-part .part-desc { font-size: 11px; color: var(--text2); line-height: 1.55; margin-top: 2px; }
+
+  /* ── COMPARE PILL ── */
+  .compare-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+  .cp { border-radius: 6px; padding: 14px 16px; border: 1px solid var(--border); }
+  .cp-r1 { background: var(--surface2); }
+  .cp-r2 { background: var(--blue-bg); border-color: var(--blue-border); }
+  .cp .cp-tag { font-family: var(--mono); font-size: 10px; letter-spacing: .08em; font-weight: 500; margin-bottom: 6px; color: var(--text3); text-transform: uppercase; }
+  .cp-r2 .cp-tag { color: var(--blue); }
+  .cp .cp-main { font-size: 13px; line-height: 1.65; }
+  @media (max-width: 580px) { .compare-row { grid-template-columns: 1fr; } }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+  .checklist li { display: flex; gap: 10px; align-items: flex-start; font-size: 13px; }
+  .checklist li .icon { color: var(--text3); margin-top: 1px; flex-shrink: 0; font-size: 13px; }
+  .checklist li .icon.ok   { color: var(--green); }
+  .checklist li .icon.warn { color: var(--amber); }
+  .checklist li .icon.bad  { color: var(--red);   }
+  .checklist li .body { line-height: 1.6; }
+  .checklist li .body .sub { font-size: 11px; color: var(--text3); margin-top: 1px; }
+
+  /* ── DIVIDER ── */
+  .divider { border: none; border-top: 1px solid var(--border); margin: 32px 0; }
+
+  /* ── IMPURITY CURVE (Gini vs Entropy) ── */
+  .curve-wrap { border: 1px solid var(--border); border-radius: 6px; padding: 16px; background: var(--surface); margin-bottom: 16px; overflow-x: auto; }
+
+  /* ── VARIANCE / BIAS SCALE ── */
+  .bb-scale { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  .bb-step { border-radius: 6px; padding: 14px 16px; border: 1px solid var(--border); }
+  .bb-step .bb-title { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; margin-bottom: 6px; }
+  .bb-step .bb-desc { font-size: 12px; color: var(--text2); line-height: 1.6; }
+  .bb-step.bag { background: var(--green-bg); border-color: var(--green-border); }
+  .bb-step.bag .bb-title { color: var(--green); }
+  .bb-step.boost { background: var(--amber-bg); border-color: var(--amber-border); }
+  .bb-step.boost .bb-title { color: var(--amber); }
+  @media (max-width: 580px) { .bb-scale { grid-template-columns: 1fr; } }
+
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-badge">ROUND 2</span>
+  <div class="nav-title">Session 3 — 트리 & 앙상블 수식</div>
+  <a href="#recap">지난 세션 복습</a>
+  <a href="#s1">불순도 — Gini vs Entropy</a>
+  <a href="#s2">분기 기준 — 분류·회귀</a>
+  <a href="#s3">변수 중요도</a>
+  <a href="#s4">Bagging vs Boosting</a>
+  <a href="#wrap">정리 · 다음 세션</a>
+</nav>
+
+<div class="page">
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div>
+      <div class="hero-eyebrow">Round 2 · Session 3</div>
+      <h1 class="hero-title">트리 & 앙상블을<br><em>수식으로 완전히 분해</em></h1>
+      <p class="hero-sub">
+        1라운드에서 "분기가 반복되면 비선형이 된다", "변수 중요도가 순위를 매긴다",
+        "RandomForest가 안정적이고 XGBoost가 성능이 좋다"고 감으로 배웠습니다.
+        이번엔 그 분기 기준이 수식으로 어떻게 결정되는지, 변수 중요도가 정확히 어떤 계산의 결과인지,
+        Bagging과 Boosting이 왜 다른 방식으로 오차를 줄이는지를 수식 구조로 봅니다.
+      </p>
+    </div>
+    <div class="hero-eq">
+      <div class="eq-main">Gini = 1 − Σpₖ²</div>
+      <div class="eq-desc">
+        pₖ — 노드 안 k번째 클래스 비율<br>
+        분기 기준의 출발점
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       RECAP
+  ══════════════════════════════ -->
+  <div class="section-block" id="recap">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-title">지난 세션 복습 — Session 2</span>
+      <span class="section-time">5 min</span>
+    </div>
+
+    <div class="note">
+      Session 2에서 본 것: <strong>VIF = 1/(1−R²ⱼ)</strong> — 변수 벡터가 서로 평행할수록(독립성↓) (XᵀX)⁻¹가 불안정해지고 β̂가 흔들린다.<br>
+      선형 모델은 β̂로 해석했다면, 트리는 <strong>"분기"</strong>로 해석합니다. 오늘은 그 분기가 수식적으로 어떻게 결정되는지를 봅니다.
+    </div>
+
+    <div class="compare-row">
+      <div class="cp cp-r1">
+        <div class="cp-tag">지금까지 본 것</div>
+        <div class="cp-main">
+          선형 모델: β̂ = argmin L(β)<br>
+          "손실을 최소화하는 계수를 찾는다"
+        </div>
+      </div>
+      <div class="cp cp-r2">
+        <div class="cp-tag">오늘 보는 것</div>
+        <div class="cp-main">
+          트리 모델: 매 분기마다 불확실성이 가장 많이 줄어드는 지점을 찾는다<br>
+          같은 원리, 다른 대상(β 대신 분기점)
+        </div>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">시작 질문</div>
+      <div class="q-text">"1라운드에서 '변수 중요도'를 봤을 때, 그 숫자가 정확히 어떻게 계산된 건지 설명할 수 있었나요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 1 — 불순도: Gini vs Entropy
+  ══════════════════════════════ -->
+  <div class="section-block" id="s1">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">불순도 수식 — Gini vs Entropy</span>
+      <span class="section-time">25 min</span>
+    </div>
+
+    <div class="note">
+      <strong>핵심:</strong> 트리는 "한 노드 안에 클래스가 얼마나 섞여 있는가"를 숫자로 재고, 그 숫자가 가장 많이 줄어드는 분기를 선택합니다.
+      이 숫자를 재는 자가 두 가지 있습니다 — Gini와 Entropy.
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">정의</span>
+        <span class="eq-name">Gini 불순도</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          Gini = 1 − Σ <span class="hi-b">pₖ</span>²
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part" style="border-color:var(--amber-border); background:var(--amber-bg)">
+            <div class="part-sym" style="color:var(--amber)">pₖ</div>
+            <div class="part-name">노드 안 k번째 클래스 비율</div>
+            <div class="part-desc">불량 50%·정상 50%면 p₁=0.5, p₂=0.5</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">Σpₖ²</div>
+            <div class="part-name">"한 클래스로 쏠린 정도"</div>
+            <div class="part-desc">모든 pₖ²를 더한 값. 한쪽으로 쏠릴수록 커짐 (0.98²+0.02²=0.96)</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">1 − (...)</div>
+            <div class="part-name">"섞여 있는 정도"로 뒤집기</div>
+            <div class="part-desc">쏠림이 클수록 Gini는 작아짐 → 0에 가까울수록 순수한 노드</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">정의</span>
+        <span class="eq-name">Entropy (정보 엔트로피)</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          Entropy = − Σ <span class="hi-b">pₖ</span> log₂<span class="hi-b">pₖ</span>
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part" style="border-color:var(--amber-border); background:var(--amber-bg)">
+            <div class="part-sym" style="color:var(--amber)">pₖ</div>
+            <div class="part-name">Gini와 동일 — 클래스 비율</div>
+            <div class="part-desc">노드 안 k번째 클래스가 차지하는 비율</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">−log₂pₖ = log₂(1/pₖ)</div>
+            <div class="part-name">그 클래스 하나의 "정보량" (단위: bit)</div>
+            <div class="part-desc">pₖ가 작을수록(드문 사건일수록) 값이 커짐 — 흔치 않은 일이 일어났을 때 더 많은 정보를 얻는다는 뜻</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">−Σpₖlog₂pₖ</div>
+            <div class="part-name">기댓값(평균 정보량) = 불확실성</div>
+            <div class="part-desc">각 클래스의 정보량을 그 클래스가 나올 확률(pₖ)로 가중 평균한 것</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title"><span class="tag-proof">증명</span>왜 하필 log인가 — "정보량은 더해져야 한다"는 조건에서 출발</div>
+      <p>
+        정보량을 정의하려면 함수 I(p)가 최소한 이 세 가지를 만족해야 합니다.
+      </p>
+      <ul class="checklist" style="margin-top:8px">
+        <li>
+          <span class="icon ok">①</span>
+          <div class="body">확실한 사건(p=1)은 정보량이 0이어야 한다
+            <div class="sub">이미 알고 있는 사실이 일어나봤자 새로 얻는 정보는 없음</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon ok">②</span>
+          <div class="body">드문 사건일수록(p↓) 정보량은 커야 한다 (단조 감소)
+            <div class="sub">일어나기 힘든 일이 실제로 일어나면 더 놀랍고, 더 많이 알게 됨</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon bad">③</span>
+          <div class="body"><strong>독립적인 두 사건이 동시에 일어났을 때, 정보량은 서로 더해져야 한다</strong>
+            <div class="sub">I(p·q) = I(p) + I(q) — 여기서 문제가 생김</div>
+          </div>
+        </li>
+      </ul>
+      <p style="margin-top:10px">
+        문제는 ③입니다. <strong>독립 사건의 결합 확률은 곱셈(p·q)</strong>인데, <strong>정보량은 덧셈</strong>이어야 합니다.
+        "곱하면 들어가는 함수의 결과값은 더해지는" 성질을 가진 함수가 필요한 것이고, 이 조건 <strong>I(p·q) = I(p) + I(q)</strong>을
+        만족하는 함수는 (연속이고 단조감소라는 조건 하에) <strong>로그함수뿐</strong>입니다 — 로그의 정의 자체가
+        <strong>log(a·b) = log(a) + log(b)</strong>이기 때문입니다.<br><br>
+        여기에 ①②를 만족시키려면 확률이 0~1 사이일 때(log값이 음수) 부호를 뒤집어야 하므로 <strong>I(p) = −log(p)</strong>가 됩니다.
+        밑을 2로 두면(log₂) 단위가 "bit"가 되고, 이것이 앞서 본 −log₂pₖ입니다.
+      </p>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title"><span class="tag-calc">계산 예시</span>덧셈 성질 확인 — 동전 두 번 던지기</div>
+      <p>
+        동전을 두 번 던져 둘 다 앞면(HH)이 나올 확률은 <strong>0.5 × 0.5 = 0.25</strong>(독립 사건이므로 곱셈).<br>
+        정보량으로 보면 −log₂(0.25) = <strong>2 bit</strong>인데, 이는 정확히 첫 번째 던지기의 정보량(1 bit) +
+        두 번째 던지기의 정보량(1 bit)과 같습니다.<br><br>
+        만약 정보량을 pₖ² 같은 함수로 정의했다면 이 덧셈 성질이 깨졌을 것입니다 — <strong>로그만이 "확률의 곱셈"을 "정보량의 덧셈"으로 바꿔줍니다.</strong>
+        Gini(1−Σpₖ²)가 "정보량"이 아니라 "불순도를 대충 근사하는 지표"로 취급되는 이유도 여기 있습니다 —
+        Gini는 이 덧셈 성질을 만족하지 않는, 계산이 가벼운 근사치입니다.
+      </p>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">−log₂pₖ를 "질문 횟수"로도 읽을 수 있다 — 스무고개 직관</div>
+      <p>
+        동전 던지기(앞면 pₖ=0.5)를 맞히려면 질문이 딱 1번 필요합니다: "앞면이야?" → <strong>−log₂(0.5) = 1 bit</strong>.<br>
+        어떤 사건의 확률이 pₖ=1/8이라면, 8개 중 하나를 골라내는 데 이진 질문이 3번 필요합니다
+        (반으로 나누기를 3번 반복 → 8=2³) → <strong>−log₂(1/8) = 3 bit</strong>.<br><br>
+        즉 −log₂pₖ는 <strong>"그 사건이 무엇인지 알아내는 데 필요한 예/아니오 질문 횟수"</strong>로도 읽을 수 있습니다.
+        위에서 본 "곱셈→덧셈" 성질과 같은 결론입니다 — 질문 횟수도 독립 사건이 겹치면 그대로 더해지기 때문입니다
+        (동전 두 번 = 질문 1번+1번 = 2번).<br><br>
+        Entropy는 이 "사건 하나당 필요한 질문 수"를 <strong>그 사건이 실제로 나올 확률로 가중 평균</strong>한 값입니다 —
+        "이 노드 안에서 클래스를 하나씩 뽑아 맞히려면, 평균적으로 몇 번의 질문이 필요한가"라는 뜻입니다.
+      </p>
+    </div>
+
+    <div class="label">직접 계산해보기 — pₖ 분포별 Gini vs Entropy</div>
+    <table>
+      <tr><th>분포 (p₁, p₂)</th><th>Gini = 1−Σpₖ²</th><th>Entropy = −Σpₖlog₂pₖ</th><th>해석</th></tr>
+      <tr>
+        <td class="mono">0.50 / 0.50</td>
+        <td class="mono">1−(0.25+0.25) = <strong>0.50</strong></td>
+        <td class="mono">−(0.5·log₂0.5)×2 = <strong>1.00</strong></td>
+        <td class="muted">완전히 섞임 — 둘 다 최댓값</td>
+      </tr>
+      <tr>
+        <td class="mono">0.90 / 0.10</td>
+        <td class="mono">1−(0.81+0.01) = <strong>0.18</strong></td>
+        <td class="mono">−(0.9·log₂0.9 + 0.1·log₂0.1) = <strong>0.47</strong></td>
+        <td class="muted">꽤 순수하지만 여전히 소수 클래스 존재</td>
+      </tr>
+      <tr>
+        <td class="mono">0.99 / 0.01</td>
+        <td class="mono">1−(0.9801+0.0001) = <strong>0.02</strong></td>
+        <td class="mono">−(0.99·log₂0.99 + 0.01·log₂0.01) = <strong>0.08</strong></td>
+        <td class="muted">거의 순수 — 두 지표 모두 0에 근접</td>
+      </tr>
+      <tr>
+        <td class="mono">1.00 / 0.00</td>
+        <td class="mono"><strong>0.00</strong></td>
+        <td class="mono"><strong>0.00</strong></td>
+        <td class="pos">완전 분리 — 둘 다 정확히 0</td>
+      </tr>
+    </table>
+
+    <div class="box box-amber">
+      <div class="box-title">숫자로 보면 드러나는 차이 — Entropy가 "소수 클래스"에 더 민감하게 반응</div>
+      <p>
+        (0.9, 0.1) 지점을 각자의 최댓값 대비 비율로 보면 — Gini는 0.18/0.50 = <strong>36%</strong> 수준인데,
+        Entropy는 0.47/1.00 = <strong>47%</strong> 수준입니다. 같은 분포인데도 Entropy가 상대적으로 더 "덜 순수하다"고 반응합니다.<br><br>
+        이유는 log 함수 자체의 성질에 있습니다 — pₖ가 0에 가까워질 때 log₂pₖ는 <strong>가파르게 발산</strong>하지만,
+        Gini의 pₖ²는 <strong>완만하게 0으로 수렴</strong>합니다. 그래서 Entropy는 "적더라도 존재하는 소수 클래스"의 존재를
+        Gini보다 더 크게 반영합니다.<br><br>
+        하지만 실무에서 두 지표로 고른 "최적 분기"는 대부분 일치합니다. 지표 선택 자체보다,
+        <strong>"분기라는 행위가 불확실성을 줄인다"는 원리가 존재한다는 것</strong>이 더 중요한 결론입니다.
+      </p>
+    </div>
+
+    <div class="label">Gini vs Entropy — 나란히 비교</div>
+    <table>
+      <tr><th>항목</th><th>Gini</th><th>Entropy</th></tr>
+      <tr><td>수식</td><td class="mono">1 − Σpₖ²</td><td class="mono">−Σpₖlog₂pₖ</td></tr>
+      <tr><td>단위</td><td class="muted">없음 (비율의 함수)</td><td class="muted">bit</td></tr>
+      <tr><td>최댓값 (p=0.5, 0.5)</td><td class="mono">0.5</td><td class="mono">1.0</td></tr>
+      <tr><td>최솟값 (완전 분리)</td><td class="mono">0</td><td class="mono">0</td></tr>
+      <tr><td>소수 클래스 민감도</td><td class="muted">상대적으로 둔감</td><td class="blue">상대적으로 민감 (log의 발산)</td></tr>
+      <tr><td>계산 비용</td><td>가벼움 (제곱 연산)</td><td>무거움 (log 연산)</td></tr>
+      <tr><td>실무 기본값</td><td class="blue">sklearn CART 기본값</td><td class="muted">ID3 / C4.5 계열</td></tr>
+    </table>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"주사위를 던져 6이 나올 확률(1/6)의 정보량과, 동전을 던져 앞면이 나올 확률(1/2)의 정보량을 각각 −log₂로 계산해보면? 왜 주사위 쪽이 더 클까요?"</div>
+    </div>
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"p = (0.9, 0.1)일 때 Gini와 Entropy를 각각 계산해보면, 어느 쪽이 '덜 순수하다'는 신호를 더 크게 낼까요? 왜 그런 차이가 생길까요?"</div>
+    </div>
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"불량품이 노드 안에 1%만 섞여 있어도 놓치면 안 되는 상황이라면, Gini와 Entropy 중 어느 쪽이 그 소수 클래스를 더 잘 반영할까요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 2 — 분기 기준: 분류 vs 회귀
+  ══════════════════════════════ -->
+  <div class="section-block" id="s2">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">분기 기준 — 분류(Gain) vs 회귀(ΔMSE)</span>
+      <span class="section-time">30 min</span>
+    </div>
+
+    <div class="note">
+      트리는 모든 변수·모든 분기점을 시도해보면서, <strong>분기 후 불확실성이 가장 많이 줄어드는 지점</strong>을 선택합니다.
+      그 전에 먼저 — "분기"라는 if문이 수식으로는 어떻게 쓰이는지부터 봅니다.
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">모델 표현</span>
+        <span class="eq-name">트리 = if문의 수식화 (Indicator 함수)</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          f(x) = Σ <span class="hi-b">cₘ</span> · <span class="hi-f">𝟙</span>(x ∈ <span class="hi-x">Rₘ</span>)
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part" style="border-color:var(--blue-border); background:var(--blue-bg)">
+            <div class="part-sym" style="color:var(--blue)">𝟙(조건)</div>
+            <div class="part-name">Indicator 함수 = if문 그 자체</div>
+            <div class="part-desc">조건이 참이면 1, 거짓이면 0. 예: 𝟙(온도 > 85) — "온도가 85 넘으면 1, 아니면 0"</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--green-border); background:var(--green-bg)">
+            <div class="part-sym" style="color:var(--green)">Rₘ</div>
+            <div class="part-name">m번째 잎 노드가 담당하는 영역</div>
+            <div class="part-desc">분기 조건들의 교집합. 예: R₁ = {온도>85 그리고 압력≤3}</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--amber-border); background:var(--amber-bg)">
+            <div class="part-sym" style="color:var(--amber)">cₘ</div>
+            <div class="part-name">그 영역의 예측값</div>
+            <div class="part-desc">분류: 최빈 클래스 / 회귀: 그 영역 y의 평균 ȳ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">코드와 수식의 1:1 대응 — 같은 것을 두 언어로</div>
+      <p>
+        깊이 2짜리 트리 하나를 코드와 수식으로 나란히 써보면:
+      </p>
+      <div class="grid-2" style="margin-top:10px">
+        <div class="box" style="margin-bottom:0">
+          <div class="box-title">코드 (if문)</div>
+          <p style="font-family:var(--mono); font-size:12px; line-height:1.8">
+            if 온도 > 85:<br>
+            &nbsp;&nbsp;if 압력 > 3: return 0.80<br>
+            &nbsp;&nbsp;else: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;return 0.35<br>
+            else:<br>
+            &nbsp;&nbsp;return 0.04
+          </p>
+        </div>
+        <div class="box" style="margin-bottom:0">
+          <div class="box-title">수식 (Indicator)</div>
+          <p style="font-family:var(--mono); font-size:12px; line-height:1.8">
+            f(x) = 0.80·𝟙(온도>85, 압력>3)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 0.35·𝟙(온도>85, 압력≤3)<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;+ 0.04·𝟙(온도≤85)
+          </p>
+        </div>
+      </div>
+      <p style="margin-top:10px">
+        어떤 x를 넣어도 <strong>정확히 하나의 𝟙만 1이 되고 나머지는 전부 0</strong>이 됩니다 —
+        영역 Rₘ들이 서로 겹치지 않고(disjoint) 전체 공간을 빠짐없이 덮기 때문입니다.
+        그래서 "합(Σ)"으로 쓰여 있어도 실제로는 <strong>딱 하나의 cₘ이 선택되는 조회(lookup) 구조</strong>입니다.
+        이것이 1라운드에서 봤던 "트리는 공간을 사각형으로 자른다"의 수식 버전입니다.
+      </p>
+      <div class="note" style="margin-top:10px">
+        <strong>등호는 어느 쪽에 붙는가 — "이하/초과"냐 "미만/이상"이냐</strong><br>
+        라이브러리 관례일 뿐입니다: sklearn(CART)은 <strong>x ≤ t → 왼쪽, x > t → 오른쪽</strong>(이하/초과),
+        XGBoost는 <strong>x &lt; t → 왼쪽, x ≥ t → 오른쪽</strong>(미만/이상). 결과가 사실상 같은 이유는 —
+        연속형에서 분기점 t는 임의의 값이 아니라 <strong>정렬된 관측값 두 개의 중간점</strong>으로 잡히기 때문입니다
+        (예: 84.2와 86.1 사이면 t=85.15). 학습 데이터 중 t에 정확히 올라탄 샘플이 없으므로,
+        등호를 어느 쪽에 주든 데이터가 갈리는 결과·Gain·학습된 트리가 전부 동일합니다.
+        등호의 귀속은 "새 데이터가 우연히 정확히 t에 떨어졌을 때 어느 잎으로 보낼까"에 대한 약속일 뿐입니다.
+        이 자료에서는 sklearn 방식(≤ / &gt;)으로 통일해 표기합니다.
+      </div>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">이 표현이 왜 중요한가 — 오늘 세션 전체의 연결고리</div>
+      <p>
+        ① <strong>학습의 대상이 명확해짐</strong> — 트리 학습이란 결국 <strong>영역 Rₘ(어디서 자를지)과 값 cₘ(뭐라고 예측할지)을 찾는 것</strong>입니다.
+        cₘ은 쉽습니다(평균 또는 최빈값). 어려운 건 Rₘ이고, 그걸 고르는 기준이 바로 아래에서 볼 Gain/ΔMSE입니다.<br>
+        ② <strong>04번(앙상블)과 연결</strong> — Bagging의 f_b(x)도, Boosting의 hₘ(x)도 전부 이 Σcₘ𝟙(x∈Rₘ) 꼴입니다.
+        앙상블이란 "이 계단 함수들을 평균 내거나(Bagging) 누적해서(Boosting) 매끄러운 함수를 만드는 것"입니다.<br>
+        ③ <strong>왜 non-parametric인지 수식으로 재확인</strong> — 영역의 개수 M과 각 Rₘ의 모양이 전부 데이터로 결정됩니다.
+        β처럼 "몇 개인지 미리 정해진 파라미터"가 없다는 것이 이 수식에서 그대로 보입니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"f(x) = Σcₘ𝟙(x∈Rₘ)은 x에 대해 미분이 불가능한 계단 함수입니다. 그런데 선형 회귀는 매끄러운 직선이죠. 이 차이가 '트리는 비선형을 잡는다'는 1라운드의 직관과 어떻게 연결될까요?"</div>
+    </div>
+
+    <div class="box box-green">
+      <div class="box-title">답 가이드 — 곡선이 아니라 "해상도"로 비선형을 잡는다</div>
+      <p>
+        선형 회귀 f = βᵀx는 어디서나 미분 가능하고 매끄럽지만, 그 대가로 <strong>모양이 직선(평면) 하나로 고정</strong>됩니다 —
+        "y는 x에 대해 일정한 비율로만 변한다"는 가정을 벗어날 수 없습니다.<br>
+        트리는 정반대입니다. 기울기라는 개념 자체가 없는 대신, <strong>계단을 어디에 몇 개 놓을지가 완전히 자유</strong>롭습니다.
+        아무리 구불구불한 관계라도 계단을 촘촘히 쌓으면 근사할 수 있습니다 — 곡선을 수식으로 그리는 게 아니라
+        <strong>픽셀(사각형 영역)로 찍어내는 방식</strong>의 비선형입니다.
+      </p>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title"><span class="tag-proof">증명</span>"미분 불가능"을 정의로 직접 확인 — 극한이 "없다"는 게 무슨 뜻인가부터</div>
+      <p>
+        미분 가능이란 아래 극한이 <strong>존재</strong>한다는 뜻입니다:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        f′(x₀) = lim<span class="hi-e">_{h→0}</span> [f(x₀+h) − f(x₀)] / h
+      </div>
+
+      <div class="label">STEP 1 — "극한이 존재한다"의 뜻</div>
+      <p>
+        h를 0으로 점점 줄여가며 위 몫을 계속 계산했을 때, 그 값이 <strong>어떤 하나의 숫자로 점점 가까워져 정착하면</strong>
+        극한이 존재하는 것이고, 그 정착한 숫자가 f′(x₀)입니다. 여기엔 조건이 두 개 숨어 있습니다:
+      </p>
+      <ul class="checklist" style="margin-top:8px">
+        <li><span class="icon ok">ⓐ</span><div class="body"><strong>정착해야 한다</strong> — 값이 어딘가에 멈춰야지, 계속 커지기만 하면 안 됨</div></li>
+        <li><span class="icon ok">ⓑ</span><div class="body"><strong>양쪽이 같아야 한다</strong> — h는 양수로도(오른쪽 접근) 음수로도(왼쪽 접근) 0에 갈 수 있는데, 두 방향의 결과가 <strong>같은 하나의 숫자</strong>여야 함</div></li>
+      </ul>
+      <p style="margin-top:8px">
+        비유하면 극한은 <strong>양쪽에서 걸어와 만나는 약속 장소</strong>입니다 — 왼쪽에서 온 사람과 오른쪽에서 온 사람이
+        같은 지점에 도착해야 "만났다(극한 존재)"고 합니다.
+      </p>
+
+      <div class="label" style="margin-top:14px">STEP 2 — "극한이 없다" = 두 조건 중 하나가 깨진 것</div>
+      <ul class="checklist" style="margin-top:8px">
+        <li><span class="icon bad">A</span><div class="body"><strong>양쪽이 다른 곳에 도착</strong> — 왼쪽 접근은 3에, 오른쪽 접근은 5에 정착 → "그래서 극한값이 뭔데?"에 답할 수 없음 → 극한 없음</div></li>
+        <li><span class="icon bad">B</span><div class="body"><strong>정착 자체를 안 함 = 발산</strong> — h를 줄일수록 값이 100, 1000, 10000... 어떤 숫자에도 머물지 않고 한없이 커짐. ∞는 숫자가 아니라 "끝없이 커진다"는 상황의 이름일 뿐이라 극한값이 될 수 없음 → 극한 없음. <strong>"발산"은 어려운 개념이 아니라 이 상황에 붙인 이름입니다</strong></div></li>
+      </ul>
+
+      <div class="label" style="margin-top:14px">STEP 3 — 계단 함수 경계에서 실제 숫자로 확인</div>
+      <p>
+        분기가 <strong>하나뿐인</strong> 트리를 놓고 봅니다:
+      </p>
+      <div class="grid-2" style="margin-top:8px">
+        <div class="box" style="margin-bottom:0; background:var(--surface2)">
+          <div class="box-title">트리 (if문)</div>
+          <p style="font-family:var(--mono); font-size:12px; line-height:1.8">
+            if 온도 ≤ 85: 예측 = 10 &nbsp;← c₁<br>
+            if 온도 &gt; 85: 예측 = 40 &nbsp;← c₂
+          </p>
+          <p style="font-size:11px; color:var(--text2); margin-top:6px">10, 40은 각 잎에 속한 y들의 평균 = f(x)의 출력값. 분기점은 85 하나뿐 — 85.1도 90도 200도 전부 "예측 40" 영역</p>
+        </div>
+        <div class="box" style="margin-bottom:0; background:var(--surface2)">
+          <div class="box-title">그래프 (계단 한 칸)</div>
+          <p style="font-family:var(--mono); font-size:12px; line-height:1.6; white-space:pre">
+ 40 ─        ┌──────────
+             │
+ 10 ─ ───────┘
+             ↑
+            t=85    → 온도</p>
+        </div>
+      </div>
+
+      <p style="margin-top:12px">
+        <strong>"접근"이란</strong> — t=85에서의 기울기를 재려면 "85 <strong>근처의</strong> 점을 잡아 몫을 계산하고,
+        그 점을 85로 점점 가까이 보내는" 작업이 필요한데, 근처의 점은 두 종류입니다:
+        85보다 살짝 큰 쪽에서 다가오거나(오른쪽 접근), 살짝 작은 쪽에서 다가오거나(왼쪽 접근).
+      </p>
+      <p style="margin-top:8px">
+        <strong>오른쪽에서 접근</strong>: 86 → 85.1 → 85.01 → 85.001 → ... 이 점들은 전부 "온도>85" 영역이라
+        예측값이 <strong>모두 40</strong>. f(85) 근방의 오른쪽 값도 40이므로 몫 = (40−40)/거리 = <strong>항상 0</strong>.
+        아무리 가까이 와도 계속 0 → <strong>0에 정착</strong>.
+      </p>
+      <p style="margin-top:8px">
+        <strong>왼쪽에서 접근</strong>: 84 → 84.9 → 84.99 → 84.999 → ... 이 점들은 전부 "온도≤85" 영역이라
+        예측값이 <strong>모두 10</strong>. 그런데 도착지의 값은 40. 몫을 계산하면:
+      </p>
+      <table style="margin-top:8px">
+        <tr><th>잡은 점</th><th>예측값 차이</th><th>거리 h</th><th>몫 = 차이/거리</th></tr>
+        <tr><td class="mono">84.9</td><td class="mono">30</td><td class="mono">0.1</td><td class="mono">300</td></tr>
+        <tr><td class="mono">84.99</td><td class="mono">30</td><td class="mono">0.01</td><td class="mono">3,000</td></tr>
+        <tr><td class="mono">84.999</td><td class="mono">30</td><td class="mono">0.001</td><td class="mono">30,000</td></tr>
+        <tr><td class="mono">84.9999</td><td class="mono neg">30 — 안 줄어듦</td><td class="mono">0.0001</td><td class="mono neg">300,000 — 정착 기미 없음</td></tr>
+      </table>
+      <p style="margin-top:8px">
+        핵심이 여기 있습니다 — <strong>가까이 갈수록 거리(분모)는 줄어드는데, 예측값 차이(분자)는 30에서 꿈쩍도 안 합니다.</strong>
+        84.999까지 붙어도 여전히 왼쪽 영역이라 예측은 10이고, 85를 넘는 순간 40이니까요.
+        점프는 아무리 가까이 가도 미리 좁혀지지 않는 절벽입니다. 그래서 몫이 폭주 = <strong>발산(방식 B)</strong>.<br><br>
+        <strong>결론</strong>: 오른쪽은 0에 정착, 왼쪽은 발산 — 만남 실패, "하나의 숫자"가 없으므로 극한 없음
+        → <strong>t=85에서 미분 불가능</strong>.
+      </p>
+
+      <div class="label" style="margin-top:14px">STEP 4 — 내부 지점(x=90)과 대비: 왜 90에서는 되는가</div>
+      <p>
+        주의 — <strong>90은 분기점이 아닙니다.</strong> 이 트리의 분기는 85 하나뿐이므로,
+        90은 ">85 영역"의 한복판에 있는 평범한 점입니다.<br>
+        왼쪽에서 접근(89.9, 89.99, ...)해도 <strong>전부 85보다 크니까 같은 영역, 예측 모두 40</strong>.
+        오른쪽에서 접근(90.1, 90.01, ...)해도 마찬가지로 예측 40. f(90)도 40.
+        양쪽 다 몫 = (40−40)/거리 = 0 → 둘 다 0에 정착 → 극한 존재, <strong>기울기 0으로 미분 가능</strong>.
+      </p>
+      <p style="margin-top:8px">
+        한 줄 정리 — 85와 90의 차이는 <strong>"접근하는 도중에 영역이 바뀌느냐"</strong>입니다.
+        x=90은 오는 길 내내 같은 영역이라 분자가 0이고, x=85는 왼쪽에서 오는 길이 전부 다른 영역(예측 10)이라
+        분자가 끝까지 30으로 살아 있습니다. 그래서 미분이 깨지는 곳은 <strong>정확히 분기점들뿐</strong>이고
+        (분기점 3개짜리 트리면 미분 안 되는 점도 딱 3개), 그 외의 모든 점은 평평한 구간 위라 기울기 0입니다.
+      </p>
+
+      <div class="note" style="margin-top:10px">
+        정확한 진술: f(x) = Σcₘ𝟙(x∈Rₘ)은 <strong>분기점(유한 개)에서 미분 불가능</strong>하고,
+        <strong>나머지 모든 곳에서 도함수가 0</strong>입니다. 이 둘이 합쳐지면 — ∂L/∂(분기점)이
+        <strong>항상 0이거나 정의되지 않아</strong> 트리는 경사하강으로 학습할 수 없고,
+        그래서 Gain 최대화라는 <strong>탐욕적 전수 탐색</strong>으로 학습합니다.
+        04에서 볼 GBM이 "트리의 파라미터"가 아니라 <strong>함수 공간</strong>에서 경사하강을 하는 이유도 여기 있습니다.
+        한편 이 "각진 계단"을 여러 장 평균 내거나(Bagging) 누적하면(Boosting) 훨씬 부드러운 근사가 됩니다.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="note">
+      이제 본론 — 이 <strong>Rₘ(분기점)을 고르는 기준</strong>이 분류와 회귀에서 각각 어떤 수식인지 봅니다.
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">분류</span>
+        <span class="eq-name">정보이득 (Information Gain)</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          Gain = I(parent) − Σ (<span class="hi-x">nₖ</span>/<span class="hi-x">n</span>) · I(childₖ)
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">I(parent)</div>
+            <div class="part-name">분기 전 불순도</div>
+            <div class="part-desc">01에서 본 Gini 또는 Entropy</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--green-border); background:var(--green-bg)">
+            <div class="part-sym" style="color:var(--green)">nₖ/n</div>
+            <div class="part-name">자식 노드의 비중</div>
+            <div class="part-desc">전체 중 그 자식 노드가 차지하는 데이터 비율로 가중 평균</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">I(childₖ)</div>
+            <div class="part-name">분기 후 각 자식의 불순도</div>
+            <div class="part-desc">두 자식의 가중 평균 불순도를 부모에서 뺀 값이 Gain</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title"><span class="tag-calc">계산 예시</span>직접 계산해보기 — 분류: 온도로 분기했을 때 Gain</div>
+      <p>
+        불량/정상 200건, 부모 노드의 불량률 18% (불량 36건 · 정상 164건)에서 시작합니다.
+      </p>
+      <table style="margin-top:8px">
+        <tr><th>노드</th><th>건수</th><th>불량률</th><th>Gini</th></tr>
+        <tr>
+          <td>부모 (분기 전)</td>
+          <td class="mono">200</td>
+          <td class="mono">18%</td>
+          <td class="mono">1−(0.18²+0.82²) = <strong>0.2952</strong></td>
+        </tr>
+        <tr>
+          <td>자식① 온도 높음</td>
+          <td class="mono">92</td>
+          <td class="mono">38%</td>
+          <td class="mono">1−(0.38²+0.62²) = <strong>0.4712</strong></td>
+        </tr>
+        <tr>
+          <td>자식② 온도 낮음</td>
+          <td class="mono">108</td>
+          <td class="mono">4%</td>
+          <td class="mono">1−(0.04²+0.96²) = <strong>0.0768</strong></td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        가중 평균 자식 Gini = (92/200)×0.4712 + (108/200)×0.0768 = 0.2168 + 0.0415 = <strong>0.2583</strong><br>
+        <strong>Gain = 0.2952 − 0.2583 = 0.0369</strong><br><br>
+        이 값(0.0369)이 압력 등 다른 변수로 나눴을 때의 Gain보다 크다면, 트리는 온도를 첫 분기로 선택합니다.
+        "Gain이 가장 큰 변수를 고른다"는 말의 실체가 바로 이 계산입니다.
+      </p>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">회귀</span>
+        <span class="eq-name">분산 감소량 (ΔMSE)</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          ΔMSE = MSE(parent) − Σ (<span class="hi-x">nₖ</span>/<span class="hi-x">n</span>) · MSE(childₖ)
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">MSE(node)</div>
+            <div class="part-name">= (1/n)Σ(yᵢ − ȳ)²</div>
+            <div class="part-desc">노드 안 y값들이 평균(ȳ)에서 얼마나 퍼져있는지</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--green-border); background:var(--green-bg)">
+            <div class="part-sym" style="color:var(--green)">ȳ</div>
+            <div class="part-name">분류의 pₖ 자리를 대신함</div>
+            <div class="part-desc">노드의 대표값 — 분류는 클래스 비율, 회귀는 평균</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">ΔMSE</div>
+            <div class="part-name">분기로 줄어든 "퍼짐"</div>
+            <div class="part-desc">두 그룹으로 나눴을 때 y값이 각 그룹 평균 근처로 얼마나 몰리는지</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-green">
+      <div class="box-title"><span class="tag-calc">계산 예시</span>직접 계산해보기 — 회귀: 경력 5년으로 분기했을 때 ΔMSE</div>
+      <p>
+        연봉(백만원) 데이터 8명: 30, 32, 31, 29, 55, 58, 60, 57 — 부모 노드 평균 ȳ=44
+      </p>
+      <table style="margin-top:8px">
+        <tr><th>노드</th><th>y값</th><th>ȳ</th><th>MSE = (1/n)Σ(yᵢ−ȳ)²</th></tr>
+        <tr>
+          <td>부모 (분기 전)</td>
+          <td class="mono">30,32,31,29,55,58,60,57</td>
+          <td class="mono">44</td>
+          <td class="mono">1476/8 = <strong>184.5</strong></td>
+        </tr>
+        <tr>
+          <td>자식① 경력 ≤ 5년</td>
+          <td class="mono">30,32,31,29</td>
+          <td class="mono">30.5</td>
+          <td class="mono">5/4 = <strong>1.25</strong></td>
+        </tr>
+        <tr>
+          <td>자식② 경력 &gt; 5년</td>
+          <td class="mono">55,58,60,57</td>
+          <td class="mono">57.5</td>
+          <td class="mono">13/4 = <strong>3.25</strong></td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        가중 평균 자식 MSE = (4/8)×1.25 + (4/8)×3.25 = 0.625 + 1.625 = <strong>2.25</strong><br>
+        <strong>ΔMSE = 184.5 − 2.25 = 182.25</strong><br><br>
+        분기 전에는 8명의 연봉이 44 근처로 크게 흩어져 있었지만(MSE=184.5), 경력으로 나누자 각 그룹이
+        자기 평균(30.5, 57.5) 근처로 확 몰립니다(MSE 1.25, 3.25) — 이것이 "분산이 줄었다"는 것의 실체입니다.
+        ΔMSE가 클수록 그 변수가 y를 잘 갈라놓는다는 뜻이고, 트리는 이 값이 가장 큰 변수·분기점을 선택합니다.
+      </p>
+    </div>
+
+    <div class="label">분류 vs 회귀 — 구조적 대응</div>
+    <table>
+      <tr><th>항목</th><th>분류</th><th>회귀</th></tr>
+      <tr><td>노드 대표값</td><td>최빈 클래스 (pₖ)</td><td>평균 ȳ</td></tr>
+      <tr><td>불순도 지표</td><td class="mono">Gini / Entropy</td><td class="mono">MSE (분산)</td></tr>
+      <tr><td>분기 기준</td><td>Gain 최대화</td><td>ΔMSE 최대화</td></tr>
+      <tr><td>"순수하다"의 의미</td><td>한 클래스로 쏠림</td><td>y값이 한 값 근처로 몰림</td></tr>
+    </table>
+
+    <div class="box box-blue">
+      <div class="box-title">공통 구조 — Week1에서 본 원리와 동일</div>
+      <p>
+        분류든 회귀든 트리는 결국 <strong>"분기 후 불확실성(퍼짐)이 가장 많이 줄어드는 지점"</strong>을 고르는 동일한 원리로 작동합니다.
+        Week1에서 "학습 = L을 최소화하는 β를 찾는 것"이라고 했던 것과 같은 골격입니다 — 여기서는 β 대신 <strong>분기점</strong>이 그 자리를 차지할 뿐입니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문 — 분류</div>
+      <div class="q-text">"불량률 18% 노드를 온도로 나눴을 때 Gain이 0.05, 압력으로 나눴을 때 0.08이면 트리는 어느 변수를 먼저 쓸까요?"</div>
+    </div>
+    <div class="q-box">
+      <div class="q-label">토론 질문 — 회귀</div>
+      <div class="q-text">"연봉 예측 트리에서 '경력 5년' 기준으로 나눴을 때 MSE가 왜 줄어드는지, 두 그룹의 ȳ 차이로 설명해볼 수 있을까요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 3 — 변수 중요도 (MDI)
+  ══════════════════════════════ -->
+  <div class="section-block" id="s3">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">변수 중요도가 수식에서 계산되는 방식</span>
+      <span class="section-time">20 min</span>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">정의</span>
+        <span class="eq-name">MDI (Mean Decrease in Impurity)</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          Importance(<span class="hi-x">xⱼ</span>) = Σ ΔI(분기ᵢ)&nbsp;&nbsp;<span class="hi-e">— xⱼ로 분기된 모든 노드에서</span>
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">ΔI(분기ᵢ)</div>
+            <div class="part-name">그 분기에서의 불순도 감소량</div>
+            <div class="part-desc">02에서 본 Gain(분류) 또는 ΔMSE(회귀)</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">Σ (전체 트리, 전체 분기)</div>
+            <div class="part-name">변수 xⱼ가 쓰인 모든 분기를 합산</div>
+            <div class="part-desc">한 변수가 여러 노드에서 반복 사용되면 그만큼 누적됨</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--blue-border); background:var(--blue-bg)">
+            <div class="part-sym" style="color:var(--blue)">정규화</div>
+            <div class="part-name">전체 변수 중요도 합 = 1</div>
+            <div class="part-desc">sklearn feature_importances_가 정확히 이 값</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">02와 연결 — 지표만 바뀔 뿐 계산 구조는 동일</div>
+      <p>
+        02에서 본 것처럼 — <strong>분류는 Gini(또는 Entropy) 감소량의 합, 회귀는 MSE 감소량의 합</strong>이 곧 변수 중요도입니다.
+        분기 기준이 무엇이었든, 그 기준의 "감소량"을 변수별로 누적한 것이 MDI입니다.
+      </p>
+    </div>
+
+    <div class="box box-green">
+      <div class="box-title"><span class="tag-calc">계산 예시</span>직접 계산해보기 — 2단계 트리에서 온도 vs 압력 중요도</div>
+      <p>
+        02에서 구한 1차 분기(온도, 200건 전체 대상, Gain=0.0369)에 이어, 온도 높음 그룹(92건) 안에서
+        압력으로 2차 분기를 했다고 가정합니다: 압력 높음 40건(불량 80%), 압력 낮음 52건(불량 10%).
+      </p>
+      <table style="margin-top:8px">
+        <tr><th>분기</th><th>사용된 건수 / 전체</th><th>Gain</th><th>기여도 = (n/N) × Gain</th></tr>
+        <tr>
+          <td>① 온도 (root, 200건)</td>
+          <td class="mono">200/200</td>
+          <td class="mono">0.0369</td>
+          <td class="mono"><strong>1.0 × 0.0369 = 0.0369</strong></td>
+        </tr>
+        <tr>
+          <td>② 압력 (온도-높음 하위, 92건)</td>
+          <td class="mono">92/200</td>
+          <td class="mono">0.2304</td>
+          <td class="mono"><strong>0.46 × 0.2304 = 0.1060</strong></td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        Importance(온도) = 0.0369, Importance(압력) = 0.1060 → 합 = 0.1429<br>
+        정규화하면 <strong>온도 = 0.0369/0.1429 = 25.8%</strong>, <strong>압력 = 0.1060/0.1429 = 74.2%</strong><br><br>
+        온도는 root에서 전체 데이터(200건)를 다 봤지만 Gain 자체는 작았고, 압력은 부분집합(92건)만 봤지만
+        그 안에서 훨씬 강하게 불량/정상을 갈랐습니다(Gain 0.2304). <strong>MDI는 "몇 건을 봤는지"와 "얼마나 잘 갈랐는지"를
+        곱해서 누적</strong>하기 때문에, 사용 빈도가 낮아도 분리력이 강한 변수가 더 높은 중요도를 받을 수 있습니다.
+      </p>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">함정 — 카디널리티가 높은 변수는 과대평가되기 쉽다 (수식으로 보는 이유)</div>
+      <p>
+        연속형처럼 분기 후보가 많은 변수는 "이번 학습 데이터에서만 우연히 좋아 보이는" 분기를 찾을 확률이 높습니다.
+        이 "우연"이 Gini/Entropy/MSE 수식 안에서 정확히 어디로 스며드는지 보면 두 개의 통로가 있습니다.
+      </p>
+
+      <div class="label" style="margin-top:14px">통로 ① — 수식의 pₖ는 사실 p̂ₖ(표본 비율)이고, 작은 노드에서 쉽게 극단값을 친다</div>
+      <p>
+        Gini = 1−Σp̂ₖ²의 p̂ₖ는 진짜 확률이 아니라 <strong>그 노드에 담긴 표본의 비율</strong>입니다.
+        노드가 작을수록 p̂ₖ가 우연히 0이나 1을 치기 쉽습니다 — 샘플 3개짜리 노드는 y와 무관한 변수로 갈랐어도
+        셋 다 같은 클래스일 확률이 꽤 되고(반반 클래스면 25%), 그 순간 그 노드의 <strong>Gini는 정확히 0</strong>이 되어
+        Gain이 실제 이상으로 부풀려집니다. Entropy도 동일합니다(p̂=1이면 −1·log₂1=0).
+      </p>
+      <p style="margin-top:8px">
+        극단적 사고 실험 — <strong>고객ID처럼 전부 유니크한 변수</strong>로 끝까지 가르면 잎마다 샘플 1개,
+        모든 잎에서 p̂=1, 모든 잎의 Gini=0 → <strong>Gain이 이론상 최댓값(부모 불순도 전체)</strong>이 됩니다.
+        정보량은 0인데 수식상으로는 "완벽한 변수"로 보이는 것입니다.
+        회귀도 똑같습니다 — MSE(node)=(1/n)Σ(yᵢ−ȳ)²는 <strong>샘플 1개짜리 노드에서 정확히 0</strong>이라,
+        잘게 가를수록 ΔMSE가 공짜로 커집니다.
+      </p>
+
+      <div class="label" style="margin-top:14px">통로 ② — 트리는 "최댓값"을 고르는데, 수식엔 시도 횟수에 대한 벌점이 없다</div>
+      <p>
+        트리가 실제로 계산하는 것은 <strong>Gain* = max(모든 변수 × 모든 분기점 후보)</strong>입니다.
+        y와 완전히 무관한 변수라도 각 후보의 Gain은 표본 노이즈 때문에 0 근처에서 흔들리는 랜덤값인데,
+        <strong>노이즈 K개 중 최댓값은 K가 클수록 커집니다.</strong>
+        후보 하나하나가 제비뽑기 한 장이고, 트리는 뽑은 것 중 <strong>제일 좋은 것만 제출</strong>하기 때문입니다.
+      </p>
+
+      <div class="box" style="margin-top:10px; background:var(--surface2)">
+        <div class="box-title">제비뽑기 한 판을 실제로 — 무의미한 변수 둘의 대결</div>
+        <p>
+          y = A 4개, B 4개 (부모 Gini = 0.5). y와 <strong>완전히 무관한</strong> 변수 둘을 비교합니다.
+        </p>
+        <p style="margin-top:10px">
+          <strong>무의미한 연속형 변수</strong> — 이 변수로 8개를 정렬하면 클래스가 무작위 순서로 늘어섭니다:
+        </p>
+        <p style="font-family:var(--mono); font-size:13px; line-height:1.9; margin-top:6px; text-align:center">
+          정렬 결과: &nbsp;A &nbsp;A &nbsp;B &nbsp;A &nbsp;B &nbsp;B &nbsp;A &nbsp;B<br>
+          자를 곳: &nbsp;&nbsp;&nbsp;&nbsp;↑₁ &nbsp;↑₂ &nbsp;↑₃ &nbsp;↑₄ &nbsp;↑₅ &nbsp;↑₆ &nbsp;↑₇ &nbsp;&nbsp;<span class="hi-e">← 후보 7개 = 제비 7장</span>
+        </p>
+        <p style="margin-top:8px">
+          7개 자리의 Gain을 전부 계산하면 대부분 미미하지만, <strong>②번 자리</strong>가 문제입니다 —
+          왼쪽 {A, A}가 <strong>우연히 순수</strong>해서 Gini=0, 오른쪽은 2A/4B로 Gini≈0.444.<br>
+          가중평균 = (2/8)×0 + (6/8)×0.444 = 0.333 → <strong>Gain = 0.5 − 0.333 = 0.167</strong><br>
+          완전한 노이즈에서 나온 값인데 꽤 큽니다. 트리는 7장 중 <strong>이것만 골라서</strong> 제출합니다.
+        </p>
+        <p style="margin-top:10px">
+          <strong>무의미한 이진 변수</strong> — 가르는 방법이 1가지뿐입니다. 4:4로 갈라 양쪽이 2A2B/2A2B쯤 되면
+          Gain≈0, 운 좋게 3A1B/1A3B가 되어도 Gain=0.125. 어느 쪽이든 <strong>그 1장의 결과를 좋든 나쁘든 그대로</strong>
+          제출해야 합니다 — 다시 뽑을 기회가 없습니다.
+        </p>
+        <table style="margin-top:10px">
+          <tr><th></th><th>무의미한 이진 변수</th><th>무의미한 연속형 변수</th></tr>
+          <tr><td>제비 수</td><td class="mono">1장</td><td class="mono">n−1장 (위 예시에선 7장)</td></tr>
+          <tr><td>제출하는 것</td><td>그 1장 (좋든 나쁘든)</td><td>n−1장 중 <strong>최고</strong></td></tr>
+          <tr><td>결과</td><td class="muted">Gain이 0 근처에 머묾</td><td class="neg">최고만 뽑으니 Gain이 체계적으로 부풀려짐</td></tr>
+        </table>
+        <p style="margin-top:8px">
+          두 변수 모두 y에 대해 <strong>똑같이 무의미</strong>한데, 트리의 눈에는 연속형이 항상 더 좋아 보입니다 —
+          실력 차이가 아니라 <strong>응시 횟수 차이</strong>입니다.
+          키에 비유하면, 2명 중 최장신과 100명 중 최장신은 같은 모집단에서 뽑았어도 100명 중 최장신이 평균적으로 훨씬 큽니다.
+        </p>
+      </div>
+
+      <table style="margin-top:10px">
+        <tr><th>변수 유형</th><th>분기점 후보 수 K</th><th>무의미한 변수여도</th></tr>
+        <tr><td>이진 변수 (성별 등)</td><td class="mono">1</td><td class="muted">제비뽑기 1번 — 우연의 상한 낮음</td></tr>
+        <tr><td>범주 10개 변수</td><td class="mono">~9</td><td class="muted">9번 중 최고만 제출</td></tr>
+        <tr><td>연속형 (유니크값 n개)</td><td class="mono">n−1</td><td class="neg">n−1번 중 최고만 제출 — 우연의 상한이 가장 높음</td></tr>
+      </table>
+      <p style="margin-top:8px">
+        통계로 치면 <strong>다중 검정을 하고 보정 없이 가장 좋은 결과만 보고하는 것</strong>과 같은 구조입니다.
+        그리고 Gain/ΔMSE 수식 어디에도 "후보를 몇 개 시도했는가"에 대한 항이 없기 때문에,
+        이 편향은 걸러지지 않고 그대로 MDI에 누적됩니다.
+      </p>
+
+      <div class="note" style="margin-top:10px">
+        이 문제에 대한 실무적 대응 — C4.5는 Gain을 분기 수 정보로 나눈 <strong>Gain Ratio</strong>를 도입했고,
+        sklearn에서는 MDI 대신 <strong>permutation importance</strong>(검증 데이터에서 변수를 섞어보고 성능 하락을 측정)가
+        이 편향에서 자유로운 대안으로 쓰입니다. 어느 쪽이든 결론은 같습니다 —
+        <strong>중요도 순위 자체보다 과적합 여부를 함께 봐야 합니다.</strong>
+      </div>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"위 예시에서 압력이 온도보다 3배 가까이 중요도가 높게 나왔습니다. 이게 '압력이 실무적으로 더 중요한 변수'라는 뜻일까요, 아니면 다른 해석이 필요할까요?"</div>
+    </div>
+
+    <hr class="divider">
+
+    <div class="label">한 걸음 더 — 트리는 Non-parametric인데, 앙상블은?</div>
+
+    <div class="box box-blue">
+      <div class="box-title">Parametric의 진짜 기준 — "파라미터가 있다"가 아니다</div>
+      <p>
+        <strong>Parametric</strong> = 데이터를 보기 전에 <strong>함수 f의 형태가 고정</strong>되어 있고,
+        학습이란 그 고정된 형태 안의 <strong>유한 개 파라미터 값을 채우는 것</strong>.<br>
+        선형 회귀가 대표적입니다 — f = β₀+β₁x₁+β₂x₂라는 형태가 데이터와 무관하게 먼저 정해지고,
+        데이터가 100건이든 100만 건이든 추정할 파라미터는 β 3개로 동일합니다.<br><br>
+        <strong>Non-parametric</strong> = 함수의 형태 자체가 데이터에 의해 결정됨. 데이터가 늘어나면
+        모델의 복잡도(유효 파라미터 수)도 함께 늘어날 수 있음.<br>
+        트리가 대표적입니다 — "어느 변수를, 어느 지점에서, 몇 번 나눌지"가 전부 데이터가 결정하고,
+        데이터가 많아지면 분기가 더 깊어질 수 있습니다.
+      </p>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">AdaBoost·GBM에는 αₘ, γₘ이 있는데 — 그래도 Non-parametric</div>
+      <p>
+        Boosting의 수식 F(x) = Σαₘhₘ(x)를 보면 계수(αₘ)가 있어서 "파라미터가 있으니 parametric 아닌가?"
+        싶지만, 두 가지 이유로 non-parametric입니다.<br><br>
+        ① <strong>베이스 학습기 hₘ이 트리</strong> — 각 hₘ의 분기 변수·분기점이 데이터로 결정됩니다.
+        Non-parametric한 부품을 합성한 모델은 전체도 non-parametric입니다.<br>
+        ② <strong>F의 함수 형태가 사전에 고정되지 않음</strong> — 어떤 트리들이 어떤 순서로 쌓일지는
+        데이터가 결정합니다. "F는 β₀+β₁x 꼴이다"처럼 형태를 미리 쓸 수 없습니다.<br><br>
+        즉 αₘ, γₘ은 "파라미터처럼 보이는 계수"일 뿐, parametric의 정의인
+        <strong>"고정된 함수 형태 + 데이터 크기와 무관한 유한 파라미터 집합"</strong>을 만족하지 않습니다.
+      </p>
+    </div>
+
+    <table>
+      <tr><th>모델</th><th>구분</th><th>이유</th></tr>
+      <tr><td>선형 / 로지스틱 회귀</td><td class="blue">Parametric</td><td>f 형태 고정, 파라미터 수가 데이터와 무관</td></tr>
+      <tr><td>Decision Tree</td><td class="pos">Non-parametric</td><td>분기 구조 자체를 데이터가 결정</td></tr>
+      <tr><td>RandomForest (Bagging)</td><td class="pos">Non-parametric</td><td>Non-parametric 트리들의 평균</td></tr>
+      <tr><td>AdaBoost / GBM / XGBoost</td><td class="pos">Non-parametric</td><td>Non-parametric 트리들의 가중합, 구조가 데이터 의존</td></tr>
+    </table>
+
+    <div class="box box-green">
+      <div class="box-title">재미있는 반례 — Boosting이라서가 아니라 "베이스가 뭐냐"가 결정한다</div>
+      <p>
+        Boosting에 트리 대신 <strong>선형 모델을 베이스로 쓰면</strong>(예: XGBoost의 booster='gblinear')
+        선형 모델의 합은 다시 선형 모델이므로 결과는 <strong>parametric</strong>이 됩니다.<br>
+        즉 앙상블이라는 방법론 자체는 parametric 여부를 결정하지 않습니다 —
+        <strong>베이스 학습기가 무엇인가</strong>가 결정합니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"트리의 깊이를 max_depth=3으로 고정하면, 그 트리는 parametric이 될까요? '형태가 고정된다'는 기준으로 생각해보세요."</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       SECTION 4 — Bagging vs Boosting
+  ══════════════════════════════ -->
+  <div class="section-block" id="s4">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">Bagging vs Boosting — 수식 구조 차이</span>
+      <span class="section-time">30 min</span>
+    </div>
+
+    <div class="note">
+      <strong>핵심:</strong> 둘 다 트리를 여러 개 쓰지만, 여러 개를 쓰는 <strong>목적과 방식</strong>이 수식 구조상 완전히 다릅니다.
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">Bagging</span>
+        <span class="eq-name">병렬 평균 — 분산 감소</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          f_bag(x) = (1/<span class="hi-b">B</span>) Σ f_b(x)
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">f_b(x)</div>
+            <div class="part-name">b번째 독립적인 트리</div>
+            <div class="part-desc">부트스트랩 샘플로 각자 따로 학습 — 서로의 존재를 모름</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--green-border); background:var(--green-bg)">
+            <div class="part-sym" style="color:var(--green)">Var(f_bag) = ρσ² + ((1−ρ)/B)σ²</div>
+            <div class="part-name">트리 간 상관 ρ가 핵심</div>
+            <div class="part-desc">ρ→0(트리들이 서로 다를수록) 두 번째 항이 B에 반비례해 줄어듦</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">RandomForest</div>
+            <div class="part-name">매 분기 변수 랜덤 서브샘플링</div>
+            <div class="part-desc">ρ를 낮추기 위한 장치 — 트리를 서로 더 다르게 만듦</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">유도에 들어가기 전 — "Var"가 무엇에 대한 분산인지부터 확실히</div>
+      <p>
+        이 유도에서 말하는 분산은 <strong>사고 실험</strong>을 전제로 합니다:<br><br>
+        "학습 데이터를 새로 뽑아서 → 포레스트 전체를 처음부터 다시 학습시키고 → 같은 x 하나를 넣어 예측값을 기록한다"
+        — 이 실험을 수백 번 반복했을 때, <strong>기록된 예측값들이 얼마나 출렁이는가</strong>가 Var(f_bag)입니다.<br><br>
+        마찬가지로 σ² = Var(f_b)는 "트리 <strong>한 그루</strong>로 같은 실험을 했을 때의 출렁임"입니다.
+        트리는 데이터 몇 건만 바뀌어도 분기가 확 바뀌는 불안정한 모델이라 이 σ²가 큽니다 —
+        Bagging의 질문은 <strong>"한 그루는 σ²만큼 출렁이는데, B그루를 평균 내면 얼마나 출렁이는가?"</strong>입니다.
+      </p>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title"><span class="tag-proof">증명</span>Var(f_bag) 공식이 어떻게 나오는가 — 바닥부터 직접 유도</div>
+
+      <div class="label">준비 1 — Var(aX) = a²Var(X)는 왜?</div>
+      <p>
+        분산 = "평균에서 벗어난 정도(편차)를 <strong>제곱</strong>해서 평균 낸 것"입니다.
+        어떤 값이 {−10, 0, +10}으로 흔들릴 때 전부 ½로 줄이면 {−5, 0, +5} —
+        <strong>편차가 ½이 되면 편차의 제곱은 ¼</strong>. 그래서 X에 a를 곱하면 분산에는 a²이 붙습니다.
+        평균은 "합 × (1/B)"이므로 Var(f_bag) = (1/B)²·Var(Σf_b) = <strong>(1/B²)·Var(Σf_b)</strong>.
+      </p>
+
+      <div class="label" style="margin-top:14px">준비 2 — 합의 분산에서 공분산이 튀어나오는 이유: (a+b)² = a²+b²+2ab</div>
+      <p>
+        X의 편차를 a, Y의 편차를 b라 하면, (X+Y)의 편차는 a+b이고 분산은 그 제곱의 평균입니다:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        (a+b)² = a² + b² + <span class="hi-y">2ab</span> &nbsp;→&nbsp; Var(X+Y) = Var(X) + Var(Y) + <span class="hi-y">2Cov(X,Y)</span>
+      </div>
+      <p>
+        a²의 평균이 Var(X), b²의 평균이 Var(Y), 그리고 <strong>교차항 ab의 평균이 공분산의 정의 그 자체</strong>입니다.
+        직관 — X가 +로 벗어날 때 Y도 +로 벗어나는 경향이면(같이 흔들림) ab가 주로 양수 → 합의 흔들림이 더 커짐.
+        서로 무관하면 ab가 +와 −가 반반이라 평균 0 → 그때만 "합의 분산 = 분산의 합". 즉
+        <strong>공분산 항은 "같이 흔들리는 만큼의 추가 요금"</strong>입니다. 트리들은 같은 원본 데이터에서 나와
+        같이 흔들리므로 이 요금을 피할 수 없습니다.
+      </p>
+
+      <div class="label" style="margin-top:14px">본 유도 — B=3으로 전부 손으로 전개</div>
+      <p>
+        트리 3그루의 편차를 a₁, a₂, a₃이라 하면, 합의 편차 제곱은:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        (a₁+a₂+a₃)² = a₁²+a₂²+a₃² + a₁a₂+a₁a₃+a₂a₁+a₂a₃+a₃a₁+a₃a₂
+      </div>
+      <p>
+        3×3 표로 보면 총 9칸입니다:
+      </p>
+      <table style="margin-top:8px">
+        <tr><th></th><th>a₁</th><th>a₂</th><th>a₃</th></tr>
+        <tr><td class="mono">a₁</td><td class="pos">σ²</td><td class="mono">ρσ²</td><td class="mono">ρσ²</td></tr>
+        <tr><td class="mono">a₂</td><td class="mono">ρσ²</td><td class="pos">σ²</td><td class="mono">ρσ²</td></tr>
+        <tr><td class="mono">a₃</td><td class="mono">ρσ²</td><td class="mono">ρσ²</td><td class="pos">σ²</td></tr>
+      </table>
+      <p style="margin-top:8px">
+        대각선 3칸 = 자기 제곱(aᵦ²)의 평균 = 각각 <strong>σ²</strong>.
+        비대각 6칸 = 교차항(aᵦaᵦ')의 평균 = 각각 <strong>Cov = ρ·σ·σ = ρσ²</strong>
+        (공분산 = 상관계수 × 두 표준편차의 곱, 모든 트리가 같은 방식으로 만들어졌으니 전부 같은 σ²와 ρ로 둠).
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        Var(f₁+f₂+f₃) = 3σ² + 6ρσ² &nbsp;→&nbsp; Var(f_bag) = (3σ² + 6ρσ²)/9 = σ²/3 + (2/3)ρσ²
+      </div>
+      <p>
+        일반 B로 바꾸면 — B×B 표에서 대각선이 <strong>B칸</strong>, 비대각이 <strong>B(B−1)칸</strong>
+        (B=3일 때 3×2=6칸, 위 표와 일치):
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        Var(f_bag) = (1/B²)[B·σ² + B(B−1)·ρσ²] = σ²/B + ((B−1)/B)·ρσ²
+      </div>
+
+      <div class="label" style="margin-top:14px">재배열 — 왜 갑자기 ρσ² + (1−ρ)σ²/B 모양이 되는가</div>
+      <p>
+        건너뛰기 쉬운 대수가 여기 있습니다. (B−1)/B = 1 − 1/B 이므로:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        σ²/B + (1 − 1/B)ρσ² = σ²/B + ρσ² − ρσ²/B = <strong>ρσ² + (1−ρ)σ²/B</strong>
+      </div>
+      <p>
+        같은 식을 <strong>"B에 안 나눠지는 부분(ρσ²)"과 "B에 나눠지는 부분((1−ρ)σ²/B)"으로 갈라 쓴 것</strong>뿐입니다.
+        이렇게 갈라놓으면 B를 키웠을 때 뭐가 남는지가 한눈에 보입니다 —
+        뒷항은 B로 나눠지니 트리를 늘릴수록 0으로 사라지지만, <strong>앞항 ρσ²에는 B가 아예 없어서</strong>
+        트리를 백만 그루 심어도 그대로 남는 "바닥"입니다.
+      </p>
+
+      <div class="label" style="margin-top:14px">숫자로 검산 — σ²=100, ρ=0.5</div>
+      <table style="margin-top:8px">
+        <tr><th>B</th><th>원형: σ²/B + ((B−1)/B)ρσ²</th><th>재배열형: ρσ² + (1−ρ)σ²/B</th></tr>
+        <tr><td class="mono">1</td><td class="mono">100 + 0 = 100</td><td class="mono">50 + 50 = 100 ✓ (트리 1그루 = σ² 그대로)</td></tr>
+        <tr><td class="mono">3</td><td class="mono">33.3 + 33.3 = 66.7</td><td class="mono">50 + 16.7 = 66.7 ✓</td></tr>
+        <tr><td class="mono">100</td><td class="mono">1 + 49.5 = 50.5</td><td class="mono">50 + 0.5 = 50.5 ✓</td></tr>
+        <tr><td class="mono">∞</td><td class="mono">0 + 50 = 50</td><td class="mono neg">50 + 0 = 50 — ρσ²이 바닥</td></tr>
+      </table>
+
+      <p style="margin-top:10px">
+        결론: 트리 개수(B)로 줄일 수 있는 건 (1−ρ)σ²/B 부분뿐이고, <strong>ρσ²라는 바닥은 오직 ρ를 낮춰야만 내려갑니다</strong>.
+        그래서 <strong>트리 개수를 늘리는 것보다 트리 간 상관(ρ)을 낮추는 것이 분산 감소에 더 근본적</strong>이고,
+        RandomForest가 매 분기마다 변수를 랜덤 서브샘플링하는 이유가 여기서 나옵니다 —
+        일부러 트리마다 다른 변수를 보게 해서 ρ 자체를 끌어내리는 장치입니다.
+      </p>
+      <table style="margin-top:10px">
+        <tr><th>상황 (σ²=100 가정)</th><th>ρ</th><th>B=100일 때 Var(f_bag)</th></tr>
+        <tr><td>트리들이 거의 복제품</td><td class="mono">0.9</td><td class="mono">90 + 0.1 ≈ <strong>90</strong> — 100그루가 거의 헛수고</td></tr>
+        <tr><td>Bagging (부트스트랩만)</td><td class="mono">0.5</td><td class="mono">50 + 0.5 ≈ <strong>50</strong></td></tr>
+        <tr><td>RandomForest (+ 변수 랜덤)</td><td class="mono">0.2</td><td class="mono">20 + 0.8 ≈ <strong>21</strong> — 같은 100그루로 절반 이하</td></tr>
+      </table>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">흔한 혼동 — "분산"이 가리키는 대상이 두 개다</div>
+      <p>
+        "트리들을 서로 다르게(ρ↓) 만들면 트리들의 결과가 제각각이 되는데, 그게 분산이 커지는 것 아닌가?" —
+        자연스러운 의문이고, 실제로 <strong>절반은 맞습니다</strong>. 다만 커지는 분산과 줄어드는 분산이 서로 다른 것입니다.
+      </p>
+      <table style="margin-top:10px">
+        <tr><th></th><th>① 트리들끼리의 차이</th><th>② Var(f_bag) — 우리가 줄이려는 것</th></tr>
+        <tr>
+          <td>무엇의 흩어짐?</td>
+          <td>한 포레스트 <strong>안에서</strong>, 트리 100그루의 예측값들이 서로 얼마나 다른가</td>
+          <td><strong>학습 데이터를 다시 뽑아 재학습할 때마다</strong> 최종 예측(평균)이 얼마나 출렁이는가</td>
+        </tr>
+        <tr>
+          <td>언제 재는가?</td>
+          <td>학습 <strong>1번</strong> 하고, 그 안을 들여다봄</td>
+          <td>학습을 <strong>여러 번 반복</strong>하고, 결과들을 비교함 (사고 실험)</td>
+        </tr>
+        <tr>
+          <td>ρ를 낮추면?</td>
+          <td class="neg">커짐 (트리들을 일부러 다르게 만들었으니)</td>
+          <td class="pos">작아짐 (흔들림이 서로 상쇄되므로)</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        수식의 σ²도 ①이 아니라 ② 계열입니다 — "트리들 사이의 차이"가 아니라
+        <strong>트리 한 그루가 학습 데이터에 따라 출렁이는 정도</strong>입니다.
+        모든 트리가 각자 σ²만큼 흔들린다는 건 정해져 있고, 진짜 문제는 그 <strong>흔들림이 동기화되어 있느냐</strong>입니다.
+      </p>
+      <div class="grid-2" style="margin-top:10px">
+        <div class="box" style="margin-bottom:0; background:var(--red-bg); border-color:var(--red-border)">
+          <div class="box-title" style="color:var(--red)">ρ→1 — 동기화된 흔들림</div>
+          <p style="font-size:12px">
+            데이터가 바뀌면 100그루가 <strong>전부 같은 방향으로 같이</strong> 틀립니다.
+            평균을 내도 "같은 실수 100개의 평균 = 그 실수 그대로" — Var(f_bag)→σ², 평균의 이득이 0.
+            사실상 트리 1그루와 같습니다.
+          </p>
+        </div>
+        <div class="box" style="margin-bottom:0; background:var(--green-bg); border-color:var(--green-border)">
+          <div class="box-title" style="color:var(--green)">ρ→0 — 제각각의 흔들림</div>
+          <p style="font-size:12px">
+            데이터가 바뀌면 어떤 트리는 위로, 어떤 트리는 아래로 <strong>제각각</strong> 틀립니다.
+            평균에서 +실수와 −실수가 서로 <strong>상쇄</strong> — Var(f_bag)→σ²/B, 100그루면 1/100로 급감.
+          </p>
+        </div>
+      </div>
+      <p style="margin-top:10px">
+        여론조사에 비유하면 — 100명에게 물어보는데 100명이 <strong>전부 같은 신문만 보는 사람들</strong>이면(ρ=1)
+        그 신문이 틀린 날엔 100명이 다 같이 틀리므로, 사실상 1명에게 물어본 것과 같습니다.
+        <strong>서로 다른 정보원을 가진 100명</strong>이면(ρ↓) 각자 틀리는 부분이 달라 평균에서 상쇄되고, 결과가 안정적입니다.
+        "100명이 서로 다른 의견을 낸다"(①↑)는 것과 "그 평균이 믿을 만하다"(②↓)는 것이 <strong>동시에 성립</strong>하는 이유입니다.<br><br>
+        정리하면: <strong>트리들이 서로 달라서(①↑) 오히려 실수가 상쇄되고, 그 결과 평균의 흔들림(②)이 줄어듭니다.</strong>
+        ①과 ②는 반대로 움직이는 게 정상이고, Bagging이 노리는 것은 ②입니다.
+        오히려 ①이 크다는 것은 "상쇄시킬 재료가 풍부하다"는 좋은 신호입니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"완전히 똑같은 트리 100개를 평균 내는 것과, 트리 1개를 쓰는 것 — Var(f_bag) 공식에 ρ=1을 대입해서 두 경우가 왜 같은지 확인해볼까요?"</div>
+    </div>
+
+    <div class="eq-block">
+      <div class="eq-head">
+        <span class="eq-label">Boosting</span>
+        <span class="eq-name">순차 보정 — 편향 감소</span>
+      </div>
+      <div class="eq-body">
+        <div class="eq-formula">
+          F<span class="hi-b">ₘ</span>(x) = F<span class="hi-b">ₘ₋₁</span>(x) + <span class="hi-x">γₘ</span>h<span class="hi-b">ₘ</span>(x)
+        </div>
+        <div class="eq-breakdown">
+          <div class="eq-part">
+            <div class="part-sym">rᵢ = yᵢ − Fₘ₋₁(xᵢ)</div>
+            <div class="part-name">이전 단계까지의 잔차</div>
+            <div class="part-desc">hₘ은 바로 이 잔차를 학습하는 약한 학습기</div>
+          </div>
+          <div class="eq-part" style="border-color:var(--amber-border); background:var(--amber-bg)">
+            <div class="part-sym" style="color:var(--amber)">γₘ (학습률)</div>
+            <div class="part-name">한 단계의 보정 폭</div>
+            <div class="part-desc">크면 빠르지만 과적합 위험↑, 작으면 안정적이지만 단계(m) 더 필요</div>
+          </div>
+          <div class="eq-part">
+            <div class="part-sym">재귀적 구조</div>
+            <div class="part-name">Fₘ은 반드시 Fₘ₋₁을 알아야 함</div>
+            <div class="part-desc">매 단계가 "이전 단계의 실수"를 순차적으로 보정</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="box box-amber">
+      <div class="box-title">잔차 학습의 일반형 — 왜 "잔차"가 나오는가 (Gradient Boosting)</div>
+      <p>
+        Boosting의 목표는 <strong>Σᵢ L(yᵢ, F(xᵢ))를 최소화</strong>하는 함수 F를 만드는 것입니다.
+        Week1에서 "학습 = L을 최소화하는 β 찾기 = 경사하강"이었다면, 여기서는 <strong>β 자리에 함수 F 자체</strong>가 들어갑니다.
+      </p>
+      <ul class="checklist" style="margin-top:10px">
+        <li>
+          <span class="icon ok">①</span>
+          <div class="body">경사하강의 관점 전환 — "파라미터 공간"에서 "함수 공간"으로
+            <div class="sub">일반 경사하강: β ← β − η·∂L/∂β (파라미터를 조금씩 이동)<br>
+            함수 공간 경사하강: F(xᵢ) ← F(xᵢ) − η·∂L/∂F(xᵢ) — <strong>각 데이터 포인트에서의 예측값 F(xᵢ) 자체를 하나의 "움직일 수 있는 변수"로 취급</strong>하고, 손실이 줄어드는 방향으로 이동시킴</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon ok">②</span>
+          <div class="body">움직여야 할 방향 = 음의 그래디언트
+            <div class="sub">gᵢ = −∂L(yᵢ, F(xᵢ))/∂F(xᵢ) — "i번째 예측값을 어느 방향으로 얼마나 밀면 손실이 가장 빨리 줄어드는가"를 데이터 포인트마다 계산한 벡터 (g₁, g₂, ..., gₙ)</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon warn">③</span>
+          <div class="body">문제 — 이 방향은 "학습 데이터 n개 지점"에서만 정의된다
+            <div class="sub">새로운 x가 들어오면 gᵢ가 없음. 그래서 <strong>이 n개의 (xᵢ, gᵢ) 쌍을 학습 데이터 삼아 트리 hₘ을 학습</strong>시킴 — 벡터(g₁,...,gₙ)는 n개 지점에서만 정의되지만, 학습된 트리 hₘ은 <strong>입력 공간 전체에서 값이 정의되는 함수</strong>가 됨 (아래 박스에서 상세히)</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon ok">④</span>
+          <div class="body">한 걸음 이동 = Fₘ = Fₘ₋₁ + γₘhₘ
+            <div class="sub">경사하강의 "β ← β − η·grad"와 정확히 같은 구조. hₘ이 −grad 역할, γₘ이 학습률(step size) 역할</div>
+          </div>
+        </li>
+      </ul>
+      <p style="margin-top:10px">
+        즉 <strong>Gradient Boosting = 함수 공간에서의 경사하강</strong>이고, 트리는 "그래디언트를 근사하는 도구"로 쓰이는 것입니다.
+      </p>
+      <div class="note" style="margin-top:10px">
+        <strong>02와 연결 — "미분 안 되는 트리로 어떻게 Gradient를?"</strong><br>
+        02에서 봤듯 트리 자체는 미분이 안 되어 경사하강 학습이 불가능합니다. GBM에 "Gradient"가 붙는 이유는
+        미분 대상이 트리가 아니라 <strong>손실함수 L</strong>이기 때문입니다 (∂L/∂F — 예측값에 대한 미분).
+        구조가 두 겹입니다: <strong>바깥 루프</strong>는 손실을 미분해 "다음에 학습할 타깃(gᵢ)"을 정하고(미분 사용),
+        <strong>안쪽 루프</strong>는 그 gᵢ에 트리 하나를 맞추는데 여기는 여전히 Gain 전수 조사입니다(미분 없음).
+        즉 GBM조차 트리를 만드는 순간만큼은 미분 없이 갑니다 —
+        <strong>"미분이 안 되는 모델(트리)을, 미분이 되는 것(손실)의 안내를 받아 쌓는다"</strong>가 GBM의 정확한 그림입니다.
+      </div>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title">날카로운 질문 — "F(xᵢ)를 밀면 다른 샘플의 예측도 같이 움직이는 것 아닌가?"</div>
+      <p>
+        gᵢ가 정말 i번째 샘플에만 해당하는 값인지, 아니면 하나를 밀면 모델 전체가 바뀌어서 다른 샘플에도
+        영향이 가는지 — 정확한 의문이고, 답은 <strong>"함수 공간에서는 완전히 분리된다"</strong>입니다.
+        이유는 전체 손실이 <strong>샘플별 덧셈으로 분해</strong>되기 때문입니다:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        Σᵢ L(yᵢ, F(xᵢ)) = L(y₁, F(x₁)) + L(y₂, F(x₂)) + ··· + L(yₙ, F(xₙ))
+      </div>
+      <p>
+        함수 공간 관점에서 F(x₁), ..., F(xₙ)은 <strong>서로 독립적인 n개의 손잡이(knob)</strong>입니다.
+        i번째 항은 오직 F(xᵢ) 하나에만 의존하므로, F(xᵢ)로 미분하면 나머지 항은 전부 0 —
+        <strong>교차 항이 없습니다.</strong> F(x₃)를 밀어도 F(x₇)의 손실은 전혀 변하지 않습니다.
+      </p>
+      <table style="margin-top:10px">
+        <tr><th></th><th>파라미터 공간 (선형 회귀)</th><th>함수 공간 (GBM의 관점)</th></tr>
+        <tr>
+          <td>움직이는 것</td>
+          <td>β — 모든 샘플이 <strong>공유</strong></td>
+          <td>F(xᵢ) 각각 — 샘플마다 <strong>독립</strong></td>
+        </tr>
+        <tr>
+          <td>하나를 밀면</td>
+          <td class="neg">모든 샘플의 예측이 동시에 움직임</td>
+          <td class="pos">그 샘플의 예측만 움직임</td>
+        </tr>
+        <tr>
+          <td>그래디언트 형태</td>
+          <td class="mono">∂L/∂β = Σᵢ(...) — 전 샘플의 합</td>
+          <td class="mono">gᵢ — 샘플별로 따로</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        선형 회귀의 ∂L/∂β에 Σ가 붙는 이유가 정확히 "β가 공유 파라미터라서"입니다.
+        함수 공간에는 공유 파라미터가 없으니 Σ 없이 샘플별로 완전히 분리됩니다.<br><br>
+        <strong>그런데 — "하나를 밀면 전체가 움직인다"는 직관이 다시 맞아지는 곳이 트리 학습 단계입니다.</strong>
+        n개 손잡이를 각자 따로 미는 것은 학습 데이터를 외우는 것과 같아서, ③단계에서 트리 hₘ을 학습시키는데
+        <strong>트리는 잎 하나가 여러 샘플을 묶어 같은 값을 강제</strong>합니다. 여기서 비로소 샘플들이 서로 연결(coupling)됩니다.
+        정리하면 — <strong>그래디언트 계산 단계는 "각자 어디로 가고 싶은지" 수집(샘플별 독립),
+        트리 학습 단계는 "비슷한 x끼리 같은 방향으로 함께 가라"는 타협(샘플 간 연결)</strong>입니다.
+        이 타협이 GBM이 암기가 아니라 일반화를 하는 이유이기도 합니다.
+      </p>
+    </div>
+
+    <div class="box box-green">
+      <div class="box-title">벡터 → 함수 — 왜 트리를 거치면 "모든 x에서 정의"되는가</div>
+      <p>
+        "n개 데이터로 학습했는데 왜 hₘ이 모든 x에 대한 함수인가?" — 여기서 "일반화"는
+        <strong>"모든 x에서 잘 맞는다"는 보장이 아니라 "모든 x에서 값이 정의된다"는 뜻</strong>입니다.
+      </p>
+      <ul class="checklist" style="margin-top:8px">
+        <li>
+          <span class="icon bad">문제</span>
+          <div class="body">그래디언트 (g₁, ..., gₙ)은 함수가 아니라 <strong>길이 n짜리 벡터</strong>
+            <div class="sub">"x₃에서는 −10만큼, x₇에서는 +5만큼 밀어라" — 지시가 학습 데이터 n개 지점에만 존재. 새로운 x*에 대한 지시는 없음</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon ok">해결</span>
+          <div class="body">학습된 트리는 hₘ(x) = Σcₘ𝟙(x∈Rₘ) — <strong>영역 Rₘ들이 입력 공간 전체를 빈틈없이 덮음</strong>
+            <div class="sub">"온도>85면 이쪽" 규칙은 학습 데이터에 없던 온도 87.3짜리에도 그냥 적용됨. 어떤 x*든 반드시 어느 잎에 떨어지고 그 잎의 값을 받음 (02에서 본 수식 그대로)</div>
+          </div>
+        </li>
+        <li>
+          <span class="icon warn">가정</span>
+          <div class="body">n개 점의 지시를 "비슷한 x는 비슷한 방향으로 밀렸을 것"이라는 가정으로 확장한 것
+            <div class="sub">이 확장이 실제로 잘 맞을지는 별개 문제 — 그래서 과적합·shrinkage 논의가 뒤따름</div>
+          </div>
+        </li>
+      </ul>
+      <p style="margin-top:10px">
+        사실 이건 GBM만의 특별한 일이 아닙니다 — <strong>모든 지도학습이 하는 일이 정확히 이것</strong>입니다.
+        선형 회귀도 n개의 (xᵢ, yᵢ)로 학습하지만 결과물 β̂ᵀx는 어떤 x에든 값을 줍니다.
+        GBM의 특이점은 학습 타깃이 y가 아니라 <strong>g(그래디언트)</strong>라는 것뿐입니다.
+      </p>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title"><span class="tag-proof">증명</span>제곱오차에서 잔차가 나오는 미분 과정 — 직접 계산</div>
+      <p>
+        손실함수를 <strong>L = ½(yᵢ − F(xᵢ))²</strong>로 두고, F(xᵢ)를 변수 취급해서 미분합니다.
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        ∂L/∂F(xᵢ) = ½ · 2 · (yᵢ − F(xᵢ)) · (−1) = −(yᵢ − F(xᵢ))
+      </div>
+      <p>
+        합성함수 미분(chain rule)입니다 — 바깥(제곱)을 미분하면 2·(yᵢ−F), 안(yᵢ−F)을 F로 미분하면 −1.
+        여기에 음(−)의 그래디언트를 취하면:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        gᵢ = −∂L/∂F(xᵢ) = yᵢ − F(xᵢ) = <span class="hi-y">rᵢ (잔차)</span>
+      </div>
+      <p>
+        <strong>"잔차를 학습한다"는 말은 사실 "제곱오차를 썼을 때의 그래디언트"라는 특수한 경우</strong>입니다.
+        ½을 붙이는 이유도 여기서 보입니다 — 미분할 때 제곱의 2와 상쇄되어 식이 깔끔해지는 관례적 장치일 뿐,
+        최소화 지점은 바뀌지 않습니다.
+      </p>
+      <table style="margin-top:10px">
+        <tr><th>손실함수 L</th><th>−∂L/∂F = gᵢ</th><th>해석</th></tr>
+        <tr>
+          <td class="mono">½(y−F)² (제곱오차, 회귀)</td>
+          <td class="mono"><strong>y − F</strong></td>
+          <td class="muted">잔차 그 자체 — "얼마나 빗나갔는지"를 그대로 좇음</td>
+        </tr>
+        <tr>
+          <td class="mono">|y−F| (절대오차, 회귀)</td>
+          <td class="mono"><strong>sign(y − F)</strong></td>
+          <td class="muted">빗나간 "방향"만 좇고 크기는 무시 — 이상치에 둔감해짐</td>
+        </tr>
+        <tr>
+          <td class="mono">cross-entropy (분류)</td>
+          <td class="mono"><strong>y − p</strong>, p=σ(F)</td>
+          <td class="muted">실제 라벨과 예측 확률의 차이 — "확률의 잔차" 형태</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        세 경우 모두 알고리즘은 동일하고 <strong>gᵢ의 식만 바뀝니다</strong>. 이상치가 많은 데이터에서 제곱오차 대신
+        절대오차(또는 Huber)를 쓰면 왜 강건해지는지도 이 표에서 보입니다 — 이상치의 큰 잔차(y−F)를 그대로 좇는 대신
+        방향(±1)만 반영하기 때문입니다.
+      </p>
+    </div>
+
+    <div class="box box-green">
+      <div class="box-title"><span class="tag-proof">증명</span>γₘ은 어떻게 정해지는가 — line search 유도</div>
+      <p>
+        hₘ이 정해졌으면, "이 방향으로 <strong>얼마나</strong> 갈지"(γₘ)를 정해야 합니다.
+        기준은 하나 — 그 단계에서 손실을 가장 많이 줄이는 γ:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        γₘ = argmin<span class="hi-e">_γ</span> Σᵢ L(yᵢ, Fₘ₋₁(xᵢ) + γ·hₘ(xᵢ))
+      </div>
+      <p>
+        제곱오차의 경우 직접 풀 수 있습니다. J(γ) = Σ½(rᵢ − γhₘ(xᵢ))² 로 두고 (rᵢ = yᵢ−Fₘ₋₁(xᵢ)),
+        γ로 미분해서 0으로 놓으면:
+      </p>
+      <div class="eq-formula" style="margin:12px 0">
+        dJ/dγ = −Σ hₘ(xᵢ)(rᵢ − γhₘ(xᵢ)) = 0 &nbsp;&nbsp;→&nbsp;&nbsp; γₘ = Σrᵢhₘ(xᵢ) / Σhₘ(xᵢ)²
+      </div>
+      <p>
+        형태를 자세히 보면 — 이것은 <strong>"잔차 r을 종속변수, hₘ(x)를 설명변수로 놓고 절편 없이 돌린
+        단순 회귀의 기울기 공식"</strong>과 정확히 같습니다 (Week1의 β̂ = Σxy/Σx²).
+        즉 매 단계마다 "새 트리의 출력을 몇 배로 반영해야 잔차에 가장 잘 맞는가"를 최소제곱으로 푸는 것입니다.
+      </p>
+      <div class="note" style="margin-top:10px">
+        <strong>실무의 learning rate와의 관계</strong> — 실제 라이브러리(XGBoost 등)에서는 이렇게 구한 최적 보정폭에
+        <strong>ν(learning_rate, 보통 0.01~0.3)를 곱해 일부러 덜 반영</strong>합니다: Fₘ = Fₘ₋₁ + ν·γₘhₘ.
+        매 단계 최적으로 가면 학습 데이터의 잔차(노이즈 포함)를 너무 정확히 좇아 과적합되기 때문에,
+        "일부러 덜 가는 대신 여러 걸음"이 일반화에 유리합니다 — shrinkage라고 부릅니다.
+        앞서 토론 질문 "γ를 작게 주면 왜 m을 늘려야 하나"의 답이 여기 있습니다.
+      </div>
+    </div>
+
+    <div class="box box-red">
+      <div class="box-title"><span class="tag-calc">계산 예시</span>숫자로 한 사이클 돌려보기 — 데이터 3건, 2단계</div>
+      <p>
+        y = (10, 20, 30)인 3건으로 Gradient Boosting(제곱오차, ν=1)을 손으로 돌려봅니다.
+      </p>
+      <table style="margin-top:8px">
+        <tr><th>단계</th><th>예측 F</th><th>잔차 r = y − F</th><th>비고</th></tr>
+        <tr>
+          <td class="mono">F₀ (초기값)</td>
+          <td class="mono">(20, 20, 20)</td>
+          <td class="mono">(−10, 0, +10)</td>
+          <td class="muted">F₀는 전체 평균 ȳ=20 — 제곱오차에서 상수 하나로 손실을 최소화하는 값이 평균이기 때문</td>
+        </tr>
+        <tr>
+          <td class="mono">h₁ 학습</td>
+          <td class="mono" colspan="2">잔차 (−10, 0, +10)을 타깃으로 트리 학습 → 예: h₁ = (−10, +5, +5)</td>
+          <td class="muted">깊이 1 트리(stump)라 두 그룹으로밖에 못 나눠 잔차를 완벽히 못 맞춤</td>
+        </tr>
+        <tr>
+          <td class="mono">F₁ = F₀ + h₁</td>
+          <td class="mono">(10, 25, 25)</td>
+          <td class="mono">(0, −5, +5)</td>
+          <td class="muted">잔차의 크기가 (10,0,10)→(0,5,5)로 감소 — 손실 100→25</td>
+        </tr>
+        <tr>
+          <td class="mono">h₂ 학습</td>
+          <td class="mono" colspan="2">남은 잔차 (0, −5, +5)를 타깃으로 다음 트리 학습 → ...</td>
+          <td class="muted">이 과정을 m번 반복 — 매번 "남은 오차"만 좇음</td>
+        </tr>
+      </table>
+      <p style="margin-top:10px">
+        여기서 Boosting의 성격이 그대로 보입니다 — <strong>각 트리는 y를 맞추는 게 아니라 "직전까지 못 맞춘 부분"만 맞춥니다.</strong>
+        그래서 첫 트리를 빼고는 어떤 트리도 단독으로는 의미가 없고(잔차를 예측하는 함수일 뿐),
+        반드시 순서대로 누적되어야 F가 완성됩니다. Bagging의 트리들이 각자 완결된 예측기인 것과 대비되는 지점입니다.
+      </p>
+    </div>
+
+    <div class="bb-scale">
+      <div class="bb-step bag">
+        <div class="bb-title">Bagging</div>
+        <div class="bb-desc">병렬 · 독립 · 분산(Variance) 감소<br>대표: RandomForest</div>
+      </div>
+      <div class="bb-step boost">
+        <div class="bb-title">Boosting</div>
+        <div class="bb-desc">순차 · 의존 · 편향(Bias) 감소<br>대표: XGBoost, GradientBoosting</div>
+      </div>
+    </div>
+
+    <div class="label">나란히 비교</div>
+    <table>
+      <tr><th>항목</th><th>Bagging</th><th>Boosting</th></tr>
+      <tr><td>트리 학습 방식</td><td>병렬 · 독립</td><td>순차 · 의존적</td></tr>
+      <tr><td>목적</td><td class="pos">분산(Variance) 감소</td><td class="amber">편향(Bias) 감소</td></tr>
+      <tr><td>핵심 수식</td><td class="mono">f_bag=(1/B)Σf_b(x)</td><td class="mono">Fₘ=Fₘ₋₁+γₘhₘ</td></tr>
+      <tr><td>각 트리가 보는 것</td><td>원본 데이터의 부트스트랩 샘플</td><td>이전 모델의 잔차</td></tr>
+      <tr><td>과적합 위험</td><td>상대적으로 낮음 (평균이 완충)</td><td>상대적으로 높음 (계속 잔차를 좇음)</td></tr>
+    </table>
+
+    <div class="box box-red">
+      <div class="box-title">왜 순서가 다른가 — 수식으로 보는 결론</div>
+      <p>
+        Bagging은 b번째 트리가 1번째 트리를 몰라도 됩니다 — 수식에 이전 항이 없고, f_b들은 서로 독립입니다.<br>
+        Boosting은 m번째 트리가 반드시 Fₘ₋₁을 알아야 합니다 — 수식 자체가 재귀적(recursive) 구조입니다.<br><br>
+        <strong>Bagging의 수식은 "합의 평균", Boosting의 수식은 "누적된 보정"입니다.</strong>
+        이 구조 차이 하나가 병렬/순차, 분산/편향 감소라는 모든 실무적 차이를 만듭니다.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"Boosting 중간에 학습을 멈추면(γ 단계를 다 안 돌면) 어떤 일이 생길까요? Bagging 중간에 트리 개수를 줄이면 어떤 일이 생길까요? 두 수식으로 설명해보면?"</div>
+    </div>
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"learning rate γₘ을 아주 작게 주면 왜 트리 개수(m)를 늘려야 할까요?"</div>
+    </div>
+    <div class="q-box">
+      <div class="q-label">토론 질문</div>
+      <div class="q-text">"손실함수를 제곱오차에서 다른 것(예: 절대오차)으로 바꾸면, hₘ이 더 이상 '잔차'를 학습하지 않게 됩니다. 그래도 Boosting이라고 부를 수 있는 이유는 뭘까요?"</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════
+       WRAP
+  ══════════════════════════════ -->
+  <div class="section-block" id="wrap">
+    <div class="section-header">
+      <span class="section-num">—</span>
+      <span class="section-title">오늘 정리</span>
+      <span class="section-time">5 min</span>
+    </div>
+
+    <div class="box box-blue">
+      <div class="box-title">오늘 본 핵심 수식</div>
+      <p>
+        Gini = 1−Σpₖ², Entropy = −Σpₖlog₂pₖ — 두 지표 모두 "노드 안 불확실성"을 재는 자.<br>
+        Gain = I(parent)−Σ(nₖ/n)I(childₖ) (분류) / ΔMSE (회귀) — 분기는 "불확실성이 가장 많이 줄어드는 지점".<br>
+        Importance(xⱼ) = ΣΔI(분기ᵢ) — 분류는 Gini 감소량 합, 회귀는 MSE 감소량 합.<br>
+        f_bag=(1/B)Σf_b(x) (분산↓) vs Fₘ=Fₘ₋₁+γₘhₘ (편향↓) — 병렬 평균 vs 순차 보정.
+      </p>
+    </div>
+
+    <div class="q-box">
+      <div class="q-label">세션 마무리 질문</div>
+      <div class="q-text">"Round1 때 'RandomForest가 왜 안정적인지', 'XGBoost가 왜 성능이 좋은지'를 감으로만 알고 있었다면, 오늘 수식으로 보니 어느 부분이 가장 명확해졌나요?"</div>
+    </div>
+
+    <div class="box box-amber" style="margin-top: 24px">
+      <div class="box-title">다음 세션 예고 — Week 4</div>
+      <p>
+        Week 4에서는 클러스터링 & 유사도를 수식으로 봅니다.<br>
+        K-means 목적함수(argmin Σ‖xᵢ−μₖ‖²)가 "거리 최소화"를 어떻게 표현하는지,
+        코사인 유사도(cos(θ)=uᵀv/‖u‖‖v‖)가 내적과 어떤 관계인지,
+        Soft clustering(GMM)에서 확률이 수식에 어떻게 들어오는지를 다룹니다.
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) cur = s.id; });
+    navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
+  });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 2 — 트리 모델과 앙상블</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+  .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;height:48px;overflow-x:auto;gap:0}
+  .nav-title{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;margin-right:24px;padding-right:24px;border-right:1px solid var(--border)}
+  .nav a{font-size:12px;color:var(--text3);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+  .nav a:hover{color:var(--text)}
+  .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+  .page{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+  .section-block{margin-bottom:56px}
+  .section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px}
+  .section-title{font-size:18px;font-weight:500}
+  .section-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap}
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7;color:var(--text)}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:12px}
+  .q-box{border:1px solid var(--border);border-radius:6px;padding:12px 16px;background:var(--surface2);margin-bottom:8px}
+  .q-box .q-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .q-box .q-text{font-size:13px;font-style:italic}
+  .flow-row{display:flex;align-items:stretch;margin-bottom:16px;flex-wrap:nowrap;overflow-x:auto}
+  .flow-step{flex:1;min-width:90px;border:1px solid var(--border);background:var(--surface);padding:10px 12px;border-radius:6px;display:flex;flex-direction:column;gap:3px}
+  .flow-step.warn{border-color:var(--amber-border);background:var(--amber-bg)}
+  .flow-step.crit{border-color:var(--red-border);background:var(--red-bg)}
+  .flow-step.good{border-color:var(--green-border);background:var(--green-bg)}
+  .flow-step .step-n{font-family:var(--mono);font-size:10px;color:var(--text3)}
+  .flow-step.warn .step-n{color:var(--amber)}.flow-step.crit .step-n{color:var(--red)}.flow-step.good .step-n{color:var(--green)}
+  .flow-step .step-name{font-size:12px;font-weight:500}
+  .flow-step.warn .step-name{color:var(--amber)}.flow-step.crit .step-name{color:var(--red)}.flow-step.good .step-name{color:var(--green)}
+  .flow-step .step-sub{font-size:11px;color:var(--text3);line-height:1.4}
+  .flow-arrow{display:flex;align-items:center;padding:0 5px;font-size:14px;color:var(--text3);flex-shrink:0}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  @media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr 1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:500}td.neg{color:var(--red);font-weight:500}
+  td.warn-td{color:var(--amber);font-weight:500}td.muted{color:var(--text3);font-size:12px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+  .checklist li .icon{margin-top:1px;flex-shrink:0;font-size:13px}
+  .checklist li .icon.ok{color:var(--green)}.checklist li .icon.warn{color:var(--amber)}.checklist li .icon.bad{color:var(--red)}
+  .checklist li .body{line-height:1.6}
+  .checklist li .body .sub{font-size:11px;color:var(--text3);margin-top:1px}
+  .tree-wrap{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:16px;margin-bottom:12px;overflow-x:auto}
+  .cmp-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  .cmp-card{border:1px solid var(--border);border-radius:6px;overflow:hidden}
+  .cmp-card .c-head{padding:10px 14px;font-size:12px;font-weight:500;border-bottom:1px solid var(--border)}
+  .cmp-card.bag .c-head{background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)}
+  .cmp-card.ada .c-head{background:var(--green-bg);color:var(--green);border-color:var(--green-border)}
+  .cmp-card.xgb .c-head{background:var(--amber-bg);color:var(--amber);border-color:var(--amber-border)}
+  .cmp-card .c-body{padding:12px 14px;font-size:12px;line-height:1.7}
+  .cmp-card .c-row{display:flex;gap:8px;margin-bottom:5px}
+  .cmp-card .c-lbl{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:46px;text-transform:uppercase;padding-top:2px;flex-shrink:0}
+  .fi-wrap{margin-bottom:12px}
+  .fi-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .fi-name{font-size:12px;min-width:78px;text-align:right}
+  .fi-bg{flex:1;background:var(--surface2);border-radius:3px;height:18px;border:1px solid var(--border);overflow:hidden}
+  .fi-bar{height:100%;border-radius:2px;display:flex;align-items:center;padding-left:7px}
+  .fi-bar span{font-family:var(--mono);font-size:10px;color:#fff;font-weight:500;white-space:nowrap}
+  .fi-val{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:32px}
+  .chart-wrap{position:relative;width:100%;height:220px;margin-bottom:12px}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+  @media print{.nav{display:none}.page{padding:24px}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <div class="nav-title">Week 2 — 트리 모델과 앙상블</div>
+  <a href="#s0">복습</a>
+  <a href="#s1">Decision Tree</a>
+  <a href="#s2">노드 평균의 본질</a>
+  <a href="#s3">과적합</a>
+  <a href="#s4">앙상블</a>
+  <a href="#s5">Bagging vs Boosting</a>
+  <a href="#s6">변수 중요도</a>
+  <a href="#s6b">제조 × 트리</a>
+  <a href="#s7">모델 비교</a>
+</nav>
+<div class="page">
+
+<!-- 00 복습 -->
+<div class="section-block" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">지난 주 핵심 복습</span>
+    <span class="section-time">10 min</span>
+  </div>
+  <div class="box box-blue">
+    <div class="box-title">Week 1 세션 요약</div>
+    <p>지표 하나만 보지 말고, <strong>그 지표가 왜 나왔는지 본질적인 원인을 파악할 것.</strong><br>
+    파악한 원인을 기반으로, <strong>AI로 해결 가능한 문제의 범위를 정의하고, 현업에게 이를 설득할 것.</strong><br><br>
+    R² 0.92는 결론이 아닙니다. 잔차에 패턴이 있는지, 누수는 없는지, train/test 차이는 어느 정도인지 — 이걸 같이 봐야 "이 모델로 이 문제를 해결할 수 있다"고 말할 수 있습니다.</p>
+  </div>
+  <div class="grid-3">
+    <div class="box box-red">
+      <div class="box-title">원인 파악</div>
+      <p>잔차 U자 패턴 → "모델이 나쁘다"가 아니라 "비선형 관계를 직선으로 잡으려 한 것". 이번 주 트리가 이걸 다르게 푸는 방식 확인</p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">문제 범위 정의</div>
+      <p>과적합 → "모델을 더 좋게 만들면 된다"가 아님. 데이터가 편향된 건지, 공정이 바뀐 건지 원인부터 구분해야 해결 범위가 정해짐</p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">설득</div>
+      <p>다중공선성이 있으면 계수가 불안정해지고, 부호가 뒤집히는 현상이 나타날 수 있습니다 — 이걸 설명할 수 있어야 합니다. 이번 주 변수 중요도도 마찬가지 — 숫자가 아니라 맥락으로 설명</p>
+    </div>
+  </div>
+</div>
+
+<!-- 01 Decision Tree -->
+<div class="section-block" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">Decision Tree</span>
+    <span class="section-time">15 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> 매 분기마다 변수 하나의 임계값으로 두 그룹으로 나눕니다. 이 직각 분할이 반복되면 2D 공간에서 축에 평행한 선들로 영역이 나뉘고, 각 영역에 다른 예측값이 배정됩니다 — 계단 형태라 비선형입니다.</div>
+
+  <div class="label">불순도(Impurity) — 어떻게 나눌지 결정하는 기준</div>
+  <div class="box box-blue">
+    <div class="box-title">불순도 = "한 바구니 안에 얼마나 섞여 있는가" — 가장 많이 줄어드는 조건을 선택</div>
+    <p>
+      불량 50개·정상 50개 섞인 바구니 → 불순도 최대. 어느 쪽도 확신 못 함<br>
+      불량 98개·정상 2개 → 불순도 거의 0. "거의 확실히 불량"이라고 말할 수 있음<br><br>
+      트리는 모든 변수·모든 분기점을 시도해보면서 나눴을 때 불순도가 가장 많이 줄어드는 조건을 선택합니다.<br>
+      분류 → Gini: 완전히 분리되면 0, 절반씩 섞이면 0.5 / 회귀 → MSE: 노드 안 y값들의 퍼짐 정도
+    </p>
+  </div>
+
+  <div class="label">왜 비선형인가 — 2D 공간 분할로 보기 (온도 × 압력)</div>
+  <div class="tree-wrap">
+    <svg width="100%" viewBox="0 0 680 300" role="img" aria-label="트리의 2D 공간 분할">
+      <!-- 축 -->
+      <line x1="60" y1="260" x2="420" y2="260" stroke="#ccc9be" stroke-width="1.2"/>
+      <line x1="60" y1="260" x2="60"  y2="20"  stroke="#ccc9be" stroke-width="1.2"/>
+      <!-- 축 라벨 -->
+      <text x="240" y="282" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9b9890" text-anchor="middle">온도 (°C)</text>
+      <text x="22" y="140" font-family="IBM Plex Mono,monospace" font-size="11" fill="#9b9890" text-anchor="middle" transform="rotate(-90,22,140)">압력 (bar)</text>
+      <!-- 축 눈금 -->
+      <text x="60"  y="275" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="middle">60</text>
+      <text x="160" y="275" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="middle">75</text>
+      <text x="260" y="275" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="middle">85</text>
+      <text x="360" y="275" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="middle">95</text>
+      <text x="420" y="275" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="middle">105</text>
+      <text x="50" y="260" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="end">2.0</text>
+      <text x="50" y="180" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="end">2.8</text>
+      <text x="50" y="120" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="end">3.2</text>
+      <text x="50" y="60"  font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890" text-anchor="end">3.8</text>
+
+      <!-- 분할 영역 색 -->
+      <!-- 저온 저압 = 정상 (초록) -->
+      <rect x="60" y="180" width="200" height="80" fill="#eaf5ec" opacity=".7"/>
+      <!-- 저온 고압 = 주의 (노랑) -->
+      <rect x="60" y="20" width="200" height="160" fill="#fdf3e0" opacity=".7"/>
+      <!-- 고온 저압 = 중위험 (주황) -->
+      <rect x="260" y="120" width="160" height="140" fill="#fdf3e0" opacity=".9"/>
+      <!-- 고온 고압 = 고위험 (빨강) -->
+      <rect x="260" y="20" width="160" height="100" fill="#f8eaea" opacity=".85"/>
+
+      <!-- 분기선 1: 온도 > 85 (수직선) -->
+      <line x1="260" y1="20" x2="260" y2="260" stroke="#1a4f8a" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="262" y="16" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a4f8a">온도=85°C</text>
+
+      <!-- 분기선 2: 압력 > 3.2 (수평선, 고온 구간만) -->
+      <line x1="260" y1="120" x2="420" y2="120" stroke="#1a5a2a" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="422" y="124" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a">압력=3.2</text>
+
+      <!-- 분기선 3: 압력 > 2.8 (수평선, 저온 구간만) -->
+      <line x1="60" y1="180" x2="260" y2="180" stroke="#7a4a00" stroke-width="2" stroke-dasharray="6 3"/>
+      <text x="60" y="175" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00">압력=2.8</text>
+
+      <!-- 영역 라벨 -->
+      <text x="160" y="225" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#1a5a2a" text-anchor="middle">정상</text>
+      <text x="160" y="240" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a" text-anchor="middle">불량 1%</text>
+
+      <text x="160" y="95" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#7a4a00" text-anchor="middle">불량 주의</text>
+      <text x="160" y="110" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">불량 8%</text>
+
+      <text x="340" y="200" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#7a4a00" text-anchor="middle">불량 중위험</text>
+      <text x="340" y="215" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">불량 13%</text>
+
+      <text x="340" y="65" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#8a1a1a" text-anchor="middle">불량 고위험</text>
+      <text x="340" y="80" font-family="IBM Plex Mono,monospace" font-size="10" fill="#8a1a1a" text-anchor="middle">불량 62%</text>
+
+      <!-- 범례 -->
+      <text x="480" y="40"  font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a4f8a">── 1차 분기 (온도)</text>
+      <text x="480" y="58"  font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a">── 2차 분기 (압력, 고온)</text>
+      <text x="480" y="76"  font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00">── 2차 분기 (압력, 저온)</text>
+      <text x="480" y="100" font-family="IBM Plex Sans KR,sans-serif" font-size="11" fill="#9b9890">분기선은 항상</text>
+      <text x="480" y="116" font-family="IBM Plex Sans KR,sans-serif" font-size="11" fill="#9b9890">축에 평행합니다</text>
+      <text x="480" y="140" font-family="IBM Plex Sans KR,sans-serif" font-size="11" fill="#9b9890">→ 경계가 계단 형태</text>
+      <text x="480" y="156" font-family="IBM Plex Sans KR,sans-serif" font-size="11" fill="#9b9890">→ 비선형</text>
+    </svg>
+  </div>
+  <div class="note">선형 회귀는 이 공간을 대각선 하나로 나눕니다. 트리는 축에 평행한 선들로 직각 분할합니다. 각 영역에 다른 예측값이 배정되고, 경계에서 예측값이 계단식으로 바뀝니다. 이것이 비선형인 이유입니다.</div>
+
+  <div class="label">변수가 많으면 과적합이 심해지는 이유</div>
+  <div class="box box-amber">
+    <div class="box-title">노이즈 변수도 우연히 불순도를 줄이는 분기를 찾을 수 있습니다</div>
+    <p>
+      변수가 많을수록 "이번 학습 데이터에서만 우연히 맞아떨어지는" 분기 조건을 찾을 가능성이 높아집니다. 이런 조건들이 쌓이면 train 성능은 올라가지만 test에서는 일반화되지 않습니다.<br><br>
+      MDI는 중요도 합이 1로 정규화되기 때문에 변수가 늘어나도 상대적 순위 자체는 크게 달라지지 않습니다. 문제는 순위가 아니라 <strong>과적합</strong>입니다.<br><br>
+      RandomForest에서 max_features=1.0(전체 변수)으로 두면 랜덤 변수 선택이 없어서 단순 Bagging과 같아집니다. 이 경우 노이즈 변수의 영향이 매 트리에 동일하게 반영됩니다. sklearn Regressor 기본값이 1.0인 것은 실무에서 주의해야 할 부분입니다.
+    </p>
+  </div>
+
+  <div class="label">분기 예시 ① — 분류 (불량/정상 예측)</div>
+  <div class="tree-wrap">
+    <svg width="100%" viewBox="0 0 760 280" role="img">
+      <rect x="270" y="10" width="220" height="52" rx="5" fill="#eaf0f8" stroke="#b8ccdf" stroke-width="1.2"/>
+      <text x="380" y="30" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a4f8a" text-anchor="middle">온도 &gt; 85°C ?</text>
+      <text x="380" y="48" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">전체 200건 · 불량률 18%</text>
+      <line x1="335" y1="62" x2="180" y2="120" stroke="#9b9890" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="232" y="97" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a">YES</text>
+      <line x1="425" y1="62" x2="580" y2="120" stroke="#9b9890" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="516" y="97" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9b9890">NO</text>
+      <rect x="70" y="120" width="220" height="52" rx="5" fill="#eaf5ec" stroke="#b8d8bf" stroke-width="1.2"/>
+      <text x="180" y="140" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a5a2a" text-anchor="middle">압력 &gt; 3.2 bar ?</text>
+      <text x="180" y="158" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">온도 높음 · 92건 · 불량 38%</text>
+      <rect x="470" y="120" width="220" height="52" rx="5" fill="#f0efe9" stroke="#e2e0d8" stroke-width="1.2"/>
+      <text x="580" y="140" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a1917" text-anchor="middle">압력 &gt; 2.8 bar ?</text>
+      <text x="580" y="158" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">온도 낮음 · 108건 · 불량 4%</text>
+      <line x1="140" y1="172" x2="90" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="220" y1="172" x2="270" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="96" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">YES</text>
+      <text x="224" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">NO</text>
+      <rect x="30" y="210" width="120" height="50" rx="5" fill="#f8eaea" stroke="#dfb8b8" stroke-width="1.2"/>
+      <text x="90" y="230" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#8a1a1a" text-anchor="middle">불량 고위험</text>
+      <text x="90" y="248" font-family="IBM Plex Mono,monospace" font-size="10" fill="#8a1a1a" text-anchor="middle">48건 · 불량 62%</text>
+      <rect x="200" y="210" width="120" height="50" rx="5" fill="#fdf3e0" stroke="#e8cc98" stroke-width="1.2"/>
+      <text x="260" y="230" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#7a4a00" text-anchor="middle">불량 중위험</text>
+      <text x="260" y="248" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">44건 · 불량 13%</text>
+      <line x1="540" y1="172" x2="490" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="620" y1="172" x2="670" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="494" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#7a4a00">YES</text>
+      <text x="624" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">NO</text>
+      <rect x="420" y="210" width="120" height="50" rx="5" fill="#fdf3e0" stroke="#e8cc98" stroke-width="1.2"/>
+      <text x="480" y="230" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#7a4a00" text-anchor="middle">불량 주의</text>
+      <text x="480" y="248" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">31건 · 불량 8%</text>
+      <rect x="600" y="210" width="120" height="50" rx="5" fill="#eaf5ec" stroke="#b8d8bf" stroke-width="1.2"/>
+      <text x="660" y="230" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#1a5a2a" text-anchor="middle">정상</text>
+      <text x="660" y="248" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a" text-anchor="middle">77건 · 불량 1%</text>
+    </svg>
+  </div>
+  <div class="note">분류 리프: 해당 노드 학습 데이터에서 각 클래스 비율을 계산 → 다수 클래스로 예측하거나, 비율 자체를 확률로 출력합니다.</div>
+
+  <div class="label">분기 예시 ② — 회귀 (수율 예측)</div>
+  <div class="tree-wrap">
+    <svg width="100%" viewBox="0 0 760 280" role="img">
+      <!-- 루트 -->
+      <rect x="270" y="10" width="220" height="52" rx="5" fill="#eaf0f8" stroke="#b8ccdf" stroke-width="1.2"/>
+      <text x="380" y="30" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a4f8a" text-anchor="middle">온도 &gt; 82°C ?</text>
+      <text x="380" y="48" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">전체 180건 · 평균 수율 91.2%</text>
+      <line x1="335" y1="62" x2="180" y2="120" stroke="#9b9890" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="232" y="97" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a">YES</text>
+      <line x1="425" y1="62" x2="580" y2="120" stroke="#9b9890" stroke-width="1" stroke-dasharray="4 3"/>
+      <text x="516" y="97" font-family="IBM Plex Mono,monospace" font-size="10" fill="#9b9890">NO</text>
+      <!-- 2단계 왼쪽 -->
+      <rect x="70" y="120" width="220" height="52" rx="5" fill="#f8eaea" stroke="#dfb8b8" stroke-width="1.2"/>
+      <text x="180" y="140" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#8a1a1a" text-anchor="middle">회전수 &gt; 1,200 rpm ?</text>
+      <text x="180" y="158" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">온도 높음 · 74건 · 평균 수율 86.1%</text>
+      <!-- 2단계 오른쪽 -->
+      <rect x="470" y="120" width="220" height="52" rx="5" fill="#eaf5ec" stroke="#b8d8bf" stroke-width="1.2"/>
+      <text x="580" y="140" font-family="IBM Plex Sans KR,sans-serif" font-size="12" font-weight="500" fill="#1a5a2a" text-anchor="middle">회전수 &gt; 1,000 rpm ?</text>
+      <text x="580" y="158" font-family="IBM Plex Mono,monospace" font-size="10" fill="#6b6860" text-anchor="middle">온도 낮음 · 106건 · 평균 수율 94.8%</text>
+      <!-- 왼쪽 분기선 -->
+      <line x1="140" y1="172" x2="90" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="220" y1="172" x2="270" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="96" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#8a1a1a">YES</text>
+      <text x="224" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">NO</text>
+      <!-- 왼쪽 리프 2개 — 예측값 = 학습 데이터 y 평균 -->
+      <rect x="30" y="210" width="130" height="58" rx="5" fill="#f8eaea" stroke="#dfb8b8" stroke-width="1.2"/>
+      <text x="95" y="228" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#8a1a1a" text-anchor="middle">고온 + 고속</text>
+      <text x="95" y="244" font-family="IBM Plex Mono,monospace" font-size="10" fill="#8a1a1a" text-anchor="middle">28건</text>
+      <text x="95" y="260" font-family="IBM Plex Mono,monospace" font-size="10" fill="#8a1a1a" text-anchor="middle">예측 수율 = 82.3%</text>
+      <rect x="195" y="210" width="130" height="58" rx="5" fill="#fdf3e0" stroke="#e8cc98" stroke-width="1.2"/>
+      <text x="260" y="228" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#7a4a00" text-anchor="middle">고온 + 저속</text>
+      <text x="260" y="244" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">46건</text>
+      <text x="260" y="260" font-family="IBM Plex Mono,monospace" font-size="10" fill="#7a4a00" text-anchor="middle">예측 수율 = 88.4%</text>
+      <!-- 오른쪽 분기선 -->
+      <line x1="540" y1="172" x2="490" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <line x1="620" y1="172" x2="670" y2="210" stroke="#9b9890" stroke-width="1" stroke-dasharray="3 2"/>
+      <text x="494" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#1a5a2a">YES</text>
+      <text x="624" y="198" font-family="IBM Plex Mono,monospace" font-size="9" fill="#9b9890">NO</text>
+      <!-- 오른쪽 리프 2개 -->
+      <rect x="420" y="210" width="130" height="58" rx="5" fill="#eaf5ec" stroke="#b8d8bf" stroke-width="1.2"/>
+      <text x="485" y="228" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#1a5a2a" text-anchor="middle">저온 + 고속</text>
+      <text x="485" y="244" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a" text-anchor="middle">61건</text>
+      <text x="485" y="260" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a5a2a" text-anchor="middle">예측 수율 = 95.7%</text>
+      <rect x="590" y="210" width="130" height="58" rx="5" fill="#eaf0f8" stroke="#b8ccdf" stroke-width="1.2"/>
+      <text x="655" y="228" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" fill="#1a4f8a" text-anchor="middle">저온 + 저속</text>
+      <text x="655" y="244" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a4f8a" text-anchor="middle">45건</text>
+      <text x="655" y="260" font-family="IBM Plex Mono,monospace" font-size="10" fill="#1a4f8a" text-anchor="middle">예측 수율 = 93.6%</text>
+    </svg>
+  </div>
+  <div class="note">회귀 리프: 해당 노드 학습 데이터의 <strong>y값 평균</strong>이 예측값으로 저장됩니다. 새 데이터가 "저온 + 고속" 노드에 떨어지면 조건이 조금 달라도 모두 95.7%로 예측합니다.</div>
+  <div class="q-box">
+    <div class="q-label">토론 질문 1</div>
+    <div class="q-text">"이 트리 결과를 보고 공정 조건을 조정한다면 가장 먼저 뭘 바꾸시겠어요? 이 결과를 그대로 믿어도 될까요?"</div>
+  </div>
+</div>
+
+<!-- 02 노드 평균의 본질 -->
+<div class="section-block" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">트리 계열 공통 특성 — 노드 평균값</span>
+    <span class="section-time">12 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> 트리 계열은 리프 노드 안 값들의 평균을 예측값으로 씁니다. 무엇의 평균인지는 모델마다 다릅니다 — Decision Tree·RandomForest는 y값 평균, XGBoost는 잔차의 평균(정규화 포함). 이 구조가 Extreme Value를 못 맞추고, 노드 안 스케일이 크면 오차도 커지는 근본 원인입니다.</div>
+
+  <div class="box box-blue">
+    <div class="box-title">학습 때 평균을 저장하고, 예측 때는 그 값을 그대로 출력합니다</div>
+    <p>
+      학습 시점: 리프 노드로 분류된 학습 데이터의 값들을 평균 내어 노드에 저장.<br>
+      예측 시점: 새 데이터가 어느 노드에 떨어지는지만 결정. 저장된 평균을 그대로 출력.<br><br>
+      Decision Tree·RandomForest: y값 평균을 저장<br>
+      XGBoost: 그 라운드의 잔차 평균(정규화 항 λ 포함)을 저장 → 누적 합산으로 최종 예측
+    </p>
+  </div>
+
+  <div class="label">한계 ① — Extreme Value를 원천적으로 못 맞춘다</div>
+  <div class="box box-red">
+    <div class="box-title">학습 데이터 y 범위를 벗어나는 예측은 불가능</div>
+    <p>
+      노드 안 학습 y값이 [90, 95, 100, 105, 200]이면 예측값은 평균 118. 실제값 200인 데이터를 118로 예측 → 오차 82.<br>
+      학습 데이터 y 최댓값보다 크거나 최솟값보다 작은 값은 절대 예측되지 않습니다.
+    </p>
+  </div>
+
+  <div class="label">한계 ② — 이상치가 있으면 노드 평균이 끌려올라간다</div>
+  <div class="box box-red">
+    <div class="box-title">X가 비슷한데 y만 극단값인 경우가 더 위험합니다</div>
+    <p>
+      이상치의 X 값이 충분히 특이하면 트리가 별도 노드로 격리할 수 있습니다. 하지만 실제 데이터에서 더 흔한 경우는 X는 비슷한데 y만 극단값인 경우입니다.<br><br>
+      온도 82°C, 압력 3.1 bar인 데이터가 대부분 불량률 10~15%인데 그 중 1건이 80%라면, X 조건이 비슷해서 트리가 분리할 근거가 없습니다. 그 노드 평균이 이상치에 끌려올라가고 같은 노드 전체의 예측값이 왜곡됩니다.
+    </p>
+  </div>
+
+  <div class="label">한계 ③ — 노드 안 y 스케일이 크면 예측 오차도 커진다</div>
+  <div class="box box-red">
+    <div class="box-title">평균 하나로 대표하는 것 자체가 부정확해짐</div>
+    <p>
+      노드 안 학습 y값이 [5%, 8%, 12%, 60%]이면 예측값은 평균 21%. 60% 데이터는 39%p 오차, 5% 데이터는 16%p 오차.<br>
+      분기를 더 깊이 하면 노드가 작아지지만, 과적합이 심해지는 트레이드오프가 생깁니다.
+    </p>
+  </div>
+
+  <div class="label">범주형 변수 — sklearn 트리 계열은 직접 받지 못합니다</div>
+  <div class="box box-amber">
+    <div class="box-title">분기 조건이 "변수값 > 임계값"만 사용하기 때문</div>
+    <p>
+      <strong>Label Encoding</strong>: 순서 없는 범주에 순서를 부여 → "작업자 2 &gt; 작업자 1"이라는 대소 관계가 분기에 반영됨. 작업자 10명이면 임계값 후보 9개<br>
+      <strong>One-Hot Encoding</strong>: 작업자 10명 → 변수 10개, 각각 0 또는 1. 분기점 후보가 0.5 하나뿐. 연속형(수백 개 후보) 대비 MDI가 구조적으로 낮게 나오는 편향 심화<br>
+      <strong>XGBoost 1.7+</strong>: enable_categorical=True로 native 지원 추가됐지만 기본값은 아님
+    </p>
+  </div>
+
+  <div class="label">SHAP을 트리에서 특히 많이 쓰는 이유</div>
+  <div class="box box-blue">
+    <div class="box-title">TreeSHAP — 트리에서만 빠르고 정확하게 계산됩니다</div>
+    <p>
+      일반 SHAP은 변수 조합이 지수적으로 늘어나 현실적으로 불가능합니다(변수 20개 → 2²⁰ 조합). 다른 모델에서는 근사값을 씁니다.<br>
+      TreeSHAP은 트리 분기 구조를 직접 활용해서 다항 시간에 정확한 값을 계산합니다. 트리에서 SHAP이 표준처럼 쓰이는 이유입니다.
+    </p>
+  </div>
+</div>
+
+<!-- 03 과적합 -->
+<div class="section-block" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">트리의 과적합 — 선형 회귀보다 심하다</span>
+    <span class="section-time">8 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> 트리는 분기를 데이터 건수만큼 만들 수 있어 선형 회귀보다 과적합이 심합니다. train R²는 트리에서 아무 의미가 없고, test R²만 봐야 합니다.</div>
+  <div class="box box-red">
+    <div class="box-title">왜 더 심한가</div>
+    <p>
+      선형 회귀: 계수 하나로 전체를 요약 → 표현력 자체에 한계가 있어 어느 정도에서 멈춤<br>
+      트리: 데이터 건수만큼 분기를 만들 수 있음 → 극단적으로는 데이터 1건 = 리프 1개 → train R² = 1.0, test ↓↓<br><br>
+      "온도 82.3°C, 압력 3.11 bar일 때 불량"이라는 조건을 그대로 기억해버리면, 82.4°C에서는 전혀 다른 예측이 나옵니다.
+    </p>
+  </div>
+
+  <div class="label">train R² vs test R²</div>
+  <div class="box box-amber">
+    <div class="box-title">트리에서 train R²가 높은 건 "모델이 좋아서"가 아닐 수 있습니다</div>
+    <p>
+      train R²: 학습 데이터로 계산. 분기를 깊이 할수록 각 노드의 y 분산이 줄어들어 자동으로 올라갑니다. 노드를 데이터 수만큼 쪼개면 1.0이 됩니다.<br>
+      test R²: 학습에 안 쓴 데이터로 계산. 실제로 새 데이터에서 얼마나 잘 맞추는지입니다.<br><br>
+      train R² 0.95, test R² 0.62 → 과적합. train R²가 높아도 test R²가 낮으면 의미가 없습니다.<br>
+      트리에서는 <strong>train/test R² 차이를 반드시 함께 봐야</strong> 합니다.
+    </p>
+  </div>
+
+  <table>
+    <thead><tr><th>파라미터</th><th>의미</th><th>크면?</th><th>작으면?</th></tr></thead>
+    <tbody>
+      <tr><td><strong>max_depth</strong></td><td>최대 분기 깊이</td><td class="neg">과적합 ↑</td><td class="pos">단순화</td></tr>
+      <tr><td><strong>min_samples_leaf</strong></td><td>리프 최소 데이터 건수</td><td class="pos">안정적 예측값</td><td class="neg">1건짜리 리프 가능</td></tr>
+      <tr><td><strong>min_samples_split</strong></td><td>분기 생성 최소 건수</td><td class="pos">과적합 방지</td><td class="neg">노이즈 조건까지 분기</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- 04 앙상블 -->
+<div class="section-block" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">앙상블 — RandomForest / AdaBoost / XGBoost</span>
+    <span class="section-time">20 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> 앙상블은 여러 모델을 합쳐 단일 모델보다 나은 예측을 만드는 방법론입니다. 트리만 합치는 게 아닙니다(선형+트리+신경망을 합치는 Stacking도 앙상블). 이 섹션은 트리 앙상블만 다룹니다 — RF(분산 감소), XGBoost(편향 감소).</div>
+
+  <hr>
+  <div class="label">① Bagging — RandomForest</div>
+  <div class="box box-blue">
+    <div class="box-title">같은 모집단에서 표본을 100번 뽑아 집계 — 대수의 법칙으로 노이즈 상쇄</div>
+    <p>
+      단순 Bagging: 트리마다 복원 추출(bootstrap)로 다른 샘플을 뽑아 독립 학습 → 평균 내면 노이즈 상쇄<br><br>
+      <strong>RandomForest = Bagging + 변수 무작위 선택:</strong> 각 분기마다 전체 변수 중 일부(√p개)만 선택합니다. 단순 Bagging만 하면 지배적인 변수가 모든 트리를 점령해서 트리들이 비슷해지고 평균 효과가 줄어듭니다. 변수도 랜덤하게 제한해야 트리들이 다양해집니다.<br><br>
+      <strong>sklearn 주의:</strong> Classifier는 max_features="sqrt" 기본값이지만, Regressor는 max_features=1.0 — 전체 변수 사용, 즉 단순 Bagging과 동일합니다.
+    </p>
+  </div>
+
+  <div class="box box-green">
+    <div class="box-title">OOB (Out-Of-Bag) — 별도 test set 없이 검증 가능</div>
+    <p>
+      복원 추출하면 평균적으로 약 37%는 특정 트리에 포함되지 않습니다. 이 OOB 샘플이 자연스러운 검증 데이터가 됩니다. 변수 중요도(OOB Permutation) 계산에도 활용됩니다.
+    </p>
+  </div>
+
+  <div class="flow-row">
+    <div class="flow-step good"><span class="step-n">트리 1</span><span class="step-name">예측 0.72</span><span class="step-sub">Bootstrap A + 변수 랜덤</span></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-step good"><span class="step-n">트리 2</span><span class="step-name">예측 0.65</span><span class="step-sub">Bootstrap B + 변수 랜덤</span></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-step warn"><span class="step-n">트리 3</span><span class="step-name">예측 0.41</span><span class="step-sub">Bootstrap C + 변수 랜덤</span></div>
+    <div class="flow-arrow">+</div>
+    <div class="flow-step"><span class="step-n">... N개</span><span class="step-name">병렬 독립</span><span class="step-sub">각자 OOB 보유</span></div>
+    <div class="flow-arrow">→</div>
+    <div class="flow-step good"><span class="step-n">최종</span><span class="step-name">평균 (회귀)</span><span class="step-sub">다수결 (분류)</span></div>
+  </div>
+
+  <hr>
+  <div class="label">② Boosting — AdaBoost에서 XGBoost로</div>
+
+  <div class="grid-2">
+    <div class="box box-green">
+      <div class="box-title">AdaBoost — Boosting의 원조, 가중치 방식</div>
+      <p>
+        틀린 샘플에 가중치를 높여서 다음 트리의 손실함수에서 그 샘플의 오차 비중을 키웁니다. 틀리는 비용 자체를 높이는 방식입니다.<br>
+        한계: 이상치에 과도하게 집중해서 과적합 취약.
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">XGBoost — 잔차를 순차적으로 줄여나가는 누적 합산</div>
+      <p>
+        초기값(y 평균)에서 시작. 매 라운드마다 "현재 잔차"를 y로 놓고 트리를 학습합니다. X는 그대로, y 자리만 잔차로 바뀝니다.<br><br>
+        각 리프에 저장되는 값: <span style="font-family:var(--mono);font-size:12px">leaf score = 잔차 합 / (샘플 수 + λ)</span><br>
+        — 정규화된 잔차 평균. λ가 클수록 0에 수축 → 보정 폭 줄어들어 과적합 방지<br><br>
+        최종 예측 = 초기값 + Σ(learning_rate × 각 트리 leaf score)<br>
+        잔차가 점점 줄어들면서 예측값이 실제값에 수렴. early_stopping은 잔차가 더 이상 줄지 않을 때 멈추는 장치.
+      </p>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">Boosting 과적합 — Bagging과 이유가 다릅니다</div>
+    <p>
+      Bagging은 독립 트리 평균이라 트리 수를 늘려도 안정화됩니다.<br>
+      Boosting은 잔차를 줄이는 구조라 노이즈(우연한 오차)까지 잔차로 보고 정교하게 외워버립니다.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 2</div>
+    <div class="q-text">"트리 100개를 평균 낸 RandomForest 결과를 현업에 설명해야 한다면 어떻게 하시겠어요? 단일 Decision Tree가 더 유리한 상황은 언제일까요?"</div>
+  </div>
+</div>
+
+<!-- 05 Bagging vs Boosting -->
+<div class="section-block" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">Bagging vs Boosting — 구조적 차이</span>
+    <span class="section-time">10 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> Bagging은 독립 트리 평균으로 분산을 줄이고, Boosting은 잔차를 순서대로 수정해서 편향을 줄입니다. 어느 쪽이 나은지는 데이터와 목적에 따라 다릅니다.</div>
+  <div class="cmp-grid">
+    <div class="cmp-card bag">
+      <div class="c-head">Bagging — RandomForest</div>
+      <div class="c-body">
+        <div class="c-row"><div class="c-lbl">방식</div>트리들이 병렬로 독립 학습</div>
+        <div class="c-row"><div class="c-lbl">목표</div>분산 감소 — 노이즈 상쇄</div>
+        <div class="c-row"><div class="c-lbl">과적합</div>트리 수 늘려도 안정</div>
+        <div class="c-row"><div class="c-lbl">속도</div>병렬 처리 → 빠름</div>
+        <div class="c-row"><div class="c-lbl">강점</div>노이즈 많은 데이터, 안정성 중시</div>
+      </div>
+    </div>
+    <div class="cmp-card ada">
+      <div class="c-head">AdaBoost</div>
+      <div class="c-body">
+        <div class="c-row"><div class="c-lbl">방식</div>틀린 샘플에 가중치 부여</div>
+        <div class="c-row"><div class="c-lbl">목표</div>편향 감소 — 반복 보정</div>
+        <div class="c-row"><div class="c-lbl">과적합</div>이상치에 취약</div>
+        <div class="c-row"><div class="c-lbl">속도</div>순차 처리</div>
+        <div class="c-row"><div class="c-lbl">강점</div>Boosting 원조, 개념 이해</div>
+      </div>
+    </div>
+    <div class="cmp-card xgb">
+      <div class="c-head">XGBoost / LightGBM</div>
+      <div class="c-body">
+        <div class="c-row"><div class="c-lbl">방식</div>잔차를 직접 예측·합산</div>
+        <div class="c-row"><div class="c-lbl">목표</div>편향 감소 + 정규화</div>
+        <div class="c-row"><div class="c-lbl">과적합</div>파라미터 관리 필수</div>
+        <div class="c-row"><div class="c-lbl">속도</div>순차지만 최적화됨</div>
+        <div class="c-row"><div class="c-lbl">강점</div>정확도 극대화, 실무 표준</div>
+      </div>
+    </div>
+  </div>
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">분산(Variance) — 불안정함</div>
+      <p>데이터를 조금만 바꿔도 모델 결과가 크게 달라지는 상태. 과적합된 단일 트리의 특징. Bagging이 줄임.</p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">편향(Bias) — 체계적 오류</div>
+      <p>복잡한 패턴을 체계적으로 놓치는 상태. 너무 단순한 모델(max_depth=2)의 특징. Boosting이 줄임.</p>
+    </div>
+  </div>
+  <div class="q-box">
+    <div class="q-label">토론 질문 3</div>
+    <div class="q-text">"train 성능은 비슷한데 XGBoost test 성능이 더 낮게 나왔습니다. 무슨 문제이고 어떻게 접근하시겠어요?"</div>
+  </div>
+</div>
+
+<!-- 06 변수 중요도 -->
+<div class="section-block" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">변수 중요도 — 세 가지 방식과 그 차이</span>
+    <span class="section-time">15 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> MDI는 방향 없고 학습 데이터 기반. SHAP은 방향까지 나오지만 사후 분석이라 <strong>모델이 틀리면 SHAP도 틀린 방향을 자신 있게 설명합니다.</strong> 코드·출력·비교는 별도 예시 파일 참고.</div>
+
+  <table>
+    <thead><tr><th>방식</th><th>사용 데이터</th><th>출력</th><th>방향성</th><th>주 용도</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>MDI</strong></td>
+        <td class="muted">학습 데이터 (트리 구조 순회)</td>
+        <td class="muted">변수별 수치 하나</td>
+        <td class="neg">없음</td>
+        <td class="muted">빠른 1차 확인</td>
+      </tr>
+      <tr>
+        <td><strong>OOB Permutation</strong></td>
+        <td class="muted">OOB 샘플 (학습 데이터셋 내)</td>
+        <td class="muted">변수별 수치 하나</td>
+        <td class="neg">없음</td>
+        <td class="muted">RF 변수 선택</td>
+      </tr>
+      <tr>
+        <td><strong>SHAP</strong></td>
+        <td class="muted">fitted model + test X</td>
+        <td class="muted">예측 1건마다 변수별 기여량</td>
+        <td class="pos">있음 (양/음)</td>
+        <td class="muted">개별 예측 설명</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">MDI — 학습 완료 후 트리 구조 순회</div>
+      <p>각 노드에 저장된 "어떤 변수로 분기했는지, 불순도 변화, 샘플 수"를 합산. 연속형 변수가 범주형보다 임계값 후보가 많아서 구조적으로 MDI가 높게 나오는 편향이 있음.</p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">OOB Permutation — 실제로 없애면 얼마나 나빠지는가</div>
+      <p>기준: <code style="font-family:var(--mono);font-size:12px">model.oob_score_</code> (train set 아님). 변수 j를 섞은 후 OOB R² 재측정 → 하락폭이 중요도. MDI보다 실제 예측 기여에 가까움.</p>
+    </div>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-blue">
+      <div class="box-title">SHAP — 예측값 하나를 변수별로 분해</div>
+      <p>fitted model에 test X만 입력. 기준값(X_train 예측 평균) + 각 변수 SHAP 합산 = 예측값이 항상 성립. 방향(양/음)이 나오고 TreeSHAP으로 트리에서 빠르고 정확하게 계산.</p>
+    </div>
+    <div class="box box-red">
+      <div class="box-title">SHAP의 한계</div>
+      <p>사후 분석이라 모델이 틀렸으면 SHAP도 틀린 방향을 자신 있게 설명합니다. y_test와 대조해서 오차가 큰 케이스의 SHAP을 봐야 신뢰 여부를 판단할 수 있습니다.</p>
+    </div>
+  </div>
+
+  <div class="note">MDI·OOB로 "온도가 중요하다"를 확인하고, SHAP으로 "높을수록 불량이 많다"는 방향까지 확인합니다. 단, 인과관계는 어느 방식도 말해주지 않습니다.</div>
+
+  <div class="q-box">
+    <div class="q-label">토론 질문 4</div>
+    <div class="q-text">"MDI 기준으로 온도가 1위입니다. '온도를 낮추면 불량이 줄겠네요'라고 말해도 될까요? 어떤 추가 정보가 필요한가요?"</div>
+  </div>
+</div>
+
+<!-- 06+ 제조 현장과 트리 -->
+<div class="section-block" id="s6b">
+  <div class="section-header">
+    <span class="section-num">06+</span>
+    <span class="section-title">제조 현장이 트리를 좋아하는 이유 — 그리고 왜 위험한가</span>
+    <span class="section-time">10 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> 트리 규칙은 현장 언어와 딱 맞아서 직관적으로 납득됩니다. 그 납득감이 검증 없는 적용으로 이어지는 게 가장 큰 위험입니다.</div>
+
+  <div class="box box-blue">
+    <div class="box-title">왜 좋아하는가 — 현장 관리 기준과 같은 형태</div>
+    <p>
+      트리 결과: "온도 &gt; 85°C AND 압력 &gt; 3.2 bar이면 불량률 62%"<br>
+      현장 해석: "온도 85도 넘으면 압력 3.2 이하로 유지해라" — 바로 SOP가 됨<br><br>
+      관리도, SPC, 공정 스펙 모두 "어떤 조건이면 어떻게 한다"는 규칙입니다. 트리가 그 언어와 딱 맞아떨어집니다.
+    </p>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">왜 위험한가 — 상관관계를 인과관계로 오해합니다</div>
+    <p>
+      트리가 찾은 건 "이 조건에서 불량이 많았다"는 패턴입니다. "이 조건이 불량을 만든다"는 원인이 아닙니다.<br><br>
+      "온도 &gt; 85°C에서 불량 62%" → 실제 원인은 냉각수 부족일 수 있습니다. 온도를 억지로 낮춰도 냉각수 문제는 그대로입니다.<br><br>
+      규칙이 직관적일수록 "맞는 것 같다"는 느낌이 강합니다. 그 느낌 때문에 검증 없이 공정에 바로 반영하는 경우가 생깁니다.
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-amber">
+      <div class="box-title">교호작용 함정</div>
+      <p>"온도 높고 AND 압력 높으면"이라는 조건 조합이 물리적 인과처럼 보이지만, 데이터에 그 패턴이 있었다는 것입니다. 공정을 바꾸기 전에 도메인으로 반드시 검증해야 합니다.</p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">학습 데이터 범위 밖 적용 위험</div>
+      <p>공정 조건, 원자재, 설비가 바뀌면 그 규칙이 더 이상 유효하지 않을 수 있습니다. "작년 데이터로 만든 규칙을 올해 새 라인에 그대로 적용"이 가장 흔한 실패 패턴입니다.</p>
+    </div>
+  </div>
+</div>
+
+<!-- 07 모델 비교 -->
+<div class="section-block" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">모델 비교 — 언제 무엇을 쓰는가</span>
+    <span class="section-time">12 min</span>
+  </div>
+  <div class="note"><strong>핵심:</strong> R² 하나로 모델을 고르면 안 됩니다. 비즈니스적으로 중요한 구간의 잔차를 따로 봐야 하고, train R²는 트리에서 아무 의미가 없습니다.</div>
+  <table>
+    <thead><tr><th>모델</th><th>해석 가능성</th><th>비선형</th><th>Extreme Value</th><th>과적합</th><th>적은 데이터</th></tr></thead>
+    <tbody>
+      <tr><td><strong>선형 회귀</strong></td><td class="pos">최고 — 계수</td><td class="neg">불가</td><td class="warn-td">이상치에 민감</td><td class="pos">낮음</td><td class="pos">강함</td></tr>
+      <tr><td><strong>Decision Tree</strong></td><td class="pos">높음 — 규칙 직접 확인</td><td class="pos">가능</td><td class="neg">노드 평균 한계</td><td class="neg">높음</td><td class="muted">보통</td></tr>
+      <tr><td><strong>RandomForest</strong></td><td class="muted">낮음 — 평균이라 어려움</td><td class="pos">가능</td><td class="neg">노드 평균 한계</td><td class="pos">낮음</td><td class="pos">강함</td></tr>
+      <tr><td><strong>AdaBoost</strong></td><td class="neg">낮음</td><td class="pos">가능</td><td class="neg">노드 평균 한계</td><td class="neg">이상치 취약</td><td class="muted">보통</td></tr>
+      <tr><td><strong>XGBoost</strong></td><td class="neg">낮음</td><td class="pos">가능</td><td class="neg">극단 구간 학습 데이터 부족 시 한계</td><td class="neg">조정 필수</td><td class="muted">보통</td></tr>
+    </tbody>
+  </table>
+
+  <div class="chart-wrap">
+    <canvas id="modelChart" role="img" aria-label="모델별 특성 레이더 차트"></canvas>
+  </div>
+
+  <ul class="checklist">
+    <li><span class="icon ok">✓</span><div class="body">단일 규칙으로 현장에 직접 제시해야 한다 → Decision Tree<div class="sub">"온도 85도 초과 AND 압력 3.2 초과이면 불량 62%"처럼 조건을 그대로 SOP에 넣을 수 있음. RF도 SHAP으로 개별 예측은 설명 가능하지만 단일 규칙으로 뽑기는 어려움</div></div></li>
+    <li><span class="icon ok">✓</span><div class="body">안정적인 예측이 우선이고 과적합이 걱정된다 → RandomForest<div class="sub">독립 트리 평균 구조라 트리 수를 늘려도 과적합이 잘 안 됨. OOB score로 별도 검증 세트 없이 성능 확인 가능</div></div></li>
+    <li><span class="icon ok">✓</span><div class="body">정확도 극대화가 목적이고 파라미터 관리를 할 여건이 된다 → XGBoost / LightGBM<div class="sub">early_stopping 필수. train/test 차이 반드시 확인. 이것도 고정된 기준이 아니라 상황에 따라 달라짐</div></div></li>
+    <li><span class="icon warn">!</span><div class="body">위 기준은 공식화된 것이 아닙니다<div class="sub">도메인, 데이터 크기, 노이즈 수준, 설명 요건에 따라 달라집니다. 선택 근거를 설명할 수 있는 것이 중요합니다</div></div></li>
+  </ul>
+
+  <div class="label">모델 선택 기준 — R² 하나로 결정하면 안 되는 이유</div>
+  <div class="box box-blue">
+    <div class="box-title">Extreme Value 구간의 잔차를 따로 봐야 합니다</div>
+    <p>
+      R²는 전체 평균적인 성능이라 extreme 케이스에서의 오차가 숨어있습니다. RF R² 0.88, XGBoost R² 0.91이라도 불량률 70% 이상 극단 구간에서 어느 모델이 더 잘 맞추는지는 R²로 보이지 않습니다.<br><br>
+      실제 판단 기준:<br>
+      · extreme 케이스가 얼마나 있는가 — 데이터 비중이 작으면 R²에 거의 반영 안 됨<br>
+      · 도메인상 extreme을 잘 맞추는 게 중요한가, 평균적인 걸 맞추는 게 중요한가<br>
+      · 불량률 80% 이상인 케이스가 라인을 멈춰야 하는 상황이라면, 그 구간 잔차를 별도로 꺼내서 비교해야 합니다<br><br>
+      방법: 예측값 또는 실제값 기준으로 구간을 나눠서 구간별 잔차 분포를 따로 확인합니다.
+    </p>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">세션 전체를 관통하는 메시지</div>
+    <p>
+      "XGBoost가 더 좋은 모델이다"는 맥락 없이 틀린 말입니다.<br>
+      설명이 필요한가, 노이즈가 많은가, Extreme Value가 중요한가, 어떤 구간의 오차가 비즈니스적으로 치명적인가 — 이 조건들을 먼저 파악하고 선택 근거를 설명할 수 있어야 합니다.
+    </p>
+  </div>
+
+  <div class="q-box">
+    <div class="q-label">최종 토론 (핵심)</div>
+    <div class="q-text">"RandomForest R² 0.88, XGBoost R² 0.91이 나왔습니다. XGBoost를 선택해야 할까요? 어떤 추가 정보가 있어야 결정할 수 있나요?"</div>
+  </div>
+</div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+  const secs=document.querySelectorAll('.section-block'),links=document.querySelectorAll('.nav a');
+  window.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)c=s.id});links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})});
+  new Chart(document.getElementById('modelChart'),{
+    type:'radar',
+    data:{
+      labels:['정확도','해석 가능성','과적합 저항','속도','적은 데이터'],
+      datasets:[
+        {label:'선형 회귀',data:[55,95,82,98,88],borderColor:'#9b9890',borderWidth:1.5,pointRadius:3,fill:false},
+        {label:'Decision Tree',data:[65,85,38,92,62],borderColor:'#7a4a00',borderWidth:1.5,pointRadius:3,fill:false},
+        {label:'RandomForest',data:[82,42,88,74,82],borderColor:'#1a4f8a',borderWidth:2,pointRadius:3,fill:false},
+        {label:'AdaBoost',data:[78,35,52,68,55],borderColor:'#1a5a2a',borderWidth:1.5,pointRadius:3,fill:false,borderDash:[3,2]},
+        {label:'XGBoost',data:[93,35,58,65,58],borderColor:'#8a1a1a',borderWidth:2,pointRadius:3,fill:false,borderDash:[5,3]}
+      ]
+    },
+    options:{
+      responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11,family:'IBM Plex Mono'},color:'#6b6860',boxWidth:18}}},
+      scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(0,0,0,0.06)'},pointLabels:{font:{size:11,family:'IBM Plex Sans KR'},color:'#6b6860'}}}
+    }
+  });
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

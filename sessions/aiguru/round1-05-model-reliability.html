@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Week 5 — 결과를 믿으면 안 되는 경우</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7}
+  .nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);padding:0 40px;display:flex;align-items:center;height:48px;overflow-x:auto;gap:0}
+  .nav-title{font-size:12px;font-weight:500;color:var(--text2);white-space:nowrap;margin-right:24px;padding-right:24px;border-right:1px solid var(--border)}
+  .nav a{font-size:12px;color:var(--text3);text-decoration:none;padding:0 14px;height:48px;display:flex;align-items:center;white-space:nowrap;border-bottom:2px solid transparent;transition:all .15s}
+  .nav a:hover{color:var(--text)}
+  .nav a.active{color:var(--text);border-bottom-color:var(--text)}
+  .page{max-width:900px;margin:0 auto;padding:48px 40px 80px}
+  .section-block{margin-bottom:56px}
+  .section-header{display:flex;align-items:baseline;gap:14px;margin-bottom:24px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3);min-width:28px}
+  .section-title{font-size:18px;font-weight:500}
+  .section-time{font-family:var(--mono);font-size:11px;color:var(--text3);margin-left:auto;white-space:nowrap}
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px;margin-top:16px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7;color:var(--text)}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:12px}
+  .q-box{border:1px solid var(--border);border-radius:6px;padding:12px 16px;background:var(--surface2);margin-bottom:8px}
+  .q-box .q-label{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:4px}
+  .q-box .q-text{font-size:13px;font-style:italic}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
+  @media(max-width:640px){.grid-2,.grid-3{grid-template-columns:1fr}}
+  table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:top}
+  tr:last-child td{border-bottom:none}
+  td.pos{color:var(--green);font-weight:500}td.neg{color:var(--red);font-weight:500}
+  td.warn-td{color:var(--amber);font-weight:500}td.muted{color:var(--text3);font-size:12px}
+  .checklist{list-style:none;display:flex;flex-direction:column;gap:7px;margin-bottom:12px}
+  .checklist li{display:flex;gap:10px;align-items:flex-start;font-size:13px}
+  .checklist li .icon{margin-top:1px;flex-shrink:0;font-size:13px}
+  .checklist li .icon.ok{color:var(--green)}.checklist li .icon.warn{color:var(--amber)}.checklist li .icon.bad{color:var(--red)}
+  .checklist li .body{line-height:1.6}
+  .checklist li .body .sub{font-size:11px;color:var(--text3);margin-top:2px}
+  hr{border:none;border-top:1px solid var(--border);margin:24px 0}
+
+  /* 함정 카드 */
+  .trap-card{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px}
+  .trap-card .tc-head{padding:14px 18px;display:flex;align-items:flex-start;gap:14px;border-bottom:1px solid var(--border)}
+  .trap-card .tc-badge{font-family:var(--mono);font-size:10px;font-weight:500;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:2px;letter-spacing:.06em;text-transform:uppercase}
+  .trap-card .tc-name{font-size:15px;font-weight:500;margin-bottom:2px}
+  .trap-card .tc-essence{font-size:13px;color:var(--text2);line-height:1.6}
+  .trap-card .tc-body{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border)}
+  @media(max-width:640px){.trap-card .tc-body{grid-template-columns:1fr}}
+  .trap-card .tc-col{padding:14px 16px}
+  .trap-card .tc-col:first-child{border-right:1px solid var(--border)}
+  .trap-card .tc-col-label{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+  .trap-card .tc-desc{font-size:13px;color:var(--text);line-height:1.7}
+  .trap-card .tc-foot{padding:12px 16px;background:var(--surface2);border-top:1px solid var(--border)}
+
+  /* 사례 박스 */
+  .case-box{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:12px}
+  .case-box .cb-head{padding:10px 14px;display:flex;align-items:center;gap:10px;background:var(--surface2);border-bottom:1px solid var(--border)}
+  .case-box .cb-tag{font-family:var(--mono);font-size:10px;font-weight:500;padding:2px 7px;border-radius:3px;letter-spacing:.06em}
+  .case-box .cb-title{font-size:13px;font-weight:500}
+  .case-box .cb-body{padding:12px 14px}
+  .case-box .cb-row{display:flex;gap:8px;margin-bottom:7px;font-size:13px;line-height:1.65}
+  .case-box .cb-row-label{font-family:var(--mono);font-size:10px;color:var(--text3);min-width:52px;padding-top:2px;flex-shrink:0;text-transform:uppercase;letter-spacing:.04em}
+
+  /* 배지 */
+  .badge-red{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border)}
+  .badge-amber{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)}
+  .badge-blue{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)}
+  .badge-green{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border)}
+
+  /* 진단 체크리스트 */
+  .diag{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-top:12px}
+  .diag .diag-title{font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .diag .diag-item{display:flex;gap:10px;align-items:flex-start;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border)}
+  .diag .diag-item:last-child{border-bottom:none;padding-bottom:0}
+  .diag .diag-icon{flex-shrink:0;font-family:var(--mono);font-size:11px;color:var(--text3);margin-top:1px;min-width:18px}
+  .diag .diag-text{line-height:1.6}
+  .diag .diag-sub{font-size:11px;color:var(--text3);margin-top:2px}
+
+  /* 최종 체크리스트 카드 */
+  .check-section{border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:10px}
+  .check-section .cs-head{padding:10px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+  .check-section .cs-num{font-family:var(--mono);font-size:12px;font-weight:500;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px}
+  .check-section .cs-name{font-size:13px;font-weight:500}
+  .check-section .cs-body{padding:10px 16px}
+  .check-section .cs-item{font-size:12px;color:var(--text2);padding:4px 0;border-bottom:1px dashed var(--border);line-height:1.6}
+  .check-section .cs-item:last-child{border-bottom:none}
+
+  @media print{.nav{display:none}.page{padding:24px}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-title">Week 5 — 결과를 믿으면 안 되는 경우</div>
+  <a href="#s0">지난주 복습</a>
+  <a href="#s1">도입</a>
+  <a href="#s2">Leakage</a>
+  <a href="#s3">Bias</a>
+  <a href="#s4">분포 변화</a>
+  <a href="#s5">과적합</a>
+  <a href="#s5b">y 정의</a>
+  <a href="#s6">진단 체크리스트</a>
+  <a href="#s7">Q&amp;A</a>
+</nav>
+
+<div class="page">
+
+<!-- ── 00: 지난주 복습 ── -->
+<div class="section-block" id="s0">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">지난주 핵심 복습 — Week 4 성과지표</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Week 4 세션 요약</div>
+    <p>
+      성과지표는 모델의 전체 데이터에 대한 평균 요약입니다.<br>
+      RMSE, R², Accuracy, AUC — 모두 "전체적으로 얼마나 맞았는가"를 하나의 숫자로 압축합니다.<br><br>
+      핵심은 이 숫자가 좋다고 해서 모델이 신뢰할 수 있다는 뜻이 아니라는 점입니다.<br>
+      중요한 구간을 놓치거나, 특정 조건에서만 틀리거나, 지표 자체가 착시일 수도 있습니다.
+    </p>
+  </div>
+
+  <div class="grid-3">
+    <div class="box box-red">
+      <div class="box-title">지표가 좋아도 망하는 이유</div>
+      <p style="font-size:12px;">
+        R² 0.95, Accuracy 98% — 이 숫자들이 좋아도 실제 운영에서 문제가 생기는 경우가 있습니다.<br>
+        이번 주는 그 이유를 구체적으로 다룹니다.
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">지표 ≠ 신뢰</div>
+      <p style="font-size:12px;">
+        지표는 "측정 가능한 범위 안에서의 요약"입니다.<br>
+        측정 설계가 잘못되면, 지표가 아무리 좋아도 결과를 믿을 수 없습니다.
+      </p>
+    </div>
+    <div class="box">
+      <div class="box-title" style="color:var(--text2)">이번 주 연결</div>
+      <p style="font-size:12px;">
+        Week 4: "지표를 어떻게 읽는가"<br>
+        Week 5: "지표를 믿으면 안 되는 경우"<br>
+        — 같은 맥락의 다음 단계입니다
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 01: 도입 ── -->
+<div class="section-block" id="s1">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">도입 — 좋은 지표가 나와도 의심해야 하는 이유</span>
+    <span class="section-time">5 min</span>
+  </div>
+
+  <div class="note"><strong>핵심 질문:</strong> Train AUC 0.99, Test AUC 0.98 — 이 모델, 배포해도 될까요?</div>
+
+  <div class="box box-amber">
+    <div class="box-title">지표가 좋아도 결과를 믿을 수 없는 4가지 경우</div>
+    <p>
+      모델이 "잘 된다"는 착각이 생기는 이유는 대부분 다음 네 가지 중 하나입니다.<br><br>
+      <strong>① Data Leakage</strong> — 모델이 미래 정보를 보고 학습했다. 실전에서는 그 정보가 없다.<br>
+      <strong>② Bias</strong> — 학습 데이터가 현실을 왜곡해서 반영하고 있다.<br>
+      <strong>③ 분포 변화</strong> — 학습할 때와 실전 데이터의 분포가 다르다.<br>
+      <strong>④ 과적합</strong> — 학습 데이터에만 맞춰져 있어서, 새 데이터에서 망가진다.<br><br>
+      네 가지 모두 "지표는 좋게 나왔지만 실전에서 믿을 수 없는" 상황을 만들어냅니다.
+    </p>
+  </div>
+
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">공통적인 패턴</div>
+      <p style="font-size:12px;">
+        • 학습 환경과 실전 환경이 다르다<br>
+        • 데이터 설계 단계의 문제가 나중에 드러난다<br>
+        • 지표만 보면 절대 발견되지 않는다<br>
+        • 배포 이후에 문제가 나타나는 경우가 많다
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">오늘 세션 목표</div>
+      <p style="font-size:12px;">
+        결과를 받았을 때 자동으로 이 네 가지를 점검하는 습관<br><br>
+        "지표가 좋다"는 말을 들었을 때<br>
+        → 어떤 질문을 던져야 하는지 알 것
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 02: Data Leakage ── -->
+<div class="section-block" id="s2">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">Data Leakage — 모델이 속임수를 썼다</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> 학습 시점에 사용한 정보가 실전(추론 시점)에는 존재하지 않는 경우. 지표는 좋게 나오지만 실전에서는 완전히 망가집니다.</div>
+
+  <div class="trap-card">
+    <div class="tc-head">
+      <span class="tc-badge badge-red">Leakage</span>
+      <div>
+        <div class="tc-name">Data Leakage — 데이터 누수</div>
+        <div class="tc-essence">모델이 "답지"를 보고 시험을 치른 것과 같다. 실전에서는 그 답지가 없다.</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-col">
+        <div class="tc-col-label">무엇인가</div>
+        <div class="tc-desc">
+          타겟(y)을 예측하기 위해 사용하는 특성(X) 안에<br>
+          추론 시점에는 알 수 없는 정보가 포함된 상태입니다.<br><br>
+          학습할 때는 이 정보가 있어서 성능이 잘 나오지만,<br>
+          실제 운영에서는 그 정보가 없기 때문에 성능이 급락합니다.
+        </div>
+      </div>
+      <div class="tc-col">
+        <div class="tc-col-label">제조에서 핵심 질문</div>
+        <div class="tc-desc">
+          기간계 DB든 설비 센서 데이터든,<br>
+          <strong>"예측 시점 이전에 이 값을 실제로 수집할 수 있는가?"</strong><br><br>
+          불량 판정 코드, 검사 결과, 수리 이력 같은 값은<br>
+          공정이 끝난 후에야 기간계에 기록됩니다.<br>
+          이 값들이 X에 포함되어 있으면 누수입니다.<br><br>
+          또한 <strong>개발에서 쓴 데이터와 실제 배포 파이프라인이<br>
+          같은 소스를 같은 시점에 끌어오는지</strong>도 확인해야 합니다.<br>
+          데이터 파이프라인이 달라지면 학습 때 없던 누수가<br>
+          배포 후 생기거나, 반대로 필요한 변수가 빠질 수 있습니다.
+        </div>
+      </div>
+    </div>
+    <div class="tc-foot">
+      <div class="label" style="margin-top:0">자주 발생하는 누수 패턴</div>
+      <table style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th>패턴</th>
+            <th>제조 예시</th>
+            <th>왜 문제인가</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>타겟 이후 생성 변수</strong></td>
+            <td class="muted">불량 판정 후 입력되는 불량 코드, 검사 결과값</td>
+            <td class="neg">예측 시점에 이 값은 아직 기간계에 존재하지 않음</td>
+          </tr>
+          <tr>
+            <td><strong>전처리 누수</strong></td>
+            <td class="muted">전체 데이터로 정규화 fit 후 분리</td>
+            <td class="warn-td">올바른 순서: split → fit(Train) → transform(Test)<br>Test 통계가 정규화 기준에 섞이면 누수</td>
+          </tr>
+          <tr>
+            <td><strong>설비 기준 분리 실패</strong></td>
+            <td class="muted">설비 A 데이터를 랜덤으로 Train 70% / Test 30% 분리</td>
+            <td class="warn-td">설비 A의 고유 노이즈를 외운 모델 → 설비 B에 적용 불가<br>목적이 "범용 모델"이라면 설비 단위로 분리해야 함</td>
+          </tr>
+          <tr>
+            <td><strong>타겟과 동의어 변수</strong></td>
+            <td class="muted">수율 예측에 "공정 합격 여부(O/X)" 포함</td>
+            <td class="warn-td">사실상 답을 직접 주는 것과 같음</td>
+          </tr>
+          <tr>
+            <td><strong>배포 파이프라인 불일치</strong></td>
+            <td class="muted">개발 시 수동 추출 데이터 사용, 배포 시 자동화 파이프라인으로 전환</td>
+            <td class="neg">소스·시점·전처리가 달라지면 학습과 다른 데이터가 들어옴</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 실패 사례 -->
+  <div class="label">예시 시나리오</div>
+  <div class="case-box">
+    <div class="cb-head">
+      <span class="cb-tag badge-red">Leakage — 가상 시나리오</span>
+      <span class="cb-title">공정 불량 예측 모델 — R² 0.96, 배포 후 R² 0.41</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">상황</div>
+        <div>반도체 공정에서 웨이퍼 수율 불량 여부를 공정 완료 전에 예측하는 모델 개발. 학습 데이터에서 R² 0.96이 나와 바로 배포를 진행했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">문제</div>
+        <div>특성으로 사용한 변수 중 <strong>"최종 검사 스텝의 측정값"</strong>이 포함되어 있었습니다. 이 값은 공정이 모두 완료된 이후 측정 장비가 기간계 DB에 기록하는 값으로, 예측 시점(공정 도중)에는 존재하지 않는 정보였습니다. 개발 팀은 DB에서 데이터를 조인할 때 이 컬럼이 "공정 관련 데이터"라고 판단해 포함시켰습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">결과</div>
+        <div>배포 후 실시간 파이프라인에서는 해당 컬럼이 NULL로 들어왔고, 모델 성능은 R² 0.41로 급락. 해당 변수 제거 후 재학습하니 R² 0.71로 현실적인 성능이 나왔습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>각 변수가 <strong>기간계든 설비 데이터든, 예측 시점 이전에 실제로 수집 완료되는 값인지</strong>를 도메인 전문가와 함께 확인해야 합니다. DB 컬럼명이나 테이블 위치만으로는 판단할 수 없습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diag">
+    <div class="diag-title">Leakage 진단 체크</div>
+    <div class="diag-item">
+      <div class="diag-icon">①</div>
+      <div class="diag-text">각 특성(X)이 <strong>예측 시점 이전에 실제로 수집 완료되는 값인가?</strong>
+        <div class="diag-sub">기간계 DB: 해당 레코드가 언제 INSERT/UPDATE되는지 확인<br>설비 데이터: 해당 센서값이 공정 어느 단계에서 기록되는지 확인</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">②</div>
+      <div class="diag-text">정규화(Scaler)를 <strong>Train 데이터로만 fit하고, Test에는 transform만</strong> 적용했는가?
+        <div class="diag-sub">올바른 순서: split → scaler.fit(X_train) → scaler.transform(X_test)<br>잘못된 순서: scaler.fit(X_전체) → split → transform</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">③</div>
+      <div class="diag-text"><strong>설비/라인/제품 단위 분리</strong> 목적이라면, 해당 단위로 Train/Test를 분리했는가?
+        <div class="diag-sub">범용 모델: 설비 A·B·C → Train, 설비 D → Test<br>랜덤 분리는 설비 고유 패턴을 외우게 만들어 신뢰할 수 없는 성능이 나옴</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">④</div>
+      <div class="diag-text"><strong>배포 파이프라인이 개발 시 사용한 데이터와 동일한 소스·시점·전처리</strong>를 따르는가?
+        <div class="diag-sub">개발 환경(수동 추출, CSV)과 배포 환경(자동화 파이프라인)이 다르면<br>실제로 들어오는 데이터가 달라질 수 있음. MLOps 관점에서 파이프라인 일치 여부 필수 확인</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">⑤</div>
+      <div class="diag-text">성능이 <strong>비정상적으로 좋은가?</strong> Feature importance에서 압도적인 변수가 있는가?
+        <div class="diag-sub">지나치게 좋은 성능과 특정 변수의 독주는 누수의 대표적인 신호</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 03: Bias ── -->
+<div class="section-block" id="s3">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">Bias — 데이터가 현실을 왜곡할 때</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> 모델은 학습 데이터를 기반으로만 패턴을 만듭니다. 학습 데이터가 현실을 편향되게 반영하면, 모델도 편향됩니다.</div>
+
+  <div class="trap-card">
+    <div class="tc-head">
+      <span class="tc-badge badge-amber">Bias</span>
+      <div>
+        <div class="tc-name">Bias — 데이터 편향</div>
+        <div class="tc-essence">모델이 잘 학습했어도, 학습 데이터가 현실의 왜곡된 버전이라면 결과를 믿을 수 없다.</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-col">
+        <div class="tc-col-label">무엇인가</div>
+        <div class="tc-desc">
+          학습 데이터에 체계적인 왜곡이 있는 상태입니다.<br>
+          특정 집단, 조건, 시기에 대한 데이터가 과소/과다 표현되어 있거나,<br>
+          특정 케이스가 데이터에 애초에 포함되지 않은 경우입니다.<br><br>
+          모델 자체의 문제가 아니라 <strong>데이터 수집 방식의 문제</strong>입니다.
+        </div>
+      </div>
+      <div class="tc-col">
+        <div class="tc-col-label">왜 발견이 어려운가</div>
+        <div class="tc-desc">
+          편향된 데이터로 학습하고, 편향된 데이터로 평가하면<br>
+          → 지표는 좋게 나옵니다.<br><br>
+          모델이 "학습 데이터 안에서는" 잘 작동하기 때문에<br>
+          내부 지표만 보면 문제가 보이지 않습니다.<br><br>
+          현실 데이터(실전)와 비교하거나<br>
+          도메인 전문가가 검토할 때 발견됩니다.
+        </div>
+      </div>
+    </div>
+    <div class="tc-foot">
+      <div class="label" style="margin-top:0">주요 편향 유형</div>
+      <table style="margin-bottom:0">
+        <thead>
+          <tr>
+            <th>유형</th>
+            <th>설명</th>
+            <th>예시</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>생존자 편향</strong></td>
+            <td>성공한 것만 데이터에 남는다</td>
+            <td class="muted">투자 성공 기업만 분석 → 실패 기업 패턴 누락</td>
+          </tr>
+          <tr>
+            <td><strong>샘플 편향</strong></td>
+            <td>특정 집단이 과다/과소 포함</td>
+            <td class="muted">낮 시간대 데이터만 수집 → 야간 패턴 무시</td>
+          </tr>
+          <tr>
+            <td><strong>레이블 편향</strong></td>
+            <td>정답 자체가 주관적으로 붙여짐</td>
+            <td class="muted">검사자마다 불량 기준이 다른 경우</td>
+          </tr>
+          <tr>
+            <td><strong>확증 편향</strong></td>
+            <td>기존 판단을 강화하는 방향으로만 데이터가 모임</td>
+            <td class="muted">특정 조건에서만 모니터링 → 그 조건만 데이터에 많음</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 실패 사례 -->
+  <div class="label">예시 시나리오</div>
+  <div class="case-box">
+    <div class="cb-head">
+      <span class="cb-tag badge-amber">Bias — 가상 시나리오</span>
+      <span class="cb-title">불량 예측 모델 — 주간 데이터로만 학습, 야간 공정에서 정확도 급락</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">상황</div>
+        <div>자동차 부품 제조사에서 용접 공정의 불량 예측 모델 개발. 6개월치 데이터를 사용했고 내부 Accuracy 91%로 양호한 성능이 나왔습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">문제</div>
+        <div>학습에 사용한 데이터가 <strong>주간 교대(08:00~20:00) 데이터에 집중</strong>되어 있었습니다. 야간에는 데이터 수집 시스템 오류로 로그가 제대로 쌓이지 않았고, 이를 인지하지 못한 채 모델을 개발했습니다. 야간 공정은 온도·습도 조건이 다르고 작업자 숙련도도 달랐지만, 모델은 이 패턴을 전혀 학습하지 못한 상태였습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">결과</div>
+        <div>주간 적용 시 Accuracy 90% 유지, 야간 적용 시 Accuracy 61%로 급락. 야간 불량을 정상으로 통과시키는 사례가 반복되면서 후공정 클레임이 증가했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>전체 지표가 좋아도 <strong>교대·설비·제품 모델별로 성능을 분리해서 확인</strong>해야 합니다. 데이터가 어느 조건에서 수집됐는지를 먼저 파악하지 않으면, 모델이 커버하지 못하는 구간이 생깁니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coining 실제 사례 -->
+  <div class="label">실제 프로젝트 사례</div>
+  <div class="case-box">
+    <div class="cb-head" style="background:var(--amber-bg);border-color:var(--amber-border)">
+      <span class="cb-tag" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">실제 사례 — Coining 프로젝트</span>
+      <span class="cb-title">특정 호기·양산 조건으로 적용 범위를 제한한 이유</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">배경</div>
+        <div>Coining 공정 모델 개발 과정에서 데이터 정합성 조건을 만족하는 케이스가 전체 중 일부에 불과했습니다. 그리고 그 케이스들이 <strong>특정 제품 모델에 집중</strong>되어 있었습니다. 데이터 자체가 특정 제품 모델 위주로 편향된 상태였습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">판단</div>
+        <div>편향된 데이터로 학습한 모델을 전체 호기·전 제품에 범용으로 적용하면, <strong>모델이 학습하지 못한 제품 모델과 조건에서는 신뢰할 수 없는 예측이 나올 수밖에 없습니다.</strong> 지표가 좋게 나와도 그 지표는 데이터가 있는 조건에서만 유효합니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">결정</div>
+        <div>적용 범위를 <strong>정합성을 만족하는 데이터가 충분한 호기 및 양산 조건으로 한정</strong>했습니다. 모델이 실제로 학습한 범위 안에서만 사용하는 것입니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">고객사 전달</div>
+        <div>이 한계를 사전에 고객사에 명확히 전달했습니다. <strong>"이 모델은 현재 데이터 기준으로 특정 조건에서 검증된 모델이며, 그 범위 밖의 제품 모델·호기에는 적용하지 않는다"</strong>는 점을 명시했습니다. 데이터가 확보되면 범위를 확장할 수 있다는 로드맵도 함께 제시했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>편향된 데이터 문제를 모델 기술로 해결하려 하기보다, <strong>모델의 적용 범위를 데이터가 실제로 커버하는 범위로 솔직하게 제한하는 것</strong>이 현실적인 대응입니다. 그리고 그 한계를 이해관계자에게 사전에 공유하는 것이 신뢰를 만드는 방법입니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diag">
+    <div class="diag-title">Bias 진단 체크</div>
+    <div class="diag-item">
+      <div class="diag-icon">①</div>
+      <div class="diag-text">학습 데이터는 어떻게 수집되었는가? <strong>무엇이 빠져 있는가?</strong>
+        <div class="diag-sub">특정 조건, 기간, 집단이 과다/과소 포함되어 있지 않은지 확인</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">②</div>
+      <div class="diag-text">레이블(정답)을 <strong>누가, 어떤 기준으로</strong> 붙였는가?
+        <div class="diag-sub">검사자 또는 기준이 달라지면 레이블 자체가 일관되지 않을 수 있음</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">③</div>
+      <div class="diag-text">특정 집단 / 조건 / 시간대에서 <strong>성능이 현저히 다르지 않은가?</strong>
+        <div class="diag-sub">전체 지표가 아닌 세그먼트별 성능을 비교해야 편향이 드러남</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">④</div>
+      <div class="diag-text">도메인 전문가가 결과를 봤을 때 <strong>"말이 되는가?"</strong>
+        <div class="diag-sub">현장 상식과 크게 다른 결과가 나오면 데이터 편향을 먼저 의심</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 04: 분포 변화 ── -->
+<div class="section-block" id="s4">
+  <div class="section-header">
+    <span class="section-num">04</span>
+    <span class="section-title">분포 변화 — 학습 때와 실전이 다를 때</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>핵심:</strong> 분포 변화는 항상 문제가 되는 건 아닙니다. <strong>모델 성능에 실질적인 영향을 주는지</strong>가 판단 기준입니다. 영향이 크면 재학습이 필요하고, 작으면 모니터링으로 충분합니다.</div>
+
+  <div class="trap-card">
+    <div class="tc-head">
+      <span class="tc-badge badge-blue">Distribution Shift</span>
+      <div>
+        <div class="tc-name">Distribution Shift — 분포 변화</div>
+        <div class="tc-essence">학습 데이터와 실전 데이터의 분포가 달라지는 것. 모델은 모르고, 지표도 모른다.</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-col">
+        <div class="tc-col-label">무엇인가</div>
+        <div class="tc-desc">
+          학습할 때의 X 분포와 실전 추론 시점의 X 분포가<br>
+          달라지는 현상입니다.<br><br>
+          제조 환경에서 주로 발생하는 원인:<br>
+          • 설비 노화·교체·PM(예방정비) 이후 공정 특성 변화<br>
+          • 원자재 로트 변경에 따른 입력값 분포 변화<br>
+          • 계절·온습도 등 환경 조건 변화<br>
+          • 제품 모델 변경 또는 공정 레시피 개정<br><br>
+          배포 직후는 괜찮다가 <strong>시간이 지나면서 서서히 망가지는</strong> 경우가 많습니다.
+        </div>
+      </div>
+      <div class="tc-col">
+        <div class="tc-col-label">성능 영향에 따라 대응이 달라진다</div>
+        <div class="tc-desc">
+          분포가 변했다고 해서 항상 재학습이 필요한 건 아닙니다.<br><br>
+          <strong>성능 영향이 작은 경우</strong><br>
+          X 분포는 변했지만 X→y 관계가 유지된다면<br>
+          모델 성능은 크게 달라지지 않습니다.<br>
+          → 모니터링 유지, 재학습 불필요<br><br>
+          <strong>성능 영향이 큰 경우</strong><br>
+          공정 레시피 변경처럼 X→y 관계 자체가 바뀌면<br>
+          모델이 학습한 패턴이 더 이상 유효하지 않습니다.<br>
+          → 재학습 또는 모델 교체 필요<br><br>
+          <strong>판단 기준은 분포 변화 자체가 아니라<br>
+          예측 오차가 실제로 커졌는가입니다.</strong>
+        </div>
+      </div>
+    </div>
+    <div class="tc-foot">
+      <div class="label" style="margin-top:0">분포 변화 유형</div>
+      <table style="margin-bottom:0">
+        <thead>
+          <tr><th>유형</th><th>정의</th><th>제조 예시</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Covariate Shift</strong></td>
+            <td>P(X) 변화, P(y|X) 유지<br><span style="font-size:11px;color:var(--text3)">X 분포는 이동했지만, X→y 예측 관계는 동일</span></td>
+            <td class="muted">원자재 로트 변경 → 센서 평균값은 이동했지만 수율과의 관계는 유지</td>
+          </tr>
+          <tr>
+            <td><strong>Concept Drift</strong></td>
+            <td>X→y 관계 자체가 바뀜</td>
+            <td class="muted">공정 레시피 개정 → 기존 온도-수율 관계가 더 이상 성립 안 함</td>
+          </tr>
+          <tr>
+            <td><strong>Label Shift</strong></td>
+            <td>y의 분포가 변함</td>
+            <td class="muted">설비 노화로 불량률이 0.5% → 3%로 급등</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Covariate Shift & Covariance 수식 보충 -->
+  <div class="label">개념 보충 — Covariate Shift와 Covariance</div>
+  <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-bottom:16px">
+    <div style="display:grid;grid-template-columns:1fr 1fr">
+
+      <!-- Covariate Shift -->
+      <div style="padding:14px 16px;border-right:1px solid var(--border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Covariate Shift 정확한 정의</div>
+        <div style="font-size:13px;line-height:1.75;margin-bottom:12px">
+          두 분포의 차이를 수식으로 표현하면:<br><br>
+          <span style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:8px">P<sub>train</sub>(X) ≠ P<sub>test</sub>(X)</span><br>
+          <span style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:8px">P<sub>train</sub>(y | X) = P<sub>test</sub>(y | X)</span><br><br>
+          일반적으로는 기댓값으로 표현:<br>
+          <span style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:8px">E<sub>train</sub>[y | X] = E<sub>test</sub>[y | X]</span><br><br>
+          <span style="font-size:12px;color:var(--text3)">※ 정규분포 가정 시 예시: y ~ N(92%, σ²)<br>
+          분포 형태에 따라 92%에 해당하는 값이 달라짐<br>
+          (정규분포 → μ, 베타분포 → α/(α+β), 포아송 → λ)<br>
+          분포를 특정하지 않으면 E[y|X]로 표현하는 것이 일반적</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:10px">
+          X 자체의 분포(평균, 분산, 범위)가 이동하지만,<br>
+          <strong>X가 주어졌을 때 y가 나오는 조건부 관계 P(y|X)는 동일</strong>합니다.<br><br>
+          여기서 "관계"는 X들 사이의 상관관계가 아니라<br>
+          <strong>"X값이 주어졌을 때 y가 얼마나 나오는가"</strong>의 예측 관계입니다.<br><br>
+          즉 X 분포 자체는 새로운 구간으로 이동했지만,<br>
+          그 X값에서 y가 어떻게 나오는지의 패턴은 그대로입니다.
+        </div>
+        <div style="background:var(--surface2);border-radius:4px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7">
+          <strong>제조 예시</strong><br>
+          로트 변경 후 온도 센서 평균이 180°C → 195°C로 이동.<br>
+          하지만 "온도가 높을수록 수율이 낮아진다"는 관계는 그대로.<br>
+          → Covariate Shift. 모델이 새 범위를 학습한 적 없어<br>
+          &nbsp;&nbsp;예측이 불안정해질 수 있지만 관계식 자체는 유효.
+        </div>
+      </div>
+
+      <!-- Covariance 본질 -->
+      <div style="padding:14px 16px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Covariance — 본질과 수식</div>
+        <div style="font-size:13px;line-height:1.75;margin-bottom:12px">
+          두 변수 X, Y의 공분산:<br><br>
+          <span style="font-family:var(--mono);font-size:13px;background:var(--surface2);padding:4px 10px;border-radius:4px;display:inline-block;margin-bottom:4px">Cov(X, Y) = E[(X − μ<sub>X</sub>)(Y − μ<sub>Y</sub>)]</span>
+        </div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:10px">
+          각 관측값이 <strong>자신의 평균에서 얼마나 벗어났는지</strong>를 곱한 기댓값입니다.<br><br>
+          • X가 평균보다 크고 Y도 평균보다 크면 → 양수 기여<br>
+          • X가 평균보다 크고 Y는 평균보다 작으면 → 음수 기여<br>
+          • 이 값들의 평균 = Covariance<br><br>
+          결국 <strong>"두 변수가 평균으로부터 같은 방향으로 움직이는가"</strong>를 측정합니다.
+        </div>
+        <div style="background:var(--surface2);border-radius:4px;padding:10px 12px;font-size:12px;color:var(--text2);line-height:1.7">
+          <strong>Covariate Shift와의 연결</strong><br>
+          분포가 이동하면 μ<sub>X</sub> 자체가 바뀝니다.<br>
+          같은 X값이라도 (X − μ<sub>X</sub>)의 부호와 크기가 달라지고,<br>
+          모델이 학습한 Covariance 구조가 실전에서 다르게 나타납니다.<br>
+          → 모델 입장에서는 "보지 못한 분포"가 됩니다.
+        </div>
+      </div>
+    </div>
+
+    <!-- 세 유형 비교 요약 -->
+    <div style="padding:12px 16px;background:var(--surface2);border-top:1px solid var(--border)">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">세 유형 수식 비교</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div style="font-size:12px;line-height:1.65">
+          <span style="font-family:var(--mono);color:var(--blue)">Covariate Shift</span><br>
+          P(X) 변화, P(y|X) 유지<br>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--blue)">E[y|X] 유지</span><br>
+          <span style="color:var(--text3)">X 분포는 이동했지만<br>X가 고정되면 y의 분포는 동일</span>
+        </div>
+        <div style="font-size:12px;line-height:1.65">
+          <span style="font-family:var(--mono);color:var(--red)">Concept Drift</span><br>
+          P(y|X) 변화<br>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red)">E[y|X] 변화</span><br>
+          <span style="color:var(--text3)">같은 X값이어도<br>y의 분포(기댓값)가 달라짐</span>
+        </div>
+        <div style="font-size:12px;line-height:1.65">
+          <span style="font-family:var(--mono);color:var(--amber)">Label Shift</span><br>
+          P(y) 변화, P(X|y) 유지<br>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--amber)">E[y] 변화</span><br>
+          <span style="color:var(--text3)">y 분포 자체가 이동<br>불량률·비율 자체가 변함</span>
+        </div>
+      </div>
+      <div style="margin-top:10px;font-size:11px;color:var(--text3);border-top:1px dashed var(--border2);padding-top:8px">
+        ※ 정규분포 가정 시 E[y|X]는 μ에 해당. 분포 형태에 따라 베타분포 → α/(α+β), 포아송 → λ 등으로 표현이 달라지지만 모두 "X가 고정됐을 때 y의 기댓값"을 의미함
+      </div>
+    </div>
+  </div>
+  <div class="label">재학습 주기 — 짧다고 좋은 게 아니다</div>
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">재학습 주기를 너무 짧게 가져갈 때의 문제</div>
+      <p style="font-size:12px;">
+        분포 변화에 대응하기 위해 일 배치 등 매우 짧은 주기로<br>
+        재학습하는 방식을 선택하는 경우가 있습니다.<br><br>
+        하지만 <strong>데이터 주기가 고정되지 않으면</strong><br>
+        매번 다른 분포로 학습하는 것이 됩니다.<br><br>
+        → 모델이 안정적인 패턴을 학습하지 못함<br>
+        → 성능이 매일 달라져 예측 불가능한 모델이 됨<br>
+        → "학습은 되는데 성능을 기대하기 어려운" 상태
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">현실적인 대응 방향</div>
+      <p style="font-size:12px;">
+        ① <strong>모니터링 먼저</strong><br>
+        예측 오차, X 분포를 주기적으로 추적.<br>
+        성능 저하가 감지될 때 재학습 판단.<br><br>
+        ② <strong>재학습 주기는 도메인에 맞게</strong><br>
+        공정 변화 주기, 제품 변경 주기 기준으로 결정.<br>
+        임의로 짧게 잡으면 오히려 불안정해짐.<br><br>
+        ③ <strong>데이터 범위를 고정</strong><br>
+        재학습 시 어떤 기간의 데이터를 쓸지 기준을<br>
+        명확히 정해야 재현 가능한 성능이 나옴.
+      </p>
+    </div>
+  </div>
+
+  <!-- 데이터 추가 ≠ 성능 보장 + Shift 분석 우선 -->
+  <div class="label">분포 변화 대응 원칙</div>
+  <div style="border:1px solid var(--red-border);border-radius:6px;overflow:hidden;margin-bottom:16px">
+    <div style="padding:13px 16px;background:var(--red-bg);border-bottom:1px solid var(--red-border)">
+      <div style="font-size:13px;font-weight:500;color:var(--red)">데이터를 추가한다고 성능이 보장되는 건 아니다</div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--red-border)">
+      <div style="padding:12px 14px;border-right:1px solid var(--red-border);font-size:13px;line-height:1.7">
+        앞서 다룬 이유들이 그대로 적용됩니다.<br><br>
+        • <strong>Bias</strong>가 있으면 → 데이터를 추가해도 편향된 분포가 더 강화될 뿐<br>
+        • <strong>과적합</strong> 상태라면 → 새 데이터를 섞어도 기존 패턴을 덮어쓰지 못함<br>
+        • <strong>분포 변화</strong>라면 → 새 데이터와 기존 데이터가 서로 다른 분포를 섞는 것이 되어 오히려 모델이 혼란스러워질 수 있음<br><br>
+        데이터 추가보다 먼저 해야 할 일은 <strong>기존 모델이 어떤 케이스를 어떻게 못 맞추는지 분석</strong>하는 것입니다.
+      </div>
+      <div style="padding:12px 14px;font-size:13px;line-height:1.7">
+        <strong>분포 변화 대응 순서</strong><br><br>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--blue)">STEP 1</span> 기존 모델의 예측 오차 패턴 분석<br>
+        <span style="font-size:12px;color:var(--text2)">어떤 구간·조건에서 얼마나 틀리는가</span><br><br>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--blue)">STEP 2</span> 분포 변화 원인 파악<br>
+        <span style="font-size:12px;color:var(--text2)">변수가 바뀐 건지, X→y 관계가 바뀐 건지 구분</span><br><br>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--blue)">STEP 3</span> 분석 완료 전까지 재학습 보류<br>
+        <span style="font-size:12px;color:var(--text2)">새 데이터와 기존 데이터를 섞어 재학습하면 원인 파악이 불가능해짐</span><br><br>
+        <span style="font-family:var(--mono);font-size:11px;color:var(--blue)">STEP 4</span> 변화를 반영한 모델 재개발<br>
+        <span style="font-size:12px;color:var(--text2)">원인이 명확해진 이후 데이터 범위·구성 결정</span>
+      </div>
+    </div>
+    <div style="padding:10px 14px;background:var(--surface2);font-size:12px;color:var(--text2)">
+      <strong>원칙:</strong> 분포 변화의 원인을 모르는 상태에서 새 데이터를 섞어 재학습하는 것은 문제를 덮는 것이지 해결하는 것이 아닙니다.
+    </div>
+  </div>
+
+  <!-- 실제 프로젝트 사례 -->
+  <div class="label">실제 프로젝트 사례</div>
+  <div class="case-box">
+    <div class="cb-head" style="background:var(--blue-bg);border-color:var(--blue-border)">
+      <span class="cb-tag" style="background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border)">실제 사례 — ER 시편 삭제 프로젝트</span>
+      <span class="cb-title">CCL 변경 예정 상황에서의 모니터링 → 분석 → 재학습 흐름</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">상황</div>
+        <div>기존 모델은 특정 CCL(동박 적층판) 기준으로 학습되어 있었습니다. CCL 변경이 예정된 상황에서 기존 모델을 그대로 사용할 수 있는지, 언제부터 재학습이 필요한지를 판단해야 했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">대응 ①</div>
+        <div>CCL이 변수에 포함되지 않더라도, <strong>CCL 변경 이후 전체 데이터 분포가 어떻게 달라지는지 먼저 파악</strong>하는 것을 원칙으로 잡았습니다. 기존 모델로 새 CCL 데이터를 예측했을 때 오차 패턴이 어떻게 나타나는지 모니터링을 지속했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">대응 ②</div>
+        <div>분포 변화의 영향이 확인되기 전까지는 <strong>새 CCL 데이터와 기존 데이터를 섞어 재학습하지 않았습니다.</strong> 섞을 경우 기존 모델이 어떤 케이스를 왜 못 맞추는지를 분석할 기준이 사라지기 때문입니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">대응 ③</div>
+        <div>모니터링을 통해 CCL 변경이 특정 공정 파라미터와의 관계를 실질적으로 바꾼다는 것이 확인된 이후, CCL 변경 이후 데이터를 기준으로 모델을 재개발하고 실제 적용했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>변수에 직접 포함되지 않는 조건 변화라도 전체 데이터 분포에 영향을 줄 수 있습니다. <strong>변화의 영향을 파악하기 전에 재학습을 서두르면 원인 분석의 기회를 잃습니다.</strong> 모니터링 → 분석 → 재학습의 순서를 지키는 것이 중요합니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 기존 가상 시나리오 -->
+  <div class="label">예시 시나리오</div>
+  <div class="case-box">
+    <div class="cb-head">
+      <span class="cb-tag badge-blue">Distribution Shift — 가상 시나리오</span>
+      <span class="cb-title">공정 수율 예측 모델 — PM 이후 성능 급락, 일 배치 재학습 도입 후 오히려 불안정</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">상황</div>
+        <div>디스플레이 패널 공정에서 수율 예측 모델을 6개월치 데이터로 학습. 초기 RMSE는 양호했고 3개월간 잘 작동했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">문제 1</div>
+        <div>주요 증착 설비의 PM(예방정비) 이후 챔버 특성이 바뀌면서 센서값 분포가 이동했고, 동시에 온도-수율 관계도 미묘하게 달라졌습니다. 모델은 기존 패턴 그대로 예측을 냈고 RMSE가 서서히 상승했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">문제 2</div>
+        <div>대응으로 일 배치 재학습을 도입했지만, 하루치 데이터만으로는 안정적인 패턴 학습이 불가능했습니다. <strong>매일 다른 데이터 구성으로 학습</strong>하다 보니 모델 성능이 날마다 달라지는 상태가 됐고, 오히려 신뢰하기 더 어려운 모델이 됐습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">결과</div>
+        <div>PM 이후 데이터를 충분히 확보(2주)한 후 재학습 단 1회로 성능이 회복됐습니다. 이후 PM 이벤트를 재학습 트리거로 정의하고, 재학습 데이터 범위를 "최근 3개월"로 고정하는 정책을 수립했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>재학습 주기는 짧을수록 좋은 게 아닙니다. <strong>도메인의 변화 주기(PM, 레시피 변경, 로트 변경)에 맞춰 재학습 트리거와 데이터 범위를 함께 정의</strong>해야 안정적인 성능을 기대할 수 있습니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diag">
+    <div class="diag-title">분포 변화 진단 체크</div>
+    <div class="diag-item">
+      <div class="diag-icon">①</div>
+      <div class="diag-text">분포 변화가 감지됐을 때, <strong>예측 오차도 실제로 커졌는가?</strong>
+        <div class="diag-sub">분포 이동 자체보다 성능 영향 여부가 판단 기준. 오차 증가가 없으면 당장 재학습 불필요</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">②</div>
+      <div class="diag-text">학습 데이터는 <strong>언제 수집된 데이터인가?</strong> 그 이후 설비 PM·레시피 변경·로트 변경이 있었는가?
+        <div class="diag-sub">공정 이벤트 이력과 모델 성능 이력을 함께 보면 변화 시점을 특정할 수 있음</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">③</div>
+      <div class="diag-text">재학습 주기와 <strong>데이터 범위(기간)가 명확히 정의되어 있는가?</strong>
+        <div class="diag-sub">주기가 너무 짧거나 데이터 범위가 고정되지 않으면 재학습마다 성능이 달라져 안정성을 잃음</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">④</div>
+      <div class="diag-text">배포 후 <strong>예측값 분포와 주요 X의 분포를 주기적으로 모니터링</strong>하고 있는가?
+        <div class="diag-sub">실제 y를 즉시 알기 어려운 경우, X·예측값 분포 변화로 이상을 조기 감지할 수 있음</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 05: 과적합 ── -->
+<div class="section-block" id="s5">
+  <div class="section-header">
+    <span class="section-num">05</span>
+    <span class="section-title">과적합 — 학습 데이터만 외웠다</span>
+    <span class="section-time">15 min</span>
+  </div>
+
+  <div class="note"><strong>Week 1 연결:</strong> 선형 모델 세션에서 잠깐 다뤘던 과적합. 이번에는 "지표가 좋은데 실전에서 망가지는" 관점에서 다시 봅니다.</div>
+
+  <div class="trap-card">
+    <div class="tc-head">
+      <span class="tc-badge badge-red">Overfitting</span>
+      <div>
+        <div class="tc-name">Overfitting — 과적합</div>
+        <div class="tc-essence">모델이 학습 데이터의 노이즈까지 외워서, 새 데이터에서는 일반화되지 않는 상태.</div>
+      </div>
+    </div>
+    <div class="tc-body">
+      <div class="tc-col">
+        <div class="tc-col-label">무엇인가</div>
+        <div class="tc-desc">
+          모델이 너무 복잡하거나, 너무 오래 학습하거나,<br>
+          데이터가 너무 적을 때 발생합니다.<br><br>
+          학습 데이터의 패턴뿐만 아니라<br>
+          우연히 생긴 노이즈, 특이 케이스까지 기억합니다.<br><br>
+          학습 데이터에서는 거의 완벽하게 맞히지만<br>
+          <strong>새 데이터에는 일반화되지 않습니다.</strong>
+        </div>
+      </div>
+      <div class="tc-col">
+        <div class="tc-col-label">데이터 부족 → 제품 편향</div>
+        <div class="tc-desc">
+          학습 데이터가 특정 제품 모델 위주라면,<br>
+          모델은 사실상 <strong>"그 제품에 대한 모델"</strong>입니다.<br><br>
+          다른 제품·라인·조건에 적용하면<br>
+          성능이 크게 달라지거나 의미가 없어집니다.<br><br>
+          <strong>과도한 일반화 기대는 위험합니다</strong><br>
+          "이 모델을 전 제품에 쓰겠다"는 기대는<br>
+          데이터가 그 범위를 실제로 커버할 때만 가능합니다.<br>
+          데이터가 없는 범위로의 일반화는 보장되지 않습니다.
+        </div>
+      </div>
+    </div>
+    <div style="padding:12px 16px;border-bottom:1px solid var(--border);background:var(--surface)">
+      <div class="tc-col-label" style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Train vs Test 차이로 진단</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">
+        <div class="box box-green" style="margin-bottom:0;padding:10px 12px">
+          <div class="box-title">정상</div>
+          <p style="font-size:12px;">Train RMSE 2.1<br>Test RMSE 2.4<br>→ 차이 소폭</p>
+        </div>
+        <div class="box box-amber" style="margin-bottom:0;padding:10px 12px">
+          <div class="box-title">과적합 신호</div>
+          <p style="font-size:12px;">Train RMSE 0.3<br>Test RMSE 3.8<br>→ 차이 큼</p>
+        </div>
+        <div class="box box-red" style="margin-bottom:0;padding:10px 12px">
+          <div class="box-title">과적합 심각</div>
+          <p style="font-size:12px;">Train Acc 99%<br>Test Acc 61%<br>→ 즉시 점검 필요</p>
+        </div>
+      </div>
+    </div>
+    <div class="tc-foot">
+      <div class="label" style="margin-top:0">과적합이 발생하기 쉬운 조건</div>
+      <div class="grid-2" style="margin-bottom:0;margin-top:4px">
+        <div class="box box-red" style="margin-bottom:0">
+          <div class="box-title">데이터 관점</div>
+          <p style="font-size:12px;">
+            • 학습 데이터 샘플이 너무 적다<br>
+            • 특정 제품·라인·조건에 편중된 데이터<br>
+            &nbsp;&nbsp;→ 그 제품 외에는 일반화 보장 안 됨<br>
+            • 특성(X) 수에 비해 샘플이 적다<br>
+            • 동일한 데이터를 Train/Test에 중복 사용<br>
+            • Test 기반으로 모델을 계속 수정
+          </p>
+        </div>
+        <div class="box box-amber" style="margin-bottom:0">
+          <div class="box-title">모델 관점</div>
+          <p style="font-size:12px;">
+            • 모델이 너무 복잡하다 (깊은 트리, 많은 뉴런)<br>
+            • 정규화가 없거나 부족하다<br>
+            • Cross-validation 없이 단일 분리로만 평가<br>
+            • 특성 선택 없이 모든 변수를 사용
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 실패 사례 -->
+  <div class="label">예시 시나리오</div>
+  <div class="case-box">
+    <div class="cb-head">
+      <span class="cb-tag badge-red">Overfitting — 가상 시나리오</span>
+      <span class="cb-title">설비 이상 감지 모델 — Train Accuracy 99%, 신규 설비 적용 시 Accuracy 58%</span>
+    </div>
+    <div class="cb-body">
+      <div class="cb-row">
+        <div class="cb-row-label">상황</div>
+        <div>화학 공장에서 반응기 설비 A 1대의 진동·온도·압력 센서 데이터 1,200건으로 이상 감지 모델 개발. Train Accuracy 99%, Test Accuracy 97%로 내부 검증은 완벽했습니다. 이 모델을 동일 사양의 설비 B·C에도 적용하기로 했습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">문제</div>
+        <div>설비 B·C에 적용하자 Accuracy가 58%로 급락했습니다. 분석해보니 모델이 반응기 이상 패턴이 아니라 <strong>설비 A 특유의 센서 노이즈 패턴과 진동 주기</strong>를 학습하고 있었습니다. Train과 Test 모두 설비 A의 데이터였기 때문에 내부 지표는 좋았지만, 다른 설비에는 일반화되지 않는 모델이었습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">결과</div>
+        <div>설비 B·C에서 실제 이상 징후를 정상으로 통과시키는 사례가 발생. 설비 A·B·C 데이터를 합산하고 설비 단위로 Train/Test를 분리해 재학습하자 Accuracy 82%로 안정화됐습니다.</div>
+      </div>
+      <div class="cb-row">
+        <div class="cb-row-label">교훈</div>
+        <div>단일 설비 데이터로 학습한 모델은 사실상 <strong>"그 설비 전용 모델"</strong>입니다. 여러 설비에 범용으로 쓰려면 처음부터 여러 설비의 데이터를 포함하고, 설비 단위로 평가해야 합니다.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="diag">
+    <div class="diag-title">과적합 진단 체크</div>
+    <div class="diag-item">
+      <div class="diag-icon">①</div>
+      <div class="diag-text"><strong>Train vs Test 성능 차이</strong>가 크지 않은가?
+        <div class="diag-sub">RMSE 기준 20~30% 이상 차이, 분류 기준 5%p 이상 차이는 과적합 신호</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">②</div>
+      <div class="diag-text">학습 데이터 <strong>샘플 수 대비 특성 수</strong>가 많지 않은가?
+        <div class="diag-sub">샘플 100개에 특성 50개라면 과적합 가능성이 매우 높음</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">③</div>
+      <div class="diag-text">단일 Train/Test 분리가 아닌 <strong>Cross-validation</strong>을 사용했는가?
+        <div class="diag-sub">단일 분리는 운이 좋은 분리를 고를 수 있음. CV로 안정적인 평가 필요</div>
+      </div>
+    </div>
+    <div class="diag-item">
+      <div class="diag-icon">④</div>
+      <div class="diag-text">Test 성능을 보면서 <strong>모델을 계속 수정하지 않았는가?</strong>
+        <div class="diag-sub">Test를 기준으로 수정을 반복하면 Test에도 과적합됨. Validation / Test 분리 필요</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CV 정규화 실무 코드 팁 -->
+  <div style="border:1px solid var(--border);border-radius:6px;overflow:hidden;margin-top:12px">
+    <div style="padding:10px 14px;background:var(--surface2);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+      <span style="font-family:var(--mono);font-size:10px;font-weight:500;color:var(--text3);text-transform:uppercase;letter-spacing:.08em">실무 코드 팁</span>
+      <span style="font-size:13px;font-weight:500">Cross-validation에서 정규화 fitting 위치</span>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr">
+      <div style="padding:14px 16px;border-right:1px solid var(--border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">❌ 잘못된 방식 — Leakage 발생</div>
+        <pre style="font-family:var(--mono);font-size:11px;line-height:1.7;background:var(--surface2);padding:10px 12px;border-radius:4px;overflow-x:auto;color:var(--text)">scaler = StandardScaler()
+# 전체 데이터로 fit → 누수
+X_scaled = scaler.fit_transform(X)
+
+for train_idx, val_idx in kfold.split(X_scaled):
+    X_train = X_scaled[train_idx]
+    X_val   = X_scaled[val_idx]
+    # val의 통계가 이미 scaler에 반영됨</pre>
+        <div style="font-size:12px;color:var(--red);margin-top:8px;line-height:1.6">
+          fold를 나누기 전에 전체 X로 fit했기 때문에<br>
+          val fold의 평균·표준편차가 정규화 기준에 섞임
+        </div>
+      </div>
+      <div style="padding:14px 16px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">✓ 올바른 방식 — fold 안에서 fit</div>
+        <pre style="font-family:var(--mono);font-size:11px;line-height:1.7;background:var(--surface2);padding:10px 12px;border-radius:4px;overflow-x:auto;color:var(--text)">for train_idx, val_idx in kfold.split(X):
+    X_train = X[train_idx]
+    X_val   = X[val_idx]
+
+    scaler = StandardScaler()
+    # train fold로만 fit
+    X_train_s = scaler.fit_transform(X_train)
+    # val에는 transform만
+    X_val_s   = scaler.transform(X_val)</pre>
+        <div style="font-size:12px;color:var(--green);margin-top:8px;line-height:1.6">
+          각 fold의 train 데이터로만 fit.<br>
+          val은 transform만 → 누수 없음
+        </div>
+      </div>
+    </div>
+    <div style="padding:10px 14px;background:var(--surface2);border-top:1px solid var(--border);font-size:12px;color:var(--text2);line-height:1.65">
+      <strong>Pipeline을 쓰면 자동으로 올바른 순서가 보장됩니다</strong><br>
+      <span style="font-family:var(--mono);font-size:11px">sklearn.pipeline.Pipeline([('scaler', StandardScaler()), ('model', ...)])</span><br>
+      CV 루프 안에서 Pipeline을 쓰면 매 fold마다 train으로만 fit_transform, val에 transform만 적용됩니다.
+    </div>
+  </div>
+
+<!-- ── 05b: y 정의 ── -->
+<div class="section-block" id="s5b">
+  <div class="section-header">
+    <span class="section-num">05b</span>
+    <span class="section-title">지표 해석 전에 — y를 어떻게 정의했는가</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note"><strong>핵심 질문:</strong> 모델이 무엇을 잘 맞추도록 설계되었는가? 그 목적이 지금 필요한 것과 일치하는가?</div>
+
+  <div class="box box-amber">
+    <div class="box-title">y 정의가 달라지면 모든 것이 달라진다</div>
+    <p>
+      같은 데이터, 같은 모델을 써도 y를 어떻게 정의하느냐에 따라<br>
+      모델의 목적, 사용하는 지표, 결과 해석 방식이 완전히 달라집니다.<br><br>
+      "모델 성능이 좋다"는 말은 <strong>어떤 y 기준으로 잘 맞춘다는 뜻인지</strong>를 먼저 확인해야 합니다.
+    </p>
+  </div>
+
+  <div class="label">y 정의 방향 — 두 가지 목적</div>
+
+  <div class="grid-2">
+    <div class="trap-card" style="margin-bottom:0">
+      <div class="tc-head" style="background:var(--blue-bg);border-color:var(--blue-border)">
+        <span class="tc-badge badge-blue">예측 정확도</span>
+        <div>
+          <div class="tc-name" style="font-size:14px">y 값 자체를 정확히 맞추는 것이 목적</div>
+          <div class="tc-essence">예: 다음 공정의 수율이 몇 %가 될지 예측</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px;font-size:13px;line-height:1.75;border-bottom:1px solid var(--border)">
+        <strong>관심사:</strong> 예측값과 실제값의 오차가 얼마인가<br>
+        <strong>주요 지표:</strong> RMSE, MAE, R² / Accuracy, AUC<br>
+        <strong>해석 방향:</strong> "평균 ±2% 오차로 수율을 예측한다"<br><br>
+        <strong>한계:</strong> 오차가 작아도, 그 예측이<br>
+        실제 의사결정에 쓸 수 있는지는 별개의 문제
+      </div>
+      <div style="padding:10px 14px;background:var(--surface2);font-size:12px;color:var(--text2)">
+        지표 해석 시 주의: RMSE가 낮아도 특정 구간(위험 구간)에서만 오차가 크면 운영 불가
+      </div>
+    </div>
+
+    <div class="trap-card" style="margin-bottom:0">
+      <div class="tc-head" style="background:var(--green-bg);border-color:var(--green-border)">
+        <span class="tc-badge badge-green">조건 최적화</span>
+        <div>
+          <div class="tc-name" style="font-size:14px">y를 원하는 범위로 오게 하는 X 조합을 찾는 것이 목적</div>
+          <div class="tc-essence">예: 수율을 95% 이상으로 만들려면 어떤 파라미터를 어떻게 조절해야 하는가</div>
+        </div>
+      </div>
+      <div style="padding:12px 16px;font-size:13px;line-height:1.75;border-bottom:1px solid var(--border)">
+        <strong>관심사:</strong> 어떤 X 조건이 y를 목표 범위로 이끄는가<br>
+        <strong>주요 지표:</strong> Feature importance, 구간별 예측 분포<br>
+        <strong>해석 방향:</strong> "온도를 5도 올리면 수율이 목표 범위 안에 들어올 확률이 높아진다"<br><br>
+        <strong>한계:</strong> 예측 오차 자체가 작지 않아도<br>
+        방향성(올려야 하는지 낮춰야 하는지)이 맞으면 유용
+      </div>
+      <div style="padding:10px 14px;background:var(--surface2);font-size:12px;color:var(--text2)">
+        지표 해석 시 주의: R²가 낮아도 변수 간 방향성이 안정적이면 조건 탐색에 쓸 수 있음
+      </div>
+    </div>
+  </div>
+
+  <div class="label" style="margin-top:20px">y 정의가 잘못되었을 때 생기는 문제</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>상황</th>
+        <th>실제 필요</th>
+        <th>y를 잘못 정의한 경우</th>
+        <th>결과</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>공정 파라미터 조정</td>
+        <td>조건 최적화</td>
+        <td>수율 값 예측 모델(예측 정확도)로 개발</td>
+        <td class="neg">RMSE는 좋지만 "어떤 조건을 바꿔야 하는지" 답을 못 줌</td>
+      </tr>
+      <tr>
+        <td>수율 모니터링</td>
+        <td>예측 정확도</td>
+        <td>불량/정상 분류 모델(이진 분류)로 개발</td>
+        <td class="warn-td">Accuracy는 높지만 수율 값의 구체적 오차를 알 수 없음</td>
+      </tr>
+      <tr>
+        <td>이상 감지</td>
+        <td>위험 구간 탐지</td>
+        <td>전체 평균 오차 최소화 모델로 개발</td>
+        <td class="neg">전체 RMSE는 낮지만 정작 위험 구간에서 오차가 큼</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="grid-2">
+    <div class="box box-red">
+      <div class="box-title">y 정의가 목적과 다를 때 지표의 함정</div>
+      <p style="font-size:12px;">
+        목적: 파라미터를 조절해서 수율을 올리고 싶다<br>
+        y 정의: 수율 값 회귀 예측<br><br>
+        → RMSE 낮음 = 수율을 잘 예측함<br>
+        → 하지만 "무엇을 바꿔야 하는가"에 대한<br>
+        &nbsp;&nbsp;&nbsp;답은 이 지표에 담겨 있지 않음<br><br>
+        지표가 좋다 ≠ 목적에 맞는 모델이다
+      </p>
+    </div>
+    <div class="box box-green">
+      <div class="box-title">y 정의를 먼저 확인하는 질문</div>
+      <p style="font-size:12px;">
+        ① 이 모델을 만들어서 <strong>최종적으로 무엇을 하려는가?</strong><br>
+        &nbsp;&nbsp;→ 값을 예측? 조건을 찾아? 이상을 감지?<br><br>
+        ② 결과를 받은 사람이 <strong>어떤 행동을 해야 하는가?</strong><br>
+        &nbsp;&nbsp;→ 그 행동에 필요한 정보가 y에 담겨 있는가?<br><br>
+        ③ 사용할 지표가 <strong>그 목적을 평가하는 데 맞는가?</strong><br>
+        &nbsp;&nbsp;→ 예측 정확도 목적에 Feature importance가 주 지표면 어긋남
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- ── 06: 종합 체크리스트 ── -->
+<div class="section-block" id="s6">
+  <div class="section-header">
+    <span class="section-num">06</span>
+    <span class="section-title">종합 진단 체크리스트 — 결과를 받았을 때 이 순서로 의심하라</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note"><strong>목표:</strong> "모델 성능이 좋게 나왔습니다"라는 말을 들었을 때, 자동으로 던질 수 있는 질문 목록입니다.</div>
+
+  <!-- 평가지표 협의 박스 -->
+  <div class="label">지표 확정 전 — 현업과의 협의</div>
+  <div style="border:1px solid var(--green-border);border-radius:6px;overflow:hidden;margin-bottom:20px">
+    <div style="padding:14px 18px;background:var(--green-bg);border-bottom:1px solid var(--green-border)">
+      <div style="font-size:13px;font-weight:500;color:var(--green);margin-bottom:4px">평가지표는 협의를 통해 조정할 수 있다</div>
+      <div style="font-size:12px;color:var(--text2);line-height:1.65">
+        지표의 기준(임계값, 허용 오차 범위 등)은 수치적으로 좋으면서 현업이 실제로 사용하기에 무리 없는 수준으로 조정 가능합니다.<br>
+        단, 이 협의를 제대로 하려면 <strong>지표가 어떤 요소에 의해 어떻게 달라지는지</strong>를 먼저 이해해야 합니다.
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;border-bottom:1px solid var(--green-border)">
+      <div style="padding:12px 14px;border-right:1px solid var(--green-border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">협의 포인트 ①</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px">허용 오차 범위 설정</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.65">
+          RMSE가 얼마일 때 현업이 실제로 쓸 수 있는가?<br>
+          "±5% 오차면 현장에서 의사결정 가능한가"를 먼저 정하고, 그 기준으로 지표 목표값을 결정합니다.
+        </div>
+      </div>
+      <div style="padding:12px 14px;border-right:1px solid var(--green-border)">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">협의 포인트 ②</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px">오탐·미탐 균형</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.65">
+          불량을 놓치는 것(미탐)과 정상을 불량으로 거는 것(오탐) 중 어느 쪽 비용이 더 큰가?<br>
+          현업의 운영 비용 구조에 따라 Threshold를 조정할 수 있습니다.
+        </div>
+      </div>
+      <div style="padding:12px 14px">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">협의 포인트 ③</div>
+        <div style="font-size:13px;font-weight:500;margin-bottom:4px">구간별 중요도 반영</div>
+        <div style="font-size:12px;color:var(--text2);line-height:1.65">
+          전체 평균 오차가 아닌, 특정 구간(위험 범위, 핵심 제품 모델)에서의 성능을 별도로 요구할 수 있습니다.<br>
+          이 요구사항을 지표 설계에 미리 반영해야 합니다.
+        </div>
+      </div>
+    </div>
+    <div style="padding:12px 16px;background:var(--surface2)">
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px">협의가 가능하려면</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+        <div style="font-size:12px;color:var(--text);line-height:1.7">
+          <strong>알아야 하는 것</strong><br>
+          • Leakage가 있으면 → 지표 자체가 부풀려져 있어 협의 기준이 의미 없음<br>
+          • Bias가 있으면 → 특정 조건에서만 지표가 나쁘게 나와 전체 협의가 어긋남<br>
+          • 과적합이면 → 지금 보는 지표가 실전에서 재현되지 않음
+        </div>
+        <div style="font-size:12px;color:var(--text);line-height:1.7">
+          <strong>협의 순서</strong><br>
+          1. 4가지 함정부터 점검 → 지표가 신뢰할 수 있는 상태인지 확인<br>
+          2. 현업의 운영 맥락 파악 → 어떤 오류가 더 치명적인가<br>
+          3. 지표 기준 협의 → 수치 목표와 허용 범위 확정
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <div class="cs-head" style="background:var(--amber-bg);border-color:var(--amber-border)">
+      <div class="cs-num" style="background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)">0</div>
+      <div class="cs-name" style="color:var(--amber)">y 정의 먼저 확인 — 지표를 해석하기 전에</div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-item">□ 이 모델의 목적이 <strong>예측 정확도</strong>인가, <strong>조건 최적화</strong>인가?</div>
+      <div class="cs-item">□ y가 그 목적에 맞게 정의되어 있는가? (회귀/분류/구간 탐지 중 무엇이 필요한가)</div>
+      <div class="cs-item">□ 사용 중인 지표(RMSE, Accuracy 등)가 그 목적을 평가하는 데 적합한가?</div>
+      <div class="cs-item">□ 결과를 받는 사람이 해야 할 행동에 필요한 정보가 y에 담겨 있는가?</div>
+    </div>
+  </div>
+
+  <div class="label">4가지 함정 순서별 진단</div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="box box-red">
+      <div class="box-title">함정이 겹치는 경우</div>
+      <p style="font-size:12px;">
+        네 가지 함정은 동시에 발생할 수 있습니다.<br><br>
+        예: 편향된 데이터(Bias)로 학습 + 학습 데이터에만 과적합<br>
+        예: Leakage가 있으면서 분포도 이미 달라진 상태<br><br>
+        하나를 찾았다고 다른 것이 없다는 뜻이 아닙니다.
+      </p>
+    </div>
+    <div class="box box-amber">
+      <div class="box-title">지표만으로는 부족한 이유</div>
+      <p style="font-size:12px;">
+        네 가지 모두 내부 지표로는 발견이 어렵습니다.<br><br>
+        • Leakage → 지표가 비정상적으로 좋음<br>
+        • Bias → 내부 데이터로만 평가하면 보이지 않음<br>
+        • 분포 변화 → 배포 후에야 드러남<br>
+        • 과적합 → Train 성능만 보면 모름
+      </p>
+    </div>
+  </div>
+
+  <div class="label">단계별 진단 흐름</div>
+
+  <div class="check-section">
+    <div class="cs-head" style="background:var(--red-bg);border-color:var(--red-border)">
+      <div class="cs-num" style="background:var(--red-bg);border:1px solid var(--red-border);color:var(--red)">1</div>
+      <div class="cs-name" style="color:var(--red)">Data Leakage 먼저 확인 — 지표가 좋을수록 더 의심</div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-item">□ 각 특성이 추론 시점에 실제로 알 수 있는 정보인가?</div>
+      <div class="cs-item">□ 전처리를 Train/Test 분리 전에 전체 데이터로 했는가?</div>
+      <div class="cs-item">□ 성능이 문제 난이도에 비해 비정상적으로 높은가?</div>
+      <div class="cs-item">□ 특정 변수의 중요도가 압도적으로 높은가? 그 변수의 정의는 무엇인가?</div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <div class="cs-head" style="background:var(--amber-bg);border-color:var(--amber-border)">
+      <div class="cs-num" style="background:var(--amber-bg);border:1px solid var(--amber-border);color:var(--amber)">2</div>
+      <div class="cs-name" style="color:var(--amber)">Bias 확인 — 데이터 수집 과정을 추적</div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-item">□ 학습 데이터는 어떻게, 언제, 누가 수집했는가?</div>
+      <div class="cs-item">□ 특정 집단/조건/시간대가 과다 또는 과소 포함되어 있지 않은가?</div>
+      <div class="cs-item">□ 레이블(정답)을 누가 어떤 기준으로 붙였는가?</div>
+      <div class="cs-item">□ 세그먼트별 성능에 차이가 있는가? (전체 지표 아닌 구간별 확인)</div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <div class="cs-head" style="background:var(--blue-bg);border-color:var(--blue-border)">
+      <div class="cs-num" style="background:var(--blue-bg);border:1px solid var(--blue-border);color:var(--blue)">3</div>
+      <div class="cs-name" style="color:var(--blue)">분포 변화 확인 — 학습 시점과 실전 시점 비교</div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-item">□ 학습 데이터는 언제 수집된 것인가? 지금과 얼마나 다른가?</div>
+      <div class="cs-item">□ 실전 데이터의 주요 특성 분포가 학습 데이터와 비슷한가?</div>
+      <div class="cs-item">□ 배포 이후 예측 오차가 시간이 지남에 따라 커지고 있는가?</div>
+      <div class="cs-item">□ 환경의 구조적 변화(정책, 시스템, 외부 이벤트)가 있었는가?</div>
+    </div>
+  </div>
+
+  <div class="check-section">
+    <div class="cs-head" style="background:var(--surface2);border-color:var(--border)">
+      <div class="cs-num" style="background:var(--surface2);border:1px solid var(--border);color:var(--text2)">4</div>
+      <div class="cs-name">과적합 확인 — Train vs Test 차이 측정</div>
+    </div>
+    <div class="cs-body">
+      <div class="cs-item">□ Train과 Test 성능 차이가 얼마인가? (RMSE 차이 20% 이상, Accuracy 5%p 이상 → 주의)</div>
+      <div class="cs-item">□ Cross-validation을 사용했는가, 단일 분리만 사용했는가?</div>
+      <div class="cs-item">□ 샘플 수 대비 특성 수가 많지 않은가?</div>
+      <div class="cs-item">□ Test 성능을 보면서 반복적으로 모델을 수정하지 않았는가?</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="box box-green">
+    <div class="box-title">결과를 받았을 때 던질 수 있는 핵심 질문 6개</div>
+    <p>
+      <strong>0</strong> y가 목적에 맞게 정의되어 있는가? 지표가 그 목적을 평가하는가? → y 정의 확인<br>
+      ① 이 성능이 비정상적으로 좋지 않은가? → Leakage 의심<br>
+      ② 학습 데이터에 없는 케이스가 실전에 있지 않은가? → Bias 의심<br>
+      ③ 지금 실전 데이터는 학습 때와 같은 분포인가? → 분포 변화 의심<br>
+      ④ Train과 Test 성능 차이가 얼마인가? → 과적합 의심<br>
+      ⑤ 도메인 전문가가 이 결과를 봤을 때 납득이 가는가? → 종합 판단
+    </p>
+  </div>
+</div>
+
+<!-- ── 07: Q&A ── -->
+<div class="section-block" id="s7">
+  <div class="section-header">
+    <span class="section-num">07</span>
+    <span class="section-title">Q&amp;A</span>
+    <span class="section-time">10 min</span>
+  </div>
+
+  <div class="note">세션 중 나온 질문, 혹은 아래 예상 질문들을 중심으로 토론합니다.</div>
+
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q1. Leakage와 과적합을 어떻게 구분하는가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      둘 다 "학습에서는 잘 되는데 실전에서 망가지는" 결과를 만들지만, 원인이 다릅니다.<br><br>
+      Leakage는 <strong>데이터 설계 문제</strong>입니다. 추론 시점에 존재하지 않는 정보가 학습에 포함된 것입니다. Train과 Test 모두 그 정보를 공유하기 때문에, Train과 Test 성능이 둘 다 높게 나옵니다. 배포 후에야 성능이 급락합니다.<br><br>
+      과적합은 <strong>모델 학습 문제</strong>입니다. 데이터 설계는 정상이지만 모델이 Train 데이터의 노이즈까지 외운 상태입니다. Train 성능은 높고 Test 성능이 낮게 나옵니다. 배포 전에 이미 Train/Test 차이로 발견할 수 있습니다.<br><br>
+      진단 방법: Train/Test를 둘 다 보되, 둘 다 높으면 Leakage, Train만 높으면 과적합을 먼저 의심합니다.
+    </p>
+  </div>
+
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q2. 이미 배포된 모델의 분포 변화를 어떻게 감지하는가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      가장 직접적인 방법은 실제 정답(y)이 쌓이는 시점에 주기적으로 성능을 재측정하는 것입니다. 하지만 많은 경우 정답을 즉시 알기 어렵습니다 (예: 이탈 여부는 한 달 후에야 알 수 있음).<br><br>
+      이때는 두 가지 방법을 씁니다. 첫째, <strong>X의 분포를 모니터링</strong>합니다. 실전 데이터의 특성 분포가 학습 데이터와 얼마나 달라졌는지를 주기적으로 비교합니다. 평균, 분산, 최댓값 등의 변화를 추적합니다.<br><br>
+      둘째, <strong>예측값의 분포를 모니터링</strong>합니다. 모델이 내놓는 예측 점수나 확률의 분포가 갑자기 변한다면 입력 분포가 바뀌었다는 신호입니다. 이 두 가지를 같이 보면 정답 없이도 어느 정도 변화를 감지할 수 있습니다.
+    </p>
+  </div>
+
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q3. 데이터가 편향되어 있다는 걸 알면서도 그 데이터밖에 없을 때는 어떻게 하는가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      현실에서 매우 자주 발생하는 상황입니다. 이 경우 취할 수 있는 방향은 세 가지입니다.<br><br>
+      첫째, <strong>편향을 인지하고 결과 해석에 반영</strong>합니다. "이 모델은 A 조건에서 수집된 데이터 기반으로, B 조건에는 검증이 되지 않았습니다"라고 명시하는 것입니다. 편향 자체를 제거하지 못해도, 결과를 어디까지 신뢰할 수 있는지를 정확히 표현하는 것이 중요합니다.<br><br>
+      둘째, <strong>모델이 적용되는 범위를 제한</strong>합니다. 학습 데이터와 분포가 비슷한 케이스에만 모델을 적용하고, 그 범위 밖의 케이스는 별도로 처리합니다.<br><br>
+      셋째, <strong>추가 데이터 수집 계획을 세웁니다.</strong> 현재는 편향된 데이터를 쓰되, 부족한 집단/조건에 대한 데이터를 우선적으로 수집하는 계획을 함께 세웁니다. 모델을 배포하면서 그 데이터를 모아 나중에 재학습하는 방향입니다.
+    </p>
+  </div>
+
+  <div class="box" style="margin-bottom:10px">
+    <div class="box-title" style="color:var(--text2)">Q4. 네 가지 함정 중 실무에서 가장 자주 발생하는 것은 무엇인가?</div>
+    <p style="font-size:13px;margin-top:8px">
+      도메인과 프로젝트 유형에 따라 다르지만, 일반적으로 가장 자주 발생하고 가장 발견이 늦은 것은 <strong>Leakage와 Bias</strong>입니다.<br><br>
+      Leakage는 데이터를 구성할 때 각 변수의 의미를 꼼꼼히 확인하지 않으면 쉽게 발생합니다. 특히 데이터를 SQL로 뽑거나 외부 팀에서 전달받는 경우, 변수 정의를 충분히 확인하지 않아 타겟 이후 생성되는 값이 섞이는 경우가 많습니다.<br><br>
+      Bias는 수집 과정의 구조적 문제라 개발자가 통제하기 어렵습니다. 그리고 내부 지표로는 드러나지 않기 때문에 배포 후 현장에서 "결과가 이상하다"는 피드백이 올 때까지 모르는 경우가 많습니다.<br><br>
+      과적합은 Train/Test 분리만 제대로 해도 조기에 발견할 수 있어 상대적으로 진단이 쉽습니다. 분포 변화는 배포 후에 모니터링을 해야 발견할 수 있어 운영 체계가 없으면 뒤늦게 발견됩니다.
+    </p>
+  </div>
+
+</div><!-- s7 -->
+
+</div><!-- .page -->
+
+<script>
+  const sections = document.querySelectorAll('.section-block');
+  const navLinks = document.querySelectorAll('.nav a');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.getAttribute('href') === '#' + e.target.id);
+        });
+      }
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  sections.forEach(s => observer.observe(s));
+</script>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>

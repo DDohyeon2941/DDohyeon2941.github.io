@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MDI / OOB Permutation / SHAP 출력 예시</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#f7f6f2;--surface:#fff;--surface2:#f0efe9;
+    --border:#e2e0d8;--border2:#ccc9be;
+    --text:#1a1917;--text2:#6b6860;--text3:#9b9890;
+    --blue:#1a4f8a;--blue-bg:#eaf0f8;--blue-border:#b8ccdf;
+    --red:#8a1a1a;--red-bg:#f8eaea;--red-border:#dfb8b8;
+    --amber:#7a4a00;--amber-bg:#fdf3e0;--amber-border:#e8cc98;
+    --green:#1a5a2a;--green-bg:#eaf5ec;--green-border:#b8d8bf;
+    --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans KR',sans-serif
+  }
+  body{font-family:var(--sans);background:var(--bg);color:var(--text);font-size:14px;line-height:1.7;padding:40px}
+  .page{max-width:900px;margin:0 auto}
+
+  .section{margin-bottom:56px}
+  .section-header{border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:20px;display:flex;align-items:baseline;gap:12px}
+  .section-num{font-family:var(--mono);font-size:11px;color:var(--text3)}
+  .section-title{font-size:18px;font-weight:500}
+
+  .label{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text3);margin-bottom:8px}
+  .note{border-left:3px solid var(--border2);padding:10px 14px;background:var(--surface2);border-radius:0 6px 6px 0;font-size:13px;line-height:1.65;margin-bottom:14px}
+  .box{border:1px solid var(--border);border-radius:6px;padding:14px 16px;background:var(--surface);margin-bottom:12px}
+  .box-blue{border-color:var(--blue-border);background:var(--blue-bg)}
+  .box-red{border-color:var(--red-border);background:var(--red-bg)}
+  .box-amber{border-color:var(--amber-border);background:var(--amber-bg)}
+  .box-green{border-color:var(--green-border);background:var(--green-bg)}
+  .box .box-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+  .box-blue .box-title{color:var(--blue)}.box-red .box-title{color:var(--red)}
+  .box-amber .box-title{color:var(--amber)}.box-green .box-title{color:var(--green)}
+  .box p{font-size:13px;line-height:1.7}
+
+  hr{border:none;border-top:1px solid var(--border);margin:28px 0}
+
+  /* 코드 블록 */
+  .code{background:#1a1917;border-radius:6px;padding:14px 18px;font-family:var(--mono);font-size:12px;line-height:1.9;margin-bottom:12px;overflow-x:auto}
+  .cm{color:#5a5a52}.kw{color:#9b9890}.fn{color:#c8b87a}
+  .vp{color:#4a9a5a}.vn{color:#c45a5a}.vn2{color:#c45a5a}
+  .vc{color:#7ab8c8}.txt{color:#d4d0c8}.str{color:#a8c87a}
+
+  /* 바 차트 공통 */
+  .bar-chart{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 20px;margin-bottom:12px}
+  .bc-title{font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px}
+  .bc-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .bc-label{font-family:var(--mono);font-size:11px;color:var(--text);min-width:90px;text-align:right}
+  .bc-wrap{flex:1;background:var(--surface2);border-radius:3px;height:20px;border:1px solid var(--border);overflow:hidden;position:relative}
+  .bc-fill{height:100%;border-radius:2px;display:flex;align-items:center;padding-left:8px;transition:width .3s}
+  .bc-fill span{font-family:var(--mono);font-size:10px;color:#fff;font-weight:500;white-space:nowrap}
+  .bc-val{font-family:var(--mono);font-size:11px;min-width:44px;text-align:left}
+
+  /* diff 바 (OOB) */
+  .diff-chart{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 20px;margin-bottom:12px}
+  .diff-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .diff-label{font-family:var(--mono);font-size:11px;color:var(--text);min-width:90px;text-align:right}
+  .diff-wrap{flex:1;position:relative;height:20px}
+  .diff-zero{position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--border)}
+  .diff-bar{position:absolute;top:2px;height:16px;border-radius:2px}
+  .diff-val{font-family:var(--mono);font-size:11px;min-width:44px}
+
+  /* SHAP waterfall */
+  .wf{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 20px;margin-bottom:12px}
+  .wf-meta{font-family:var(--mono);font-size:11px;color:var(--text2);margin-bottom:14px;line-height:1.6}
+  .wf-row{display:flex;align-items:center;gap:10px;margin-bottom:7px}
+  .wf-label{font-family:var(--mono);font-size:11px;color:var(--text);min-width:120px;text-align:right}
+  .wf-wrap{flex:1;position:relative;height:20px}
+  .wf-zero{position:absolute;top:0;bottom:0;width:1px;background:#ccc9be}
+  .wf-bar-p{position:absolute;top:2px;height:16px;background:#4a9a5a;border-radius:2px;opacity:.85}
+  .wf-bar-n{position:absolute;top:2px;height:16px;background:#c45a5a;border-radius:2px;opacity:.85}
+  .wf-bar-base{position:absolute;top:2px;height:16px;background:var(--surface2);border:1px solid var(--border);border-radius:2px}
+  .wf-val{font-family:var(--mono);font-size:11px;min-width:52px}
+  .wf-val.p{color:var(--green)}.wf-val.n{color:var(--red)}.wf-val.b{color:var(--text3)}
+  .wf-divider{border-top:1px solid var(--border);margin:8px 0}
+  .wf-total{display:flex;align-items:center;gap:10px;margin-top:6px}
+  .wf-total .wf-label{font-weight:500}
+  .wf-total .wf-val{font-size:13px;font-weight:500;color:var(--red)}
+
+  /* SHAP summary */
+  .summary{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:18px 20px;margin-bottom:12px;overflow-x:auto}
+  .sm-header{display:flex;justify-content:space-between;font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:10px}
+  .sm-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+  .sm-label{font-family:var(--mono);font-size:11px;min-width:90px;text-align:right}
+  .sm-area{flex:1;position:relative;height:20px}
+  .sm-zero{position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--border)}
+
+  /* 비교표 */
+  .diff-table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}
+  .diff-table th{font-size:11px;font-weight:500;color:var(--text3);text-align:left;padding:7px 10px;border-bottom:1px solid var(--border);font-family:var(--mono);text-transform:uppercase;letter-spacing:.04em}
+  .diff-table td{padding:8px 10px;border-bottom:1px solid var(--border);vertical-align:top}
+  .diff-table tr:last-child td{border-bottom:none}
+  .rank-up{color:var(--red);font-weight:500;font-size:11px}
+  .rank-dn{color:var(--green);font-weight:500;font-size:11px}
+  .rank-same{color:var(--text3);font-size:11px}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── SECTION 0: 공통 시나리오 ── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">00</span>
+    <span class="section-title">공통 시나리오</span>
+  </div>
+  <div class="note">불량률 예측 모델 (RandomForest). 변수 5개 — 온도(연속), 압력(연속), 회전수(연속), 습도(연속), 작업자 ID(범주형 → Label Encoding). 학습 데이터 800건, test 데이터 200건.</div>
+  <div class="code">
+    <span class="kw">from</span> <span class="txt">sklearn.ensemble</span> <span class="kw">import</span> <span class="txt">RandomForestRegressor</span><br>
+    <span class="kw">import</span> <span class="txt">shap</span><br><br>
+    <span class="cm"># 학습</span><br>
+    <span class="txt">model = RandomForestRegressor(n_estimators=</span><span class="vp">100</span><span class="txt">, random_state=</span><span class="vp">42</span><span class="txt">)</span><br>
+    <span class="txt">model.fit(X_train, y_train)</span><br><br>
+    <span class="cm"># 변수: 온도, 압력, 회전수, 습도, 작업자ID</span><br>
+    <span class="cm"># y: 불량률 (0~1)</span>
+  </div>
+</div>
+
+<!-- ── SECTION 1: MDI ── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">01</span>
+    <span class="section-title">MDI — Mean Decrease Impurity</span>
+  </div>
+
+  <div class="label">코드</div>
+  <div class="code">
+    <span class="cm"># 학습 완료 후 트리 구조를 순회해서 계산 — 별도 데이터 불필요</span><br>
+    <span class="txt">importances = model.feature_importances_</span><br>
+    <span class="cm"># array([0.38, 0.28, 0.17, 0.10, 0.07])</span><br><br>
+    <span class="cm"># 변수명과 묶어서 보기</span><br>
+    <span class="txt">feature_names = [</span><span class="str">'온도'</span><span class="txt">, </span><span class="str">'압력'</span><span class="txt">, </span><span class="str">'회전수'</span><span class="txt">, </span><span class="str">'습도'</span><span class="txt">, </span><span class="str">'작업자ID'</span><span class="txt">]</span><br>
+    <span class="txt">pd.Series(importances, index=feature_names).sort_values(ascending=</span><span class="kw">False</span><span class="txt">)</span>
+  </div>
+
+  <div class="label">출력</div>
+  <div class="bar-chart">
+    <div class="bc-title">MDI 변수 중요도 — model.feature_importances_</div>
+    <div class="bc-row">
+      <div class="bc-label">온도</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:76%;background:#1a4f8a"><span>0.38</span></div></div>
+      <div class="bc-val" style="color:#1a4f8a">0.38</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">압력</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:56%;background:#1a4f8a;opacity:.75"></div></div>
+      <div class="bc-val" style="color:#1a4f8a">0.28</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">회전수</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:34%;background:#7a4a00;opacity:.8"></div></div>
+      <div class="bc-val" style="color:#7a4a00">0.17</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">습도</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:20%;background:#9b9890"></div></div>
+      <div class="bc-val" style="color:#9b9890">0.10</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">작업자ID</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:14%;background:#9b9890;opacity:.7"></div></div>
+      <div class="bc-val" style="color:#9b9890">0.07</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px">합계 = 1.00 · 방향 없음 · 학습 데이터 기반</div>
+  </div>
+
+  <div class="box box-amber">
+    <div class="box-title">이 결과의 한계</div>
+    <p>
+      작업자ID(범주형)가 실제로 중요해도 임계값 후보가 0.5 하나뿐이라 MDI가 구조적으로 낮게 나옵니다. 연속형 변수(온도, 압력)는 후보가 수백 개라 유리합니다.<br>
+      방향도 없습니다 — 온도가 높을수록 불량이 많은지, 낮을수록 많은지 이 수치만으로는 알 수 없습니다.
+    </p>
+  </div>
+</div>
+
+<!-- ── SECTION 2: OOB Permutation ── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">02</span>
+    <span class="section-title">OOB Permutation Importance</span>
+  </div>
+
+  <div class="label">코드</div>
+  <div class="code">
+    <span class="cm"># OOB 샘플에서 변수를 섞었을 때 성능 하락을 측정</span><br>
+    <span class="cm"># oob_score=True 필요</span><br>
+    <span class="txt">model = RandomForestRegressor(n_estimators=</span><span class="vp">100</span><span class="txt">, oob_score=</span><span class="kw">True</span><span class="txt">, random_state=</span><span class="vp">42</span><span class="txt">)</span><br>
+    <span class="txt">model.fit(X_train, y_train)</span><br><br>
+    <span class="cm"># 기준 성능: 변수 섞기 전 OOB 샘플에서의 R²</span><br>
+    <span class="cm"># train set 성능이 아닙니다</span><br>
+    <span class="txt">baseline = model.oob_score_&nbsp;&nbsp;</span><span class="cm"># 예: R² = 0.84</span><br><br>
+    <span class="kw">from</span> <span class="txt">sklearn.inspection</span> <span class="kw">import</span> <span class="txt">permutation_importance</span><br><br>
+    <span class="cm"># 변수 j를 섞은 후 OOB 성능 측정 → baseline과 차이가 중요도</span><br>
+    <span class="cm"># importance_j = baseline_score - permuted_score</span><br>
+    <span class="txt">result = permutation_importance(</span><br>
+    <span class="txt">&nbsp;&nbsp;model, X_train, y_train,</span><br>
+    <span class="txt">&nbsp;&nbsp;n_repeats=</span><span class="vp">10</span><span class="txt">,&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="cm"># 섞기를 10번 반복해서 평균</span><br>
+    <span class="txt">&nbsp;&nbsp;random_state=</span><span class="vp">42</span><br>
+    <span class="txt">)</span><br><br>
+    <span class="cm"># result.importances_mean: 변수별 R² 하락량 평균</span><br>
+    <span class="cm"># result.importances_std:  변수별 R² 하락량 표준편차</span>
+  </div>
+
+  <div class="label">출력 — 성능 하락량 (R² 감소)</div>
+  <div class="diff-chart">
+    <div class="bc-title">OOB Permutation Importance — 변수 섞었을 때 R² 하락량</div>
+    <div class="bc-row">
+      <div class="bc-label">온도</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:62%;background:#1a4f8a"><span>0.31 ± 0.02</span></div></div>
+      <div class="bc-val" style="color:#1a4f8a">0.31</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">작업자ID</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:52%;background:#1a5a2a"><span>0.26 ± 0.03</span></div></div>
+      <div class="bc-val" style="color:#1a5a2a">0.26</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">압력</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:40%;background:#1a4f8a;opacity:.7"></div></div>
+      <div class="bc-val" style="color:#1a4f8a">0.20</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">회전수</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:20%;background:#7a4a00;opacity:.7"></div></div>
+      <div class="bc-val" style="color:#7a4a00">0.10</div>
+    </div>
+    <div class="bc-row">
+      <div class="bc-label">습도</div>
+      <div class="bc-wrap"><div class="bc-fill" style="width:4%;background:#9b9890"></div></div>
+      <div class="bc-val" style="color:#9b9890">0.02</div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:8px">값 = 해당 변수를 섞었을 때 R² 하락량. 클수록 중요. ± = 10번 반복 표준편차</div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">MDI와 순위가 달라졌습니다</div>
+    <p>
+      MDI에서 작업자ID는 0.07로 꼴찌였지만, OOB Permutation에서는 0.26으로 2위입니다.<br><br>
+      이유: MDI는 작업자ID(범주형)의 임계값 후보가 적어서 구조적으로 낮게 나왔습니다. OOB Permutation은 "실제로 이 변수를 없애면 성능이 얼마나 떨어지는가"를 측정하기 때문에 그 편향이 없습니다.<br><br>
+      MDI만 봤다면 작업자ID를 노이즈 변수로 잘못 판단하고 제거했을 수 있습니다.
+    </p>
+  </div>
+</div>
+
+<!-- ── SECTION 3: SHAP ── -->
+<div class="section">
+  <div class="section-header">
+    <span class="section-num">03</span>
+    <span class="section-title">SHAP</span>
+  </div>
+
+  <div class="label">코드</div>
+  <div class="code">
+    <span class="cm"># 학습 완료된 모델 + X_test (y_test 불필요)</span><br>
+    <span class="txt">explainer = shap.TreeExplainer(model)</span><br>
+    <span class="txt">shap_values = explainer.shap_values(X_test)&nbsp;&nbsp;</span><span class="cm"># X만 입력</span><br><br>
+    <span class="cm"># shap_values.shape = (200, 5)  ← 200건 × 5개 변수</span><br><br>
+    <span class="cm"># 기준값: 학습 완료 모델로 X_train을 예측한 값들의 평균</span><br>
+    <span class="cm"># = model.predict(X_train).mean()</span><br>
+    <span class="txt">explainer.expected_value&nbsp;</span><span class="cm"># → 0.182</span><br><br>
+    <span class="cm"># 핵심 등식 (항상 성립)</span><br>
+    <span class="cm"># expected_value + sum(shap_values[i]) == model.predict(X_test)[i]</span>
+  </div>
+
+  <div class="label">출력 ① — shap_values 배열 (수치)</div>
+  <div class="code">
+    <span class="cm">#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;온도&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;압력&nbsp;&nbsp;&nbsp;&nbsp;회전수&nbsp;&nbsp;습도&nbsp;&nbsp;&nbsp;&nbsp;작업자ID</span><br>
+    <span class="txt">array([</span><br>
+    <span class="txt">&nbsp;&nbsp;[</span><span class="vp">+0.251</span><span class="txt">, </span><span class="vp">+0.183</span><span class="txt">, </span><span class="vn">-0.047</span><span class="txt">, </span><span class="vc">+0.012</span><span class="txt">, </span><span class="vn">-0.089</span><span class="txt">],&nbsp;</span><span class="cm"># 샘플 0</span><br>
+    <span class="txt">&nbsp;&nbsp;[</span><span class="vn">-0.312</span><span class="txt">, </span><span class="vn">-0.094</span><span class="txt">, </span><span class="vp">+0.021</span><span class="txt">, </span><span class="vc">-0.008</span><span class="txt">, </span><span class="vp">+0.043</span><span class="txt">],&nbsp;</span><span class="cm"># 샘플 1</span><br>
+    <span class="txt">&nbsp;&nbsp;[</span><span class="vp">+0.087</span><span class="txt">, </span><span class="vn">-0.231</span><span class="txt">, </span><span class="vn">-0.115</span><span class="txt">, </span><span class="vc">+0.003</span><span class="txt">, </span><span class="vp">+0.156</span><span class="txt">],&nbsp;</span><span class="cm"># 샘플 2</span><br>
+    <span class="txt">&nbsp;&nbsp;...</span><br>
+    <span class="txt">])</span><br><br>
+    <span class="cm"># 검증: 0.182 + 0.251 + 0.183 - 0.047 + 0.012 - 0.089 = 0.492 (샘플 0 예측값)</span>
+  </div>
+
+  <hr>
+
+  <div class="label">출력 ② — Waterfall Plot (샘플 0번 단일 예측 분해)</div>
+  <div class="wf">
+    <div class="wf-meta">
+      샘플 0 &nbsp;|&nbsp; 온도 92°C · 압력 3.8bar · 회전수 980rpm · 습도 61% · 작업자 ID=3<br>
+      예측 불량률 <strong>0.492</strong> &nbsp;|&nbsp; 실제 불량률 0.71 &nbsp;|&nbsp; 오차 +0.218
+    </div>
+
+    <!-- 기준값 -->
+    <div class="wf-row">
+      <div class="wf-label">기준값</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-base" style="left:0;width:18%"></div>
+      </div>
+      <div class="wf-val b">0.182</div>
+    </div>
+    <!-- 온도 -->
+    <div class="wf-row">
+      <div class="wf-label">온도 92°C</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-p" style="left:18%;width:25%"></div>
+      </div>
+      <div class="wf-val p">+0.251</div>
+    </div>
+    <!-- 압력 -->
+    <div class="wf-row">
+      <div class="wf-label">압력 3.8bar</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-p" style="left:43%;width:18%"></div>
+      </div>
+      <div class="wf-val p">+0.183</div>
+    </div>
+    <!-- 작업자 -->
+    <div class="wf-row">
+      <div class="wf-label">작업자 ID=3</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-n" style="left:52%;width:9%"></div>
+      </div>
+      <div class="wf-val n">-0.089</div>
+    </div>
+    <!-- 회전수 -->
+    <div class="wf-row">
+      <div class="wf-label">회전수 980rpm</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-n" style="left:57%;width:5%"></div>
+      </div>
+      <div class="wf-val n">-0.047</div>
+    </div>
+    <!-- 습도 -->
+    <div class="wf-row">
+      <div class="wf-label">습도 61%</div>
+      <div class="wf-wrap">
+        <div class="wf-zero" style="left:18%"></div>
+        <div class="wf-bar-p" style="left:61%;width:1%"></div>
+      </div>
+      <div class="wf-val p">+0.012</div>
+    </div>
+
+    <div class="wf-divider"></div>
+    <div class="wf-total">
+      <div class="wf-label">예측값</div>
+      <div style="flex:1"></div>
+      <div class="wf-val">0.492</div>
+    </div>
+  </div>
+
+  <div class="box box-red">
+    <div class="box-title">y_test 없이는 이 설명을 믿어도 되는지 모릅니다</div>
+    <p>
+      이 예측의 실제값은 0.71인데 모델은 0.492로 예측했습니다. 오차가 0.218입니다. SHAP은 그 틀린 예측 0.492를 자신 있게 설명하고 있습니다.<br><br>
+      y_test와 대조해야 이 설명이 신뢰할 만한 케이스인지 파악할 수 있습니다.
+    </p>
+  </div>
+
+  <hr>
+
+  <div class="label">출력 ③ — Summary Plot (전체 test 200건의 SHAP 분포)</div>
+  <div class="code">
+    <span class="txt">shap.summary_plot(shap_values, X_test, feature_names=feature_names)</span>
+  </div>
+
+  <div class="summary">
+    <div class="sm-header">
+      <span>← 불량률 낮추는 방향 (SHAP 음수)</span>
+      <span>0</span>
+      <span>불량률 높이는 방향 (SHAP 양수) →</span>
+    </div>
+    <!-- 온도 -->
+    <div class="sm-row">
+      <div class="sm-label">온도</div>
+      <div class="sm-area">
+        <div class="sm-zero"></div>
+        <svg width="100%" height="20">
+          <circle cx="74%" cy="10" r="4.5" fill="#c45a5a" opacity=".85"/>
+          <circle cx="70%" cy="10" r="4.5" fill="#c45a5a" opacity=".75"/>
+          <circle cx="66%" cy="10" r="4.5" fill="#c45a5a" opacity=".65"/>
+          <circle cx="60%" cy="10" r="4" fill="#c8b87a" opacity=".6"/>
+          <circle cx="55%" cy="10" r="4" fill="#c8b87a" opacity=".5"/>
+          <circle cx="44%" cy="10" r="4" fill="#4a9a5a" opacity=".55"/>
+          <circle cx="38%" cy="10" r="4.5" fill="#4a9a5a" opacity=".7"/>
+          <circle cx="32%" cy="10" r="4.5" fill="#4a9a5a" opacity=".8"/>
+        </svg>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:80px">높음=빨강·낮음=초록</div>
+    </div>
+    <!-- 작업자ID -->
+    <div class="sm-row">
+      <div class="sm-label">작업자ID</div>
+      <div class="sm-area">
+        <div class="sm-zero"></div>
+        <svg width="100%" height="20">
+          <circle cx="65%" cy="7"  r="4" fill="#c45a5a" opacity=".7"/>
+          <circle cx="65%" cy="13" r="4" fill="#c45a5a" opacity=".5"/>
+          <circle cx="57%" cy="10" r="4" fill="#c8b87a" opacity=".5"/>
+          <circle cx="43%" cy="10" r="4" fill="#c8b87a" opacity=".5"/>
+          <circle cx="36%" cy="7"  r="4" fill="#4a9a5a" opacity=".6"/>
+          <circle cx="36%" cy="13" r="4" fill="#4a9a5a" opacity=".6"/>
+        </svg>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:80px">특정 ID=빨강</div>
+    </div>
+    <!-- 압력 -->
+    <div class="sm-row">
+      <div class="sm-label">압력</div>
+      <div class="sm-area">
+        <div class="sm-zero"></div>
+        <svg width="100%" height="20">
+          <circle cx="67%" cy="10" r="4" fill="#c45a5a" opacity=".75"/>
+          <circle cx="62%" cy="10" r="4" fill="#c45a5a" opacity=".6"/>
+          <circle cx="56%" cy="10" r="4" fill="#c8b87a" opacity=".5"/>
+          <circle cx="44%" cy="10" r="4" fill="#4a9a5a" opacity=".55"/>
+          <circle cx="38%" cy="10" r="4" fill="#4a9a5a" opacity=".7"/>
+          <circle cx="33%" cy="10" r="4" fill="#4a9a5a" opacity=".8"/>
+        </svg>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:80px">높음=빨강·낮음=초록</div>
+    </div>
+    <!-- 회전수 -->
+    <div class="sm-row">
+      <div class="sm-label">회전수</div>
+      <div class="sm-area">
+        <div class="sm-zero"></div>
+        <svg width="100%" height="20">
+          <circle cx="57%" cy="10" r="4" fill="#c45a5a" opacity=".55"/>
+          <circle cx="54%" cy="10" r="4" fill="#c8b87a" opacity=".5"/>
+          <circle cx="46%" cy="10" r="4" fill="#4a9a5a" opacity=".5"/>
+          <circle cx="43%" cy="10" r="4" fill="#4a9a5a" opacity=".6"/>
+        </svg>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:80px"></div>
+    </div>
+    <!-- 습도 -->
+    <div class="sm-row">
+      <div class="sm-label">습도</div>
+      <div class="sm-area">
+        <div class="sm-zero"></div>
+        <svg width="100%" height="20">
+          <circle cx="53%" cy="10" r="3.5" fill="#c8b87a" opacity=".45"/>
+          <circle cx="50%" cy="10" r="3.5" fill="#c8b87a" opacity=".4"/>
+          <circle cx="47%" cy="10" r="3.5" fill="#4a9a5a" opacity=".4"/>
+        </svg>
+      </div>
+      <div style="font-family:var(--mono);font-size:10px;color:var(--text3);min-width:80px"></div>
+    </div>
+    <div style="font-family:var(--mono);font-size:10px;color:var(--text3);margin-top:10px;border-top:1px solid var(--border);padding-top:8px">
+      점 색상 = 해당 변수의 실제값 (빨강=높음, 초록=낮음) &nbsp;|&nbsp; 점 위치(좌우) = SHAP 값 크기와 방향
+    </div>
+  </div>
+
+  <div class="box box-blue">
+    <div class="box-title">Summary Plot에서 읽을 수 있는 것</div>
+    <p>
+      온도: 빨강(높은 값)이 오른쪽에 몰림 → 온도가 높을수록 불량률을 높이는 방향으로 기여<br>
+      작업자ID: 특정 ID(빨강)가 오른쪽에 몰림 → 특정 작업자에서 불량이 집중. MDI에서는 이 패턴이 가려졌음<br>
+      습도: 0 근처에 몰림 → 불량률에 거의 영향 없음<br><br>
+      MDI/OOB는 "얼마나 중요한가"만 알려줍니다. Summary Plot은 "어떤 방향으로, 어떤 값일 때 기여하는가"까지 보여줍니다.
+    </p>
+  </div>
+
+  <hr>
+
+  <!-- 세 방식 비교 -->
+  <div class="label">세 방식 결과 비교 — 같은 모델, 다른 순위</div>
+  <table class="diff-table">
+    <thead>
+      <tr><th>변수</th><th>MDI 순위</th><th>OOB Permutation 순위</th><th>SHAP 평균 |값|</th><th>차이 포인트</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>온도</strong></td>
+        <td><span class="rank-same">1위 (0.38)</span></td>
+        <td><span class="rank-same">1위 (0.31)</span></td>
+        <td><span class="rank-same">1위 (0.21)</span></td>
+        <td style="font-size:12px;color:var(--text3)">세 방식 모두 일치</td>
+      </tr>
+      <tr>
+        <td><strong>작업자ID</strong></td>
+        <td><span class="rank-up">5위 (0.07)</span></td>
+        <td><span class="rank-dn">2위 (0.26)</span></td>
+        <td><span class="rank-dn">2위 (0.18)</span></td>
+        <td style="font-size:12px;color:var(--text3)">MDI에서 크게 과소평가. 범주형 편향 때문</td>
+      </tr>
+      <tr>
+        <td><strong>압력</strong></td>
+        <td><span class="rank-same">2위 (0.28)</span></td>
+        <td><span class="rank-same">3위 (0.20)</span></td>
+        <td><span class="rank-same">3위 (0.14)</span></td>
+        <td style="font-size:12px;color:var(--text3)">큰 차이 없음</td>
+      </tr>
+      <tr>
+        <td><strong>회전수</strong></td>
+        <td><span class="rank-same">3위 (0.17)</span></td>
+        <td><span class="rank-same">4위 (0.10)</span></td>
+        <td><span class="rank-same">4위 (0.07)</span></td>
+        <td style="font-size:12px;color:var(--text3)">MDI에서 다소 과대평가 (연속형 편향)</td>
+      </tr>
+      <tr>
+        <td><strong>습도</strong></td>
+        <td><span class="rank-same">4위 (0.10)</span></td>
+        <td><span class="rank-dn">5위 (0.02)</span></td>
+        <td><span class="rank-dn">5위 (0.01)</span></td>
+        <td style="font-size:12px;color:var(--text3)">MDI에서 과대평가. 실제 기여 거의 없음</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="box box-amber">
+    <div class="box-title">세션 핵심 메시지</div>
+    <p>
+      MDI만 보고 작업자ID를 노이즈 변수로 제거했다면 중요한 변수를 잃는 실수를 했을 겁니다.<br>
+      OOB Permutation으로 실제 성능 기준 중요도를 확인하고, SHAP으로 "특정 작업자에서 불량이 높다"는 방향까지 파악해야 현업에 설득력 있는 설명이 됩니다.
+    </p>
+  </div>
+</div>
+
+</div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+</body>
+</html>
