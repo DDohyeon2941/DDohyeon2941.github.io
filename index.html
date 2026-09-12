@@ -66,6 +66,9 @@
         .session-list li { padding: 10px 0; }
         .session-list p { margin: 4px 0; color: var(--muted); }
         .session-status { font-size: 0.8rem; color: var(--muted); font-weight: normal; }
+        .architecture-figure { margin: 24px 0; }
+        .architecture-figure img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 8px; }
+        .architecture-figure figcaption { margin-top: 8px; font-size: 0.9rem; color: var(--muted); }
         .section { scroll-margin-top: 20px; overflow-wrap: anywhere; }
         a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
         @media (max-width: 767px) { .expertise-grid { grid-template-columns: 1fr; } }
@@ -119,7 +122,7 @@
                 </article>
                 <article class="expertise-card">
                     <h2>Data Architecture</h2>
-                    <p>ETL, 데이터 적재 구조, 시계열 정합성과 ML 파이프라인 설계</p>
+                    <p>메타데이터 검증·ETL, 문서 데이터 표준화와 DB 스키마 설계</p>
                     <a href="#data-architecture">데이터 설계 경험 살펴보기 →</a>
                 </article>
             </div>
@@ -155,9 +158,49 @@
         <section id="data-architecture" class="section">
     <h2>🧱 Data Architecture</h2>
     <p>
-    데이터를 학습과 운영에 활용할 수 있도록 ETL, 적재 구조, 시간축 정합성과 ML 평가 구조를 설계합니다.
-    제조 공정과 검사 데이터를 다루며 쌓은 경험을 데이터 아키텍처의 주요 역량별로 정리했습니다.
+    원천 데이터의 의미와 품질을 검증하고, 서로 다른 데이터를 일관된 기준으로 연결해 학습과 운영에 활용할 수 있는 구조를 설계합니다.
+    메타데이터 관리, 정합성 검증, 데이터 정렬·정규화, 적재 및 관계 설계를 중심으로 경험을 정리했습니다.
     </p>
+    <article class="project-group" aria-labelledby="aiguru-architecture">
+        <h3 id="aiguru-architecture">AIguru · 검증 중심의 제조 검사 데이터 ETL</h3>
+        <p>검사 파일의 메타데이터를 먼저 검증·적재하고, DB의 검증 정보를 이용해 개별 범프 측정값을 필터링하는 파이프라인입니다. PRE와 COINING 검사 데이터를 동일한 물리적 범프 기준으로 연결해 분석·학습용 데이터셋을 구성합니다.</p>
+        <ol>
+            <li><strong>메타데이터 추출과 검증:</strong> 파일 경로·이름과 SOP 내부 메타데이터에서 lot, strip, 공정, 검사기, 시각을 추출하고 시간·공정·검사 순서·품질 기준의 정합성을 확인합니다. 검증 결과는 로그와 플래그로 남깁니다.</li>
+            <li><strong>적재 대상 선정과 DB 구성:</strong> 검사 현황과 lot·공정별 요약을 바탕으로 유효한 대상을 선정하고, 메타데이터·요약·검증 플래그를 Azure SQL에 적재합니다.</li>
+            <li><strong>DB 기반 필터링과 정규화:</strong> DB의 메타데이터를 이용해 BUMP 측정 파일을 추가 필터링하고, SOP 기준으로 좌표를 정렬하며 판정값과 측정값을 정규화합니다.</li>
+            <li><strong>Staging과 데이터 관계 설계:</strong> 파일별 범프 데이터를 Parquet으로 staging하고, PRE–COINING 간 동일 범프를 매칭해 ML에 사용할 수 있는 데이터셋으로 연결합니다.</li>
+        </ol>
+        <figure class="architecture-figure">
+            <a href="images/aiguru-validation-etl.png" aria-label="AIguru ETL 파이프라인 원본 이미지 보기">
+                <img src="images/aiguru-validation-etl.png" alt="AIguru 검사 데이터 ETL: 메타데이터 추출과 검증, 대상 선정, Azure SQL 적재, DB 기반 범프 필터링과 좌표 정렬, Parquet staging 및 PRE–COINING 관계 매칭" loading="lazy">
+            </a>
+            <figcaption>Metadata First → DB Upload → Bump-Level Filtering &amp; Alignment → ML-ready Dataset. 이미지를 선택하면 원본 크기로 볼 수 있습니다.</figcaption>
+        </figure>
+        <p><strong>구축 및 적용:</strong> 약 5만 개의 검사 결과 파일에서 5천 행의 학습 데이터셋을 구성하고, 전처리·모델 학습·평가·대시보드 초안 구현과 1차 PoC·현장 테스트를 수행했습니다. 운영 자동화 이전 단계까지 직접 설계·구현했습니다.</p>
+    </article>
+    <article class="project-group" aria-labelledby="nekton-architecture">
+        <h3 id="nekton-architecture">넥톤 · 문서 데이터 표준화 및 DB 스키마 설계</h3>
+        <p>협력업체마다 형식이 다른 견적서·계약서를 검색·비교 가능한 데이터로 구조화합니다. 문서를 직접 검토하며 제품모델·단위·용도 등 속성의 의미를 파악하고, 서로 다른 표현을 표준 필드와 문서 간 관계로 정리했습니다.</p>
+        <ul>
+            <li><strong>제품 속성과 표준 필드 정의:</strong> 주요 품목류 10개를 대상으로 업체별 컬럼명·표현·단위 차이를 분석하고 표준 필드로 통합했습니다.</li>
+            <li><strong>공통정보·협력사·스펙 분리:</strong> 조회와 확장성을 고려해 정보의 성격을 구분하고 DB 스키마 설계를 위한 필드를 작성했습니다.</li>
+            <li><strong>문서 관계와 식별 기준:</strong> 프로젝트 번호·견적번호로 문서를 식별하고, 프로젝트 → 견적서 → 발주·계약의 관계와 Revision 기반 변경 이력을 연결했습니다.</li>
+            <li><strong>원본 추적 가능성:</strong> 원본 값과 표준 값의 대응 관계를 유지해 표준화된 정보의 출처를 확인할 수 있도록 했습니다.</li>
+        </ul>
+        <div class="table-responsive">
+            <table class="table">
+                <caption>견적 문서의 표현을 표준 필드로 통합한 예시</caption>
+                <thead><tr><th scope="col">원본 문서 표현</th><th scope="col">표준 필드</th></tr></thead>
+                <tbody>
+                    <tr><td>Flow · Capacity · 유량</td><td>유량</td></tr>
+                    <tr><td>Head · TDH · 양정</td><td>양정</td></tr>
+                    <tr><td>MOC · Material · 재질</td><td>재질</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="section-intro">핵심 역량: 원천 문서 분석 · 데이터 표준화 · 필드 및 관계 모델링 · DB 스키마 설계</p>
+    </article>
+    <h3>추가 제조 데이터 설계 경험</h3>
     <ul>
         <li>
             <strong>ETL Pipeline &amp; Data Structure</strong>
