@@ -51,9 +51,9 @@
 <div class="detail-overview">
 <div>
 <p class="intro">
-      Can simply aggregating models produce a good global model when clients have different data quality? Our team compared aggregation strategies in Flower and experimented with controlling updates from clients with incorrect labels.
+      Incorrect labels on some clients can weaken a shared model. Our course team compared ways to combine client models and tested controls on their updates; those controls did not improve performance in our experiments.
      </p>
-<dl class="detail-facts"><div><dt>Experiment:</dt><dd>4 aggregation strategies and clean/noisy-label clients</dd></div><div><dt>Result:</dt><dd>norm filtering and clipping did not improve this experiment</dd></div></dl>
+<dl class="detail-facts"><div><dt>Setting:</dt><dd>Course experiments with clean and incorrect training labels</dd></div><div><dt>Finding:</dt><dd>Controlling update magnitude did not resolve the data-quality issue</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/flower-accuracy.png">

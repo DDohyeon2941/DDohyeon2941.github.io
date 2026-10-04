@@ -51,9 +51,9 @@
 <div class="detail-overview">
 <div>
 <p class="intro">
-      I experimented with adjusting the IRM penalty when label noise differs across training environments. In Colored MNIST, the regularization design reflected environment-specific data quality and sensitivity to input changes.
+      A model can rely on patterns that stop working in a new environment, and some training environments may have less reliable labels. In a course assignment, I adjusted how strongly each environment constrained learning and built experiments to test that approach.
      </p>
-<dl class="detail-facts"><div><dt>Experiment:</dt><dd>Colored MNIST with different label quality across environments</dd></div><div><dt>Method:</dt><dd>environment weighting and input sensitivity in IRM regularization</dd></div></dl>
+<dl class="detail-facts"><div><dt>Setting:</dt><dd>Changing color–label relationships and unequal label noise</dd></div><div><dt>Status:</dt><dd>Experimental implementation; final performance comparisons need further validation</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/ood-method.svg">

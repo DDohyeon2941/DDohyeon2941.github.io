@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: project problems and responses
+
+All nine project summaries now explain the problem and the response before technical implementation details. Lists, detail introductions, previews, and the home manufacturing example are consistent; full detailed bodies and supporting evidence remain intact. See [PROJECT-SUMMARIES.md](PROJECT-SUMMARIES.md) for scope and verification.
+
 ## Latest: research, practice, and teaching
 
 The home connects doctoral research, applied data work, junior colleague education, and recorded research presentations through a sustained focus on how data characteristics affect machine learning. Writing & Sessions now explains its educational purpose and gives each session/example a learning goal. Existing materials, links, drafts, and figures are preserved. See [PORTFOLIO-STORY.md](PORTFOLIO-STORY.md) for changes, verification, and screenshots.
