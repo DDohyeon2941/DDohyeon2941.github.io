@@ -93,6 +93,8 @@ td,th { border:1px solid var(--line); padding:8px; text-align:left; }
 .baseball-opening img { display:block; width:100%; height:auto; max-height:none; }
 .baseball-opening figcaption { font-size:12px; margin-top:6px; }
 .baseball-summary .key-facts { padding-left:18px; font-size:14px; }
+.fellowship-figure { max-width:560px; margin:12px auto; }
+.fellowship-figure img { display:block; width:100%; background:white; }
 .paper-extra figcaption { font-size:12px; }
 .detail-figure figcaption { font-size:12px; line-height:1.5; margin-top:6px; }
 .detail-page .toc { display:flex; align-items:baseline; gap:16px; padding:10px 0; margin:18px 0; }
