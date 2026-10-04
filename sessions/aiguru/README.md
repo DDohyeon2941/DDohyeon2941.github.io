@@ -1,4 +1,4 @@
-# AIguru session source mapping
+# 회사 ML session source mapping
 
 Prefer revised copies over duplicate drafts. Dates in source filenames are revision identifiers, not verified presentation dates.
 
