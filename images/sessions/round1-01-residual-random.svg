@@ -1,0 +1,16 @@
+<svg aria-labelledby="figure-title figure-description" height="90" role="img" style="font-family:system-ui,sans-serif;" viewBox="0 0 260 90" width="260" xmlns="http://www.w3.org/2000/svg"><title id="figure-title">Random residual plot</title><desc id="figure-description">An existing session illustration of residuals without an apparent systematic pattern.</desc>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="15" x2="248" y1="45" y2="45"></line>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="15" x2="15" y1="10" y2="80"></line>
+<text fill="#9b9890" font-family="IBM Plex Mono" font-size="8" text-anchor="middle" x="130" y="88">Predictions →</text>
+<circle cx="35" cy="30" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="55" cy="57" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="75" cy="36" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="95" cy="60" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="115" cy="28" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="135" cy="52" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="155" cy="38" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="175" cy="63" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="195" cy="32" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="215" cy="55" fill="#1a5a2a" opacity=".6" r="3"></circle>
+<circle cx="235" cy="40" fill="#1a5a2a" opacity=".6" r="3"></circle>
+</svg>

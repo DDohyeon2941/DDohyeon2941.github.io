@@ -1,6 +1,10 @@
 # 포트폴리오 변경 검토
 
-## Latest: visible professional diagrams
+## Latest: visual ML session previews
+
+All nine company ML sessions and both supplements now have image-focused previews using 20 existing figures. Full bodies, ordering, URLs, and draft labels are preserved. See [SESSION-PREVIEWS.md](SESSION-PREVIEWS.md) for source mapping and interaction verification.
+
+## Visible professional diagrams
 
 The original safe validation diagram from the supplied portfolio is visible again. Larger correspondence and time-alignment diagrams now distinguish the two professional experiences, with mobile layouts and updated previews. Restricted original work images remain withheld. See [PROFESSIONAL-DIAGRAMS.md](PROFESSIONAL-DIAGRAMS.md) for source review and verification.
 

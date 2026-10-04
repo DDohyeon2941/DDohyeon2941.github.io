@@ -1,0 +1,16 @@
+<svg aria-labelledby="figure-title figure-description" height="90" role="img" style="font-family:system-ui,sans-serif;" viewBox="0 0 260 90" width="260" xmlns="http://www.w3.org/2000/svg"><title id="figure-title">U-shaped residual plot</title><desc id="figure-description">An existing U-shaped residual illustration showing structure a linear model has not captured.</desc>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="15" x2="248" y1="45" y2="45"></line>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="15" x2="15" y1="10" y2="80"></line>
+<text fill="#9b9890" font-family="IBM Plex Mono" font-size="8" text-anchor="middle" x="130" y="88">Predictions →</text>
+<path d="M30,25 Q130,78 235,22" fill="none" opacity=".4" stroke="#8a1a1a" stroke-dasharray="4 3" stroke-width="1"></path>
+<circle cx="35" cy="27" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="57" cy="42" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="79" cy="58" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="101" cy="70" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="123" cy="76" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="145" cy="70" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="167" cy="55" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="189" cy="38" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="211" cy="25" fill="#8a1a1a" opacity=".75" r="3"></circle>
+<circle cx="233" cy="20" fill="#8a1a1a" opacity=".75" r="3"></circle>
+</svg>
