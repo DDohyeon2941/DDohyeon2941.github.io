@@ -171,6 +171,41 @@
     <p>
      예를 들어 2볼 1스트라이크는 즉시 종료 확률 23.9%와 진행 확률 76.1%를 갖습니다. 볼 이후 3볼 1스트라이크의 아웃 확률은 약 41.7%, 스트라이크 이후 2볼 2스트라이크는 약 70.1%여서, IOM은 약 45.52%입니다. 3볼 2스트라이크에서는 다음 유효 사건이 반드시 타석을 끝내므로 IOM은 100%가 됩니다. 계산은 반올림 전 확률을 사용했습니다.
     </p>
+    <details id="coursework-illustrations">
+     <summary>
+      관련 수업 사례 · 타석 기록과 카운트 전이 그림
+     </summary>
+     <p>
+      2022년 강화학습 수업에서 이정언과 함께 투수의 구종 선택을 모델링했습니다. 투구 기록을 타석 단위의 에피소드로 묶고, 카운트를 상태로, 직구·변화구를 행동으로 정의했습니다. 아래 그림은 이 수업 과제의 데이터 구성과 MDP를 설명합니다.
+     </p>
+     <figure class="baseball-figure">
+      <a href="../images/research/case-baseball-episode.png">
+       <img alt="투수·타자·카운트의 투구 기록을 한 타석의 판정과 구종 순서로 정리한 수업 사례 그림" loading="lazy" src="../images/research/case-baseball-episode.png"/>
+      </a>
+      <figcaption>
+       발표 자료 11쪽 · 투구 기록을 타석 에피소드로 구성하는 흐름. 야구 일러스트 출처:
+       <a href="https://smcncad.com/495">
+        smcncad
+       </a>
+       .
+      </figcaption>
+     </figure>
+     <figure class="baseball-figure">
+      <a href="../images/research/case-baseball-mdp.png">
+       <img alt="12개 카운트와 아웃·출루 종료 상태 및 2스트라이크 이후 파울의 자기 전이를 나타낸 수업 과제의 MDP 도식" loading="lazy" src="../images/research/case-baseball-mdp.png"/>
+      </a>
+      <figcaption>
+       발표 자료 12쪽 · 수업 과제의 카운트 전이 도식. 기반 도식: Sidhu &amp; Caffo (2014),
+       <a href="https://doi.org/10.1214/13-AOAS712">
+        MONEYBaRL
+       </a>
+       .
+      </figcaption>
+     </figure>
+     <p>
+      수업 과제는 구종 선택을 위한 MDP이며, 2스트라이크 이후 파울의 자기 전이를 포함합니다. 위 IOM 논문의 DTMC는 이러한 파울을 제외하고 중요도를 계산합니다. 두 자료의 전이 확률과 실험 결과는 서로 다른 설정입니다.
+     </p>
+    </details>
    </section>
    <section class="section" id="part-2">
     <h2>
