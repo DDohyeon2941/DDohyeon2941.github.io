@@ -35,7 +35,7 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="home-page" id="main">
    <section class="profile-intro" id="home">
     <img alt="이도현 프로필 사진" class="profile-photo" height="1567" src="images/profile-dohyeon.jpg" width="1369"/>
     <div class="profile-copy">
@@ -43,16 +43,16 @@
       이도현
      </h1>
      <p class="muted">
-      불균형 학습 · ML 적용 · 데이터 구조 설계
+      데이터사이언스 박사 · 불균형 학습 · ML 데이터 구성
      </p>
      <p class="intro profile-identity">
-      데이터의 의미와 구조를 이해하고, 문제에 맞는 ML을 설계하는 사람입니다.
+      불균형 학습을 연구하고, 현업 데이터를 모델 학습과 평가로 연결합니다.
      </p>
      <p class="profile-context">
-      석사·박사과정에서는 데이터 분포에 따른 학습 편향을 연구했습니다. 현업에서는 제조 데이터를 검증·연결하고, 실제로 학습과 평가에 쓸 수 있는 데이터셋을 구성했습니다.
+      학위과정에서는 데이터 분포에 따른 학습 편향을 연구했고, 현업에서는 제조 데이터를 검증·연결해 학습용 데이터셋을 구성했습니다.
      </p>
      <p class="profile-context">
-      이 과정을 거치며 데이터가 무엇을 뜻하고 어떻게 만들어졌는지 이해하는 일이 중요하다고 느꼈습니다. 그래서 데이터의 의미와 관계를 살피고, 문제 정의부터 학습·평가까지 연결하는 일을 중요하게 생각합니다.
+      이 경험을 통해 데이터의 의미와 관계를 이해하는 일이 모델 적용의 출발점임을 배웠습니다. 이를 바탕으로 문제를 정의하고 학습·평가를 구성합니다.
      </p>
      <div class="contact">
       <a href="mailto:skypo1000@ds.seoultech.ac.kr">
@@ -67,6 +67,84 @@
      </div>
     </div>
    </section>
+   <section aria-labelledby="strengths-heading" class="home-strengths">
+    <h2 id="strengths-heading">
+     이런 일을 합니다
+    </h2>
+    <dl>
+     <div>
+      <dt>
+       분포에 맞는 학습 설계
+      </dt>
+      <dd>
+       클래스 분포와 겹침을 분석해 학습 방법과 증강 규모를 조정합니다.
+      </dd>
+     </div>
+     <div>
+      <dt>
+       학습용 데이터 구성
+      </dt>
+      <dd>
+       데이터의 의미와 대응 관계를 검증하고 연결·정렬합니다.
+      </dd>
+     </div>
+     <div>
+      <dt>
+       사용 맥락을 반영한 평가
+      </dt>
+      <dd>
+       예측 시점에 확보할 수 있는 정보와 모델의 평가 범위를 검토합니다.
+      </dd>
+     </div>
+    </dl>
+   </section>
+   <section aria-labelledby="work-heading" class="home-work">
+    <h2 id="work-heading">
+     대표 작업
+    </h2>
+    <article class="featured-work">
+     <div>
+      <p class="meta">
+       연구 · Expert Systems with Applications, 2021 · 1저자
+      </p>
+      <h3>
+       <a href="research/oversampling.html">
+        데이터셋 특성에 맞춘 효율적인 오버샘플링
+       </a>
+      </h3>
+      <p>
+       데이터셋의 분류 복잡도에 맞춰 기존 완전 균형 방식보다 적은 생성량을 적용하고, 여러 실험 조건에서 분류 성능을 유지하거나 개선했습니다.
+      </p>
+     </div>
+     <figure>
+      <img alt="논문 Figure 1의 F1·F2·N1·N2 분류 복잡도 분포" height="522" loading="lazy" src="images/research/paper-oversampling-complexity.png" width="876"/>
+      <figcaption>
+       분류 복잡도 분포 · 논문 그림
+      </figcaption>
+     </figure>
+    </article>
+    <article class="featured-work">
+     <div>
+      <p class="meta">
+       현업 프로젝트 · 데이터 검증과 연결
+      </p>
+      <h3>
+       <a href="projects/manufacturing-data.html">
+        제조 데이터를 분석·학습용 데이터셋으로 구성
+       </a>
+      </h3>
+      <p>
+       두 단계의 데이터를 동일 대상 기준으로 1:1 연결하고, 정합성 검증과 정렬·정규화로 분석·학습용 데이터셋을 구성했습니다.
+      </p>
+     </div>
+     <figure>
+      <img alt="이전 단계 결과와 이후 단계 입력을 동일 대상 기준으로 1:1 연결하는 일반적인 관계" height="180" loading="lazy" src="images/research/home-data-link.svg" width="300"/>
+      <figcaption>
+       동일 대상 기준의 연결 · 일반화 도식
+      </figcaption>
+     </figure>
+    </article>
+   </section>
    <div class="overview">
     <article id="research">
      <span id="machine-learning">
@@ -76,20 +154,22 @@
        연구
       </a>
      </h2>
-     <p>
-      불균형 학습과 수요·스포츠 데이터의 특성에 맞는 예측·분석을 연구했습니다.
-     </p>
-     <a href="research/oversampling.html">
-      분류 복잡도 기반 오버샘플링
-     </a>
-     ·
-     <a href="research/adaboost-rdt.html">
-      극단 수요 예측
-     </a>
-     ·
-     <a href="research.html">
-      전체 연구 →
-     </a>
+     <div class="overview-copy">
+      <p>
+       불균형 학습과 수요·스포츠 데이터의 특성에 맞는 예측·분석을 연구했습니다.
+      </p>
+      <a href="research/oversampling.html">
+       분류 복잡도 기반 오버샘플링
+      </a>
+      ·
+      <a href="research/adaboost-rdt.html">
+       극단 수요 예측
+      </a>
+      ·
+      <a href="research.html">
+       전체 연구 →
+      </a>
+     </div>
     </article>
     <article id="projects">
      <span id="data-architecture">
@@ -101,20 +181,22 @@
        프로젝트
       </a>
      </h2>
-     <p>
-      현업 데이터 검증·연결, 수업·개인 실험, 상권 분석의 문제 정의와 적용 과정을 소개합니다.
-     </p>
-     <a href="projects/manufacturing-data.html">
-      제조 데이터 검증과 연결
-     </a>
-     ·
-     <a href="projects/emergency-exit.html">
-      비상구 표지판 인식
-     </a>
-     ·
-     <a href="projects.html">
-      전체 프로젝트 →
-     </a>
+     <div class="overview-copy">
+      <p>
+       현업 데이터 검증·연결, 수업·개인 실험, 상권 분석의 문제 정의와 적용 과정을 소개합니다.
+      </p>
+      <a href="projects/manufacturing-data.html">
+       제조 데이터 검증과 연결
+      </a>
+      ·
+      <a href="projects/emergency-exit.html">
+       비상구 표지판 인식
+      </a>
+      ·
+      <a href="projects.html">
+       전체 프로젝트 →
+      </a>
+     </div>
     </article>
     <article id="talks">
      <span id="blog">
@@ -124,16 +206,18 @@
        글·세션
       </a>
      </h2>
-     <p>
-      회사 ML 세션과 블로그 글, 연구 발표 자료를 공유합니다. 초안과 보조 예제도 함께 수록했습니다.
-     </p>
-     <a href="sessions/aiguru/round1-01-ml-linear-regression.html">
-      ML 전체 흐름과 선형 회귀
-     </a>
-     ·
-     <a href="writing.html">
-      전체 글·세션 →
-     </a>
+     <div class="overview-copy">
+      <p>
+       회사 ML 세션과 블로그 글, 연구 발표 자료를 공유합니다. 초안과 보조 예제도 함께 수록했습니다.
+      </p>
+      <a href="sessions/aiguru/round1-01-ml-linear-regression.html">
+       ML 전체 흐름과 선형 회귀
+      </a>
+      ·
+      <a href="writing.html">
+       전체 글·세션 →
+      </a>
+     </div>
     </article>
     <article id="about">
      <span id="awards">
@@ -145,19 +229,21 @@
        이력
       </a>
      </h2>
-     <p>
-      학력 · 참여 연구 과제 3건 · 수상 경력 7건 · 논문 심사 5건
-     </p>
-     <p>
-      서울과학기술대학교 데이터사이언스 박사 (2025.02).
-     </p>
-     <a href="resume.html#academic-service">
-      학술 활동 · 논문 심사
-     </a>
-     ·
-     <a href="resume.html">
-      전체 이력 →
-     </a>
+     <div class="overview-copy">
+      <p>
+       학력 · 참여 연구 과제 3건 · 수상 경력 7건 · 논문 심사 5건
+      </p>
+      <p>
+       서울과학기술대학교 데이터사이언스 박사 (2025.02).
+      </p>
+      <a href="resume.html#academic-service">
+       학술 활동 · 논문 심사
+      </a>
+      ·
+      <a href="resume.html">
+       전체 이력 →
+      </a>
+     </div>
     </article>
    </div>
   </main>
