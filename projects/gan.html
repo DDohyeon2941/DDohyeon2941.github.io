@@ -66,7 +66,7 @@
       <img alt="전체 이미지의 공통 표현을 학습하고 클래스별 잠재분포에서 표본을 생성하는 Class-aware generation 흐름" loading="lazy" src="../images/research/portfolio-gan-class-aware.png"/>
      </a>
      <figcaption>
-      제공 포트폴리오 7쪽 · Class-aware generation 구현 흐름. 성능 결과를 나타내는 그림은 아닙니다.
+      Class-aware generation · 공통 표현 학습과 클래스별 잠재분포를 이용한 이미지 생성 흐름
      </figcaption>
     </figure>
    </div>
@@ -118,7 +118,7 @@
      수행 역할
     </h2>
     <p>
-     2023년 개인 후속 연구에서 PyTorch 기반 모델 구조, 손실함수, 학습 루프, 이미지 생성 및 downstream 분류 파이프라인을 구현했습니다. Critic 반영 비율과 손실 항 가중치를 조정해 비교할 수 있도록 실험을 구성했습니다. 2019년 팀 프로젝트의 세부 개인 분담은 별도로 명시하지 않습니다.
+     2023년 개인 후속 연구에서 PyTorch 기반 모델 구조, 손실함수, 학습 루프, 이미지 생성 및 downstream 분류 파이프라인을 구현했습니다. Critic 반영 비율과 손실 항 가중치를 조정해 비교할 수 있도록 실험을 구성했습니다. 2019년 실험은 팀 프로젝트로 수행했습니다.
     </p>
    </section>
    <section class="section" id="part-2">
@@ -141,7 +141,7 @@
      윤곽 정보와 분류 평가 연결
     </h3>
     <p>
-     실제·생성 이미지의 수평·수직 윤곽 차이를 Sobel edge loss로 설계하고 Dual-Critic loss와 결합했습니다. Critic과 edge 항의 가중치를 조정하는 구조를 구현하고, 생성 데이터와 원본 데이터를 ResNet 분류로 연결했습니다. 공개 실험 기록에서는 정확도 외에 F1·G-mean 등 불균형 분류 지표도 사용합니다.
+     실제·생성 이미지의 수평·수직 윤곽 차이를 Sobel edge loss로 설계하고 Dual-Critic loss와 결합했습니다. Critic과 edge 항의 가중치를 조정하는 구조를 구현하고, 생성 데이터와 원본 데이터를 ResNet 분류로 연결했습니다. 분류 평가에는 정확도 외에 F1·G-mean 등 불균형 분류 지표도 사용했습니다.
     </p>
     <details>
      <summary>
@@ -152,7 +152,7 @@
        <img alt="Class-aware generation, Dual-Critic 생성 가설, EdgeGenerator와 Sobel edge loss 결합을 정리한 포트폴리오 도식" loading="lazy" src="../images/research/portfolio-gan-approaches.png" style="max-width:100%;height:auto"/>
       </a>
       <figcaption>
-       제공 포트폴리오 7쪽 · 구현 방법과 평가 한계. 수치 비교나 성능 검증 그림은 아닙니다.
+       클래스별 생성과 Dual-Critic 생성 가설, EdgeGenerator·Sobel edge loss의 결합 구조
       </figcaption>
      </figure>
     </details>
@@ -168,7 +168,7 @@
      각 Critic은 해당 클래스의 real/fake 정도를 평가하며, 두 클래스를 구분하는 분류기가 아닙니다. 두 점수가 비슷하거나 모두 높은 생성물이 유용한 hard sample이라는 보장은 없습니다. 클래스 공통 특징, Critic 오류, 모호한 클래스 혼합, 생성 artifact를 구분할 판단 기준도 부족했습니다. Sobel edge 역시 윤곽을 표현할 뿐, 분류기의 의미적 특징을 직접 나타내지는 않습니다.
     </p>
     <p>
-     동일 조건의 정량 비교와 생성 현실성·다양성·경계 근접성의 동시 평가는 완료하지 않았습니다. 보존 코드만으로 edge 항의 학습 효과나 최종 성능을 확정하지 않으며, 2019년과 2023년 실험을 동일 조건의 성능 비교로 다루지 않습니다.
+     동일 조건의 정량 비교와 생성 현실성·다양성·경계 근접성의 동시 평가는 완료하지 않았습니다. edge 항의 학습 효과와 최종 성능을 검증하려면 추가 비교 실험이 필요하며, 2019년과 2023년 실험을 동일 조건의 성능 비교로 다루지 않습니다.
     </p>
     <h3>
      다시 정의한 연구 방향

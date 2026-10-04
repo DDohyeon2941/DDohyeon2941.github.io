@@ -20,6 +20,14 @@ p { margin:0 0 16px; }
 .meta,.session-status { font-size:14px; }
 .intro { max-width:730px; }
 .contact { display:flex; gap:8px 20px; flex-wrap:wrap; font-size:14px; margin:20px 0; }
+.profile-intro { display:grid; grid-template-columns:minmax(0,1fr) 136px; gap:32px; align-items:start; }
+.profile-copy { grid-column:1; grid-row:1; }
+.profile-photo { grid-column:2; grid-row:1; display:block; width:136px; height:auto; border-radius:3px; }
+@media (max-width:600px) {
+ .profile-intro { display:block; }
+ .profile-photo { float:right; width:88px; margin:0 0 12px 18px; }
+ .profile-copy .intro,.profile-copy .contact { clear:both; }
+}
 .section { padding:0; margin:0 0 34px; border:none; background:none; box-shadow:none; border-radius:0; scroll-margin-top:24px; }
 .section>h2 { padding-bottom:12px; border-bottom:1px solid var(--line); }
 .overview { margin-top:36px; border-top:1px solid var(--line); }
