@@ -89,6 +89,10 @@ td,th { border:1px solid var(--line); padding:8px; text-align:left; }
 .paper-extra img { display:block; width:100%; }
 .baseball-figure { max-width:640px; margin:12px auto; }
 .baseball-figure img { display:block; width:100%; background:white; }
+.baseball-opening { max-width:230px; margin:18px 0; }
+.baseball-opening img { display:block; width:100%; height:auto; max-height:none; }
+.baseball-opening figcaption { font-size:12px; margin-top:6px; }
+.baseball-summary .key-facts { padding-left:18px; font-size:14px; }
 .paper-extra figcaption { font-size:12px; }
 .detail-figure figcaption { font-size:12px; line-height:1.5; margin-top:6px; }
 .detail-page .toc { display:flex; align-items:baseline; gap:16px; padding:10px 0; margin:18px 0; }
