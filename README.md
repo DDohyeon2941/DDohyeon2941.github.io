@@ -6,7 +6,7 @@
 | --- | --- |
 | `index.html` | 소개, 연락처, 주요 목록 요약 |
 | `research.html`, `research/` | 주제별 연구 목록과 상세 8건 |
-| `projects.html`, `projects/` | 현업·학교/연구·분류 확인 필요 목록과 상세 11건 |
+| `projects.html`, `projects/` | 현업·학교/연구·공모전/지역 분석·소속 확인 필요 목록과 상세 11건 |
 | `writing.html` | 블로그, AIguru 세션, 연구 발표 목록 |
 | `posts/` | 기존 블로그 본문 3편 |
 | `sessions/aiguru/` | 기존 세션 9개와 보조 예제 2개 |

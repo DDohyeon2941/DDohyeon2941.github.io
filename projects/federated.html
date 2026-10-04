@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta content="width=device-width, initial-scale=1" name="viewport"/>
   <title>
-   Federated Learning with Flower | 이도현
+   Flower를 이용한 연합학습 실험 | 이도현
   </title>
   <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
   <link href="../assets/site.css" rel="stylesheet"/>
@@ -42,10 +42,13 @@
     </a>
    </p>
    <h1>
-    Federated Learning with Flower
+    Flower를 이용한 연합학습 실험
    </h1>
    <p class="meta">
-    분류 확인 필요
+    서울과학기술대학교 데이터베이스 수업 · 팀 프로젝트
+   </p>
+   <p class="intro">
+    클라이언트의 데이터 품질이 서로 다를 때, 모델을 단순히 합치는 것만으로 좋은 전역 모델을 만들 수 있을까? Flower로 집계 전략을 비교하고, 잘못된 라벨이 포함된 클라이언트의 업데이트를 제어하는 방법을 실험했습니다.
    </p>
    <nav aria-label="상세 목차" class="toc">
     <h2>
@@ -84,7 +87,10 @@
      문제와 맥락
     </h2>
     <p>
-     분산 환경에서의 협력 학습 프로젝트.
+     연합학습에서는 각 클라이언트가 자신의 데이터로 학습하고 서버가 모델 업데이트를 집계합니다. 데이터가 한곳에 모이지 않는 만큼, 일부 클라이언트의 학습 데이터가 부정확하면 그 영향이 전역 모델에도 전달될 수 있습니다.
+    </p>
+    <p>
+     프로젝트는 두 질문을 나누어 다뤘습니다. MNIST에서는 서버의 집계 전략에 따른 학습 차이를 비교하고, CIFAR-10에서는 정상 라벨과 일부 라벨을 섞은 클라이언트를 함께 참여시켜 데이터 품질의 영향을 살폈습니다.
     </p>
    </section>
    <section class="section" id="part-1">
@@ -92,23 +98,47 @@
      수행 역할
     </h2>
     <p>
-     수행 소속과 개인 기여 범위는 확인이 필요합니다.
+     김지효·김성철·이도현으로 구성된 수업 팀의 프로젝트입니다. 아래 내용은 팀 저장소에 공개된 구현과 실험 기록을 정리한 것입니다. 개인별 세부 분담은 공개 자료에 명시되어 있지 않습니다.
     </p>
    </section>
    <section class="section" id="part-2">
     <h2>
      접근 방법
     </h2>
+    <h3>
+     집계 전략 비교
+    </h3>
     <p>
-     Flower를 활용한 Federated Learning.
+     서버가 초기 가중치를 전달하면 클라이언트는 로컬 학습을 수행하고 업데이트를 반환합니다. 서버는 업데이트를 집계한 뒤 별도 평가 데이터로 손실과 정확도를 계산합니다. 이 과정을 반복하며 FedAvg, FedAdagrad, FedAdam, FedYogi를 비교했습니다.
+    </p>
+    <h3>
+     데이터 품질을 달리한 클라이언트
+    </h3>
+    <p>
+     CIFAR-10 실험은 정상 데이터 클라이언트 5개와 일부 라벨을 무작위로 바꾼 클라이언트 5개로 구성했습니다. 이미지 자체보다 학습 신호의 정확성이 달라지도록 설정했습니다.
+    </p>
+    <h3>
+     업데이트 제어
+    </h3>
+    <p>
+     모델 가중치의 노름을 이용한 필터링과 로컬 학습의 그래디언트 노름 클리핑을 시험했습니다. 공개 클라이언트 코드에는 SGD 학습과 클리핑 옵션이, 서버 코드에는 집계 전략 선택과 전역 모델 평가가 구현되어 있습니다.
     </p>
    </section>
    <section class="section" id="part-3">
     <h2>
      적용 범위
     </h2>
+    <h3>
+     공개 기록에서 확인되는 결과
+    </h3>
     <p>
-     분산 학습 프로젝트. 구체적인 실험 범위와 성과는 확인이 필요합니다.
+     MNIST에서는 FedAdam과 FedYogi가 FedAvg보다 빠르게 수렴하거나 더 높은 성능을 보였고, FedAdagrad는 더 낮은 성능을 보였다고 보고했습니다. 이는 해당 실험 조건의 관찰입니다.
+    </p>
+    <p>
+     CIFAR-10의 보고된 전역 정확도는 정상 업데이트를 사용한 경우 64.13%, 오류가 포함된 업데이트를 함께 사용한 경우 59.23%였습니다. 필터링과 클리핑은 이 실험에서 성능을 개선하지 못했습니다. 데이터 품질 문제를 업데이트 크기만으로 해결하기 어려웠다는 점도 주요 결과입니다.
+    </p>
+    <p>
+     공개된 수업 실험을 정리한 수치이며 여기서 다시 실행한 결과는 아닙니다. 실제 기관 간 운영이나 개인정보 보호 수준을 검증한 프로젝트로 확대 해석하지 않습니다.
     </p>
    </section>
    <section class="section" id="part-4">
@@ -117,7 +147,15 @@
     </h2>
     <p>
      <a href="https://github.com/JihyoKim00/federated-learning">
-      GitHub 코드
+      프로젝트 설명과 실험 기록
+     </a>
+     ·
+     <a href="https://github.com/JihyoKim00/federated-learning/blob/main/server.py">
+      서버 구현
+     </a>
+     ·
+     <a href="https://github.com/JihyoKim00/federated-learning/blob/main/client.py">
+      클라이언트 구현
      </a>
     </p>
    </section>
