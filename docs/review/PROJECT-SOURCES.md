@@ -9,7 +9,7 @@
 | 성수동 | [README·analysis/analyze_korean.py·preprocess/preprocess_for_training.py](https://github.com/DDohyeon2941/sungsoo) | 펠로우십 팀, 매출 회귀, 2023 학습/2024 평가, SHAP 집단 비교 |
 | 보험 청구 | [README·modules/Modeling/preprocessing.py·models.py](https://github.com/chromatices/2020_mirae_insurance_competition) | 대회 팀, 특징 구성, 질병군별 LightGBM, 층화 5분할 검증 |
 | GAN | [README와 연구 범위·시기별 실험 기록](https://github.com/DDohyeon2941/gan-for-imbalanced-image-data) | 2019 대학원 프로젝트와 2023 개인 실험 구분, 생성 모델 차이, 분류 평가와 생성 라벨의 타당성 |
-| OOD | [README·Base_experiment.py·IRM_experiment.py·IRM_ver1_experiment.py·IRM_rev_experiment.py](https://github.com/DDohyeon2941/Regularization-Penalty-Optimization-for-Addressing-Data-Quality-Variance-in-Ood-Algorithms) | Colored MNIST, 환경별 라벨 품질, IRM 규제 변경과 입력 민감도 |
+| OOD | [README·Base_experiment.py·IRM_experiment.py·IRM_ver1_experiment.py·IRM_rev_experiment.py](https://github.com/DDohyeon2941/Regularization-Penalty-Optimization-for-Addressing-Data-Quality-Variance-in-Ood-Algorithms) | 사용자 확인: 수업 과제. Colored MNIST, 환경별 라벨 품질, IRM 규제 변경과 입력 민감도 |
 | 수요 예측 | [공간 단위 연구](https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework), [극단 수요 모델](https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction)의 README·공간 생성 스크립트·models/models_0708_8.py | 공간 집계와 예측 모델의 두 문제 구분, 단계별 방법과 비교 기준 |
 | 야구 | [README·get_limit_prob_importance_fastball_0119.py](https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis) | 카운트 전이, 결과 확률, 중요도와 구속 비교, 관측 연구의 한계 |
 | 제조 데이터 2건 | 기존 소개·일반화한 블로그와 사용자 지정 공개 범위 | 동일 대상 연결, 시간·의미 정합성, 학습/사용 시점 일치; 내부 구현을 재현하지 않는 설명 |
