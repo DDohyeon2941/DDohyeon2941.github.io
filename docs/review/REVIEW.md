@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: CV highlights and evidenced skills
+
+The home introduction now includes the degree/date and linked research, award, and peer-review counts. Technical skills and practical strengths are supported by project links, with course/team experience clearly scoped. Personal weaknesses are excluded at the user's request. See [PROFILE-SKILLS.md](PROFILE-SKILLS.md) for evidence, desktop/mobile screenshots, and the 33 navigation checks.
+
 ## Latest: project problems and responses
 
 All nine project summaries now explain the problem and the response before technical implementation details. Lists, detail introductions, previews, and the home manufacturing example are consistent; full detailed bodies and supporting evidence remain intact. See [PROJECT-SUMMARIES.md](PROJECT-SUMMARIES.md) for scope and verification.

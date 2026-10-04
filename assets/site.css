@@ -32,6 +32,20 @@ p { margin:0 0 16px; }
 .home-page .profile-identity { font-size:21px; line-height:1.55; margin-bottom:16px; }
 .home-page .profile-context { line-height:1.75; }
 .home-page .contact { margin:18px 0 0; }
+.profile-degree { font-size:14px; margin:0 0 8px; }
+.profile-records { display:flex; flex-wrap:wrap; gap:4px 16px; list-style:none; padding:0; margin:0 0 18px; font-size:13px; }
+.profile-records li { margin:0; }
+.home-skills { margin-top:28px; padding-top:20px; border-top:1px solid var(--line); }
+.home-skills > h2 { font-size:18px; margin:0 0 14px; }
+.skills-list { margin:0; }
+.skills-list > div { display:grid; grid-template-columns:190px minmax(0,1fr); gap:24px; padding:12px 0; border-top:1px solid var(--line); }
+.skills-list > div:first-child { border-top:0; padding-top:0; }
+.skills-list dt { font-size:14px; font-weight:650; }
+.skills-list dd { margin:0; font-size:14px; line-height:1.7; }
+.skills-list p { margin:0 0 5px; }
+.skills-list .skill-tools { font-weight:550; }
+.skills-list a,.skills-scope { font-size:13px; }
+.skills-scope { color:var(--muted); line-height:1.7; margin:10px 0 0; }
 .home-strengths,.home-work { margin-top:28px; padding-top:20px; border-top:1px solid var(--line); }
 .home-strengths>h2,.home-work>h2 { font-size:18px; margin:0 0 14px; }
 .home-strengths dl { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:24px; margin:0; }
@@ -54,6 +68,8 @@ p { margin:0 0 16px; }
 @media (max-width:600px) {
  .home-page { padding-top:28px; }
  .home-page .profile-identity { font-size:19px; }
+ .profile-records { clear:both; padding-top:4px; }
+ .skills-list > div { grid-template-columns:1fr; gap:4px; }
  .home-strengths dl { grid-template-columns:1fr; gap:12px; }
  .home-strengths dt { margin-bottom:2px; }
  .featured-work { grid-template-columns:1fr; gap:12px; }
