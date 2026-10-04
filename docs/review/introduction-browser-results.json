@@ -5,7 +5,8 @@
     320
   ],
   "identity_visible_in_first_view": true,
-  "home_about_detail_resume_return_navigation": "passed",
-  "story_sections_preserved": 3,
+  "experience_and_perspective_visible_on_home": true,
+  "research_project_resume_home_navigation": "passed",
+  "old_about_address_redirects_to_home": true,
   "overflow_and_javascript_errors": []
 }
