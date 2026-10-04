@@ -1,0 +1,11 @@
+{
+  "viewports": [
+    1440,
+    390,
+    320
+  ],
+  "identity_visible_in_first_view": true,
+  "home_about_detail_resume_return_navigation": "passed",
+  "story_sections_preserved": 3,
+  "overflow_and_javascript_errors": []
+}
