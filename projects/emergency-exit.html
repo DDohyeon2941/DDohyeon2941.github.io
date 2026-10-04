@@ -35,7 +35,7 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../projects.html">
      ← 목록으로
@@ -47,12 +47,35 @@
    <p class="meta">
     서울과학기술대학교 IoT 수업 · 팀 프로젝트
    </p>
-   <p class="intro">
-    실내 이미지에서 비상구 표지판을 구분하는 분류 모델을 만들고, 경량 실행을 위한 TensorFlow Lite 변환을 수행했습니다. 비상구 여부를 판단하는 모델과 표지판 유형까지 구분하는 모델을 나누어 실험했습니다.
-   </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      실내 이미지에서 비상구 표지판을 구분하는 분류 모델을 만들고, 경량 실행을 위한 TensorFlow Lite 변환을 수행했습니다. 비상구 여부를 판단하는 모델과 표지판 유형까지 구분하는 모델을 나누어 실험했습니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       모델: MobileNetV2의 비상구 여부·표지 유형 분류
+      </li>
+      <li>
+       구현: 전이학습 → TFLite 양자화 → Edge TPU 변환
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/exit-architecture.png">
+      <img alt="학습 모델에서 TFLite·Edge TPU로 변환하는 흐름. 공개 팀 프로젝트의 기존 도식." loading="lazy" src="../images/research/exit-architecture.png"/>
+     </a>
+     <figcaption>
+      학습 모델에서 TFLite·Edge TPU로 변환하는 흐름. 공개 팀 프로젝트의 기존 도식.
+      <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance/blob/main/images/image.png">
+       출처
+      </a>
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>

@@ -35,21 +35,50 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../research.html">
      ← 목록으로
     </a>
    </p>
    <h1>
-    AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands
+    잔차 정보를 활용한 극단 수요 예측
    </h1>
+   <p class="paper-title">
+    AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands
+   </p>
    <p class="meta">
     IEEE ACCESS, 2024, 1저자
    </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      평균적인 수요와 급증하는 수요를 함께 예측하기 위해 AdaBoost에 잔차 기반 의사결정나무를 결합했습니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       방법: 잔차 트리의 정보를 후속 부스팅에 반영
+      </li>
+      <li>
+       평가: 일반 수요와 극단 수요 구간을 함께 비교
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/adaboost-comparison.png">
+      <img alt="서울 평일 Group 3의 α·β 설정별 MAPE 분석. 개별 실험 조건의 기존 그림." loading="lazy" src="../images/research/adaboost-comparison.png"/>
+     </a>
+     <figcaption>
+      서울 평일 Group 3의 α·β 설정별 MAPE 분석. 개별 실험 조건의 기존 그림.
+      <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction/blob/main/analysis/original/Seoul_Weekdays_Group3_MAPE_20240908.png">
+       출처
+      </a>
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>
@@ -79,7 +108,7 @@
      연구 문제
     </h2>
     <p>
-     공유자전거 수요에서 극단 수요와 일반 수요를 함께 예측하는 문제.
+     공유자전거 수요는 낮거나 보통인 구간이 많고 높은 수요 구간은 적습니다. 전체 평균 오차가 작아도 급증 구간을 과소 예측할 수 있어, 일반 수요의 예측을 유지하면서 극단 수요를 다루는 것이 문제였습니다.
     </p>
    </section>
    <section class="section" id="part-1">
@@ -87,7 +116,10 @@
      접근 방법
     </h2>
     <p>
-     잔차 기반 의사결정나무를 AdaBoost와 통합한 AdaBoost.RDT.
+     서울·대전의 시간별 이용 자료와 날씨·시간·지역 특성을 사용했습니다. 조정된 모델 트리와 잔차 기반 트리를 부스팅 과정에 결합하며, 이전 단계의 잔차 정보를 후속 학습의 추가 특징으로 전달합니다. 공개 구현은 잔차 정보를 이용해 예측 결합도 조정합니다.
+    </p>
+    <p>
+     AdaBoost와 다른 부스팅 모델을 비교하고 일반 수요·극단 수요 구간을 구분해 평가했습니다. 파라미터별 결과도 함께 분석해 특정 설정에 대한 민감도를 확인했습니다.
     </p>
    </section>
    <section class="section" id="part-2">
@@ -95,10 +127,7 @@
      기여
     </h2>
     <p>
-     극단 수요와 일반 수요를 고려한 예측 모델을 개발했습니다.
-    </p>
-    <p>
-     🔹 잔차기반 DT를 기반해, 공유자전거 대여분포내 존재하는 Extreme event와 normal event를 모두 적절히 예측하는 모델 개발
+     제1저자로 극단 수요 예측 모델 연구에 참여했습니다. 공개 연구 기록은 일반 수요 성능을 함께 고려하면서 극단 수요의 과소 예측을 완화한 결과를 보고합니다. 그림의 파라미터 분석은 개별 실험 조건이며 전체 모델의 보편적인 성능을 의미하지 않습니다.
     </p>
    </section>
    <section class="section" id="part-3">

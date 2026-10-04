@@ -35,7 +35,7 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../projects.html">
      ← 목록으로
@@ -47,12 +47,32 @@
    <p class="meta">
     개인 구현 기록이 있는 연구 실험 · 수행 소속 미기재
    </p>
-   <p class="intro">
-    훈련 환경마다 라벨 오류의 정도가 다를 때 IRM의 규제 항을 어떻게 조정할지 실험했습니다. Colored MNIST에서 환경별 데이터 품질과 입력 변화에 대한 민감도를 규제 설계에 반영했습니다.
-   </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      훈련 환경마다 라벨 오류의 정도가 다를 때 IRM의 규제 항을 어떻게 조정할지 실험했습니다. Colored MNIST에서 환경별 데이터 품질과 입력 변화에 대한 민감도를 규제 설계에 반영했습니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       실험: 환경별 라벨 품질이 다른 Colored MNIST
+      </li>
+      <li>
+       방법: IRM 규제의 환경 가중치·입력 민감도 조정
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/ood-method.svg">
+      <img alt="확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다." loading="lazy" src="../images/research/ood-method.svg"/>
+     </a>
+     <figcaption>
+      확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다.
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>

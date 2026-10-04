@@ -35,21 +35,47 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../research.html">
      ← 목록으로
     </a>
    </p>
    <h1>
-    Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets
+    소수 클래스의 어려운 표본을 보존하는 노이즈 필터링
    </h1>
+   <p class="paper-title">
+    Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets
+   </p>
    <p class="meta">
     JIFS, 2022, 1저자
    </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      AdaBoost의 큰 표본 가중치를 바로 노이즈로 판단하지 않고 클래스별 가중치 분포를 고려하는 연구입니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       방법: 클래스별 가중치 분포로 필터링 기준 설정
+      </li>
+      <li>
+       평가: 제거된 표본 수와 원본·노이즈 조건의 분류 성능
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/noise-filtering-method.svg">
+      <img alt="확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다." loading="lazy" src="../images/research/noise-filtering-method.svg"/>
+     </a>
+     <figcaption>
+      확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다.
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>
@@ -79,7 +105,7 @@
      연구 문제
     </h2>
     <p>
-     불균형 데이터에서 AdaBoost의 노이즈 필터링 문제.
+     AdaBoost는 반복해서 틀린 표본의 가중치를 키웁니다. 그러나 불균형 데이터에서는 중요한 소수 클래스 표본도 큰 가중치를 받을 수 있습니다. 이를 노이즈로 제거하면 소수 클래스의 정보를 잃는 문제가 있습니다.
     </p>
    </section>
    <section class="section" id="part-1">
@@ -87,7 +113,10 @@
      접근 방법
     </h2>
     <p>
-     클래스 간·클래스 내 변동성을 고려한 노이즈 필터링.
+     다수·소수 클래스의 가중치 분포를 구분해 필터링 기준을 정합니다. 공개 코드의 첫 방식은 클래스별 평균 가중치와 조정 계수를 사용하고, 두 번째 방식은 분포의 비대칭을 고려한 수정 SIQR 기준을 사용합니다. 판정된 표본의 가중치를 0으로 두어 후속 부스팅에서 제외합니다.
+    </p>
+    <p>
+     원본 데이터뿐 아니라 클래스 내부·외부 이웃 거리 관계를 이용해 노이즈를 주입한 자료에서도 비교했습니다. 필터링된 클래스별 표본 수와 최종 분류 성능을 함께 확인합니다.
     </p>
    </section>
    <section class="section" id="part-2">
@@ -95,10 +124,7 @@
      기여
     </h2>
     <p>
-     불균형 데이터의 분포 차이를 고려한 필터링 기법을 제안했습니다.
-    </p>
-    <p>
-     🔹 클래스 간 분포 차이를 고려한 노이즈 필터링 기법을 제안하여 기존 AdaBoost의 한계를 개선.
+     제1저자로 클래스별 분포를 고려한 필터링을 연구했습니다. 공개 기록은 소수 클래스 표본의 과도한 제거를 줄이고 원본·노이즈 주입 조건의 예측을 개선한 결과를 보고합니다. 표본 보존과 노이즈 억제의 균형이 기여이며, 무조건 표본을 많이 남기는 방법으로 설명하지 않습니다.
     </p>
    </section>
    <section class="section" id="part-3">

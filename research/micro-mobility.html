@@ -35,21 +35,50 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../research.html">
      ← 목록으로
     </a>
    </p>
    <h1>
-    Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility
+    이용 패턴을 반영한 공간 단위 생성
    </h1>
+   <p class="paper-title">
+    Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility
+   </p>
    <p class="meta">
     IET ITS, 2024, 1저자
    </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      격자의 크기·경계에 따라 수요 집계가 달라지는 MAUP를 줄이기 위해, 시공간 이용 패턴으로 지역을 통합하는 연구입니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       방법: 주요·보조 지역 구성 → 시공간 군집화
+      </li>
+      <li>
+       비교: 두 도시의 전동킥보드 자료와 고정 격자
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/mobility-heatmap.png">
+      <img alt="Kansas City의 공간별 분석 히트맵. 공개 연구 저장소의 기존 그림." loading="lazy" src="../images/research/mobility-heatmap.png"/>
+     </a>
+     <figcaption>
+      Kansas City의 공간별 분석 히트맵. 공개 연구 저장소의 기존 그림.
+      <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework/blob/main/Kansas/analysis/Figure5/Kansas_heatmap_0824.png">
+       출처
+      </a>
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>
@@ -79,26 +108,46 @@
      연구 문제
     </h2>
     <p>
-     격자 기반 공간 단위 설정에서 발생하는 MAUP 문제.
+     자유 이동형 이동 수단은 정해진 대여소가 없어 수요를 지역 단위로 집계해야 합니다. 고정 격자는 크기와 경계에 따라 수요 분포가 달라지고, 이용이 없는 지역과 수요가 집중된 지역이 함께 생깁니다. 이 공간 단위 설정 자체가 예측에 미치는 영향을 연구했습니다.
     </p>
    </section>
    <section class="section" id="part-1">
     <h2>
      접근 방법
     </h2>
-    <p>
-     자유 이동형 마이크로 모빌리티 수요 예측을 위한 공간 단위 생성 프레임워크.
-    </p>
+    <ol>
+     <li>
+      <strong>
+       기본 지역 구성:
+      </strong>
+      대여·반납 위치를 이용해 기본 격자와 대표점을 구성합니다.
+     </li>
+     <li>
+      <strong>
+       주요·보조 지역 결합:
+      </strong>
+      이용량으로 지역을 나누고 이용이 적은 보조 지역을 가까운 주요 지역에 결합합니다.
+     </li>
+     <li>
+      <strong>
+       시공간 통합:
+      </strong>
+      시간별 수요 표현과 공간 표현을 만들고 계층적 군집화로 지역을 통합합니다.
+     </li>
+     <li>
+      <strong>
+       예측 비교:
+      </strong>
+      Kansas City·Minneapolis의 공유 전동킥보드 자료에서 250m·500m·750m 고정 격자와 비교합니다.
+     </li>
+    </ol>
    </section>
    <section class="section" id="part-2">
     <h2>
      기여
     </h2>
     <p>
-     수요 예측에 활용할 공간 단위 생성 프레임워크를 개발했습니다.
-    </p>
-    <p>
-     🔹 기존의 grid-based areal unit 산정방식이 가지고 있는 MAUP를 해결하는 areal unit 프레임워크 개발
+     제1저자로 공간 단위 생성 프레임워크 연구에 참여했습니다. 모델 선택에 앞서 예측 대상의 집계 단위를 설계한다는 점이 핵심입니다. 공개 연구 설명은 과도한 0 수요와 극단 수요의 완화 및 예측 개선을 보고하며, 여기에는 확인되지 않은 개선율을 추가하지 않았습니다.
     </p>
    </section>
    <section class="section" id="part-3">

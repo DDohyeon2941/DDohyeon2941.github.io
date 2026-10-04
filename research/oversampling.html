@@ -35,21 +35,47 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../research.html">
      ← 목록으로
     </a>
    </p>
    <h1>
-    An efficient method to determine sample size in oversampling based on classification complexity for imbalanced data
+    분류 복잡도로 정하는 소수 클래스 생성량
    </h1>
+   <p class="paper-title">
+    An efficient method to determine sample size in oversampling based on classification complexity for imbalanced data
+   </p>
    <p class="meta">
     ESWA, 2021, 1저자
    </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      클래스 수를 무조건 같게 만드는 대신, 클래스 구분의 어려움을 이용해 오버샘플링 크기를 정했습니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       방법: 특징·이웃 기반 복잡도로 증강 크기 결정
+      </li>
+      <li>
+       평가: 16개 데이터셋에서 생성량과 분류 성능 비교
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/oversampling-method.svg">
+      <img alt="확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다." loading="lazy" src="../images/research/oversampling-method.svg"/>
+     </a>
+     <figcaption>
+      확인된 연구 문제 또는 구현을 정리한 개념도. 실험 결과나 수치를 나타내는 그림이 아닙니다.
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>
@@ -79,7 +105,7 @@
      연구 문제
     </h2>
     <p>
-     오버샘플링 크기를 일괄 설정하는 기존 방식의 한계.
+     소수 클래스 표본을 다수 클래스 수에 맞추어 일괄 생성하면 불필요한 증강과 과적합이 생길 수 있습니다. 표본 수의 차이뿐 아니라 현재 데이터가 얼마나 구분하기 어려운지를 생성량 결정에 반영했습니다.
     </p>
    </section>
    <section class="section" id="part-1">
@@ -87,7 +113,10 @@
      접근 방법
     </h2>
     <p>
-     분류 복잡도를 활용해 오버샘플링 크기를 결정합니다.
+     특징의 클래스 분리도와 이웃의 거리·라벨 구성을 이용해 분류 복잡도를 계산합니다. 클래스 간 표본 수 차이에 복잡도를 반영해 생성량을 정하고 SMOTEBoost·RAMOBoost·WOTBoost 등과 결합합니다.
+    </p>
+    <p>
+     공개 실험은 16개 불균형 데이터셋을 다룹니다. 구현에는 층화 5분할과 반복 실험, 학습 데이터에만 맞춘 표준화, F1·AUC·G-mean·재현율 등 불균형을 고려한 평가가 포함됩니다. 여기서 지표 F1과 분류 복잡도 척도의 명칭은 서로 다른 개념입니다.
     </p>
    </section>
    <section class="section" id="part-2">
@@ -95,10 +124,7 @@
      기여
     </h2>
     <p>
-     분류 복잡도에 기반한 샘플 크기 산출 방법을 제안했습니다.
-    </p>
-    <p>
-     🔹 기존 연구에서는 오버샘플링 크기를 일괄적으로 설정했으나, 본 연구에서는 분류 복잡도를 기반으로 최적 크기를 결정하는 방법을 제안.
+     제1저자로 분류 복잡도 기반 생성량 결정 방법을 연구했습니다. 공개 기록은 생성 표본을 줄이면서 기존 방식과 비슷하거나 더 나은 성능을 보고합니다. 핵심은 생성량과 분류 성능을 함께 평가하는 것이며, 확인되지 않은 감소율이나 개선율은 추가하지 않았습니다.
     </p>
    </section>
    <section class="section" id="part-3">

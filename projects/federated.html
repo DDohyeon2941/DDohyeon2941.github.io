@@ -35,7 +35,7 @@
     </a>
    </nav>
   </header>
-  <main id="main">
+  <main class="detail-page" id="main">
    <p class="breadcrumb">
     <a href="../projects.html">
      ← 목록으로
@@ -47,12 +47,35 @@
    <p class="meta">
     서울과학기술대학교 데이터베이스 수업 · 팀 프로젝트
    </p>
-   <p class="intro">
-    클라이언트의 데이터 품질이 서로 다를 때, 모델을 단순히 합치는 것만으로 좋은 전역 모델을 만들 수 있을까? Flower로 집계 전략을 비교하고, 잘못된 라벨이 포함된 클라이언트의 업데이트를 제어하는 방법을 실험했습니다.
-   </p>
+   <div class="detail-overview">
+    <div>
+     <p class="intro">
+      클라이언트의 데이터 품질이 서로 다를 때, 모델을 단순히 합치는 것만으로 좋은 전역 모델을 만들 수 있을까? Flower로 집계 전략을 비교하고, 잘못된 라벨이 포함된 클라이언트의 업데이트를 제어하는 방법을 실험했습니다.
+     </p>
+     <ul class="key-facts">
+      <li>
+       실험: 집계 전략 4종과 정상·라벨 오류 클라이언트
+      </li>
+      <li>
+       결과: 노름 필터링·클리핑은 해당 실험에서 개선 없음
+      </li>
+     </ul>
+    </div>
+    <figure class="detail-figure">
+     <a aria-label="그림 원본 보기" href="../images/research/flower-accuracy.png">
+      <img alt="MNIST 집계 전략별 테스트 정확도 곡선. 공개 팀 프로젝트의 기존 실험 그림." loading="lazy" src="../images/research/flower-accuracy.png"/>
+     </a>
+     <figcaption>
+      MNIST 집계 전략별 테스트 정확도 곡선. 공개 팀 프로젝트의 기존 실험 그림.
+      <a href="https://github.com/JihyoKim00/federated-learning/blob/main/assets/topic1-acc.png">
+       출처
+      </a>
+     </figcaption>
+    </figure>
+   </div>
    <nav aria-label="상세 목차" class="toc">
     <h2>
-     목차
+     바로가기
     </h2>
     <ol>
      <li>
