@@ -98,8 +98,11 @@
   .rank-dn{color:var(--green);font-weight:500;font-size:11px}
   .rank-same{color:var(--text3);font-size:11px}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+
 <div class="page">
 
 <!-- ── SECTION 0: 공통 시나리오 ── -->
@@ -467,7 +470,7 @@
 
   <!-- 세 방식 비교 -->
   <div class="label">세 방식 결과 비교 — 같은 모델, 다른 순위</div>
-  <table class="diff-table">
+  <div class="table-wrap"><table class="diff-table">
     <thead>
       <tr><th>변수</th><th>MDI 순위</th><th>OOB Permutation 순위</th><th>SHAP 평균 |값|</th><th>차이 포인트</th></tr>
     </thead>
@@ -508,7 +511,7 @@
         <td style="font-size:12px;color:var(--text3)">MDI에서 과대평가. 실제 기여 거의 없음</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="box box-amber">
     <div class="box-title">세션 핵심 메시지</div>
@@ -520,6 +523,6 @@
 </div>
 
 </div>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

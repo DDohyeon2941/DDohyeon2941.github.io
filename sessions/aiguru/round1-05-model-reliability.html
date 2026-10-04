@@ -109,8 +109,13 @@
 
   @media print{.nav{display:none}.page{padding:24px}}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 5 — 결과를 믿으면 안 되는 경우</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">지난주 핵심 복습 — Week 4 성과지표</a></li><li><a href="#s1">도입 — 좋은 지표가 나와도 의심해야 하는 이유</a></li><li><a href="#s2">Data Leakage — 모델이 속임수를 썼다</a></li><li><a href="#s3">Bias — 데이터가 현실을 왜곡할 때</a></li><li><a href="#s4">분포 변화 — 학습 때와 실전이 다를 때</a></li><li><a href="#s5">과적합 — 학습 데이터만 외웠다</a></li><li><a href="#s5b">지표 해석 전에 — y를 어떻게 정의했는가</a></li><li><a href="#s6">종합 진단 체크리스트 — 결과를 받았을 때 이 순서로 의심하라</a></li><li><a href="#s7">Q&amp;A</a></li></ol></details>
+
 
 <nav class="nav">
   <div class="nav-title">Week 5 — 결과를 믿으면 안 되는 경우</div>
@@ -259,7 +264,7 @@
     </div>
     <div class="tc-foot">
       <div class="label" style="margin-top:0">자주 발생하는 누수 패턴</div>
-      <table style="margin-bottom:0">
+      <div class="table-wrap"><table style="margin-bottom:0">
         <thead>
           <tr>
             <th>패턴</th>
@@ -294,7 +299,7 @@
             <td class="neg">소스·시점·전처리가 달라지면 학습과 다른 데이터가 들어옴</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 
@@ -402,7 +407,7 @@
     </div>
     <div class="tc-foot">
       <div class="label" style="margin-top:0">주요 편향 유형</div>
-      <table style="margin-bottom:0">
+      <div class="table-wrap"><table style="margin-bottom:0">
         <thead>
           <tr>
             <th>유형</th>
@@ -432,7 +437,7 @@
             <td class="muted">특정 조건에서만 모니터링 → 그 조건만 데이터에 많음</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 
@@ -463,36 +468,35 @@
     </div>
   </div>
 
-  <!-- Coining 실제 사례 -->
-  <div class="label">실제 프로젝트 사례</div>
-  <div class="case-box">
-    <div class="cb-head" style="background:var(--amber-bg);border-color:var(--amber-border)">
-      <span class="cb-tag" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">실제 사례 — Coining 프로젝트</span>
-      <span class="cb-title">특정 호기·양산 조건으로 적용 범위를 제한한 이유</span>
-    </div>
-    <div class="cb-body">
-      <div class="cb-row">
-        <div class="cb-row-label">배경</div>
-        <div>Coining 공정 모델 개발 과정에서 데이터 정합성 조건을 만족하는 케이스가 전체 중 일부에 불과했습니다. 그리고 그 케이스들이 <strong>특정 제품 모델에 집중</strong>되어 있었습니다. 데이터 자체가 특정 제품 모델 위주로 편향된 상태였습니다.</div>
-      </div>
-      <div class="cb-row">
-        <div class="cb-row-label">판단</div>
-        <div>편향된 데이터로 학습한 모델을 전체 호기·전 제품에 범용으로 적용하면, <strong>모델이 학습하지 못한 제품 모델과 조건에서는 신뢰할 수 없는 예측이 나올 수밖에 없습니다.</strong> 지표가 좋게 나와도 그 지표는 데이터가 있는 조건에서만 유효합니다.</div>
-      </div>
-      <div class="cb-row">
-        <div class="cb-row-label">결정</div>
-        <div>적용 범위를 <strong>정합성을 만족하는 데이터가 충분한 호기 및 양산 조건으로 한정</strong>했습니다. 모델이 실제로 학습한 범위 안에서만 사용하는 것입니다.</div>
-      </div>
-      <div class="cb-row">
-        <div class="cb-row-label">고객사 전달</div>
-        <div>이 한계를 사전에 고객사에 명확히 전달했습니다. <strong>"이 모델은 현재 데이터 기준으로 특정 조건에서 검증된 모델이며, 그 범위 밖의 제품 모델·호기에는 적용하지 않는다"</strong>는 점을 명시했습니다. 데이터가 확보되면 범위를 확장할 수 있다는 로드맵도 함께 제시했습니다.</div>
-      </div>
-      <div class="cb-row">
-        <div class="cb-row-label">교훈</div>
-        <div>편향된 데이터 문제를 모델 기술로 해결하려 하기보다, <strong>모델의 적용 범위를 데이터가 실제로 커버하는 범위로 솔직하게 제한하는 것</strong>이 현실적인 대응입니다. 그리고 그 한계를 이해관계자에게 사전에 공유하는 것이 신뢰를 만드는 방법입니다.</div>
-      </div>
-    </div>
-  </div>
+  <div class="label">일반화한 프로젝트 예시</div>
+<div class="case-box">
+<div class="cb-head" style="background:var(--amber-bg);border-color:var(--amber-border)">
+<span class="cb-tag" style="background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border)">일반화한 예시 — 학습 데이터의 적용 범위</span>
+<span class="cb-title">검증된 조건으로 적용 범위를 제한하는 이유</span>
+</div>
+<div class="cb-body">
+<div class="cb-row">
+<div class="cb-row-label">배경</div>
+<div>정합성 조건을 만족하는 데이터가 특정 조건에 집중되어 있다면 학습 데이터가 편향될 수 있습니다.</div>
+</div>
+<div class="cb-row">
+<div class="cb-row-label">판단</div>
+<div>학습하지 못한 조건에서는 예측을 신뢰하기 어렵습니다. 좋은 지표도 검증된 데이터 범위에서 해석해야 합니다.</div>
+</div>
+<div class="cb-row">
+<div class="cb-row-label">결정</div>
+<div>모델 적용 범위는 정합성과 충분한 데이터를 확인한 조건 안에서 정의해야 합니다.</div>
+</div>
+<div class="cb-row">
+<div class="cb-row-label">한계 공유</div>
+<div>검증된 조건과 그 밖의 조건을 구분해 이해관계자에게 알려야 합니다. 추가 데이터가 확보되면 적용 범위의 확장을 검토할 수 있습니다.</div>
+</div>
+<div class="cb-row">
+<div class="cb-row-label">교훈</div>
+<div>데이터 편향을 모델 기술로만 해결하려 하기보다 적용 범위와 한계를 명확히 정의하는 것이 필요합니다.</div>
+</div>
+</div>
+</div>
 
   <div class="diag">
     <div class="diag-title">Bias 진단 체크</div>
@@ -574,7 +578,7 @@
     </div>
     <div class="tc-foot">
       <div class="label" style="margin-top:0">분포 변화 유형</div>
-      <table style="margin-bottom:0">
+      <div class="table-wrap"><table style="margin-bottom:0">
         <thead>
           <tr><th>유형</th><th>정의</th><th>제조 예시</th></tr>
         </thead>
@@ -595,7 +599,7 @@
             <td class="muted">설비 노화로 불량률이 0.5% → 3%로 급등</td>
           </tr>
         </tbody>
-      </table>
+      </table></div>
     </div>
   </div>
 
@@ -1093,7 +1097,7 @@ for train_idx, val_idx in kfold.split(X_scaled):
 
   <div class="label" style="margin-top:20px">y 정의가 잘못되었을 때 생기는 문제</div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr>
         <th>상황</th>
@@ -1122,7 +1126,7 @@ for train_idx, val_idx in kfold.split(X_scaled):
         <td class="neg">전체 RMSE는 낮지만 정작 위험 구간에서 오차가 큼</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="grid-2">
     <div class="box box-red">
@@ -1388,6 +1392,6 @@ for train_idx, val_idx in kfold.split(X_scaled):
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

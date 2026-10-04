@@ -104,8 +104,13 @@
 
   @media print{.nav{display:none}.page{padding:24px}}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 6 — 시계열 데이터</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">지난주 핵심 복습 — Week 5 결과를 믿으면 안 되는 경우</a></li><li><a href="#s1">시계열이란 무엇인가 — 순서 ≠ 시계열</a></li><li><a href="#s2">일반 데이터와의 차이 — 무엇이 달라지는가</a></li><li><a href="#s3">시계열 데이터 누수 — 어디서 미래 정보가 들어오는가</a></li><li><a href="#s4">시점 기반 검증 — 올바른 검증이란</a></li><li><a href="#s4b">학습 데이터 범위와 재학습 주기 — 어떻게 결정하는가</a></li><li><a href="#s5">제조 현장 × 시계열 — 실무에서 주의할 것</a></li><li><a href="#s5b">배포 후 입력 데이터 문제 — 변수가 달라지면 어떻게 되는가</a></li><li><a href="#s6">해석 연습 — 시계열 결과 설명하기</a></li><li><a href="#s6b">시계열 전용 모델 vs 일반 ML — 어떤 걸 쓸 것인가</a></li><li><a href="#s7">정리 &amp; Q&amp;A</a></li></ol></details>
+
 
 <nav class="nav">
   <div class="nav-title">Week 6 — 시계열 데이터</div>
@@ -195,7 +200,7 @@
   </div>
 
   <div class="label">판단 기준 — 어떤 경우가 시계열인가</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>데이터 유형</th><th>시계열?</th><th>판단 근거</th></tr>
     </thead>
@@ -226,7 +231,7 @@
         <td>수요 예측이 목적이면 시계열. 고객 특성 분석이면 일반 데이터</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="grid-2">
     <div class="box box-red">
@@ -298,7 +303,7 @@
   </svg>
 
   <div class="label">시계열의 핵심 특징</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>특징</th><th>설명</th><th>제조 예시</th><th>영향</th></tr>
     </thead>
@@ -328,7 +333,7 @@
         <td class="neg">학습-배포 시점 분포가 달라 성능 저하</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 </div>
 
 <!-- ── 02: 일반 데이터와 차이 ── -->
@@ -617,7 +622,7 @@
   </div>
 
   <div class="label">검증 방식 비교</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>방식</th><th>시계열 적합성</th><th>Leakage 위험</th><th>언제 사용</th></tr>
     </thead>
@@ -647,7 +652,7 @@
         <td class="muted">시계열에 절대 사용 금지</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="box box-amber">
     <div class="box-title">실무에서 확인해야 할 체크리스트</div>
@@ -815,7 +820,7 @@
   </div>
 
   <div class="label">재학습 주기 결정 방식 — 세 가지 접근</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>방식</th><th>어떻게</th><th>장점</th><th>단점 / 주의</th></tr>
     </thead>
@@ -839,7 +844,7 @@
         <td class="warn-td">변경 이력 관리 체계 필요. 소규모 변경은 판단 어려움</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <!-- 성능 모니터링 시각화 -->
   <div class="label">성능 모니터링 기반 재학습 — 개념</div>
@@ -1039,7 +1044,7 @@
 
   <!-- 유형 A: 새 카테고리 -->
   <div class="label">문제 유형 A — 새 카테고리 등장 시 인코딩별 결과</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>인코딩 방식</th><th>새 카테고리가 들어왔을 때</th><th>결과</th></tr>
     </thead>
@@ -1060,7 +1065,7 @@
         <td class="neg">NaN 처리 → 에러 또는 전체 평균으로 대체</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="label">유형 A 대응 방식</div>
   <div class="grid-3">
@@ -1098,7 +1103,7 @@
 
   <!-- 유형 B: 변수 소실 -->
   <div class="label">문제 유형 B — 센서 고장으로 변수가 사라질 때</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>처리 방식</th><th>어떻게 되는가</th><th>위험도</th></tr>
     </thead>
@@ -1124,7 +1129,7 @@
         <td class="pos">단기(수 시점)는 안전. 장기 고장엔 부적합</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <!-- 성능 영향 개념 SVG -->
   <div class="label">변수 중요도에 따른 성능 영향</div>
@@ -1175,7 +1180,7 @@
   </svg>
 
   <div class="label">유형 B 대응 방식 — 고장 기간에 따라</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>고장 기간</th><th>권장 대응</th><th>이유</th></tr>
     </thead>
@@ -1196,7 +1201,7 @@
         <td class="muted">없는 변수를 NaN/0으로 계속 채우면 모델이 체계적으로 틀림</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <hr>
 
@@ -1454,7 +1459,7 @@
 
   <!-- 핵심 비교: 판단 기준 -->
   <div class="label">어떤 걸 선택할지 — 판단 기준</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>판단 기준</th><th>시계열 전용 모델 (ARIMA 등)</th><th>일반 ML + 시계열 피처</th></tr>
     </thead>
@@ -1495,7 +1500,7 @@
         <td class="neg">피처 설계 실수 → 높음</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <!-- 결정 흐름도 SVG — 확장판 -->
   <div class="label">모델 선택 → 학습 범위 → 재학습 전체 흐름도</div>
@@ -1675,7 +1680,7 @@
 
   <!-- 제조 현장 시나리오 -->
   <div class="label">제조 현장 시나리오별 판단</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>시나리오</th><th>추천 접근</th><th>이유</th></tr>
     </thead>
@@ -1701,7 +1706,7 @@
         <td class="muted">계절성 있으면 SARIMA 먼저. 공급사·가격 변수 추가 시 ML로 확장</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="box box-amber">
     <div class="box-title">현실적인 조언 — 둘 다 해보는 것이 정답</div>
@@ -1783,6 +1788,6 @@
   }, { rootMargin: '-30% 0px -60% 0px' });
   sections.forEach(s => observer.observe(s));
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

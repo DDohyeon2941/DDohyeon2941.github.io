@@ -51,8 +51,11 @@
   .outlier-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;user-select:none}
   .outlier-toggle input{cursor:pointer;accent-color:var(--red)}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+
 
 <h2>스케일링 비교 — 원본 · MinMax · 표준화</h2>
 <div class="subtitle">1,000개 샘플 (온도·압력 두 변수) — 산포도로 스케일링 효과 확인</div>
@@ -297,6 +300,6 @@ document.getElementById('outlierToggle').addEventListener('change', render);
 window.addEventListener('resize', render);
 window.addEventListener('load', () => { setTimeout(render, 100); });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

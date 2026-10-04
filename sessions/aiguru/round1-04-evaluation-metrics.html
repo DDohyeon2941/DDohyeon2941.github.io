@@ -131,8 +131,13 @@
 
   @media print{.nav{display:none}.page{padding:24px}}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 4 — 성과지표</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">지난주 핵심 복습 — Week 3 클러스터링 &amp; 유사도</a></li><li><a href="#s1">지표를 보는 관점 — "평균 성적표"의 함정</a></li><li><a href="#s2">회귀 지표 — MAE / RMSE / R² / Adjusted R²</a></li><li><a href="#s3">분류 지표 ① — Confusion Matrix 기반</a></li><li><a href="#s4">분류 지표 ② — ROC-AUC / PR-AUC</a></li><li><a href="#s4b">현업이 목표 지표를 요구할 때 — 달성 가능 여부 판단</a></li><li><a href="#s5">지표의 한계 &amp; 현업 기준과의 비교</a></li><li><a href="#s6">해석 연습 — 숫자만 보고 판단하는 함정</a></li><li><a href="#s7">사전질문 Q&amp;A</a></li></ol></details>
+
 
 <nav class="nav">
   <div class="nav-title">Week 4 — 성과지표</div>
@@ -471,7 +476,7 @@
   </div>
 
   <div class="label">회귀 지표 비교 요약</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>지표</th><th>단위</th><th>이상치 민감도</th><th>변수 수 패널티</th><th>제조에서 주 용도</th></tr>
     </thead>
@@ -481,7 +486,7 @@
       <tr><td><strong>R²</strong></td><td class="muted">없음 (0~1)</td><td class="warn-td">중간</td><td class="neg">없음 (부풀기 쉬움)</td><td>모델 전체 설명력</td></tr>
       <tr><td><strong>Adj R²</strong></td><td class="muted">없음 (0~1)</td><td class="warn-td">중간</td><td class="pos">있음</td><td>모델 간 공정 비교</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="q-box">
     <div class="q-label">토론 질문 1</div>
@@ -502,7 +507,7 @@
   <div class="label">Confusion Matrix — 기본 구조</div>
 
   <div class="cm-wrap">
-    <table class="cm-table">
+    <div class="table-wrap"><table class="cm-table">
       <thead>
         <tr>
           <th></th>
@@ -545,7 +550,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="label">각 지표 계산 — 위 예시 기준</div>
@@ -661,7 +666,7 @@
   <div class="label">수치로 보는 트레이드오프 — 전체 1000개, 실제 불량 20개</div>
 
   <div style="overflow-x:auto;margin-bottom:12px">
-    <table style="min-width:620px">
+    <div class="table-wrap"><table style="min-width:620px">
       <thead>
         <tr>
           <th>임계값</th>
@@ -702,7 +707,7 @@
           <td class="neg">19/69 = <strong>28%</strong></td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <div class="grid-2">
@@ -888,7 +893,7 @@
   </div>
 
   <div class="label">언제 어떤 지표를 쓰는가</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead>
       <tr><th>상황</th><th>추천 지표</th><th>이유</th></tr>
     </thead>
@@ -898,7 +903,7 @@
       <tr><td>불량 누출 비용이 훨씬 클 때</td><td class="neg">Recall 직접 기준</td><td>FN 최소화가 목표. Recall 90% 이상 등 구체적 기준</td></tr>
       <tr><td>임계값 최적화가 필요할 때</td><td class="warn-td">PR 곡선 시각화</td><td>비용 구조에 맞는 임계값 선택</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="q-box">
     <div class="q-label">토론 질문 3</div>
@@ -1290,6 +1295,6 @@
   }, { rootMargin: '-40% 0px -55% 0px' });
   sections.forEach(s => observer.observe(s));
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

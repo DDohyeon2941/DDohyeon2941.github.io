@@ -144,8 +144,13 @@
 
   @media print{.nav{display:none}.page{padding:24px}}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 3 — 클러스터링 &amp; 유사도</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">지난주 핵심 복습 — Week 2 트리 &amp; 앙상블</a></li><li><a href="#s1">클러스터링이란 — 정답 없이 묶는다</a></li><li><a href="#s2">Hard Clustering — 3가지 알고리즘</a></li><li><a href="#s3">Soft Clustering — GMM</a></li><li><a href="#s4">유사도 &amp; 비유사도 — 본질부터</a></li><li><a href="#s5">어떤 유사도·거리를 쓸 것인가</a></li><li><a href="#s6">군집 결과 해석 — "의미 있는 군집인가?"</a></li><li><a href="#s7">결과 해석 연습</a></li><li><a href="#s8">제조 현장 × 클러스터링 — 실제로 쓸 때 무엇을 주의해야 하는가</a></li></ol></details>
+
 
 <nav class="nav">
   <div class="nav-title">Week 3 — 클러스터링 & 유사도</div>
@@ -233,7 +238,7 @@
 
   <div class="note">클러스터링 = 정답(y) 없이 데이터 스스로 <strong>비슷한 것끼리 묶는</strong> 작업. 지도학습과 가장 근본적으로 다른 점이 여기서 시작된다</div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>구분</th><th>지도학습 (Week 1–2)</th><th>클러스터링 (이번 주)</th></tr></thead>
     <tbody>
       <tr>
@@ -257,7 +262,7 @@
         <td class="muted">각 데이터에 군집 번호 (Hard) 또는 소속 확률 (Soft)</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="box box-red">
     <div class="box-title">클러스터링의 핵심 전제 — 먼저 인식하고 시작</div>
@@ -589,7 +594,7 @@
   <hr>
 
   <div class="label">세 알고리즘 한눈에 비교</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>알고리즘</th><th>K 사전 지정</th><th>군집 모양</th><th>이상치 처리</th><th>대용량</th><th>주요 파라미터</th></tr></thead>
     <tbody>
       <tr>
@@ -617,7 +622,7 @@
         <td class="muted">Linkage 방식</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="q-box">
     <div class="q-label">토론 질문 2</div>
@@ -679,7 +684,7 @@
     </div>
   </div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>데이터</th><th>K-means (Hard)</th><th>GMM (Soft)</th><th>해석 차이</th></tr></thead>
     <tbody>
       <tr>
@@ -695,7 +700,7 @@
         <td class="neg">Hard는 단정, Soft는 "경계에 있다"고 표현</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="box box-amber">
     <div class="box-title">GMM의 한계</div>
@@ -767,7 +772,7 @@
     </p>
   </div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>모델</th><th>목적함수 / 손실함수</th><th>거기서 쓰는 거리·유사도</th><th>결과적 의미</th></tr></thead>
     <tbody>
       <tr>
@@ -795,7 +800,7 @@
         <td class="muted">취향 유사도가 추천의 근거. 손실함수와 직접 같지 않음</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <hr>
 
@@ -1117,7 +1122,7 @@
   <hr>
 
   <div class="label">전체 정리 — 본질 비교</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>수식</th><th>본질 (한 줄)</th><th>크기 반영</th><th>기준선 보정</th><th>metric 여부</th><th>값 범위</th></tr></thead>
     <tbody>
       <tr>
@@ -1161,7 +1166,7 @@
         <td class="pos">0 ~ 1</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 </div>
 
 <!-- ── 05: 어떤 유사도를 쓸까 ── -->
@@ -1348,14 +1353,14 @@
     <p>온도·압력·유량 3개 센서 데이터로 K-means(K=3, 유클리드 거리) 클러스터링 수행. Silhouette Score = 0.61.</p>
   </div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>군집</th><th>평균 온도 (°C)</th><th>평균 압력 (bar)</th><th>평균 유량 (L/min)</th><th>데이터 수</th><th>불량률</th></tr></thead>
     <tbody>
       <tr><td><strong>군집 0</strong></td><td>72</td><td>4.2</td><td>88</td><td>1,240</td><td class="pos">1.2%</td></tr>
       <tr><td><strong>군집 1</strong></td><td>85</td><td>6.8</td><td>63</td><td>890</td><td class="neg">8.7%</td></tr>
       <tr><td><strong>군집 2</strong></td><td>69</td><td>4.0</td><td>91</td><td>1,110</td><td class="pos">1.5%</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <ul class="checklist">
     <li>
@@ -1686,6 +1691,6 @@
     }
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

@@ -190,8 +190,12 @@
   @media (max-width: 580px) { .bb-scale { grid-template-columns: 1fr; } }
 
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#recap">지난 세션 복습 — Session 2</a></li><li><a href="#s1">불순도 수식 — Gini vs Entropy</a></li><li><a href="#s2">분기 기준 — 분류(Gain) vs 회귀(ΔMSE)</a></li><li><a href="#s3">변수 중요도가 수식에서 계산되는 방식</a></li><li><a href="#s4">Bagging vs Boosting — 수식 구조 차이</a></li><li><a href="#wrap">오늘 정리</a></li></ol></details>
+
 
 <nav class="nav">
   <span class="nav-badge">ROUND 2</span>
@@ -400,7 +404,7 @@
     </div>
 
     <div class="label">직접 계산해보기 — pₖ 분포별 Gini vs Entropy</div>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>분포 (p₁, p₂)</th><th>Gini = 1−Σpₖ²</th><th>Entropy = −Σpₖlog₂pₖ</th><th>해석</th></tr>
       <tr>
         <td class="mono">0.50 / 0.50</td>
@@ -426,7 +430,7 @@
         <td class="mono"><strong>0.00</strong></td>
         <td class="pos">완전 분리 — 둘 다 정확히 0</td>
       </tr>
-    </table>
+    </table></div>
 
     <div class="box box-amber">
       <div class="box-title">숫자로 보면 드러나는 차이 — Entropy가 "소수 클래스"에 더 민감하게 반응</div>
@@ -442,7 +446,7 @@
     </div>
 
     <div class="label">Gini vs Entropy — 나란히 비교</div>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>항목</th><th>Gini</th><th>Entropy</th></tr>
       <tr><td>수식</td><td class="mono">1 − Σpₖ²</td><td class="mono">−Σpₖlog₂pₖ</td></tr>
       <tr><td>단위</td><td class="muted">없음 (비율의 함수)</td><td class="muted">bit</td></tr>
@@ -451,7 +455,7 @@
       <tr><td>소수 클래스 민감도</td><td class="muted">상대적으로 둔감</td><td class="blue">상대적으로 민감 (log의 발산)</td></tr>
       <tr><td>계산 비용</td><td>가벼움 (제곱 연산)</td><td>무거움 (log 연산)</td></tr>
       <tr><td>실무 기본값</td><td class="blue">sklearn CART 기본값</td><td class="muted">ID3 / C4.5 계열</td></tr>
-    </table>
+    </table></div>
 
     <div class="q-box">
       <div class="q-label">토론 질문</div>
@@ -649,13 +653,13 @@
         <strong>왼쪽에서 접근</strong>: 84 → 84.9 → 84.99 → 84.999 → ... 이 점들은 전부 "온도≤85" 영역이라
         예측값이 <strong>모두 10</strong>. 그런데 도착지의 값은 40. 몫을 계산하면:
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>잡은 점</th><th>예측값 차이</th><th>거리 h</th><th>몫 = 차이/거리</th></tr>
         <tr><td class="mono">84.9</td><td class="mono">30</td><td class="mono">0.1</td><td class="mono">300</td></tr>
         <tr><td class="mono">84.99</td><td class="mono">30</td><td class="mono">0.01</td><td class="mono">3,000</td></tr>
         <tr><td class="mono">84.999</td><td class="mono">30</td><td class="mono">0.001</td><td class="mono">30,000</td></tr>
         <tr><td class="mono">84.9999</td><td class="mono neg">30 — 안 줄어듦</td><td class="mono">0.0001</td><td class="mono neg">300,000 — 정착 기미 없음</td></tr>
-      </table>
+      </table></div>
       <p style="margin-top:8px">
         핵심이 여기 있습니다 — <strong>가까이 갈수록 거리(분모)는 줄어드는데, 예측값 차이(분자)는 30에서 꿈쩍도 안 합니다.</strong>
         84.999까지 붙어도 여전히 왼쪽 영역이라 예측은 10이고, 85를 넘는 순간 40이니까요.
@@ -729,7 +733,7 @@
       <p>
         불량/정상 200건, 부모 노드의 불량률 18% (불량 36건 · 정상 164건)에서 시작합니다.
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>노드</th><th>건수</th><th>불량률</th><th>Gini</th></tr>
         <tr>
           <td>부모 (분기 전)</td>
@@ -749,7 +753,7 @@
           <td class="mono">4%</td>
           <td class="mono">1−(0.04²+0.96²) = <strong>0.0768</strong></td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         가중 평균 자식 Gini = (92/200)×0.4712 + (108/200)×0.0768 = 0.2168 + 0.0415 = <strong>0.2583</strong><br>
         <strong>Gain = 0.2952 − 0.2583 = 0.0369</strong><br><br>
@@ -792,7 +796,7 @@
       <p>
         연봉(백만원) 데이터 8명: 30, 32, 31, 29, 55, 58, 60, 57 — 부모 노드 평균 ȳ=44
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>노드</th><th>y값</th><th>ȳ</th><th>MSE = (1/n)Σ(yᵢ−ȳ)²</th></tr>
         <tr>
           <td>부모 (분기 전)</td>
@@ -812,7 +816,7 @@
           <td class="mono">57.5</td>
           <td class="mono">13/4 = <strong>3.25</strong></td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         가중 평균 자식 MSE = (4/8)×1.25 + (4/8)×3.25 = 0.625 + 1.625 = <strong>2.25</strong><br>
         <strong>ΔMSE = 184.5 − 2.25 = 182.25</strong><br><br>
@@ -823,13 +827,13 @@
     </div>
 
     <div class="label">분류 vs 회귀 — 구조적 대응</div>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>항목</th><th>분류</th><th>회귀</th></tr>
       <tr><td>노드 대표값</td><td>최빈 클래스 (pₖ)</td><td>평균 ȳ</td></tr>
       <tr><td>불순도 지표</td><td class="mono">Gini / Entropy</td><td class="mono">MSE (분산)</td></tr>
       <tr><td>분기 기준</td><td>Gain 최대화</td><td>ΔMSE 최대화</td></tr>
       <tr><td>"순수하다"의 의미</td><td>한 클래스로 쏠림</td><td>y값이 한 값 근처로 몰림</td></tr>
-    </table>
+    </table></div>
 
     <div class="box box-blue">
       <div class="box-title">공통 구조 — Week1에서 본 원리와 동일</div>
@@ -902,7 +906,7 @@
         02에서 구한 1차 분기(온도, 200건 전체 대상, Gain=0.0369)에 이어, 온도 높음 그룹(92건) 안에서
         압력으로 2차 분기를 했다고 가정합니다: 압력 높음 40건(불량 80%), 압력 낮음 52건(불량 10%).
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>분기</th><th>사용된 건수 / 전체</th><th>Gain</th><th>기여도 = (n/N) × Gain</th></tr>
         <tr>
           <td>① 온도 (root, 200건)</td>
@@ -916,7 +920,7 @@
           <td class="mono">0.2304</td>
           <td class="mono"><strong>0.46 × 0.2304 = 0.1060</strong></td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         Importance(온도) = 0.0369, Importance(압력) = 0.1060 → 합 = 0.1429<br>
         정규화하면 <strong>온도 = 0.0369/0.1429 = 25.8%</strong>, <strong>압력 = 0.1060/0.1429 = 74.2%</strong><br><br>
@@ -979,12 +983,12 @@
           Gain≈0, 운 좋게 3A1B/1A3B가 되어도 Gain=0.125. 어느 쪽이든 <strong>그 1장의 결과를 좋든 나쁘든 그대로</strong>
           제출해야 합니다 — 다시 뽑을 기회가 없습니다.
         </p>
-        <table style="margin-top:10px">
+        <div class="table-wrap"><table style="margin-top:10px">
           <tr><th></th><th>무의미한 이진 변수</th><th>무의미한 연속형 변수</th></tr>
           <tr><td>제비 수</td><td class="mono">1장</td><td class="mono">n−1장 (위 예시에선 7장)</td></tr>
           <tr><td>제출하는 것</td><td>그 1장 (좋든 나쁘든)</td><td>n−1장 중 <strong>최고</strong></td></tr>
           <tr><td>결과</td><td class="muted">Gain이 0 근처에 머묾</td><td class="neg">최고만 뽑으니 Gain이 체계적으로 부풀려짐</td></tr>
-        </table>
+        </table></div>
         <p style="margin-top:8px">
           두 변수 모두 y에 대해 <strong>똑같이 무의미</strong>한데, 트리의 눈에는 연속형이 항상 더 좋아 보입니다 —
           실력 차이가 아니라 <strong>응시 횟수 차이</strong>입니다.
@@ -992,12 +996,12 @@
         </p>
       </div>
 
-      <table style="margin-top:10px">
+      <div class="table-wrap"><table style="margin-top:10px">
         <tr><th>변수 유형</th><th>분기점 후보 수 K</th><th>무의미한 변수여도</th></tr>
         <tr><td>이진 변수 (성별 등)</td><td class="mono">1</td><td class="muted">제비뽑기 1번 — 우연의 상한 낮음</td></tr>
         <tr><td>범주 10개 변수</td><td class="mono">~9</td><td class="muted">9번 중 최고만 제출</td></tr>
         <tr><td>연속형 (유니크값 n개)</td><td class="mono">n−1</td><td class="neg">n−1번 중 최고만 제출 — 우연의 상한이 가장 높음</td></tr>
-      </table>
+      </table></div>
       <p style="margin-top:8px">
         통계로 치면 <strong>다중 검정을 하고 보정 없이 가장 좋은 결과만 보고하는 것</strong>과 같은 구조입니다.
         그리고 Gain/ΔMSE 수식 어디에도 "후보를 몇 개 시도했는가"에 대한 항이 없기 때문에,
@@ -1049,13 +1053,13 @@
       </p>
     </div>
 
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>모델</th><th>구분</th><th>이유</th></tr>
       <tr><td>선형 / 로지스틱 회귀</td><td class="blue">Parametric</td><td>f 형태 고정, 파라미터 수가 데이터와 무관</td></tr>
       <tr><td>Decision Tree</td><td class="pos">Non-parametric</td><td>분기 구조 자체를 데이터가 결정</td></tr>
       <tr><td>RandomForest (Bagging)</td><td class="pos">Non-parametric</td><td>Non-parametric 트리들의 평균</td></tr>
       <tr><td>AdaBoost / GBM / XGBoost</td><td class="pos">Non-parametric</td><td>Non-parametric 트리들의 가중합, 구조가 데이터 의존</td></tr>
-    </table>
+    </table></div>
 
     <div class="box box-green">
       <div class="box-title">재미있는 반례 — Boosting이라서가 아니라 "베이스가 뭐냐"가 결정한다</div>
@@ -1164,12 +1168,12 @@
       <p>
         3×3 표로 보면 총 9칸입니다:
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th></th><th>a₁</th><th>a₂</th><th>a₃</th></tr>
         <tr><td class="mono">a₁</td><td class="pos">σ²</td><td class="mono">ρσ²</td><td class="mono">ρσ²</td></tr>
         <tr><td class="mono">a₂</td><td class="mono">ρσ²</td><td class="pos">σ²</td><td class="mono">ρσ²</td></tr>
         <tr><td class="mono">a₃</td><td class="mono">ρσ²</td><td class="mono">ρσ²</td><td class="pos">σ²</td></tr>
-      </table>
+      </table></div>
       <p style="margin-top:8px">
         대각선 3칸 = 자기 제곱(aᵦ²)의 평균 = 각각 <strong>σ²</strong>.
         비대각 6칸 = 교차항(aᵦaᵦ')의 평균 = 각각 <strong>Cov = ρ·σ·σ = ρσ²</strong>
@@ -1201,13 +1205,13 @@
       </p>
 
       <div class="label" style="margin-top:14px">숫자로 검산 — σ²=100, ρ=0.5</div>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>B</th><th>원형: σ²/B + ((B−1)/B)ρσ²</th><th>재배열형: ρσ² + (1−ρ)σ²/B</th></tr>
         <tr><td class="mono">1</td><td class="mono">100 + 0 = 100</td><td class="mono">50 + 50 = 100 ✓ (트리 1그루 = σ² 그대로)</td></tr>
         <tr><td class="mono">3</td><td class="mono">33.3 + 33.3 = 66.7</td><td class="mono">50 + 16.7 = 66.7 ✓</td></tr>
         <tr><td class="mono">100</td><td class="mono">1 + 49.5 = 50.5</td><td class="mono">50 + 0.5 = 50.5 ✓</td></tr>
         <tr><td class="mono">∞</td><td class="mono">0 + 50 = 50</td><td class="mono neg">50 + 0 = 50 — ρσ²이 바닥</td></tr>
-      </table>
+      </table></div>
 
       <p style="margin-top:10px">
         결론: 트리 개수(B)로 줄일 수 있는 건 (1−ρ)σ²/B 부분뿐이고, <strong>ρσ²라는 바닥은 오직 ρ를 낮춰야만 내려갑니다</strong>.
@@ -1215,12 +1219,12 @@
         RandomForest가 매 분기마다 변수를 랜덤 서브샘플링하는 이유가 여기서 나옵니다 —
         일부러 트리마다 다른 변수를 보게 해서 ρ 자체를 끌어내리는 장치입니다.
       </p>
-      <table style="margin-top:10px">
+      <div class="table-wrap"><table style="margin-top:10px">
         <tr><th>상황 (σ²=100 가정)</th><th>ρ</th><th>B=100일 때 Var(f_bag)</th></tr>
         <tr><td>트리들이 거의 복제품</td><td class="mono">0.9</td><td class="mono">90 + 0.1 ≈ <strong>90</strong> — 100그루가 거의 헛수고</td></tr>
         <tr><td>Bagging (부트스트랩만)</td><td class="mono">0.5</td><td class="mono">50 + 0.5 ≈ <strong>50</strong></td></tr>
         <tr><td>RandomForest (+ 변수 랜덤)</td><td class="mono">0.2</td><td class="mono">20 + 0.8 ≈ <strong>21</strong> — 같은 100그루로 절반 이하</td></tr>
-      </table>
+      </table></div>
     </div>
 
     <div class="box box-blue">
@@ -1229,7 +1233,7 @@
         "트리들을 서로 다르게(ρ↓) 만들면 트리들의 결과가 제각각이 되는데, 그게 분산이 커지는 것 아닌가?" —
         자연스러운 의문이고, 실제로 <strong>절반은 맞습니다</strong>. 다만 커지는 분산과 줄어드는 분산이 서로 다른 것입니다.
       </p>
-      <table style="margin-top:10px">
+      <div class="table-wrap"><table style="margin-top:10px">
         <tr><th></th><th>① 트리들끼리의 차이</th><th>② Var(f_bag) — 우리가 줄이려는 것</th></tr>
         <tr>
           <td>무엇의 흩어짐?</td>
@@ -1246,7 +1250,7 @@
           <td class="neg">커짐 (트리들을 일부러 다르게 만들었으니)</td>
           <td class="pos">작아짐 (흔들림이 서로 상쇄되므로)</td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         수식의 σ²도 ①이 아니라 ② 계열입니다 — "트리들 사이의 차이"가 아니라
         <strong>트리 한 그루가 학습 데이터에 따라 출렁이는 정도</strong>입니다.
@@ -1376,7 +1380,7 @@
         i번째 항은 오직 F(xᵢ) 하나에만 의존하므로, F(xᵢ)로 미분하면 나머지 항은 전부 0 —
         <strong>교차 항이 없습니다.</strong> F(x₃)를 밀어도 F(x₇)의 손실은 전혀 변하지 않습니다.
       </p>
-      <table style="margin-top:10px">
+      <div class="table-wrap"><table style="margin-top:10px">
         <tr><th></th><th>파라미터 공간 (선형 회귀)</th><th>함수 공간 (GBM의 관점)</th></tr>
         <tr>
           <td>움직이는 것</td>
@@ -1393,7 +1397,7 @@
           <td class="mono">∂L/∂β = Σᵢ(...) — 전 샘플의 합</td>
           <td class="mono">gᵢ — 샘플별로 따로</td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         선형 회귀의 ∂L/∂β에 Σ가 붙는 이유가 정확히 "β가 공유 파라미터라서"입니다.
         함수 공간에는 공유 파라미터가 없으니 Σ 없이 샘플별로 완전히 분리됩니다.<br><br>
@@ -1459,7 +1463,7 @@
         ½을 붙이는 이유도 여기서 보입니다 — 미분할 때 제곱의 2와 상쇄되어 식이 깔끔해지는 관례적 장치일 뿐,
         최소화 지점은 바뀌지 않습니다.
       </p>
-      <table style="margin-top:10px">
+      <div class="table-wrap"><table style="margin-top:10px">
         <tr><th>손실함수 L</th><th>−∂L/∂F = gᵢ</th><th>해석</th></tr>
         <tr>
           <td class="mono">½(y−F)² (제곱오차, 회귀)</td>
@@ -1476,7 +1480,7 @@
           <td class="mono"><strong>y − p</strong>, p=σ(F)</td>
           <td class="muted">실제 라벨과 예측 확률의 차이 — "확률의 잔차" 형태</td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         세 경우 모두 알고리즘은 동일하고 <strong>gᵢ의 식만 바뀝니다</strong>. 이상치가 많은 데이터에서 제곱오차 대신
         절대오차(또는 Huber)를 쓰면 왜 강건해지는지도 이 표에서 보입니다 — 이상치의 큰 잔차(y−F)를 그대로 좇는 대신
@@ -1519,7 +1523,7 @@
       <p>
         y = (10, 20, 30)인 3건으로 Gradient Boosting(제곱오차, ν=1)을 손으로 돌려봅니다.
       </p>
-      <table style="margin-top:8px">
+      <div class="table-wrap"><table style="margin-top:8px">
         <tr><th>단계</th><th>예측 F</th><th>잔차 r = y − F</th><th>비고</th></tr>
         <tr>
           <td class="mono">F₀ (초기값)</td>
@@ -1543,7 +1547,7 @@
           <td class="mono" colspan="2">남은 잔차 (0, −5, +5)를 타깃으로 다음 트리 학습 → ...</td>
           <td class="muted">이 과정을 m번 반복 — 매번 "남은 오차"만 좇음</td>
         </tr>
-      </table>
+      </table></div>
       <p style="margin-top:10px">
         여기서 Boosting의 성격이 그대로 보입니다 — <strong>각 트리는 y를 맞추는 게 아니라 "직전까지 못 맞춘 부분"만 맞춥니다.</strong>
         그래서 첫 트리를 빼고는 어떤 트리도 단독으로는 의미가 없고(잔차를 예측하는 함수일 뿐),
@@ -1563,14 +1567,14 @@
     </div>
 
     <div class="label">나란히 비교</div>
-    <table>
+    <div class="table-wrap"><table>
       <tr><th>항목</th><th>Bagging</th><th>Boosting</th></tr>
       <tr><td>트리 학습 방식</td><td>병렬 · 독립</td><td>순차 · 의존적</td></tr>
       <tr><td>목적</td><td class="pos">분산(Variance) 감소</td><td class="amber">편향(Bias) 감소</td></tr>
       <tr><td>핵심 수식</td><td class="mono">f_bag=(1/B)Σf_b(x)</td><td class="mono">Fₘ=Fₘ₋₁+γₘhₘ</td></tr>
       <tr><td>각 트리가 보는 것</td><td>원본 데이터의 부트스트랩 샘플</td><td>이전 모델의 잔차</td></tr>
       <tr><td>과적합 위험</td><td>상대적으로 낮음 (평균이 완충)</td><td>상대적으로 높음 (계속 잔차를 좇음)</td></tr>
-    </table>
+    </table></div>
 
     <div class="box box-red">
       <div class="box-title">왜 순서가 다른가 — 수식으로 보는 결론</div>
@@ -1643,6 +1647,6 @@
     navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

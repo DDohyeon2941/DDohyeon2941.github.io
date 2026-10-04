@@ -1,0 +1,61 @@
+:root { --paper:#fafaf8; --ink:#252b30; --muted:#626b72; --line:#dce0df; --accent:#28645f; }
+* { box-sizing:border-box; }
+html { scroll-behavior:auto; }
+body { margin:0; background:var(--paper); color:var(--ink); font:16px/1.85 system-ui,-apple-system,"Segoe UI",sans-serif; overflow-wrap:anywhere; }
+a { color:var(--accent); text-underline-offset:3px; }
+a:hover { text-decoration-thickness:2px; }
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible { outline:2px solid var(--accent); outline-offset:4px; }
+.site-header { border-bottom:1px solid var(--line); }
+.site-nav { max-width:980px; margin:auto; padding:17px 24px; display:flex; align-items:center; gap:28px; flex-wrap:wrap; font-size:14px; }
+.site-nav .name { color:var(--ink); font-weight:650; margin-right:auto; text-decoration:none; }
+.site-nav [aria-current=page] { font-weight:700; text-decoration:underline; }
+.site-nav a { white-space:nowrap; }
+main,.container { max-width:920px; margin:0 auto; padding:44px 24px 72px; }
+h1,h2,h3,h4 { line-height:1.5; color:var(--ink); font-weight:650; }
+h1 { font-size:28px; margin:0 0 14px; }
+h2 { font-size:21px; margin:36px 0 16px; }
+h3 { font-size:17px; margin:24px 0 10px; }
+p { margin:0 0 16px; }
+.muted,.meta,.section-intro,.session-status { color:var(--muted); }
+.meta,.session-status { font-size:14px; }
+.intro { max-width:730px; }
+.contact { display:flex; gap:8px 20px; flex-wrap:wrap; font-size:14px; margin:20px 0; }
+.section { padding:0; margin:0 0 34px; border:none; background:none; box-shadow:none; border-radius:0; scroll-margin-top:24px; }
+.section>h2 { padding-bottom:12px; border-bottom:1px solid var(--line); }
+.overview { margin-top:36px; border-top:1px solid var(--line); }
+.overview article { padding:22px 0; border-bottom:1px solid var(--line); }
+.overview h2 { margin:0 0 8px; font-size:19px; }
+ul,ol { padding-left:24px; }
+li { margin:10px 0; }
+.entries { padding:0; list-style:none; }
+.entries>li { padding:20px 0; margin:0; border-bottom:1px solid var(--line); }
+.entries h3 { margin:0 0 6px; }
+.entries p { margin:6px 0; }
+.entries .meta { margin:6px 0; }
+.session-list li { padding:8px 0; }
+.session-list p { margin:4px 0; color:var(--muted); }
+.project-group+.project-group { margin-top:28px; }
+.breadcrumb { font-size:14px; margin-bottom:24px; }
+.toc { border-block:1px solid var(--line); margin:24px 0 32px; padding:16px 0; font-size:14px; }
+.toc h2 { font-size:16px; margin:0 0 8px; }
+.toc ol { margin:0; }
+.toc li { margin:3px 0; }
+details { border-block:1px solid var(--line); padding:16px 0; margin:20px 0; }
+summary { cursor:pointer; font-weight:600; }
+.highlight,.diagram { background:#f1f3f1; border-left:2px solid var(--line); padding:18px 20px; margin:24px 0; border-radius:0; }
+.diagram { text-align:left; }
+img,svg { max-width:100%; height:auto; }
+figure { margin:24px 0; }
+figcaption { font-size:14px; color:var(--muted); }
+.relation { display:flex; align-items:center; gap:12px; padding:16px 0; list-style:none; font-size:15px; }
+.relation li { flex:1; margin:0; text-align:center; position:relative; }
+.relation li+li::before { content:"→"; position:absolute; left:-12px; top:50%; transform:translateY(-50%); color:var(--muted); }
+table { border-collapse:collapse; max-width:100%; font-size:14px; }
+td,th { border:1px solid var(--line); padding:8px; text-align:left; }
+.site-footer { max-width:920px; margin:auto; padding:20px 24px; border-top:1px solid var(--line); font-size:13px; color:var(--muted); }
+.skip-link { position:absolute; top:-100px; left:16px; padding:8px 12px; background:white; z-index:1000; }
+.skip-link:focus { top:8px; }
+.case-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.case-card { border-left:2px solid var(--line); padding:12px 18px; }
+.case-card .label { font-weight:600; }
+@media(max-width:600px) { body { font-size:15px; } .site-nav { padding:14px 18px; gap:10px 20px; } .site-nav .name { flex-basis:100%; } main,.container { padding:30px 18px 48px; } h1 { font-size:24px; } h2 { font-size:20px; } .case-grid { grid-template-columns:1fr; } }

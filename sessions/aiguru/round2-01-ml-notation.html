@@ -300,8 +300,12 @@
   @media (max-width: 400px) { .recap-grid { grid-template-columns: 1fr; } }
 
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#recap">Round 1 복습 — 6단계 흐름 재확인</a></li><li><a href="#why">왜 수식을 읽을 줄 알아야 하는가</a></li><li><a href="#func">함수(function)란 무엇인가</a></li><li><a href="#notation">Notation — 수식에서 쓰는 기호 신규</a></li><li><a href="#case">수식에서 대문자와 소문자의 차이 신규</a></li><li><a href="#howtoread">수식 기호를 읽는 법 신규</a></li><li><a href="#fxy">f(X) = ŷ 란 무엇인가</a></li><li><a href="#flow">ML 전체 흐름 — 수식 관점으로</a></li><li><a href="#loss">학습이란 무엇인가 — 손실함수</a></li></ol></details>
+
 
 <nav class="nav">
   <span class="nav-badge">ROUND 2</span>
@@ -603,7 +607,7 @@
     <div class="note">수식은 새로운 언어입니다. 단어를 먼저 알아야 문장을 읽을 수 있듯이, 기호 의미를 잡아두면 이후 수식이 훨씬 빠르게 읽힙니다.</div>
 
     <div class="label">핵심 기호 정리</div>
-    <table class="n-table">
+    <div class="table-wrap"><table class="n-table">
       <thead>
         <tr>
           <th style="width:70px">기호</th>
@@ -685,7 +689,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
   </div>
 
   <!-- ══════════════════════════════
@@ -703,7 +707,7 @@
       가장 자주 헷갈리는 쌍을 정리합니다.
     </div>
 
-    <table class="case-table">
+    <div class="table-wrap"><table class="case-table">
       <thead>
         <tr>
           <th style="width:54px">대문자</th>
@@ -762,7 +766,7 @@
           </td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="box box-amber">
       <div class="box-title">hat(^) 기호 — "추정했다"는 표시</div>
@@ -889,7 +893,7 @@
     </div>
 
     <div class="label">알고리즘마다 f의 모양이 다르다</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>알고리즘</th><th>f(X)의 형태</th><th>핵심 아이디어</th></tr>
       </thead>
@@ -915,7 +919,7 @@
           <td class="muted">예측이 아니라 군집 할당. 가장 가까운 중심(μₖ)에 배정.</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="compare-row">
       <div class="cp cp-r1">
@@ -1158,6 +1162,6 @@
     navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

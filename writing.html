@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="ko">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1" name="viewport"/>
+  <title>
+   글·세션 | 이도현
+  </title>
+  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
+  <link href="assets/site.css" rel="stylesheet"/>
+ </head>
+ <body>
+  <a class="skip-link" href="#main">
+   본문으로 이동
+  </a>
+  <header class="site-header">
+   <nav aria-label="주요 메뉴" class="site-nav">
+    <a class="name" href="index.html">
+     이도현
+    </a>
+    <a href="index.html">
+     홈
+    </a>
+    <a href="research.html">
+     연구
+    </a>
+    <a href="projects.html">
+     프로젝트
+    </a>
+    <a aria-current="page" href="writing.html">
+     글·세션
+    </a>
+    <a href="resume.html">
+     이력
+    </a>
+   </nav>
+  </header>
+  <main id="main">
+   <h1>
+    글·세션
+   </h1>
+   <p>
+    블로그 글, AIguru 세션, 연구 발표 자료입니다.
+   </p>
+   <nav aria-label="글·세션 분류" class="toc">
+    <a href="#blog">
+     블로그 글
+    </a>
+    ·
+    <a href="#talks">
+     AIguru 세션
+    </a>
+    ·
+    <a href="#presentations">
+     연구 발표
+    </a>
+   </nav>
+   <section class="section" id="blog">
+    <h2>
+     블로그 글
+    </h2>
+    <ul>
+     <li>
+      <strong>
+       <a href="posts/manufacturing-ai-cause-effect-mapping.html">
+        제조 AI는 Prediction 문제가 아니다
+       </a>
+      </strong>
+      <p>
+       제조 AI에서 모델 성능보다 중요한 cause-effect mapping과
+                데이터 validation 문제를 정리했습니다.
+      </p>
+     </li>
+     <li>
+      <strong>
+       <a href="posts/setpoint-vs-actual-process-value.html">
+        Why Setpoint ≠ Actual Process Value
+       </a>
+      </strong>
+      <p>
+       제조 AI에서 학습 데이터와 운영 데이터가 왜 다를 수 있는지,
+                그리고 setpoint와 actual value의 차이가 왜 중요한지 정리했습니다.
+      </p>
+     </li>
+     <li>
+      <strong>
+       <a href="posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+        Why AI Evaluation Metrics Must Be Realistic in Manufacturing
+       </a>
+      </strong>
+      <p>
+       제조 AI에서 왜 평가 기준을 현실적으로 수립해야 하는지, 그러면 현실적으로 어떻게 수립할 수 있는지를 정리했습니다.
+      </p>
+     </li>
+    </ul>
+   </section>
+   <section class="section" id="talks">
+    <h2>
+     AIguru 세션
+    </h2>
+    <p class="section-intro">
+     AIguru에서 진행한 ML 세션 자료와 연구 발표입니다. 개념과 모델 해석에서 시작해 데이터 검증, 시계열, 알고리즘의 수식까지 연결합니다.
+    </p>
+    <div class="project-group">
+     <h3>
+      AIguru · Round 1 — ML 개념과 실무 해석
+     </h3>
+     <ol class="session-list">
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-01-ml-linear-regression.html">
+         ML 전체 흐름과 선형 회귀
+        </a>
+       </strong>
+       <p>
+        데이터 수집부터 평가·적용까지의 흐름과 회귀 계수, 과적합, 다중공선성, R² 해석을 다룹니다.
+       </p>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-02-trees-ensembles.html">
+         트리 모델과 앙상블
+        </a>
+       </strong>
+       <p>
+        Decision Tree의 분기와 예측, Bagging·Boosting의 차이, 변수 중요도를 설명합니다.
+       </p>
+       <a href="sessions/aiguru/example-feature-importance.html">
+        보조 예제: MDI · OOB Permutation · SHAP
+       </a>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-03-clustering-similarity.html">
+         클러스터링과 유사도
+        </a>
+       </strong>
+       <p>
+        Hard·Soft Clustering, 거리와 유사도 선택, 스케일링에 따른 변화와 군집 결과 해석을 다룹니다.
+       </p>
+       <a href="sessions/aiguru/example-scaling.html">
+        보조 예제: MinMax 스케일링과 표준화 비교
+       </a>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-04-evaluation-metrics.html">
+         성과지표와 모델 평가
+        </a>
+       </strong>
+       <p>
+        회귀·분류 지표의 의미와 한계, 중요한 구간의 성능을 확인하는 방법을 정리합니다.
+       </p>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-05-model-reliability.html">
+         결과를 믿으면 안 되는 경우
+        </a>
+       </strong>
+       <span class="session-status">
+        초안 자료
+       </span>
+       <p>
+        Data Leakage, 편향, 분포 변화, 과적합과 타깃 정의를 통해 모델 신뢰성을 점검합니다.
+       </p>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round1-06-time-series.html">
+         시계열 데이터와 검증
+        </a>
+       </strong>
+       <span class="session-status">
+        초안 자료
+       </span>
+       <p>
+        시간 의존성, 데이터 누수, 시점 기반 검증, 재학습과 배포 후 입력 문제를 다룹니다.
+       </p>
+      </li>
+     </ol>
+    </div>
+    <div class="project-group">
+     <h3>
+      AIguru · Round 2 — 수식으로 다시 보는 ML
+     </h3>
+     <ol class="session-list">
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round2-01-ml-notation.html">
+         ML 전체 흐름과 수식 언어
+        </a>
+       </strong>
+       <span class="session-status">
+        초안 자료
+       </span>
+       <p>
+        함수와 수학 기호, 입력·예측값의 관계, 손실함수를 통해 학습의 의미를 설명합니다.
+       </p>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round2-02-linear-regression-math.html">
+         선형 회귀 수식
+        </a>
+       </strong>
+       <p>
+        회귀 계수의 계산, R²의 구성, t/F-검정과 다중공선성을 수식으로 살펴봅니다.
+       </p>
+      </li>
+      <li>
+       <strong>
+        <a href="sessions/aiguru/round2-03-trees-ensembles-math.html">
+         트리와 앙상블 수식
+        </a>
+       </strong>
+       <p>
+        Gini·Entropy, 분류·회귀의 분기 기준, 변수 중요도와 Bagging·Boosting의 계산 원리를 다룹니다.
+       </p>
+      </li>
+     </ol>
+    </div>
+    <h3 id="presentations">
+     연구 발표
+    </h3>
+    <ol class="custom-list">
+     <li>
+      Imbalanced Problem for Regression (2024.11) -
+      <a href="https://youtu.be/yfcqHHT5f1w">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      SMOTE (Synthetic Minority Over-sampling Technique) for Imbalanced dataset (2024.05) -
+      <a href="https://www.youtube.com/watch?v=q5yhwOPmP-k&amp;list=PLVUMrRRWzO2q2dMZG9dqV8Mbz-gkEC1Yg&amp;index=38">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      GAN(Generative Adversarial Networks) for Imbalanced dataset (2023.12) -
+      <a href="https://www.youtube.com/watch?v=JdLwad0vzWs&amp;list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&amp;index=14">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      MAUP (Modifiable Areal Unit Problem) for Free-float micro-mobility (2023.04) -
+      <a href="https://www.youtube.com/watch?v=tVGDsRIWSNs&amp;list=PLVUMrRRWzO2r9ELYB2RUt8Uumjs74iFaw&amp;index=15">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      An Improved Boxplot for Univariate Data (2022.10) -
+      <a href="https://www.youtube.com/watch?v=fcZx27op96g&amp;list=PLVUMrRRWzO2od9mvVjPUcGMquTceiRAM5&amp;index=6">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      How Complex Is Your Classification Problem?: A Survey on Measuring Classification Complexity (2022.07) -
+      <a href="https://www.youtube.com/watch?v=JksnEaiyL-M&amp;list=PLVUMrRRWzO2r9_i7U_OsrWC4YGUrZbDrv&amp;index=17">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      Noise-Filtering Methods for Noisy Robust Adaboost (2021.10) -
+      <a href="https://youtu.be/XqRSu0tX1PI">
+       발표 영상
+      </a>
+     </li>
+     <li>
+      Oversampling Methods for Imbalanced Dataset (2021.04) -
+      <a href="https://www.youtube.com/watch?v=PY0u-aELDdc&amp;list=PLVUMrRRWzO2pSbuW-RhxroVl0xhgycZvb&amp;index=24">
+       발표 영상
+      </a>
+     </li>
+    </ol>
+   </section>
+  </main>
+  <footer class="site-footer">
+   이도현 · ML 연구 및 데이터 구조 설계 ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    이메일
+   </a>
+  </footer>
+ </body>
+</html>

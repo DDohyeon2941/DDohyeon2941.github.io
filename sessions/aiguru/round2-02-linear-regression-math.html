@@ -216,8 +216,12 @@
   @media (max-width: 640px) { .vif-scale { grid-template-columns: repeat(2, 1fr); } }
 
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#recap">지난 세션 복습 — Session 1</a></li><li><a href="#s1">계수(β)는 수식에서 어떻게 결정되는가</a></li><li><a href="#s1b">잠깐 — 변수가 많은 것과 차수가 높은 것은 다른 얘기다</a></li><li><a href="#s2">R² = 1 − SS_res / SS_tot — 분자·분모는 각각 뭘 측정하는가</a></li><li><a href="#s2b">t-검정 &amp; F-검정 — "유의미하다"는 게 수식적으로 뭔가</a></li><li><a href="#s3">다중공선성이 수식에서 어떻게 나타나는가</a></li><li><a href="#wrap">오늘 정리</a></li></ol></details>
+
 
 <nav class="nav">
   <span class="nav-badge">ROUND 2</span>
@@ -947,7 +951,7 @@
     </div>
 
     <div class="label">정리 — t-검정 vs F-검정</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>구분</th><th>t-검정</th><th>F-검정</th></tr>
       </thead>
@@ -973,7 +977,7 @@
           <td class="muted">"이 모델 자체를 쓸 근거가 있는가"</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="box box-red">
       <div class="box-title">F는 유의미한데 개별 t는 다 유의미하지 않을 수 있다 — 다중공선성과의 연결</div>
@@ -1005,7 +1009,7 @@
     <div class="note">1라운드에서 "나이 + 경력 → 연봉" 예시로 부호 반전을 봤습니다. 이번엔 그 현상이 수식 어느 지점에서 발생하는지 추적합니다.</div>
 
     <div class="label">복습 — 1라운드에서 본 부호 반전</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>상황</th><th>나이 계수</th><th>경력 계수</th><th>이유</th></tr>
       </thead>
@@ -1029,7 +1033,7 @@
           <td class="muted">나이·경력 r = 0.88</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="label">행렬곱을 요소 단위로 펼치면 — XᵗX 안에서 무슨 계산이 일어나는가</div>
     <div class="note">
@@ -1515,6 +1519,6 @@
     navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + cur); });
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

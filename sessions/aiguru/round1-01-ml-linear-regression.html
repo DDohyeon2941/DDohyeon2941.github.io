@@ -166,8 +166,13 @@
 
   @media print { .nav { display: none; } .page { padding: 24px; } .section-block { page-break-inside: avoid; } }
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 1 — ML 흐름 &amp; 선형 회귀 v3</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">ML 전체 흐름</a></li><li><a href="#s1">선형 회귀</a></li><li><a href="#s2">Coefficient (계수) 해석</a></li><li><a href="#s3">과적합 / 일반화</a></li><li><a href="#s4">선형 회귀가 작동하는 조건</a></li><li><a href="#s5">다중공선성</a></li><li><a href="#s6">결과 해석 연습</a></li><li><a href="#s7">R² 완전 정리</a></li></ol></details>
+
 
 <nav class="nav">
   <div class="nav-title">Week 1 — ML 흐름 & 선형 회귀 v3</div>
@@ -252,7 +257,7 @@
     </div>
 
     <div class="label" style="margin-top:8px">핵심 용어 정의 — 먼저 맞춰두기</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>용어</th><th>정확한 의미</th><th>자주 쓰는 애매한 표현</th></tr>
       </thead>
@@ -288,7 +293,7 @@
           <td class="muted">"오차" — error와 혼용되지만 잔차가 더 구체적</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="q-box">
       <div class="q-label">토론 질문 1</div>
@@ -386,7 +391,7 @@
     <hr>
 
     <div class="label">다중회귀 — 부호 반전 예시 (나이 + 경력 → 연봉) <span class="changed-tag">수정됨</span></div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>상황</th><th>나이 계수</th><th>경력 계수</th><th>이유</th></tr>
       </thead>
@@ -410,7 +415,7 @@
           <td class="muted">나이·경력 r=0.88 → 나이 몫이 경력에 넘어감</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="box box-amber">
       <div class="box-title">부호 반전은 다중공선성의 결과 중 하나</div>
@@ -746,7 +751,7 @@
     </div>
 
     <div class="label">계수 변화 예시 — 나이 + 경력 → 연봉</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>상황</th><th>나이 계수</th><th>경력 계수</th><th>설명</th></tr>
       </thead>
@@ -770,7 +775,7 @@
           <td class="muted">나이·경력 r=0.88 → 나이 몫이 경력에 전가됨</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
     <div class="note" style="margin-bottom:16px">부호 반전은 다중공선성의 결과 중 하나일 뿐, 항상 일어나는 건 아닙니다. 계수가 반전되지 않아도 값이 불안정하게 흔들리고 있을 수 있습니다.</div>
 
     <div class="label">진단 방법 — VIF (분산팽창지수)</div>
@@ -855,7 +860,7 @@
     </div>
 
     <div class="label">지표 비교 — 무엇을 보고 싶냐에 따라 다르다</div>
-    <table>
+    <div class="table-wrap"><table>
       <thead>
         <tr><th>지표</th><th>질문</th><th>단위</th><th>강점</th><th>주의점</th></tr>
       </thead>
@@ -889,7 +894,7 @@
           <td class="muted">MAPE보다 덜 직관적. 실제값+예측값이 모두 0이면 여전히 문제</td>
         </tr>
       </tbody>
-    </table>
+    </table></div>
 
     <div class="label">MAPE 계산 방식 — 직관적으로 이해하기</div>
     <div class="box box-blue">
@@ -1102,6 +1107,6 @@
     }
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>

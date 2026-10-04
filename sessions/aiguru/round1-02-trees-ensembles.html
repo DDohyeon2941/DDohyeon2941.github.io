@@ -90,8 +90,13 @@
   hr{border:none;border-top:1px solid var(--border);margin:24px 0}
   @media print{.nav{display:none}.page{padding:24px}}
 </style>
+<link rel="stylesheet" href="../../assets/reading.css">
 </head>
 <body>
+<nav aria-label="포트폴리오 메뉴" class="portfolio-nav"><a href="../../index.html">홈</a><a href="../../research.html">연구</a><a href="../../projects.html">프로젝트</a><a aria-current="page" href="../../writing.html">글·세션</a><a href="../../resume.html">이력</a></nav>
+<h1 class="reading-title">Week 2 — 트리 모델과 앙상블</h1>
+<details class="session-toc" open=""><summary>세션 목차</summary><ol><li><a href="#s0">지난 주 핵심 복습</a></li><li><a href="#s1">Decision Tree</a></li><li><a href="#s2">트리 계열 공통 특성 — 노드 평균값</a></li><li><a href="#s3">트리의 과적합 — 선형 회귀보다 심하다</a></li><li><a href="#s4">앙상블 — RandomForest / AdaBoost / XGBoost</a></li><li><a href="#s5">Bagging vs Boosting — 구조적 차이</a></li><li><a href="#s6">변수 중요도 — 세 가지 방식과 그 차이</a></li><li><a href="#s6b">제조 현장이 트리를 좋아하는 이유 — 그리고 왜 위험한가</a></li><li><a href="#s7">모델 비교 — 언제 무엇을 쓰는가</a></li></ol></details>
+
 <nav class="nav">
   <div class="nav-title">Week 2 — 트리 모델과 앙상블</div>
   <a href="#s0">복습</a>
@@ -422,14 +427,14 @@
     </p>
   </div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>파라미터</th><th>의미</th><th>크면?</th><th>작으면?</th></tr></thead>
     <tbody>
       <tr><td><strong>max_depth</strong></td><td>최대 분기 깊이</td><td class="neg">과적합 ↑</td><td class="pos">단순화</td></tr>
       <tr><td><strong>min_samples_leaf</strong></td><td>리프 최소 데이터 건수</td><td class="pos">안정적 예측값</td><td class="neg">1건짜리 리프 가능</td></tr>
       <tr><td><strong>min_samples_split</strong></td><td>분기 생성 최소 건수</td><td class="pos">과적합 방지</td><td class="neg">노이즈 조건까지 분기</td></tr>
     </tbody>
-  </table>
+  </table></div>
 </div>
 
 <!-- 04 앙상블 -->
@@ -573,7 +578,7 @@
   </div>
   <div class="note"><strong>핵심:</strong> MDI는 방향 없고 학습 데이터 기반. SHAP은 방향까지 나오지만 사후 분석이라 <strong>모델이 틀리면 SHAP도 틀린 방향을 자신 있게 설명합니다.</strong> 코드·출력·비교는 별도 예시 파일 참고.</div>
 
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>방식</th><th>사용 데이터</th><th>출력</th><th>방향성</th><th>주 용도</th></tr></thead>
     <tbody>
       <tr>
@@ -598,7 +603,7 @@
         <td class="muted">개별 예측 설명</td>
       </tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="grid-2">
     <div class="box">
@@ -677,7 +682,7 @@
     <span class="section-time">12 min</span>
   </div>
   <div class="note"><strong>핵심:</strong> R² 하나로 모델을 고르면 안 됩니다. 비즈니스적으로 중요한 구간의 잔차를 따로 봐야 하고, train R²는 트리에서 아무 의미가 없습니다.</div>
-  <table>
+  <div class="table-wrap"><table>
     <thead><tr><th>모델</th><th>해석 가능성</th><th>비선형</th><th>Extreme Value</th><th>과적합</th><th>적은 데이터</th></tr></thead>
     <tbody>
       <tr><td><strong>선형 회귀</strong></td><td class="pos">최고 — 계수</td><td class="neg">불가</td><td class="warn-td">이상치에 민감</td><td class="pos">낮음</td><td class="pos">강함</td></tr>
@@ -686,7 +691,7 @@
       <tr><td><strong>AdaBoost</strong></td><td class="neg">낮음</td><td class="pos">가능</td><td class="neg">노드 평균 한계</td><td class="neg">이상치 취약</td><td class="muted">보통</td></tr>
       <tr><td><strong>XGBoost</strong></td><td class="neg">낮음</td><td class="pos">가능</td><td class="neg">극단 구간 학습 데이터 부족 시 한계</td><td class="neg">조정 필수</td><td class="muted">보통</td></tr>
     </tbody>
-  </table>
+  </table></div>
 
   <div class="chart-wrap">
     <canvas id="modelChart" role="img" aria-label="모델별 특성 레이더 차트"></canvas>
@@ -749,6 +754,6 @@
     }
   });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
 </body>
 </html>
