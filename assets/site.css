@@ -87,6 +87,8 @@ td,th { border:1px solid var(--line); padding:8px; text-align:left; }
 .detail-page details>p { margin-top:10px; }
 .paper-extra { max-width:460px; margin:12px auto; }
 .paper-extra img { display:block; width:100%; }
+.baseball-figure { max-width:640px; margin:12px auto; }
+.baseball-figure img { display:block; width:100%; background:white; }
 .paper-extra figcaption { font-size:12px; }
 .detail-figure figcaption { font-size:12px; line-height:1.5; margin-top:6px; }
 .detail-page .toc { display:flex; align-items:baseline; gap:16px; padding:10px 0; margin:18px 0; }
