@@ -69,6 +69,9 @@ p { margin:0 0 16px; }
 .story-step h3 span { display:block; }
 .story-step p { margin:0 0 8px; font-size:15px; line-height:1.8; }
 .story-step .story-links { font-size:13px; margin:0; }
+.home-learning-path .story-step { margin-bottom:0; padding:16px 0; }
+.home-learning-path .story-step + .story-step { border-top:1px solid var(--line); }
+.home-learning-path .story-step:first-of-type { padding-top:0; }
 @media (max-width:600px) {
  .profile-intro { display:block; }
  .profile-photo { float:right; width:88px; margin:0 0 12px 18px; }
@@ -91,6 +94,17 @@ li { margin:10px 0; }
 .entries .meta { margin:6px 0; }
 .session-list li { padding:8px 0; }
 .session-list p { margin:4px 0; color:var(--muted); }
+.writing-page > .intro { max-width:74ch; }
+.writing-page .session-list { margin:0; }
+.writing-page .session-list > li { margin:0; padding:16px 0; border-bottom:1px solid var(--line); }
+.writing-page .session-list > li:last-child { border-bottom:0; }
+.writing-page .session-list .session-goal { color:var(--ink); font-size:14px; line-height:1.7; margin-top:8px; }
+.writing-page .goal-label { display:block; font-size:12px; font-weight:600; color:var(--muted); }
+.writing-page .session-list .session-topics { font-size:13px; line-height:1.7; margin-top:6px; }
+.writing-page .session-list > li > a { font-size:13px; }
+.writing-page .session-list > li > a + .preview-trigger { font-size:12px; }
+.writing-page .session-status { margin-left:8px; font-size:12px; }
+.writing-page .custom-list { font-size:14px; }
 .project-group+.project-group { margin-top:28px; }
 .breadcrumb { font-size:14px; margin-bottom:24px; }
 .toc { border-block:1px solid var(--line); margin:24px 0 32px; padding:16px 0; font-size:14px; }

@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: research, practice, and teaching
+
+The home connects doctoral research, applied data work, junior colleague education, and recorded research presentations through a sustained focus on how data characteristics affect machine learning. Writing & Sessions now explains its educational purpose and gives each session/example a learning goal. Existing materials, links, drafts, and figures are preserved. See [PORTFOLIO-STORY.md](PORTFOLIO-STORY.md) for changes, verification, and screenshots.
+
 ## Latest: visual ML session previews
 
 All nine company ML sessions and both supplements now have image-focused previews using 20 existing figures. Full bodies, ordering, URLs, and draft labels are preserved. See [SESSION-PREVIEWS.md](SESSION-PREVIEWS.md) for source mapping and interaction verification.
