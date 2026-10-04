@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: English conversion
+
+The current visitor-facing site is in English. Full bodies, figures, and interaction labels were translated while preserving routes, research data, and disclosure decisions. See [ENGLISH-CONVERSION.md](ENGLISH-CONVERSION.md) for the latest preservation and browser verification. Earlier Korean review notes below retain the implementation history.
+
 기준 커밋: `894f9b26d3adf74ece5f7d7168ca0f8202598d8c` (원격 main과 일치 확인).
 작업 브랜치: `portfolio/information-architecture`.
 main 병합과 실제 사이트 배포는 수행하지 않습니다.

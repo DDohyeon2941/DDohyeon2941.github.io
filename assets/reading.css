@@ -21,3 +21,12 @@ body { font-family:system-ui,-apple-system,"Segoe UI",sans-serif!important; font
 svg,canvas,img { max-width:100%; }
 .table-wrap { max-width:100%; overflow-x:auto; }
 @media(max-width:640px) { .page,.wrap,.container { padding-left:18px!important; padding-right:18px!important; } .hero-title { font-size:23px!important; } .hero>* { min-width:0; max-width:100%; overflow-wrap:anywhere; } .hero-eq { overflow-x:auto; white-space:normal!important; } .section-header { flex-wrap:wrap; } .eq-block,.formula-box,.eq-box { overflow-x:auto; max-width:100%; } }
+/* English labels need room within the original session layouts. */
+@media(max-width:640px) {
+ .func-io { grid-template-columns:minmax(0,1fr)!important; }
+ .func-io > * { min-width:0; overflow-wrap:anywhere; }
+ .func-io .func-arrow { transform:rotate(90deg); }
+ .case-table { display:block; max-width:100%; overflow-x:auto; }
+ .stats { grid-template-columns:minmax(0,1fr)!important; }
+ .stat-box { min-width:0; overflow-wrap:anywhere; }
+}

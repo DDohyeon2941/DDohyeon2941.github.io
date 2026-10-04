@@ -1,0 +1,207 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1782" viewBox="0 0 680 1782" role="img" aria-labelledby="title desc">
+<title id="title">Class-aware generation and boundary-aware generation hypothesis</title>
+<desc id="desc">A reconstruction of the portfolio diagram in English. It preserves class-aware latent sampling, the two-critic generation hypothesis, EdgeGenerator, and Sobel edge loss. The diagram describes implementations and exploratory hypotheses, not verified improvements.</desc>
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#108e80"/></marker></defs>
+<rect width="680" height="1782" fill="#f7f8fc"/>
+<g font-family="Arial, Helvetica, sans-serif">
+<text x="20" y="36" font-size="27" fill="#22315b" font-weight="600" text-anchor="start">
+<tspan x="20" dy="0">1. Class-aware generation</tspan>
+</text>
+<text x="20" y="68" font-size="21" fill="#108e80" font-weight="500" text-anchor="start">
+<tspan x="20" dy="0">Explore whether shared representations can improve</tspan>
+<tspan x="20" dy="26">generation distributions for underrepresented classes.</tspan>
+</text>
+<rect x="20" y="116" width="190" height="82" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="115.0" y="152.0" font-size="24" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="115.0" dy="0">All</tspan>
+<tspan x="115.0" dy="26">images</tspan>
+</text>
+<rect x="245" y="116" width="190" height="82" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="340.0" y="165.0" font-size="23" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="340.0" dy="0">Autoencoder</tspan>
+</text>
+<rect x="470" y="116" width="190" height="82" fill="#108e80" stroke="#108e80" stroke-width="2"/>
+<text x="565.0" y="152.0" font-size="21" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="565.0" dy="0">Class-specific</tspan>
+<tspan x="565.0" dy="26">latent distribution</tspan>
+</text>
+<path d="M 213 157 H 242" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 438 157 H 467" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="470" y="234" width="190" height="82" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="565.0" y="283.0" font-size="24" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="565.0" dy="0">Decoder</tspan>
+</text>
+<rect x="245" y="234" width="190" height="82" fill="#22315b" stroke="#22315b" stroke-width="2"/>
+<text x="340.0" y="270.0" font-size="24" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="340.0" dy="0">Generated</tspan>
+<tspan x="340.0" dy="26">images</tspan>
+</text>
+<path d="M 565 201 V 231" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 467 275 H 438" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="21" y="350" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="350" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Train an Autoencoder to learn shared</tspan>
+<tspan x="43" dy="25">representations from all images.</tspan>
+</text>
+<text x="21" y="409" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="409" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Estimate class-specific latent means and</tspan>
+<tspan x="43" dy="25">covariances from Encoder outputs.</tspan>
+</text>
+<text x="21" y="468" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="468" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Sample latent vectors from each class distribution.</tspan>
+</text>
+<text x="21" y="502" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="502" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Generate class-conditioned images with the trained</tspan>
+<tspan x="43" dy="25">Decoder.</tspan>
+</text>
+<rect x="15" y="568" width="650" height="244" fill="#e5f4f0"/>
+<text x="31" y="598" font-size="23" fill="#108e80" font-weight="600" text-anchor="start">
+<tspan x="31" dy="0">Follow-up variation · EdgeGenerator</tspan>
+</text>
+<text x="31" y="627" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="31" dy="0">Explore preservation of contour information.</tspan>
+</text>
+<rect x="30" y="648" width="185" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="122.5" y="675.5" font-size="21" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="122.5" dy="0">Class-aware</tspan>
+<tspan x="122.5" dy="26">latent</tspan>
+</text>
+<rect x="247" y="648" width="185" height="65" fill="#108e80" stroke="#108e80" stroke-width="2"/>
+<text x="339.5" y="688.5" font-size="20" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="339.5" dy="0">EdgeGenerator</tspan>
+</text>
+<rect x="465" y="648" width="185" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="557.5" y="688.5" font-size="22" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="557.5" dy="0">Edge map</tspan>
+</text>
+<path d="M 218 680 H 244" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 435 680 H 462" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="30" y="737" width="185" height="65" fill="#22315b" stroke="#22315b" stroke-width="2"/>
+<text x="122.5" y="764.5" font-size="22" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="122.5" dy="0">Generated</tspan>
+<tspan x="122.5" dy="26">images</tspan>
+</text>
+<rect x="247" y="737" width="185" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="339.5" y="777.5" font-size="22" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="339.5" dy="0">Decoder</tspan>
+</text>
+<rect x="465" y="737" width="185" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="557.5" y="764.5" font-size="21" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="557.5" dy="0">Latent +</tspan>
+<tspan x="557.5" dy="26">Edge feature</tspan>
+</text>
+<path d="M 557 716 V 734" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 462 769 H 435" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 244 769 H 218" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 20 832 H 660" stroke="#d4dbe5"/>
+<text x="20" y="866" font-size="25" fill="#22315b" font-weight="600" text-anchor="start">
+<tspan x="20" dy="0">2. Boundary-aware generation hypothesis</tspan>
+</text>
+<text x="20" y="897" font-size="21" fill="#108e80" font-weight="500" text-anchor="start">
+<tspan x="20" dy="0">Explore regions where majority- and minority-class</tspan>
+<tspan x="20" dy="26">evaluation signals act together.</tspan>
+</text>
+<rect x="30" y="946" width="130" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="95.0" y="986.5" font-size="23" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="95.0" dy="0">Noise</tspan>
+</text>
+<rect x="193" y="946" width="185" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="285.5" y="986.5" font-size="23" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="285.5" dy="0">Generator</tspan>
+</text>
+<rect x="411" y="946" width="239" height="65" fill="#22315b" stroke="#22315b" stroke-width="2"/>
+<text x="530.5" y="986.5" font-size="23" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="530.5" dy="0">Generated images</tspan>
+</text>
+<path d="M 163 978 H 190" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 381 978 H 408" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="80" y="1049" width="230" height="65" fill="#108e80" stroke="#108e80" stroke-width="2"/>
+<text x="195.0" y="1089.5" font-size="23" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="195.0" dy="0">Minority Critic</tspan>
+</text>
+<rect x="370" y="1049" width="230" height="65" fill="#108e80" stroke="#108e80" stroke-width="2"/>
+<text x="485.0" y="1089.5" font-size="23" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="485.0" dy="0">Majority Critic</tspan>
+</text>
+<path d="M 530 1014 V 1031 H 195 V 1046" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 530 1031 H 485 V 1046" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<rect x="210" y="1151" width="270" height="65" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="345.0" y="1178.5" font-size="22" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="345.0" dy="0">Weighted Generator</tspan>
+<tspan x="345.0" dy="26">loss</tspan>
+</text>
+<path d="M 260 1148 L 195 1117" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<path d="M 430 1148 L 485 1117" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="21" y="1256" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="1256" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Train a Minority Critic; use a Majority Critic</tspan>
+<tspan x="43" dy="25">checkpoint pretrained on majority-class data.</tspan>
+</text>
+<text x="21" y="1315" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="1315" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Pass each generated image to both critics.</tspan>
+</text>
+<text x="21" y="1349" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="1349" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Weight both critic scores in the Generator loss.</tspan>
+</text>
+<text x="21" y="1383" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="1383" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Use the difference between critic outputs as a</tspan>
+<tspan x="43" dy="25">separate loss term.</tspan>
+</text>
+<text x="21" y="1442" font-size="22" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="21" dy="0">•</tspan>
+</text>
+<text x="43" y="1442" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="43" dy="0">Parameterize critic contributions and the weight of</tspan>
+<tspan x="43" dy="25">their output difference.</tspan>
+</text>
+<rect x="15" y="1510" width="650" height="254" fill="#e5f4f0"/>
+<text x="31" y="1541" font-size="23" fill="#108e80" font-weight="600" text-anchor="start">
+<tspan x="31" dy="0">Follow-up combination · Sobel edge loss</tspan>
+</text>
+<text x="31" y="1570" font-size="21" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="31" dy="0">Explore distribution signals and contours together.</tspan>
+</text>
+<rect x="29" y="1591" width="195" height="64" fill="#108e80" stroke="#108e80" stroke-width="2"/>
+<text x="126.5" y="1631.0" font-size="21" fill="white" font-weight="500" text-anchor="middle">
+<tspan x="126.5" dy="0">Dual-Critic loss</tspan>
+</text>
+<text x="244" y="1634" font-size="30" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="244" dy="0">+</tspan>
+</text>
+<rect x="266" y="1591" width="193" height="64" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="362.5" y="1631.0" font-size="20" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="362.5" dy="0">Sobel edge loss</tspan>
+</text>
+<rect x="491" y="1591" width="159" height="64" fill="#fff" stroke="#22315b" stroke-width="2"/>
+<text x="570.5" y="1631.0" font-size="21" fill="#22315b" font-weight="500" text-anchor="middle">
+<tspan x="570.5" dy="0">Generator</tspan>
+</text>
+<path d="M 462 1623 H 488" fill="none" stroke="#108e80" stroke-width="3" marker-end="url(#arrow)"/>
+<text x="31" y="1689" font-size="20" fill="#273240" font-weight="400" text-anchor="start">
+<tspan x="31" dy="0">Measure horizontal/vertical Sobel-edge differences</tspan>
+<tspan x="31" dy="25">between real and generated images; adjust critic/edge</tspan>
+<tspan x="31" dy="25">weights. Generated + original data → ResNet classification.</tspan>
+</text>
+</g></svg>

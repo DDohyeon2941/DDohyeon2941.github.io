@@ -1,180 +1,181 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   제조 시계열 데이터 정렬과 ML 파이프라인 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Manufacturing time-series alignment and ML pipelines | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    제조 시계열 데이터 정렬과 ML 파이프라인
+</p>
+<h1>
+    Manufacturing time-series alignment and ML pipelines
    </h1>
-   <p class="meta">
-    현업 프로젝트 · 공개 범위를 일반화한 설명
+<p class="meta">
+    Industry project · Generalized public description
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      수집 시점과 간격이 서로 다른 제조 데이터를 모델 학습과 평가에 사용할 수 있도록 정리했습니다. 시간 정렬뿐 아니라 예측 시점에 실제로 사용할 수 있는 정보인지 확인하는 데 중점을 뒀습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I prepared manufacturing data with different collection times and intervals for model training and evaluation. Alongside time alignment, I checked whether information would actually be available at prediction time.
      </p>
-     <ul class="key-facts">
-      <li>
-       작업: 기록 시점과 정보의 의미를 검토해 정렬
+<ul class="key-facts">
+<li>
+       Work: alignment based on record times and information meaning
       </li>
-      <li>
-       기준: 학습 입력과 실제 사용 시점의 정보 일치
+<li>
+       Criterion: consistency between training inputs and information available at use time
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/time-series-data-method.svg">
-      <img alt="제조 시계열 데이터 정렬과 ML 파이프라인 · 작업·구현 흐름 개념도" loading="lazy" src="../images/research/time-series-data-method.svg"/>
-     </a>
-     <figcaption>
-      제조 시계열 데이터 정렬과 ML 파이프라인 · 작업·구현 흐름 개념도
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/time-series-data-method.svg">
+<img alt="Manufacturing time-series alignment and ML pipelines · Workflow concept diagram" loading="lazy" src="../images/research/time-series-data-method.svg"/>
+</a>
+<figcaption>
+      Manufacturing time-series alignment and ML pipelines · Workflow concept diagram
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     서로 다른 출처의 기록은 같은 시간 기준으로 곧바로 비교하기 어렵습니다. 기록된 시점과 정보가 실제로 유효한 시점을 검토하지 않으면 관계가 어긋나거나 미래 정보가 학습 입력에 섞일 수 있습니다.
+<p>
+     Records from different sources cannot always be compared immediately on a common time basis. Without examining recording time and when information becomes valid, relationships can be misaligned or future information can enter training inputs.
     </p>
-    <p>
-     목표는 데이터를 한곳에 모으는 데 그치지 않고, 분석과 실제 사용 시점의 의미가 일치하는 학습 자료를 구성하는 것이었습니다.
+<p>
+     The goal was to create training data whose meaning matched actual usage, beyond bringing records together in one place.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     데이터 검증과 전처리, 시계열 정렬, 모델 학습·평가 흐름 구성에 참여했습니다. 공개 이력의 범위에는 대시보드 프로토타입과 PoC·현장 테스트 경험도 포함됩니다.
+<p>
+     I participated in validation, preprocessing, time-series alignment, and training/evaluation workflow construction. My public experience also includes dashboard prototypes, proof-of-concept work, and field testing.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     시간 기준과 데이터 품질 검토
+<h3>
+     Time reference and data quality
     </h3>
-    <p>
-     자료마다 수집 간격과 기록 의미가 다른 점을 검토하고, 비교 가능한 기준으로 정리했습니다. 누락이나 불일치를 정상적인 관측처럼 취급하지 않도록 검증했습니다.
+<p>
+     I examined differences in collection intervals and record meaning and organized data on a comparable basis. Missing or inconsistent records were checked rather than treated as normal observations.
     </p>
-    <h3>
-     학습과 사용 시점의 일치
+<h3>
+     Consistency between learning and use time
     </h3>
-    <p>
-     예측하려는 시점에 확보할 수 있는 정보를 기준으로 입력을 구성했습니다. 전처리와 특징 구성의 기준이 학습·검증·사용 단계에서 일관되는지 확인했습니다.
+<p>
+     Inputs were constructed from information available at the intended prediction time. I checked whether preprocessing and feature-construction criteria were consistent across training, validation, and use.
     </p>
-    <h3>
-     평가와 확인
+<h3>
+     Evaluation and review
     </h3>
-    <p>
-     단일 예측 점수뿐 아니라 실제 사용 맥락에서 오차가 어떤 의미를 갖는지 검토했습니다. 프로토타입과 테스트를 통해 데이터를 해석하고 모델 결과를 확인하는 흐름을 구성했습니다.
+<p>
+     I examined what errors meant in the actual usage context, alongside prediction scores. Prototypes and tests supported a workflow for interpreting data and checking model results.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     데이터 준비, 모델링·평가, 프로토타입 검토를 수행했습니다.
+<p>
+     I worked on data preparation, modeling and evaluation, and prototype review.
     </p>
-    <p>
-     실제 데이터 필드, 파일, 내부 구현, 처리량과 화면을 공개하지 않고 시계열 데이터 작업의 일반적인 문제와 판단 기준만 설명합니다.
+<p>
+     This page describes general time-series challenges and decision criteria without disclosing actual data fields, files, internal implementation, throughput, or screens.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
-      실제 사용 맥락을 고려한 평가 지표에 관한 글
+<p>
+<a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+      Article on evaluation metrics in their actual usage context
      </a>
      ·
      <a href="../posts/setpoint-vs-actual-process-value.html">
-      설정값과 실제 관측값의 구분
+      Distinguishing setpoints from actual observations
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

@@ -1,170 +1,171 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   문서 데이터 표준화 및 구조 설계 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Document data standardization and structure design | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    문서 데이터 표준화 및 구조 설계
+</p>
+<h1>
+    Document data standardization and structure design
    </h1>
-   <p class="meta">
-    수행 맥락 정리 중 · 문서 분석·표준화·구조 설계
+<p class="meta">
+    Context under review · Document analysis, standardization, and structure design
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      다양한 형식의 문서를 분석하고, 같은 정보의 표현 차이를 공통 기준으로 표준화했습니다. 사용과 유지보수를 고려한 데이터 구조 설계에 참여했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I analyzed documents in different formats and standardized different representations of the same information. I participated in designing data structures for use and maintenance.
      </p>
-     <ul class="key-facts">
-      <li>
-       작업: 문서의 표현 차이·맥락 분석
+<ul class="key-facts">
+<li>
+       Work: analyzing document context and representation differences
       </li>
-      <li>
-       범위: 공통 기준 정리·일관성 검토·구조 설계
+<li>
+       Scope: shared standards, consistency checks, and structure design
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/documents-method.svg">
-      <img alt="문서 데이터 표준화 및 구조 설계 · 작업·구현 흐름 개념도" loading="lazy" src="../images/research/documents-method.svg"/>
-     </a>
-     <figcaption>
-      문서 데이터 표준화 및 구조 설계 · 작업·구현 흐름 개념도
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/documents-method.svg">
+<img alt="Document data standardization and structure design · Workflow concept diagram" loading="lazy" src="../images/research/documents-method.svg"/>
+</a>
+<figcaption>
+      Document data standardization and structure design · Workflow concept diagram
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     문서마다 같은 정보를 다르게 표현할 수 있고, 비슷한 표현이 서로 다른 의미를 가질 수도 있습니다. 다양한 문서를 분석해 정보의 맥락을 파악하고 일관된 기준으로 정리하는 업무를 수행했습니다.
+<p>
+     Documents can express the same information differently, while similar expressions can have different meanings. I analyzed their context and organized information using consistent criteria.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     원천 문서의 의미와 표현 차이 분석, 데이터 표준화, 사용과 유지보수를 고려한 구조 설계에 참여했습니다.
+<p>
+     I participated in analyzing source-document meaning and representation differences, standardizing data, and designing structures for use and maintenance.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <ul>
-     <li>
-      <strong>
-       원천 데이터 분석:
+<ul>
+<li>
+<strong>
+       Source-data analysis:
       </strong>
-      문서별 표현 차이와 정보의 맥락을 검토했습니다.
+      Examined differences in document representation and information context.
      </li>
-     <li>
-      <strong>
-       표준화:
+<li>
+<strong>
+       Standardization:
       </strong>
-      서로 다른 표현을 공통 기준으로 정리하고 일관성을 검토했습니다.
+      Organized representations under common criteria and checked consistency.
      </li>
-     <li>
-      <strong>
-       구조 설계:
+<li>
+<strong>
+       Structure design:
       </strong>
-      사용과 유지보수를 고려한 데이터 구조 설계에 참여했습니다.
+      Participated in data-structure design considering use and maintenance.
      </li>
-    </ul>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</ul>
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     원천 문서 분석, 표현의 표준화, 사용과 유지보수를 고려한 구조 설계에 참여했습니다.
+<p>
+     I participated in source-document analysis, representation standardization, and structure design for use and maintenance.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     공개 자료 준비 중입니다.
+<p>
+     Public resources are being prepared.
     </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

@@ -1,249 +1,250 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   연구 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Research | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="index.html">
+     Do Hyeon Lee
     </a>
-    <a href="index.html">
-     홈
+<a href="index.html">
+     Home
     </a>
-    <a aria-current="page" href="research.html">
-     연구
+<a aria-current="page" href="research.html">
+     Research
     </a>
-    <a href="projects.html">
-     프로젝트
+<a href="projects.html">
+     Projects
     </a>
-    <a href="writing.html">
-     글·세션
+<a href="writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="resume.html">
-     이력
+<a href="resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main id="main">
-   <h1>
-    연구
+</nav>
+</header>
+<main id="main">
+<h1>
+    Research
    </h1>
-   <p class="intro">
-    데이터의 분포와 구조에 맞는 학습·예측 방법을 연구했습니다. 불균형 데이터에서는 학습 편향을, 마이크로 모빌리티에서는 수요 분포와 예측 단위를, 스포츠에서는 투구 상황별 의미를 다뤘습니다.
+<p class="intro">
+    I study learning and prediction methods suited to data distributions and structure: learning bias in imbalanced data, demand distributions and spatial prediction units in micromobility, and the meaning of pitch situations in sports.
    </p>
-   <section class="section" id="machine-learning">
-    <h2>
-     불균형 데이터
+<section class="section" id="machine-learning">
+<h2>
+     Imbalanced data
     </h2>
-    <ul class="entries">
-     <li>
-      <h3>
-       <a href="research/biased-learning.html">
+<ul class="entries">
+<li>
+<h3>
+<a href="research/biased-learning.html">
         Strategies to Prevent Biased Learning for Imbalanced Data
        </a>
-      </h3>
-      <p>
-       노이즈 필터링·생성량·생성 위치를 각각 조정해 다수·소수 클래스 양쪽의 편향을 줄이는 전략을 연구했습니다.
+</h3>
+<p>
+       I studied strategies to reduce bias toward either class by adjusting noise filtering, augmentation size, and where synthetic samples are generated.
       </p>
-      <p class="meta">
-       박사학위논문, 2025 · 학위논문 저자
+<p class="meta">
+       Doctoral dissertation, 2025 · Dissertation author
       </p>
-      <p>
-       <a href="https://snut.dcollection.net/srch/srchDetail/200000865329">
-        링크
+<p>
+<a href="https://snut.dcollection.net/srch/srchDetail/200000865329">
+        Link
        </a>
-      </p>
-     </li>
-     <li>
-      <h3>
-       <a href="research/noise-filtering.html">
+</p>
+</li>
+<li>
+<h3>
+<a href="research/noise-filtering.html">
         Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets
        </a>
-      </h3>
-      <p class="meta">
-       JIFS, 2022, 1저자
+</h3>
+<p class="meta">
+       JIFS, 2022 · First author
       </p>
-      <p>
-       AdaBoost에서 어려운 소수 클래스 표본을 노이즈로 과도하게 제거하는 문제를 다룹니다.
+<p>
+       This work addresses the excessive removal of difficult minority-class samples as noise in AdaBoost.
       </p>
-      <p>
-       <a href="https://doi.org/10.3233/JIFS-213244">
-        DOI 링크
+<p>
+<a href="https://doi.org/10.3233/JIFS-213244">
+        DOI
        </a>
        ·
        <a href="https://github.com/DDohyeon2941/noise-filtering-adaboost-for-imbalanced-data">
-        GitHub 코드
+        Code on GitHub
        </a>
-      </p>
-     </li>
-     <li>
-      <h3>
-       <a href="research/oversampling.html">
+</p>
+</li>
+<li>
+<h3>
+<a href="research/oversampling.html">
         An efficient method to determine sample size in oversampling based on classification complexity for imbalanced data
        </a>
-      </h3>
-      <p class="meta">
-       ESWA, 2021, 1저자
+</h3>
+<p class="meta">
+       ESWA, 2021 · First author
       </p>
-      <p>
-       기존 방식보다 적은 생성량으로 데이터셋 특성에 맞는 오버샘플링 규모를 선택하고, 여러 실험 조건에서 분류 성능을 유지하거나 개선했습니다.
+<p>
+       I selected augmentation sizes suited to each dataset using fewer samples than full balancing, maintaining or improving classification performance under multiple experimental conditions.
       </p>
-      <p>
-       <a href="https://doi.org/10.1016/j.eswa.2021.115442">
-        DOI 링크
+<p>
+<a href="https://doi.org/10.1016/j.eswa.2021.115442">
+        DOI
        </a>
        ·
        <a href="https://github.com/DDohyeon2941/classification-complexity-based-oversampling">
-        GitHub 코드
+        Code on GitHub
        </a>
-      </p>
-     </li>
-     <li>
-      <h3>
-       <a href="research/masters-oversampling.html">
-        분류 복잡도를 활용한 오버 샘플링 크기 산출 알고리즘
+</p>
+</li>
+<li>
+<h3>
+<a href="research/masters-oversampling.html">
+        An Algorithm for Oversampling Size Determination Using Classification Complexity
        </a>
-      </h3>
-      <p>
-       완전 균형보다 적은 생성량으로도 데이터셋에 맞는 오버샘플링 규모를 적용할 수 있는지 평가한 석사학위 연구입니다.
+</h3>
+<p>
+       My master’s research evaluated whether smaller augmentation sizes than full balancing could provide suitable oversampling for individual datasets.
       </p>
-      <p class="meta">
-       석사학위논문, 2020 · 학위논문 저자
+<p class="meta">
+       Master’s thesis, 2020 · Thesis author
       </p>
-      <p>
-       <a href="https://www.riss.kr/link?id=T15671100">
-        RISS 링크
+<p>
+<a href="https://www.riss.kr/link?id=T15671100">
+        RISS
        </a>
-      </p>
-     </li>
-    </ul>
-   </section>
-   <section class="section" id="micro-mobility">
-    <h2>
-     마이크로 모빌리티
+</p>
+</li>
+</ul>
+</section>
+<section class="section" id="micro-mobility">
+<h2>
+     Micromobility
     </h2>
-    <ul class="entries">
-     <li>
-      <h3>
-       <a href="research/micro-mobility.html">
+<ul class="entries">
+<li>
+<h3>
+<a href="research/micro-mobility.html">
         Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility
        </a>
-      </h3>
-      <p class="meta">
-       IET ITS, 2024, 1저자
+</h3>
+<p class="meta">
+       IET ITS, 2024 · First author
       </p>
-      <p>
-       고정 격자의 크기·경계가 수요 예측에 미치는 MAUP를 다룹니다.
+<p>
+       This work addresses the MAUP: how the size and boundaries of fixed grids affect demand prediction.
       </p>
-      <p>
-       <a href="https://doi.org/10.1049/itr2.12596">
-        DOI 링크
+<p>
+<a href="https://doi.org/10.1049/itr2.12596">
+        DOI
        </a>
        ·
        <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">
-        GitHub 코드
+        Code on GitHub
        </a>
-      </p>
-     </li>
-     <li>
-      <h3>
-       <a href="research/adaboost-rdt.html">
+</p>
+</li>
+<li>
+<h3>
+<a href="research/adaboost-rdt.html">
         AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands
        </a>
-      </h3>
-      <p class="meta">
-       IEEE ACCESS, 2024, 1저자
+</h3>
+<p class="meta">
+       IEEE ACCESS, 2024 · First author
       </p>
-      <p>
-       극단 수요를 노이즈로 약화시키지 않고 예측하기 위해 A-MT와 잔차 트리 R-DT를 결합했습니다.
+<p>
+       I combined A-MT with the residual tree R-DT to predict extreme demand without suppressing it as noise.
       </p>
-      <p>
-       <a href="https://ieeexplore.ieee.org/document/10705154">
-        DOI 링크
+<p>
+<a href="https://ieeexplore.ieee.org/document/10705154">
+        DOI
        </a>
        ·
        <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">
-        GitHub 코드
+        Code on GitHub
        </a>
-      </p>
-     </li>
-    </ul>
-   </section>
-   <section class="section" id="sports">
-    <h2>
-     스포츠
+</p>
+</li>
+</ul>
+</section>
+<section class="section" id="sports">
+<h2>
+     Sports
     </h2>
-    <ul class="entries">
-     <li>
-      <h3>
-       <a href="research/baseball.html">
+<ul class="entries">
+<li>
+<h3>
+<a href="research/baseball.html">
         A measure of the importance of moment for ball-strike counts in a baseball plate appearance
        </a>
-      </h3>
-      <p class="meta">
-       Journal of Sports Sciences, 2024, 공동1저자
+</h3>
+<p class="meta">
+       Journal of Sports Sciences, 2024 · Co-first author
       </p>
-      <p>
-       타석의 즉시 종료 가능성과 볼·스트라이크 이후의 유불리 차이를 가중해 카운트별 IOM을 정의하고, 패스트볼 구속과의 관계를 분석했습니다.
+<p>
+       We defined count-specific IOM by weighting immediate plate-appearance termination and the difference in outcomes after a ball or strike, then analyzed its relationship with fastball velocity.
       </p>
-      <p>
-       <a href="https://doi.org/10.1080/02640414.2024.2355423">
-        DOI 링크
+<p>
+<a href="https://doi.org/10.1080/02640414.2024.2355423">
+        DOI
        </a>
        ·
        <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">
-        GitHub 코드
+        Code on GitHub
        </a>
-      </p>
-     </li>
-    </ul>
-   </section>
-   <details class="section" id="additional-research">
-    <summary>
-     온라인 리뷰 연구
+</p>
+</li>
+</ul>
+</section>
+<details class="section" id="additional-research">
+<summary>
+     Online review research
     </summary>
-    <ul class="entries">
-     <li>
-      <h3>
-       <a href="research/online-reviews.html">
+<ul class="entries">
+<li>
+<h3>
+<a href="research/online-reviews.html">
         Investigation on the Factors Affecting the Number of International Visitors Using Online Reviews
        </a>
-      </h3>
-      <p>
-       관광 리뷰에서 만족 요인과 감성 점수를 추출하고, 서울생활인구의 단기체류 외국인 지표와 연결해 분석했습니다.
+</h3>
+<p>
+       We extracted satisfaction factors and sentiment scores from tourism reviews and analyzed them alongside Seoul’s short-stay foreign population estimates.
       </p>
-      <p class="meta">
-       Journal of the Korean Institute of Industrial Engineers, 2021, 2저자
+<p class="meta">
+       Journal of the Korean Institute of Industrial Engineers, 2021 · Second author
       </p>
-      <p>
-       <a href="http://dx.doi.org/10.7232/jkiie.2021.47.1.045">
-        DOI 링크
+<p>
+<a href="http://dx.doi.org/10.7232/jkiie.2021.47.1.045">
+        DOI
        </a>
-      </p>
-     </li>
-    </ul>
-   </details>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</li>
+</ul>
+</details>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
-  <script defer="True" src="assets/previews-data.js">
-  </script>
-  <script defer="True" src="assets/previews.js">
-  </script>
- </body>
+</footer>
+<script defer="True" src="assets/previews-data.js">
+</script>
+<script defer="True" src="assets/previews.js">
+</script>
+</body>
 </html>

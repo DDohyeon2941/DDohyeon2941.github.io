@@ -1,242 +1,243 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    소수 클래스의 어려운 표본을 보존하는 노이즈 필터링
+</p>
+<h1>
+    Noise filtering that preserves difficult minority samples
    </h1>
-   <p class="paper-title">
+<p class="paper-title">
     Improved noise-filtering algorithm for AdaBoost using the inter-and intra-class variability of imbalanced datasets
    </p>
-   <p class="meta">
-    JIFS, 2022, 1저자
+<p class="meta">
+    JIFS, 2022 · First author
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      AdaBoost에서 어려운 소수 클래스 표본을 노이즈로 과도하게 제거하는 문제를 다룹니다. 클래스별 가중치 분포에 다른 임계값을 적용하고, 원본 및 노이즈 주입 자료에서 표본 보존과 AUROC를 평가했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      This study addresses excessive removal of difficult minority-class samples as noise in AdaBoost. I applied different thresholds to each class’s weight distribution and evaluated sample retention and AUROC on original and noise-injected data.
      </p>
-     <ul class="key-facts">
-      <li>
-       방법: 클래스별 평균 기준과 분포 비대칭을 고려한 두 임계값
+<ul class="key-facts">
+<li>
+       Method: class-specific means and two thresholds accounting for distribution asymmetry
       </li>
-      <li>
-       평가: 11개 데이터셋·노이즈 10–40%·AUROC와 표본 보존
+<li>
+       Evaluation: 11 datasets, 10–40% noise, AUROC and sample retention
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/paper-noise-weight-distributions.png">
-      <img alt="논문 Fig. 1 · 소수·다수 클래스의 가중치 분포, 임계값과 노이즈 판정 비율. Abalone 예시." loading="lazy" src="../images/research/paper-noise-weight-distributions.png"/>
-     </a>
-     <figcaption>
-      논문 Fig. 1 · 소수·다수 클래스의 가중치 분포, 임계값과 노이즈 판정 비율. Abalone 예시.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/paper-noise-weight-distributions.png">
+<img alt="Paper Fig. 1: minority- and majority-class weight distributions, thresholds, and noise identification rates. Abalone example." loading="lazy" src="../images/research/paper-noise-weight-distributions.png"/>
+</a>
+<figcaption>
+      Paper Fig. 1: minority- and majority-class weight distributions, thresholds, and noise identification rates. Abalone example.
       <a href="#part-3">
-       논문
+       Paper
       </a>
-     </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     AdaBoost는 반복해서 틀린 표본의 가중치를 높입니다. 불균형 데이터에서는 정보가 있는 소수 클래스 표본도 높은 가중치를 받기 쉬워, 모든 클래스에 같은 필터링 기준을 사용하면 소수 클래스의 정보가 과도하게 사라질 수 있습니다.
+<p>
+     AdaBoost increases the weights of repeatedly misclassified samples. In imbalanced data, informative minority samples can also receive high weights. A single filtering criterion for all classes can therefore remove too much minority-class information.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <ul>
-     <li>
-      <strong>
-       Case 1 · 클래스별 평균:
+<ul>
+<li>
+<strong>
+       Case 1 · Class-specific means:
       </strong>
-      다수·소수 클래스 각각의 평균 가중치에 조정 계수를 곱해 별도의 임계값을 설정합니다.
+      Sets a separate threshold for each class by multiplying its mean sample weight by an adjustment coefficient.
      </li>
-     <li>
-      <strong>
-       Case 2 · 분포의 비대칭:
+<li>
+<strong>
+       Case 2 · Distribution asymmetry:
       </strong>
-      클래스별 가중치 분포의 퍼짐과 비대칭을 반영합니다. 동일한 사분위수가 생기는 문제를 줄이기 위해 15·85백분위수와 중앙값을 사용합니다. 두 백분위수가 같으면 필터링을 건너뜁니다.
+      Accounts for the spread and asymmetry of each class’s weight distribution. The 15th and 85th percentiles and the median reduce the problem of identical quartiles. Filtering is skipped when the two percentiles coincide.
      </li>
-     <li>
-      <strong>
-       학습 반영:
+<li>
+<strong>
+       Integration into learning:
       </strong>
-      임계값을 넘는 표본의 가중치를 0으로 두고, ORBoost·RUSBoostWO의 기존 필터링 단계를 대체합니다.
+      Sets the weights of samples exceeding the threshold to 0, replacing the existing filtering stage in ORBoost and RUSBoostWO.
      </li>
-    </ul>
-    <details>
-     <summary>
-      원본·노이즈 주입 실험 설정
+</ul>
+<details>
+<summary>
+      Original-data and noise-injection experiments
      </summary>
-     <p>
-      표와 결론에 제시된 11개 불균형 데이터셋에서 CART 깊이 1, 부스팅 50회, 층화 5분할 교차 검증의 30회 반복으로 평가했습니다. 주요 지표는 AUROC입니다. 클래스 비율을 유지하면서 합성 표본에 반대 클래스 라벨을 부여해 노이즈를 주입했습니다. 이웃 거리 비율에 비례하는 Direct와 반비례하는 Inverse 표본 선택을 비교하고 노이즈 수준은 10–40%를 10% 간격으로 변경했습니다.
+<p>
+      I evaluated the 11 imbalanced datasets reported in the tables and conclusions using depth-1 CART, 50 boosting iterations, and 30 repetitions of stratified 5-fold cross-validation. The main metric was AUROC. Noise was injected by giving synthetic samples the opposite class label while preserving the class ratio. Direct sample selection, proportional to a neighbor-distance ratio, was compared with Inverse selection, inversely proportional to it. Noise levels ranged from 10–40% in 10% increments.
      </p>
-    </details>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</details>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <p>
-     제1저자로 클래스 간 분류 난이도 차이를 필터링에 반영하는 방법을 연구했습니다. 클래스별 임계값과 불균형 비율을 유지하는 노이즈 주입 실험을 함께 제시했습니다.
+<p>
+     As first author, I investigated filtering that accounts for differences in classification difficulty between classes. The study combines class-specific thresholds with noise-injection experiments that preserve the imbalance ratio.
     </p>
-    <h3>
-     표본 보존은 개선되지만 성능은 조건에 따라 다름
+<h3>
+     Better sample retention; performance depends on conditions
     </h3>
-    <div aria-label="원본 데이터 AUROC 비교 표" class="result-table" role="region" tabindex="0">
-     <table>
-      <caption>
-       원본 데이터의 ORBoost와 Case 1 · 논문 Table 4 · 대표 사례
+<div aria-label="AUROC comparison on original data" class="result-table" role="region" tabindex="0">
+<table>
+<caption>
+       ORBoost vs. Case 1 on original data · Paper Table 4 · Selected cases
       </caption>
-      <thead>
-       <tr>
-        <th scope="col">
-         데이터셋
+<thead>
+<tr>
+<th scope="col">
+         Dataset
         </th>
-        <th scope="col">
-         기존 ORBoost
+<th scope="col">
+         Original ORBoost
         </th>
-        <th scope="col">
-         클래스별 Case 1
+<th scope="col">
+         Class-specific Case 1
         </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-        <th scope="row">
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
          Oil
         </th>
-        <td>
+<td>
          0.7220
         </td>
-        <td>
+<td>
          0.8946
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          Mammography
         </th>
-        <td>
+<td>
          0.6919
         </td>
-        <td>
+<td>
          0.9362
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          KC1
         </th>
-        <td>
+<td>
          0.6610
         </td>
-        <td>
+<td>
          0.6481
         </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-    <p class="result-note">
-     AUROC 평균값으로 높을수록 좋습니다. 원본 데이터의 특정 모델·조건에 대한 사례이며 전체 데이터셋의 평균이나 노이즈 주입 결과가 아닙니다.
+</tr>
+</tbody>
+</table>
+</div>
+<p class="result-note">
+     Mean AUROC; higher is better. These are examples for a specific model and setting on original data, not averages across all datasets or noise-injection results.
     </p>
-    <p>
-     소수 클래스가 노이즈로 판정되는 비율이 줄고 여러 조건에서 예측도 개선됐지만, KC1에서는 개선되지 않았습니다. Case 1이 대체로 Case 2보다 좋은 결과를 보였고, RUSBoostWO와 결합한 Case 2는 같은 백분위수 때문에 필터링이 중단되는 한계를 보였습니다. 소수 클래스 보존 자체를 성능 개선과 동일하게 보지 않습니다.
+<p>
+     The rate at which minority samples were identified as noise decreased, and prediction improved under several conditions, but not on KC1. Case 1 generally outperformed Case 2. Case 2 with RUSBoostWO sometimes stopped filtering because its percentiles coincided. Minority-sample retention alone does not establish improved predictive performance.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <a href="https://doi.org/10.3233/JIFS-213244">
-     DOI 링크
+<a href="https://doi.org/10.3233/JIFS-213244">
+     DOI
     </a>
     ·
     <a href="https://github.com/DDohyeon2941/noise-filtering-adaboost-for-imbalanced-data">
-     GitHub 코드
+     Code on GitHub
     </a>
-    <p class="meta paper-source">
-     방법·그림·결과는 연구 원문 기준이며 모델을 다시 학습한 결과가 아닙니다.
+<p class="meta paper-source">
+     Methods, figures, and results come from the original paper; the models were not retrained for this page.
     </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

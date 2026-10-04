@@ -1,242 +1,243 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    잔차 정보를 활용한 극단 수요 예측
+</p>
+<h1>
+    Extreme-demand prediction using residual information
    </h1>
-   <p class="paper-title">
+<p class="paper-title">
     AdaBoost.RDT: AdaBoost Integrated With Residual-Based Decision Tree for Demand Prediction of Bike Sharing Systems Under Extreme Demands
    </p>
-   <p class="meta">
-    IEEE ACCESS, 2024, 1저자
+<p class="meta">
+    IEEE ACCESS, 2024 · First author
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      극단 수요를 노이즈로 약화시키지 않고 예측하기 위해 A-MT와 잔차 트리 R-DT를 결합했습니다. 극단 수요의 오차 감소와 매우 낮은 수요의 오차 증가를 함께 평가한 연구입니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I combined A-MT with the residual tree R-DT to predict extreme demand without suppressing it as noise. The study evaluates both reduced extreme-demand error and increased error at very low demand.
      </p>
-     <ul class="key-facts">
-      <li>
-       방법: 선택적 Lasso 모델 트리 + 잔차 부호 특징 + 분위수 조정
+<ul class="key-facts">
+<li>
+       Method: selective Lasso model trees + residual-sign features + quantile adjustment
       </li>
-      <li>
-       결과: 극단 수요 오차 감소와 매우 낮은 수요 오차 증가의 상충
+<li>
+       Results: a trade-off between lower extreme-demand error and higher very-low-demand error
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/paper-adaboost-framework.png">
-      <img alt="원고 Figure 1 · 수요 학습, 잔차 학습, 다음 반복의 추가 특징과 최종 예측 조정." loading="lazy" src="../images/research/paper-adaboost-framework.png"/>
-     </a>
-     <figcaption>
-      원고 Figure 1 · 수요 학습, 잔차 학습, 다음 반복의 추가 특징과 최종 예측 조정.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/paper-adaboost-framework.png">
+<img alt="Manuscript Figure 1: demand learning, residual learning, additional features for the next iteration, and final prediction adjustment." loading="lazy" src="../images/research/paper-adaboost-framework.png"/>
+</a>
+<figcaption>
+      Manuscript Figure 1: demand learning, residual learning, additional features for the next iteration, and final prediction adjustment.
       <a href="#part-3">
-       논문
+       Paper
       </a>
-     </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     일반 부스팅은 큰 오차의 극단 수요에 치우칠 수 있고, 노이즈에 강한 방식은 중요한 급증 수요까지 약화시킬 수 있습니다. 공유자전거에서 수요 급증을 놓치는 문제를 다루되, 낮은 수요의 예측에 미치는 영향도 함께 살폈습니다.
+<p>
+     Standard boosting can overemphasize extreme demand with large errors, while noise-robust methods can suppress meaningful demand spikes. I investigated missed spikes in bike-sharing demand alongside the effects on low-demand predictions.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <ol>
-     <li>
-      <strong>
+<ol>
+<li>
+<strong>
        A-MT:
       </strong>
-      의사결정나무의 리프 안에서 목표값 분포를 확인하고, 조건에 맞는 리프에만 Lasso 회귀를 학습합니다. 모든 리프에 선형 모델을 두어 낮은 수요를 과대 예측하는 문제를 줄이려는 설계입니다.
+      Checks target distributions within decision-tree leaves and fits Lasso regression only in leaves meeting the criteria. This design aims to reduce low-demand overprediction caused by placing linear models in every leaf.
      </li>
-     <li>
-      <strong>
+<li>
+<strong>
        R-DT:
       </strong>
-      같은 반복의 A-MT 잔차를 별도 트리로 예측합니다. 예측 잔차가 양수인지를 나타내는 이진 특징을 다음 반복의 입력에 추가합니다. 단순히 잔차 값을 다음 목표값으로 사용하는 방식과 구분됩니다.
+      Predicts the residuals of A-MT in the same iteration using a separate tree. A binary feature indicating whether the predicted residual is positive becomes an input to the next iteration. This differs from simply using residual values as the next target.
      </li>
-     <li>
-      <strong>
-       최종 예측:
+<li>
+<strong>
+       Final prediction:
       </strong>
-      반복별 예측 잔차의 평균으로 과소·과대 추정 정도를 판단하고, 여러 A-MT 예측을 결합할 가중 분위수 Q를 조정합니다. Q는 0.1–0.9 범위로 제한합니다.
+      Uses the mean predicted residual across iterations to assess under- or overestimation and adjusts the weighted quantile Q used to combine A-MT predictions. Q is bounded between 0.1–0.9.
      </li>
-    </ol>
-    <details>
-     <summary>
-      데이터·비교 모델·평가 설정
+</ol>
+<details>
+<summary>
+      Data, comparison models, and evaluation
      </summary>
-     <p>
-      서울·대전의 대여소별 시간 수요를 평일·주말로 나누어 분석했습니다. 시간·날씨·지역 인구·교통 관련 특징을 사용하고, 저수요·중간 수요·극단 수요 그룹을 따로 평가했습니다. AdaBoost, AdaBoost.RT, GBM, XGBoost, MBoost, LADBoost의 6개 비교 모델을 사용했습니다. 극단 수요의 학습 비중을 달리한 자료와 5개 표본 학습 세트에서도 검토했습니다. 지표는 RMSE·MAE·MAPE·sMAPE 및 실제 수요가 0인 사례를 제외한 sMAPE입니다.
+<p>
+      I analyzed hourly station-level demand in Seoul and Daejeon, separating weekdays and weekends. Features covered time, weather, local population, and transportation. Low, medium, and extreme demand were evaluated separately. Comparisons used 6 models: AdaBoost, AdaBoost.RT, GBM, XGBoost, MBoost, and LADBoost. The study also examined different extreme-demand training proportions and 5 sampled training sets. Metrics were RMSE, MAE, MAPE, sMAPE, and sMAPE excluding actual zero-demand cases.
      </p>
-    </details>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</details>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <p>
-     제1저자로 잔차 기반 부스팅 모델 연구에 참여했습니다. 기여는 수요 모델과 잔차 모델을 결합하고, 잔차 부호를 후속 학습에 전달하며 최종 결합 위치까지 조정하는 것입니다.
+<p>
+     As first author, I participated in residual-based boosting research. The contribution combines demand and residual models, passes residual-sign information to later iterations, and adjusts the final prediction aggregation quantile.
     </p>
-    <h3>
-     분위수 조정의 효과와 상충
+<h3>
+     Effects and trade-offs of quantile adjustment
     </h3>
-    <div aria-label="수요 그룹별 RMSE 결과 표" class="result-table" role="region" tabindex="0">
-     <table>
-      <caption>
-       서울 평일, Q 고정과 조정 비교 · 원고 Table 4 · RMSE
+<div aria-label="RMSE by demand group" class="result-table" role="region" tabindex="0">
+<table>
+<caption>
+       Seoul weekdays: fixed vs. adjusted Q · Manuscript Table 4 · RMSE
       </caption>
-      <thead>
-       <tr>
-        <th scope="col">
-         수요 그룹
+<thead>
+<tr>
+<th scope="col">
+         Demand group
         </th>
-        <th scope="col">
-         Q 고정
+<th scope="col">
+         Fixed Q
         </th>
-        <th scope="col">
-         Q 조정
+<th scope="col">
+         Adjusted Q
         </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-        <th scope="row">
-         Group 1 · 낮은 수요
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+         Group 1 · Low demand
         </th>
-        <td>
+<td>
          1.0474
         </td>
-        <td>
+<td>
          1.4022
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
-         Group 2 · 중간 수요
+</tr>
+<tr>
+<th scope="row">
+         Group 2 · Medium demand
         </th>
-        <td>
+<td>
          5.8085
         </td>
-        <td>
+<td>
          5.1165
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
-         Group 3 · 극단 수요
+</tr>
+<tr>
+<th scope="row">
+         Group 3 · Extreme demand
         </th>
-        <td>
+<td>
          47.4712
         </td>
-        <td>
+<td>
          40.3704
         </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-    <p class="result-note">
-     낮을수록 좋습니다. 동일 AdaBoost.RDT 안에서 Q를 0.5로 고정한 경우와 조정한 경우를 비교한 값이며, 다른 모델과의 비교표가 아닙니다.
+</tr>
+</tbody>
+</table>
+</div>
+<p class="result-note">
+     Lower is better. These values compare Q fixed at 0.5 with adjusted Q within AdaBoost.RDT; they are not a comparison with other models.
     </p>
-    <p>
-     중간·극단 수요의 오차는 줄지만 낮은 수요의 오차는 커집니다. 6개 모델 비교에서도 극단 수요 개선과 매우 낮은 수요의 과대 예측이 함께 나타납니다. 새 대여소 등 운영 환경의 변화와 도시별 수요 분포에 따른 일반화는 추가 과제로 남았습니다. 실제 재배치 운영의 효과를 검증한 결과로 설명하지 않습니다.
+<p>
+     Error decreases at medium and extreme demand but increases at low demand. The comparison with 6 models also shows both improved extreme-demand prediction and overprediction at very low demand. Generalization across changing operating conditions, such as new stations, and city-specific demand distributions remains future work. The study does not establish benefits for actual rebalancing operations.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <a href="https://ieeexplore.ieee.org/document/10705154">
-     DOI 링크
+<a href="https://ieeexplore.ieee.org/document/10705154">
+     DOI
     </a>
     ·
     <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">
-     GitHub 코드
+     Code on GitHub
     </a>
-    <p class="meta paper-source">
-     방법·그림·결과는 연구 원문 기준이며 모델을 다시 학습한 결과가 아닙니다.
+<p class="meta paper-source">
+     Methods, figures, and results come from the original paper; the models were not retrained for this page.
     </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

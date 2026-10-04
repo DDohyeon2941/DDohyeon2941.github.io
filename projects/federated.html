@@ -1,193 +1,194 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Flower를 이용한 연합학습 실험 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Federated learning experiments with Flower | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    Flower를 이용한 연합학습 실험
+</p>
+<h1>
+    Federated learning experiments with Flower
    </h1>
-   <p class="meta">
-    서울과학기술대학교 데이터베이스 수업 · 팀 프로젝트
+<p class="meta">
+    SeoulTech database course · Team project
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      클라이언트의 데이터 품질이 서로 다를 때, 모델을 단순히 합치는 것만으로 좋은 전역 모델을 만들 수 있을까? Flower로 집계 전략을 비교하고, 잘못된 라벨이 포함된 클라이언트의 업데이트를 제어하는 방법을 실험했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Can simply aggregating models produce a good global model when clients have different data quality? Our team compared aggregation strategies in Flower and experimented with controlling updates from clients with incorrect labels.
      </p>
-     <ul class="key-facts">
-      <li>
-       실험: 집계 전략 4종과 정상·라벨 오류 클라이언트
+<ul class="key-facts">
+<li>
+       Experiment: 4 aggregation strategies and clean/noisy-label clients
       </li>
-      <li>
-       결과: 노름 필터링·클리핑은 해당 실험에서 개선 없음
+<li>
+       Result: norm filtering and clipping did not improve this experiment
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/flower-accuracy.png">
-      <img alt="MNIST 집계 전략별 테스트 정확도 곡선. 공개 팀 프로젝트의 기존 실험 그림." loading="lazy" src="../images/research/flower-accuracy.png"/>
-     </a>
-     <figcaption>
-      MNIST 집계 전략별 테스트 정확도 곡선. 공개 팀 프로젝트의 기존 실험 그림.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/flower-accuracy.png">
+<img alt="MNIST test-accuracy curves by aggregation strategy, from the public team project’s original experiment." loading="lazy" src="../images/research/flower-accuracy.png"/>
+</a>
+<figcaption>
+      MNIST test-accuracy curves by aggregation strategy, from the public team project’s original experiment.
       <a href="https://github.com/JihyoKim00/federated-learning/blob/main/assets/topic1-acc.png">
-       출처
+       Source
       </a>
-     </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     연합학습에서는 각 클라이언트가 자신의 데이터로 학습하고 서버가 모델 업데이트를 집계합니다. 데이터가 한곳에 모이지 않는 만큼, 일부 클라이언트의 학습 데이터가 부정확하면 그 영향이 전역 모델에도 전달될 수 있습니다.
+<p>
+     In federated learning, clients train on their own data and the server aggregates model updates. Because data remain distributed, inaccurate training data on some clients can affect the global model.
     </p>
-    <p>
-     프로젝트는 두 질문을 나누어 다뤘습니다. MNIST에서는 서버의 집계 전략에 따른 학습 차이를 비교하고, CIFAR-10에서는 정상 라벨과 일부 라벨을 섞은 클라이언트를 함께 참여시켜 데이터 품질의 영향을 살폈습니다.
+<p>
+     The project examined two questions. MNIST experiments compared server aggregation strategies. CIFAR-10 experiments combined clean-label clients with clients whose labels were partly shuffled to examine data-quality effects.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     김지효·김성철·이도현으로 구성된 수업 팀 프로젝트에 참여했습니다. 팀 단위로 Flower 기반 서버·클라이언트 실험과 집계 전략 비교, 데이터 품질에 따른 업데이트 제어를 수행했습니다.
+<p>
+     I participated in a course team project with Ji Hyo Kim and Seong Cheol Kim. The team implemented Flower server/client experiments, aggregation comparisons, and update control for data-quality differences.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     집계 전략 비교
+<h3>
+     Comparing aggregation strategies
     </h3>
-    <p>
-     서버가 초기 가중치를 전달하면 클라이언트는 로컬 학습을 수행하고 업데이트를 반환합니다. 서버는 업데이트를 집계한 뒤 별도 평가 데이터로 손실과 정확도를 계산합니다. 이 과정을 반복하며 FedAvg, FedAdagrad, FedAdam, FedYogi를 비교했습니다.
+<p>
+     After receiving initial server weights, clients train locally and return updates. The server aggregates updates and computes loss and accuracy on separate evaluation data. We repeated this process to compare FedAvg, FedAdagrad, FedAdam, and FedYogi.
     </p>
-    <h3>
-     데이터 품질을 달리한 클라이언트
+<h3>
+     Clients with different data quality
     </h3>
-    <p>
-     CIFAR-10 실험은 정상 데이터 클라이언트 5개와 일부 라벨을 무작위로 바꾼 클라이언트 5개로 구성했습니다. 이미지 자체보다 학습 신호의 정확성이 달라지도록 설정했습니다.
+<p>
+     CIFAR-10 experiments used 5 clean-data clients and 5 clients with some randomly reassigned labels, varying the correctness of the learning signal rather than the images themselves.
     </p>
-    <h3>
-     업데이트 제어
+<h3>
+     Controlling updates
     </h3>
-    <p>
-     모델 가중치의 노름을 이용한 필터링과 로컬 학습의 그래디언트 노름 클리핑을 시험했습니다. 클라이언트에는 SGD 학습과 클리핑 옵션을, 서버에는 집계 전략 선택과 전역 모델 평가를 구현했습니다.
+<p>
+     We tested model-weight norm filtering and gradient-norm clipping during local learning. Clients implemented SGD with optional clipping; the server implemented aggregation selection and global-model evaluation.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <h3>
-     실험 결과와 한계
+<h3>
+     Results and limitations
     </h3>
-    <p>
-     MNIST 실험에서 FedAdam과 FedYogi는 FedAvg보다 빠르게 수렴하거나 더 높은 성능을 보였고, FedAdagrad는 더 낮은 성능을 보였습니다.
+<p>
+     In the MNIST experiment, FedAdam and FedYogi converged faster or performed better than FedAvg, while FedAdagrad performed worse.
     </p>
-    <p>
-     CIFAR-10 실험의 전역 정확도는 정상 업데이트를 사용한 경우 64.13%, 오류가 포함된 업데이트를 함께 사용한 경우 59.23%였습니다. 필터링과 클리핑은 이 실험에서 성능을 개선하지 못했습니다. 데이터 품질 문제를 업데이트 크기만으로 해결하기 어려웠다는 점도 주요 결과입니다.
+<p>
+     CIFAR-10 global accuracy was 64.13% with clean updates and 59.23% when noisy updates were included. Filtering and clipping did not improve performance in this experiment, indicating that update magnitude alone did not resolve data-quality issues.
     </p>
-    <p>
-     수치는 수업 프로젝트의 실험 조건에서 얻은 결과입니다. 실제 기관 간 운영과 개인정보 보호 수준은 평가 범위에 포함하지 않았습니다.
+<p>
+     These values apply to the course-project settings. Actual inter-institution operation and privacy guarantees were outside the evaluation scope.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="https://github.com/JihyoKim00/federated-learning">
-      프로젝트 설명과 실험 기록
+<p>
+<a href="https://github.com/JihyoKim00/federated-learning">
+      Project description and experiment records
      </a>
      ·
      <a href="https://github.com/JihyoKim00/federated-learning/blob/main/server.py">
-      서버 구현
+      Server implementation
      </a>
      ·
      <a href="https://github.com/JihyoKim00/federated-learning/blob/main/client.py">
-      클라이언트 구현
+      Client implementation
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

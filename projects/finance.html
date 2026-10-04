@@ -1,181 +1,182 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   보험 청구 심사 유형 분류 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Insurance claim review classification | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    보험 청구 심사 유형 분류
+</p>
+<h1>
+    Insurance claim review classification
    </h1>
-   <p class="meta">
-    2020.08–2020.10 · 금융 빅데이터 페스티벌 · 팀 프로젝트
+<p class="meta">
+    2020.08–2020.10 · Financial Big Data Festival · Team project
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      보험 청구 건을 즉시지급·서류심사·방문심사로 분류하는 대회에 참여했습니다. 질병·진료·의료기관 정보를 전처리하고, 질병군별 LightGBM 모델과 교차 검증으로 제출 예측을 구성했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Our team competed to classify insurance claims as immediate payment, document review, or on-site review. We preprocessed disease, treatment, and institution information and generated submission predictions using disease-group LightGBM models and cross-validation.
      </p>
-     <ul class="key-facts">
-      <li>
-       모델: 질병군별 LightGBM 분류
+<ul class="key-facts">
+<li>
+       Model: LightGBM classification by disease group
       </li>
-      <li>
-       검증: 층화 5분할과 정확도·F1
+<li>
+       Validation: stratified 5-fold splits, accuracy, and F1
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/finance-method.svg">
-      <img alt="보험 청구 심사 유형 분류 · 작업·구현 흐름 개념도" loading="lazy" src="../images/research/finance-method.svg"/>
-     </a>
-     <figcaption>
-      보험 청구 심사 유형 분류 · 작업·구현 흐름 개념도
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/finance-method.svg">
+<img alt="Insurance claim review classification · Workflow concept diagram" loading="lazy" src="../images/research/finance-method.svg"/>
+</a>
+<figcaption>
+      Insurance claim review classification · Workflow concept diagram
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     보험 청구마다 필요한 심사 수준이 다릅니다. 제공된 청구 정보를 바탕으로 세 가지 심사 유형을 분류하는 것이 대회의 과제였습니다. 같은 값이라도 질병이나 의료기관의 맥락에 따라 의미가 달라질 수 있어 특징 구성과 집단별 모델링을 함께 검토했습니다.
+<p>
+     Insurance claims require different levels of review. The competition task was to classify three review types from the provided claim information. A value can mean different things across diseases or institutions, so we considered feature construction alongside group-specific modeling.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     박종환·이도현의 금융 빅데이터 페스티벌 팀 프로젝트에 참여했습니다. 팀 단위로 청구 데이터 전처리, 특징 구성, 분류 모델 학습과 교차 검증을 수행했습니다.
+<p>
+     I participated in the Financial Big Data Festival team project with Jong Hwan Park. As a team, we performed claim preprocessing, feature construction, classifier training, and cross-validation.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     전처리와 특징 구성
+<h3>
+     Preprocessing and feature construction
     </h3>
-    <p>
-     탐색적 분석을 바탕으로 금액 정보의 0 여부와 상대적인 값, 의료기관 범주의 조합 등에서 특징을 구성했습니다. 원천 데이터의 세부 필드명이나 개별 청구 기록 대신 특징의 목적을 설명합니다.
+<p>
+     Exploratory analysis informed features based on zero/nonzero monetary values, relative amounts, and combinations of institution categories. This page explains feature purposes rather than detailed source-field names or individual claims.
     </p>
-    <h3>
-     질병군별 학습
+<h3>
+     Learning by disease group
     </h3>
-    <p>
-     공개 모델 코드는 질병 범주에 따라 데이터를 두 집단으로 나누어 각각 LightGBM을 학습합니다. 각 집단의 분포에 맞는 모델을 사용한 뒤 예측을 원래 청구 순서로 합칩니다.
+<p>
+     The public model code divides data into two disease-category groups and trains a LightGBM model for each. Group-specific predictions are then restored to the original claim order.
     </p>
-    <h3>
-     교차 검증과 제출
+<h3>
+     Cross-validation and submission
     </h3>
-    <p>
-     StratifiedKFold 5개 분할로 클래스 비율을 유지하면서 검증하고 정확도와 F1을 계산합니다. 검증 모델의 예측으로 대회용 테스트 결과를 구성했습니다.
+<p>
+     StratifiedKFold preserves class proportions across 5 splits, evaluating accuracy and F1. Predictions from validation models were combined into competition test submissions.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     구현 범위는 대회 데이터의 전처리, 분류 모델 학습, 검증과 제출 예측 생성입니다. 보험사의 실제 심사 시스템에 적용한 업무 프로젝트는 아닙니다.
+<p>
+     The implementation covers competition-data preprocessing, classifier training, validation, and submission predictions. It was not an industry project deployed in an insurer’s actual review system.
     </p>
-    <p>
-     대회 데이터의 전처리부터 교차 검증과 제출 예측 생성까지 구현했습니다. 공개 코드에는 원천 데이터가 포함되어 있지 않습니다.
+<p>
+     We implemented preprocessing through cross-validation and submission prediction generation. The public code does not include source data.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="https://github.com/chromatices/2020_mirae_insurance_competition">
-      대회 프로젝트 저장소
+<p>
+<a href="https://github.com/chromatices/2020_mirae_insurance_competition">
+      Competition project repository
      </a>
      ·
      <a href="https://github.com/chromatices/2020_mirae_insurance_competition/blob/master/modules/Modeling/preprocessing.py">
-      전처리
+      Preprocessing
      </a>
      ·
      <a href="https://github.com/chromatices/2020_mirae_insurance_competition/blob/master/modules/Modeling/models.py">
-      모델과 교차 검증
+      Models and cross-validation
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

@@ -1,239 +1,240 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    이용 패턴을 반영한 공간 단위 생성
+</p>
+<h1>
+    Spatial units that reflect usage patterns
    </h1>
-   <p class="paper-title">
+<p class="paper-title">
     Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility
    </p>
-   <p class="meta">
-    IET ITS, 2024, 1저자
+<p class="meta">
+    IET ITS, 2024 · First author
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      고정 격자의 크기·경계가 수요 예측에 미치는 MAUP를 다룹니다. 이용량이 적은 지역을 결합하고 시간 패턴과 거리를 함께 사용해 예측의 공간 단위를 구성했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      This work addresses the MAUP: how fixed-grid size and boundaries affect demand prediction. I combined low-usage areas and used temporal patterns and distance to construct spatial prediction units.
      </p>
-     <ul class="key-facts">
-      <li>
-       방법: 기본 격자 → 주요·보조 격자 결합 → 시공간 군집화
+<ul class="key-facts">
+<li>
+       Method: base grids → main/auxiliary grid merging → spatiotemporal clustering
       </li>
-      <li>
-       결과: 두 도시의 RMSE 개선, Minneapolis의 MAPE는 악화
+<li>
+       Results: lower RMSE in both cities; higher MAPE in Minneapolis
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/paper-mobility-main-grids.png">
-      <img alt="원고 Fig. 3 · 주요 격자를 선택하고 가까운 보조 격자를 결합하는 과정." loading="lazy" src="../images/research/paper-mobility-main-grids.png"/>
-     </a>
-     <figcaption>
-      원고 Fig. 3 · 주요 격자를 선택하고 가까운 보조 격자를 결합하는 과정.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/paper-mobility-main-grids.png">
+<img alt="Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids." loading="lazy" src="../images/research/paper-mobility-main-grids.png"/>
+</a>
+<figcaption>
+      Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids.
       <a href="#part-3">
-       논문
+       Paper
       </a>
-     </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     자유 이동형 이동 수단은 대여소가 없어 수요를 공간 단위로 집계해야 합니다. 같은 이용 기록도 격자의 폭과 경계에 따라 0 수요와 높은 수요의 분포가 달라집니다. 단순히 격자를 크게 만드는 방법은 표적의 규모도 바꾸므로, 예측 개선과 집계 효과를 구분해야 합니다.
+<p>
+     Free-floating vehicles have no fixed stations, so demand must be aggregated into spatial units. Grid width and boundaries alter the distribution of zero and high demand even for the same trip records. Simply enlarging grids also changes target scale, so prediction improvements must be distinguished from aggregation effects.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <ol>
-     <li>
-      <strong>
-       대표점 설정:
+<ol>
+<li>
+<strong>
+       Representative locations:
       </strong>
-      기본 격자를 네 하위 격자로 나누고 이용이 한쪽에 집중되면 대표점을 조정합니다.
+      Divides each base grid into 4 subgrids and adjusts its representative location when usage is concentrated on one side.
      </li>
-     <li>
-      <strong>
-       주요·보조 격자 결합:
+<li>
+<strong>
+       Merging main and auxiliary grids:
       </strong>
-      일평균 이용량으로 두 유형을 구분하고 가까운 주요 격자에 보조 격자를 결합합니다. 결합 수를 제한하며, 결합되지 않은 보조 격자도 별도 단위로 정리합니다.
+      Distinguishes the two types by average daily usage and merges auxiliary grids into nearby main grids. The number of merges is limited, and unmerged auxiliary grids remain separate units.
      </li>
-     <li>
-      <strong>
-       시공간 군집화:
+<li>
+<strong>
+       Spatiotemporal clustering:
       </strong>
-      24시간 이용 비율의 코사인 유사도와 거리 기반 유사도를 곱해 결합합니다. 비인접·대각 인접 쌍의 공간 유사도를 0으로 두고 계층적 군집화로 최종 단위를 구성합니다.
+      Multiplies cosine similarity of 24-hour usage proportions by distance-based similarity. Spatial similarity is set to 0 for nonadjacent and diagonally adjacent pairs. Hierarchical clustering then constructs the final units.
      </li>
-    </ol>
-    <details>
-     <summary>
-      실험 설정과 전체 흐름도
+</ol>
+<details>
+<summary>
+      Experimental setup and framework
      </summary>
-     <p>
-      Kansas City의 2019년, Minneapolis의 2022년 7–8월 공유 전동킥보드 기록을 사용했습니다. 250m·500m·750m 격자와 비교하고, 단순한 LSTM에 시간별 수요와 달력 정보를 입력했습니다. 7월을 학습에, 8월을 평가에 사용하며 학습 구간 안에서 fixed-origin 검증을 수행했습니다. 각 실험은 5회 반복했습니다. 목표값은 log1p 변환으로 학습하고 원래 단위로 복원해 평가했습니다.
+<p>
+      I used shared e-scooter records from July–August 2019 in Kansas City and July–August 2022 in Minneapolis. The framework was compared with 250m, 500m, and 750m grids, using a simple LSTM with hourly demand and calendar inputs. July was used for training and August for evaluation, with fixed-origin validation within the training period. Each experiment was repeated 5 times. Targets were trained after log1p transformation and evaluated after conversion back to the original units.
      </p>
-     <figure class="paper-extra">
-      <a href="../images/research/paper-mobility-framework.png">
-       <img alt="기본 격자, 주요·보조 격자, 군집화와 최종 공간 단위의 전체 흐름" loading="lazy" src="../images/research/paper-mobility-framework.png"/>
-      </a>
-      <figcaption>
-       원고 Fig. 1 · 공간 단위 생성 프레임워크.
+<figure class="paper-extra">
+<a href="../images/research/paper-mobility-framework.png">
+<img alt="The framework from base grids through main/auxiliary grids and clustering to final spatial units" loading="lazy" src="../images/research/paper-mobility-framework.png"/>
+</a>
+<figcaption>
+       Manuscript Fig. 1: the spatial unit generation framework.
       </figcaption>
-     </figure>
-    </details>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</figure>
+</details>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <p>
-     제1저자로 연구 개념화, 방법론 설계, 데이터 정리, 소프트웨어 구현, 시각화와 논문 집필을 수행했습니다. 예측 모델을 복잡하게 만드는 대신 집계 단위를 설계한 연구입니다.
+<p>
+     As first author, I worked on conceptualization, methodology design, data preparation, software implementation, visualization, and writing. The research focuses on designing aggregation units rather than increasing prediction-model complexity.
     </p>
-    <h3>
-     도시와 지표에 따라 달라지는 결과
+<h3>
+     Results vary by city and metric
     </h3>
-    <div aria-label="도시별 예측 결과 표" class="result-table" role="region" tabindex="0">
-     <table>
-      <caption>
-       전체 공간 단위(All), 500m 기준 격자와 제안 방식 비교 · 원고 Tables 1–2
+<div aria-label="Prediction results by city" class="result-table" role="region" tabindex="0">
+<table>
+<caption>
+       All spatial units: 500m baseline vs. proposed method · Manuscript Tables 1–2
       </caption>
-      <thead>
-       <tr>
-        <th scope="col">
-         도시
+<thead>
+<tr>
+<th scope="col">
+         City
         </th>
-        <th scope="col">
-         RMSE: 500m → 제안
+<th scope="col">
+         RMSE: 500m → proposed
         </th>
-        <th scope="col">
-         MAPE: 500m → 제안
+<th scope="col">
+         MAPE: 500m → proposed
         </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-        <th scope="row">
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
          Kansas City
         </th>
-        <td>
+<td>
          1.7601 → 1.5868
         </td>
-        <td>
+<td>
          0.7115 → 0.6875
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          Minneapolis
         </th>
-        <td>
+<td>
          0.8521 → 0.7776
         </td>
-        <td>
+<td>
          0.6905 → 0.7226
         </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-    <p class="result-note">
-     오차는 낮을수록 좋으며 MAPE는 비율로 표기했습니다. MAPE는 실제 수요가 0인 사례를 제외합니다. 집계 단위 자체가 달라져 절대오차의 규모도 변할 수 있습니다.
+</tr>
+</tbody>
+</table>
+</div>
+<p class="result-note">
+     Lower error is better; MAPE is reported as a ratio and excludes cases with actual demand of 0. Changing aggregation units can also change the scale of absolute errors.
     </p>
-    <p>
-     두 도시에서 RMSE가 줄었지만 Minneapolis의 MAPE는 커졌습니다. 위치가 도로 단위로 기록된 자료의 특성과 0 수요 처리에 따라 해석이 달라집니다. 집계 단위의 공간적 연결성을 보장하지 못한다는 한계가 있어 파라미터와 연결성을 추가로 검토할 필요가 있습니다.
+<p>
+     RMSE decreased in both cities, while MAPE increased in Minneapolis. Interpretation depends on street-level location recording and treatment of zero demand. The units do not guarantee spatial connectivity, which motivates further investigation of parameters and connectivity.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <a href="https://doi.org/10.1049/itr2.12596">
-     DOI 링크
+<a href="https://doi.org/10.1049/itr2.12596">
+     DOI
     </a>
     ·
     <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">
-     GitHub 코드
+     Code on GitHub
     </a>
-    <p class="meta paper-source">
-     방법·그림·결과는 연구 원문 기준이며 모델을 다시 학습한 결과가 아닙니다.
+<p class="meta paper-source">
+     Methods, figures, and results come from the original paper; the models were not retrained for this page.
     </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

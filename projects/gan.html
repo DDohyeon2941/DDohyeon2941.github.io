@@ -1,203 +1,204 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   불균형 이미지 데이터의 GAN 기반 증강 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   GAN augmentation for imbalanced image data | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    불균형 이미지 데이터의 GAN 기반 증강
+</p>
+<h1>
+    GAN augmentation for imbalanced image data
    </h1>
-   <p class="meta">
-    2019 대학원 팀 프로젝트 · 2023 개인 후속 연구
+<p class="meta">
+    2019 graduate team project · 2023 personal follow-up study
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      소수 클래스의 개수를 맞추는 것을 넘어, 어떤 생성 샘플이 분류에 실제로 유용한지 탐색했습니다. 공통 표현을 활용하는 클래스별 생성과 두 Critic 신호를 결합하는 생성 방법을 구현하고, 이미지 품질과 분류 유용성이 일치하지 않는 한계를 검토했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Beyond equalizing minority-class counts, I explored what makes generated samples useful for classification. I implemented class-specific generation using shared representations and a method combining two critic signals, examining why image quality does not necessarily translate to classification utility.
      </p>
-     <ul class="key-facts">
-      <li>
-       구현: BAGAN·EdgeGenerator / Dual-Critic WGAN-GP·Sobel edge loss
+<ul class="key-facts">
+<li>
+       Implementation: BAGAN/EdgeGenerator and Dual-Critic WGAN-GP/Sobel edge loss
       </li>
-      <li>
-       검토: 생성 현실성·다양성과 분류에 유용한 경계 정보의 차이
+<li>
+       Focus: realism and diversity vs. useful classification-boundary information
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/portfolio-gan-class-aware.png">
-      <img alt="전체 이미지의 공통 표현을 학습하고 클래스별 잠재분포에서 표본을 생성하는 Class-aware generation 흐름" loading="lazy" src="../images/research/portfolio-gan-class-aware.png"/>
-     </a>
-     <figcaption>
-      Class-aware generation · 공통 표현 학습과 클래스별 잠재분포를 이용한 이미지 생성 흐름
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/portfolio-gan-class-aware-en.svg">
+<img alt="Class-aware generation: learning shared image representations and sampling class-specific latent distributions" loading="lazy" src="../images/research/portfolio-gan-class-aware-en.svg"/>
+</a>
+<figcaption>
+      Class-aware generation: shared representation learning and class-specific latent distributions
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     불균형 분류에서는 소수 클래스의 개수를 늘리는 것만으로 분류에 필요한 정보를 충분히 보완하기 어렵습니다. 다수 클래스가 생성 학습 신호를 지배하고, 관측값이 부족한 소수 클래스의 분포 추정과 생성 다양성이 불안정해질 수 있습니다. 시각적으로 그럴듯한 이미지가 downstream 분류에도 유용한지 확인하는 것이 연구 질문이었습니다.
+<p>
+     Increasing minority sample counts alone may not provide the information needed for imbalanced classification. Majority samples can dominate generative learning signals, while sparse minority observations make distribution estimation and generation diversity unstable. The question was whether visually plausible images were also useful for downstream classification.
     </p>
-    <p>
-     2019년 대학원 팀 프로젝트에서는 Vanilla GAN·CGAN·ACGAN을 비교했습니다. MNIST와 CIFAR-10을 불균형하게 구성하고, 생성 이미지를 추가한 뒤 LeNet·ResNet으로 분류를 평가했습니다. 2023년 개인 후속 연구에서는 클래스별 생성 분포를 보완하는 접근과 분류 경계에 유용한 샘플을 생성하려는 가설을 별도로 탐색했습니다.
+<p>
+     In the 2019 graduate team project, we compared Vanilla GAN, CGAN, and ACGAN. We created imbalanced MNIST and CIFAR-10 data, added generated images, and evaluated classification with LeNet and ResNet. My 2023 personal follow-up separately explored improving class-specific generation distributions and generating samples useful near classification boundaries.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     2023년 개인 후속 연구에서 PyTorch 기반 모델 구조, 손실함수, 학습 루프, 이미지 생성 및 downstream 분류 파이프라인을 구현했습니다. Critic 반영 비율과 손실 항 가중치를 조정해 비교할 수 있도록 실험을 구성했습니다. 2019년 실험은 팀 프로젝트로 수행했습니다.
+<p>
+     In the 2023 personal study, I implemented PyTorch model structures, loss functions, training loops, image generation, and downstream classification pipelines. The experiments allowed adjustment of critic contributions and loss weights. The 2019 experiments were team work.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     공통 표현과 클래스별 잠재분포: BAGAN 계열
+<h3>
+     Shared representations and class-specific latent distributions: BAGAN approaches
     </h3>
-    <p>
-     Autoencoder로 전체 이미지의 공통 표현을 학습하고, Encoder 출력에서 클래스별 잠재벡터의 평균과 공분산을 추정했습니다. 클래스별 분포에서 잠재벡터를 샘플링한 뒤 학습한 Decoder로 이미지를 생성했습니다. BAGAN·Convolutional BAGAN을 탐색하고, 후속 변형에서는 EdgeGenerator가 만든 윤곽 정보를 Decoder feature에 결합했습니다.
+<p>
+     An autoencoder learned representations shared across all images. I estimated each class’s latent-vector mean and covariance from encoder outputs, sampled its latent distribution, and generated images with the trained decoder. I explored BAGAN and Convolutional BAGAN; a later variation combined EdgeGenerator contours with decoder features.
     </p>
-    <h3>
-     두 Critic의 신호를 결합: Dual-Critic WGAN-GP
+<h3>
+     Combining two critic signals: Dual-Critic WGAN-GP
     </h3>
-    <p>
-     소수 클래스 Critic과 다수 클래스에서 사전 학습한 Majority Critic checkpoint를 사용했습니다. 생성 이미지를 두 Critic에 입력하고, 각 점수를 Generator loss에 가중 반영했습니다. 두 Critic 출력의 차이도 별도 손실 항으로 구성해, 클래스 중심에서 벗어난 생성 방향을 탐색했습니다. 이는 유용한 경계 샘플을 만들 수 있다는 가설이며, 경계 근접성을 검증한 결과로 해석하지 않습니다.
+<p>
+     I used a minority-class critic and a Majority Critic checkpoint pretrained on majority data. Generated images were passed to both critics, and weighted scores contributed to the generator loss. Their output difference formed a separate loss term to explore generation away from class centers. This was a hypothesis about useful boundary samples, not verified boundary proximity.
     </p>
-    <h3>
-     윤곽 정보와 분류 평가 연결
+<h3>
+     Connecting contour information and classification evaluation
     </h3>
-    <p>
-     실제·생성 이미지의 수평·수직 윤곽 차이를 Sobel edge loss로 설계하고 Dual-Critic loss와 결합했습니다. Critic과 edge 항의 가중치를 조정하는 구조를 구현하고, 생성 데이터와 원본 데이터를 ResNet 분류로 연결했습니다. 분류 평가에는 정확도 외에 F1·G-mean 등 불균형 분류 지표도 사용했습니다.
+<p>
+     Sobel edge loss measured differences in horizontal and vertical contours between real and generated images and was combined with Dual-Critic loss. I implemented adjustable critic and edge weights and connected generated and original data to ResNet classification. Evaluation included F1 and G-mean alongside accuracy.
     </p>
-    <details>
-     <summary>
-      구현한 접근 전체 도식
+<details>
+<summary>
+      Overview of implemented approaches
      </summary>
-     <figure>
-      <a href="../images/research/portfolio-gan-approaches.png">
-       <img alt="Class-aware generation, Dual-Critic 생성 가설, EdgeGenerator와 Sobel edge loss 결합을 정리한 포트폴리오 도식" loading="lazy" src="../images/research/portfolio-gan-approaches.png" style="max-width:100%;height:auto"/>
-      </a>
-      <figcaption>
-       클래스별 생성과 Dual-Critic 생성 가설, EdgeGenerator·Sobel edge loss의 결합 구조
+<figure>
+<a href="../images/research/portfolio-gan-approaches-en.svg">
+<img alt="Portfolio diagram of class-aware generation, the Dual-Critic hypothesis, EdgeGenerator, and Sobel edge loss" loading="lazy" src="../images/research/portfolio-gan-approaches-en.svg" style="max-width:100%;height:auto"/>
+</a>
+<figcaption>
+       Class-specific generation, the Dual-Critic generation hypothesis, and integration of EdgeGenerator and Sobel edge loss
       </figcaption>
-     </figure>
-    </details>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</figure>
+</details>
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <h3>
-     구현 과정에서 확인한 한계
+<h3>
+     Limitations identified during implementation
     </h3>
-    <p>
-     각 Critic은 해당 클래스의 real/fake 정도를 평가하며, 두 클래스를 구분하는 분류기가 아닙니다. 두 점수가 비슷하거나 모두 높은 생성물이 유용한 hard sample이라는 보장은 없습니다. 클래스 공통 특징, Critic 오류, 모호한 클래스 혼합, 생성 artifact를 구분할 판단 기준도 부족했습니다. Sobel edge 역시 윤곽을 표현할 뿐, 분류기의 의미적 특징을 직접 나타내지는 않습니다.
+<p>
+     Each critic evaluates real/fake characteristics for its class; neither is a classifier separating the two classes. Similar or jointly high scores do not guarantee useful hard samples. Criteria were also insufficient for distinguishing shared class features, critic errors, ambiguous class mixtures, and generation artifacts. Sobel edges describe contours rather than a classifier’s semantic features directly.
     </p>
-    <p>
-     동일 조건의 정량 비교와 생성 현실성·다양성·경계 근접성의 동시 평가는 완료하지 않았습니다. edge 항의 학습 효과와 최종 성능을 검증하려면 추가 비교 실험이 필요하며, 2019년과 2023년 실험을 동일 조건의 성능 비교로 다루지 않습니다.
+<p>
+     Matched-condition quantitative comparisons and joint evaluation of realism, diversity, and boundary proximity were not completed. Further comparisons are needed to verify the learning effects of the edge term and final performance. The 2019 and 2023 experiments are not treated as a matched-condition performance comparison.
     </p>
-    <h3>
-     다시 정의한 연구 방향
+<h3>
+     A revised research direction
     </h3>
-    <p>
-     별도 분류기의 feature space에서 클래스 구분 특징과 decision boundary까지의 거리를 분석하고, 생성 현실성과 경계 근접성을 함께 평가하는 방향으로 문제를 재정의했습니다. Confidence filtering·soft label과 생성 데이터 추가 전후의 분류 성능 비교도 후속 검토 항목입니다. 이 항목들은 완료된 결과가 아닌 향후 연구 방향입니다.
+<p>
+     I reframed the question around analyzing class-discriminating features and distance to the decision boundary in a separate classifier’s feature space, jointly evaluating realism and boundary proximity. Confidence filtering, soft labels, and before/after classification comparisons when adding generated data are also future work, not completed results.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="https://github.com/DDohyeon2941/gan-for-imbalanced-image-data">
-      2019·2023 연구 아카이브와 코드
+<p>
+<a href="https://github.com/DDohyeon2941/gan-for-imbalanced-image-data">
+      2019/2023 research archive and code
      </a>
-    </p>
-    <p>
-     <a href="https://www.youtube.com/watch?v=JdLwad0vzWs&amp;list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&amp;index=14">
-      발표 영상
+</p>
+<p>
+<a href="https://www.youtube.com/watch?v=JdLwad0vzWs&amp;list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&amp;index=14">
+      Presentation video
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

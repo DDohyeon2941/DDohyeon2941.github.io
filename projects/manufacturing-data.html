@@ -1,185 +1,186 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   제조 데이터 정합성 검증과 연결 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Manufacturing data validation and linkage | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    제조 데이터 정합성 검증과 연결
+</p>
+<h1>
+    Manufacturing data validation and linkage
    </h1>
-   <p class="meta">
-    현업 프로젝트 · 공개 범위를 일반화한 설명
+<p class="meta">
+    Industry project · Generalized public description
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      서로 다른 단계에서 수집된 데이터를 동일 대상 기준으로 연결하고, 분석과 모델 학습에 사용할 수 있는 데이터셋으로 정리했습니다. 연결 가능한 데이터인지 먼저 검증하는 것이 핵심입니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I linked data collected at different stages for the same target and prepared datasets for analysis and model training. The key was first checking whether the records could be validly linked.
      </p>
-     <ul class="key-facts">
-      <li>
-       작업: 동일 대상 기준의 단계 간 1:1 연결
+<ul class="key-facts">
+<li>
+       Work: one-to-one linkage across stages for the same target
       </li>
-      <li>
-       기준: 메타데이터 정합성·정렬·정규화
+<li>
+       Criteria: metadata consistency, alignment, and normalization
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/../aiguru-validation-etl.png">
-      <img alt="동일 대상 기준의 단계 간 1:1 연결을 나타낸 일반화 도식. 실제 내부 구조를 재현하지 않습니다." loading="lazy" src="../images/research/../aiguru-validation-etl.png"/>
-     </a>
-     <figcaption>
-      동일 대상 기준의 단계 간 1:1 연결을 나타낸 일반화 도식. 실제 내부 구조를 재현하지 않습니다.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/general-data-link.svg">
+<img alt="Generalized diagram of one-to-one linkage across stages for the same target; it does not reproduce internal structures." loading="lazy" src="../images/general-data-link.svg"/>
+</a>
+<figcaption>
+      Generalized diagram of one-to-one linkage across stages for the same target; it does not reproduce internal structures.
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     이전 공정의 결과가 그대로 이후 공정의 입력이 되는 관계에서, 동일 대상 기준으로 두 공정의 데이터를 1:1 연결했습니다. 메타데이터 정합성 검증과 데이터 정렬·정규화를 통해 분석 및 모델 학습에 활용할 데이터셋을 구성했습니다.
+<p>
+     Where the output of an earlier process becomes the input of a later process, I linked the two stages’ data one-to-one for the same target. Metadata consistency checks, alignment, and normalization produced datasets for analysis and model training.
     </p>
-    <p>
-     단순히 비슷한 시점의 기록을 묶는 것과 같은 대상을 연결하는 것은 다릅니다. 대응 관계가 잘못되면 분석 결과와 학습 목표도 잘못 해석될 수 있어 데이터의 의미와 연결 조건을 먼저 살펴야 했습니다.
+<p>
+     Grouping records from similar times is different from linking the same target. Incorrect correspondence can mislead analysis and the learning objective, so I first examined data meaning and linkage conditions.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     메타데이터 정합성 검증, 데이터 추출·연결, 정렬·정규화와 분석용 데이터 구성에 참여했습니다. 모델링과 평가에서 사용할 데이터의 기준을 정리하는 작업을 수행했습니다.
+<p>
+     I participated in metadata consistency checks, data extraction and linkage, alignment, normalization, and analysis dataset preparation. I also worked on defining the data criteria used in modeling and evaluation.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     의미와 대응 관계 확인
+<h3>
+     Checking meaning and correspondence
     </h3>
-    <p>
-     서로 다른 단계의 기록이 동일 대상을 나타내는지, 비교하려는 정보가 같은 의미를 갖는지 검토했습니다. 대응 관계를 확인할 수 없는 기록을 유효한 학습 쌍으로 가정하지 않는 것이 기본 원칙입니다.
+<p>
+     I examined whether records at different stages referred to the same target and whether the information being compared had the same meaning. Records without verified correspondence were not assumed to form valid training pairs.
     </p>
-    <h3>
-     정렬과 정규화
+<h3>
+     Alignment and normalization
     </h3>
-    <p>
-     확인된 대응 관계를 기준으로 데이터를 정렬하고 서로 다른 표현을 분석 가능한 기준으로 정리했습니다. 연결 여부와 데이터 품질을 함께 검토하며 데이터셋을 구성했습니다.
+<p>
+     I aligned data using verified correspondences and standardized different representations for analysis. Dataset construction considered both linkage validity and data quality.
     </p>
-    <h3>
-     분석 목적과 사용 시점 검토
+<h3>
+     Checking analysis goals and availability at use time
     </h3>
-    <p>
-     설정값과 실제 관측값의 의미를 구분하고, 분석하려는 문제에 필요한 정보가 어떤 시점에 확보되는지 살폈습니다. 학습 때만 알 수 있는 결과를 실제 예측 입력처럼 취급하지 않도록 데이터의 사용 맥락을 검토했습니다.
+<p>
+     I distinguished setpoints from actual observations and examined when the information needed for analysis became available. I checked the usage context so outcomes known only during training would not be treated as inputs available for real prediction.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     산출물은 분석·모델 학습용 데이터셋과 그 구성을 위한 검증·전처리 작업입니다. 정량적인 성능 개선이나 처리 규모, 운영 자동화 성과는 공개하지 않습니다.
+<p>
+     Outputs comprised analysis/training datasets and the validation and preprocessing needed to prepare them. Quantitative performance changes, processing scale, and operational automation results are not disclosed.
     </p>
-    <p>
-     설명은 일반적인 관계와 작업 목적에 한정합니다. 실제 공정, 제품, 데이터 구조, 구현과 내부 화면을 재현하는 자료는 포함하지 않습니다.
+<p>
+     The description is limited to general relationships and work objectives. It does not reproduce actual processes, products, data structures, implementations, or internal screens.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="../posts/manufacturing-ai-cause-effect-mapping.html">
-      동일 대상의 단계 간 데이터 연결에 관한 글
+<p>
+<a href="../posts/manufacturing-ai-cause-effect-mapping.html">
+      Article on linking the same target across stages
      </a>
      ·
      <a href="../posts/setpoint-vs-actual-process-value.html">
-      설정값과 실제 관측값에 관한 글
+      Article on setpoints and actual observations
      </a>
-    </p>
-    <p>
-     <a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
-      평가 기준에 관한 글
+</p>
+<p>
+<a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+      Article on evaluation criteria
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

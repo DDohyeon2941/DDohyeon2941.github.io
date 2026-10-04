@@ -1,397 +1,398 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   A measure of the importance of moment for ball-strike counts in a baseball plate appearance | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   A measure of the importance of moment for ball-strike counts in a baseball plate appearance | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    카운트 전이 확률로 계산한 상황 중요도
+</p>
+<h1>
+    Situation importance from ball–strike count transitions
    </h1>
-   <p class="paper-title">
+<p class="paper-title">
     A measure of the importance of moment for ball-strike counts in a baseball plate appearance
    </p>
-   <p class="meta">
-    Journal of Sports Sciences, 2024, 공동1저자
+<p class="meta">
+    Journal of Sports Sciences, 2024 · Co-first author
    </p>
-   <figure class="detail-figure baseball-opening">
-    <a aria-label="그림 원본 보기" href="../images/research/baseball-pitcher-batter.png">
-     <img alt="공을 던지는 투수와 타격을 준비하는 타자, 포수와 심판의 대결 상황" loading="lazy" src="../images/research/baseball-pitcher-batter.png"/>
-    </a>
-    <figcaption>
-     투수와 타자의 대결 상황 ·
+<figure class="detail-figure baseball-opening">
+<a aria-label="View full-size figure" href="../images/research/baseball-pitcher-batter.png">
+<img alt="A pitcher delivering the ball to a batter, with a catcher and umpire behind the plate" loading="lazy" src="../images/research/baseball-pitcher-batter.png"/>
+</a>
+<figcaption>
+     The pitcher–batter matchup ·
      <a href="https://smcncad.com/495">
-      그림 출처
+      Image source
      </a>
-    </figcaption>
-   </figure>
-   <div class="baseball-summary">
-    <div>
-     <p class="intro">
-      한 투구가 타석의 유불리를 얼마나 바꾸는지 IOM(Importance of Moment)으로 정의했습니다. 타석이 즉시 끝나는 경우와 볼·스트라이크로 이어지는 경우를 구분해 가중하고, 카운트별 중요도를 패스트볼 구속과 연결해 분석했습니다.
+</figcaption>
+</figure>
+<div class="baseball-summary">
+<div>
+<p class="intro">
+      We defined IOM (Importance of Moment) to quantify how much a pitch can change the balance of a plate appearance. The measure weights immediate termination separately from continuation through a ball or strike. We analyzed count-specific importance alongside fastball velocity.
      </p>
-     <ul class="key-facts">
-      <li>
-       방법: 14개 상태의 마르코프 모형 → 아웃 확률 → IOM
+<ul class="key-facts">
+<li>
+       Method: a 14-state Markov model → out probabilities → IOM
       </li>
-      <li>
-       결과: IOM·평균 구속의 순위 상관 0.90
+<li>
+       Result: rank correlation of 0.90 between IOM and mean velocity
       </li>
-     </ul>
-    </div>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</ul>
+</div>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     같은 스트라이크라도 0볼 0스트라이크에서 던졌을 때와 2스트라이크에서 던졌을 때의 의미는 다릅니다. 현재 카운트가 투수에게 얼마나 유리한지와, 다음 투구 결과가 얼마나 중요한지도 구분해야 합니다. 이 연구에서는 한 타석 안에서 다음 투구가 최종 아웃·출루 확률을 얼마나 바꿀 수 있는지 정량화했습니다.
+<p>
+     A strike at 0 balls and 0 strikes has a different meaning from a strike with 2 strikes already on the count. How favorable the current count is to the pitcher also differs from how important the next pitch is. This study quantifies how much the next pitch can affect the final out or on-base probability within a plate appearance.
     </p>
-    <p>
-     테니스는 한 포인트의 승패에 따른 두 다음 상태의 승리 확률 차이로 중요도를 정의할 수 있습니다. 야구는 어느 카운트에서도 타구·사구 등으로 타석이 즉시 끝날 수 있어, 볼 이후와 스트라이크 이후의 차이만으로는 투구의 중요도를 충분히 설명하기 어렵습니다. 이 종료 가능성까지 포함하는 척도를 제안했습니다.
+<p>
+     In tennis, importance can be defined as the difference in win probability between the two states reached by winning or losing a point. In baseball, a batted ball or hit-by-pitch can end a plate appearance immediately at any count. The difference between the states after a ball and after a strike alone is therefore insufficient. We proposed a measure that also incorporates this termination possibility.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <h3>
-     1. 투구 기록을 상태 전이로 표현
+<h3>
+     1. Representing pitch records as state transitions
     </h3>
-    <p>
-     2015–2018년 MLB Statcast의 2,867,154개 투구와 727,031개 타석을 전처리했습니다. 볼 0–3개와 스트라이크 0–2개의 조합인 12개 카운트에 아웃(O)·출루(R) 두 종료 상태를 더해, 14개 상태의 이산 시간 마르코프 체인을 구성했습니다. 각 카운트에서 다음 상태로 이동하는 확률은 실제 기록의 빈도로 추정했습니다.
+<p>
+     We processed 2,867,154 pitches and 727,031 plate appearances from MLB Statcast for 2015–2018. The 12 combinations of 0–3 balls and 0–2 strikes, plus the two absorbing states out (O) and on base (R), form a 14-state discrete-time Markov chain. Transition probabilities from each count were estimated from observed frequencies.
     </p>
-    <p>
-     2스트라이크 이후 카운트를 바꾸지 않는 파울은 전이에서 제외했습니다. 따라서 모형의 한 단계는 모든 실제 투구가 아니라 카운트 또는 타석 결과를 바꾸는 사건입니다. 아웃·출루에 도달하면 타석이 끝납니다.
+<p>
+     Fouls that leave the count unchanged after 2 strikes were excluded from transitions. A model step therefore represents an event that changes the count or plate-appearance outcome, rather than every actual pitch. Reaching out or on base ends the plate appearance.
     </p>
-    <details>
-     <summary>
-      상태 전이와 최종 아웃·출루 확률 그림
+<details>
+<summary>
+      State transitions and final out/on-base probabilities
      </summary>
-     <figure class="baseball-figure">
-      <a href="../images/research/paper-baseball-transitions.png">
-       <img alt="12개 카운트와 아웃·출루 사이의 단일 단계 전이 확률, Figure 1" loading="lazy" src="../images/research/paper-baseball-transitions.png"/>
-      </a>
-      <figcaption>
-       Figure 1 · 카운트에서 다음 상태로 이동하는 확률. 각 상태에서 나가는 확률의 합은 100%입니다.
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-transitions.png">
+<img alt="Single-step transition probabilities between 12 counts and out/on-base outcomes, Figure 1" loading="lazy" src="../images/research/paper-baseball-transitions.png"/>
+</a>
+<figcaption>
+       Figure 1: transition probabilities from each count. Outgoing probabilities at each state sum to 100%.
       </figcaption>
-     </figure>
-     <figure class="baseball-figure">
-      <a href="../images/research/paper-baseball-absorption.png">
-       <img alt="각 카운트에서 최종 아웃과 출루에 도달할 확률, Figure 4" loading="lazy" src="../images/research/paper-baseball-absorption.png"/>
-      </a>
-      <figcaption>
-       Figure 4 · 파랑은 최종 아웃 확률, 빨강은 최종 출루 확률입니다.
+</figure>
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-absorption.png">
+<img alt="Probabilities of ultimately reaching out or on base from each count, Figure 4" loading="lazy" src="../images/research/paper-baseball-absorption.png"/>
+</a>
+<figcaption>
+       Figure 4: blue denotes final out probability; red denotes final on-base probability.
       </figcaption>
-     </figure>
-    </details>
-    <h3>
-     2. 현재 카운트의 유불리 계산
+</figure>
+</details>
+<h3>
+     2. Calculating the favorability of the current count
     </h3>
-    <p>
-     각 카운트에서 타석이 최종적으로 아웃으로 끝날 확률을 q(s)로 두고, 다음 상태의 아웃 확률을 전이 확률로 가중하는 후진 계산을 적용했습니다. 아웃 상태의 q는 1, 출루 상태의 q는 0입니다.
+<p>
+     We denote the probability of a plate appearance ultimately ending in an out from count s as q(s). Backward calculation weights the next-state out probabilities by their transition probabilities. q is 1 at the out state and 0 at the on-base state.
     </p>
-    <p class="method-equation">
-     q(s) = Σ P(다음 상태 = s′ | 현재 상태 = s) × q(s′)
+<p class="method-equation">
+     q(s) = Σ P(next state = s′ | current state = s) × q(s′)
     </p>
-    <p>
-     0볼 2스트라이크의 최종 아웃 확률은 79.48%, 3볼 0스트라이크는 28.83%였습니다. 이 값은 현재의 유불리이며, 다음 투구의 중요도와는 다른 양입니다.
+<p>
+     The final out probability was 79.48% at 0 balls and 2 strikes and 28.83% at 3 balls and 0 strikes. These values describe current favorability, which is different from the importance of the next pitch.
     </p>
-    <h3>
-     3. 즉시 종료와 카운트 진행을 가중한 IOM
+<h3>
+     3. IOM weights termination and count continuation
     </h3>
-    <p>
-     다음 사건이 아웃·출루로 타석을 끝내면 두 결과의 아웃 확률 차이는 1입니다. 타석이 계속되면 볼 이후와 스트라이크 이후 상태의 최종 아웃 확률 차이를 사용했습니다. 두 차이를 각각의 발생 확률로 가중해 IOM을 계산했습니다.
+<p>
+     If the next event ends the plate appearance in an out or on-base outcome, the difference in out probabilities between those outcomes is 1. If play continues, we use the difference in final out probability between the states after a ball and after a strike. IOM weights the two differences by their respective occurrence probabilities.
     </p>
-    <p class="method-equation">
-     IOM(s) = P(즉시 종료 | s) × 1
+<p class="method-equation">
+     IOM(s) = P(immediate termination | s) × 1
      <br/>
-     + P(타석 계속 | s) × |q(볼 이후) − q(스트라이크 이후)|
+     + P(plate appearance continues | s) × |q(after a ball) − q(after a strike)|
     </p>
-    <p>
-     예를 들어 2볼 1스트라이크는 즉시 종료 확률 23.9%와 진행 확률 76.1%를 갖습니다. 볼 이후 3볼 1스트라이크의 아웃 확률은 약 41.7%, 스트라이크 이후 2볼 2스트라이크는 약 70.1%여서, IOM은 약 45.52%입니다. 3볼 2스트라이크에서는 다음 유효 사건이 반드시 타석을 끝내므로 IOM은 100%가 됩니다. 계산은 반올림 전 확률을 사용했습니다.
+<p>
+     For example, at 2 balls and 1 strike, immediate termination has probability 23.9% and continuation 76.1%. After a ball, the out probability at 3 balls and 1 strike is about 41.7%; after a strike, at 2 balls and 2 strikes it is about 70.1%. IOM is about 45.52%. At 3 balls and 2 strikes, the next effective event must end the plate appearance, giving IOM of 100%. Calculations use probabilities before rounding.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <p>
-     공동 제1저자로 참여해 복잡한 타석 전이 구조에서도 한 투구의 중요도를 해석할 확률적 척도를 제안했습니다. 현재 카운트의 유불리와 다음 투구의 중요도를 구분하고, IOM이 실제 투수의 행동과 어떤 관계를 갖는지 분석했습니다.
+<p>
+     As co-first author, I participated in proposing a probabilistic measure for interpreting pitch importance despite complex plate-appearance transitions. We distinguished current count favorability from next-pitch importance and analyzed how IOM relates to pitchers’ observed behavior.
     </p>
-    <h3>
-     카운트에 따라 달라지는 중요도
+<h3>
+     Importance varies by count
     </h3>
-    <figure class="baseball-figure">
-     <a href="../images/research/paper-baseball-iom.png">
-      <img alt="카운트별 IOM과 최종 아웃·출루 확률을 표시한 Figure 5" loading="lazy" src="../images/research/paper-baseball-iom.png"/>
-     </a>
-     <figcaption>
-      Figure 5 · 녹색 값이 IOM입니다. 그림을 누르면 원본 크기로 볼 수 있습니다.
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-iom.png">
+<img alt="Count-specific IOM and final out/on-base probabilities, Figure 5" loading="lazy" src="../images/research/paper-baseball-iom.png"/>
+</a>
+<figcaption>
+      Figure 5: green values denote IOM. Select the figure to view it at full size.
      </figcaption>
-    </figure>
-    <p>
-     0볼 0스트라이크의 IOM은 20.39%, 0볼 1스트라이크는 26.78%, 0볼 2스트라이크는 87.02%였습니다. 스트라이크가 한 개 늘더라도 중요도의 변화 폭은 같지 않습니다. 특히 2스트라이크 상황과 풀카운트는 높은 중요도를 보였습니다.
+</figure>
+<p>
+     IOM was 20.39% at 0 balls and 0 strikes, 26.78% at 0 balls and 1 strike, and 87.02% at 0 balls and 2 strikes. Adding a strike does not always produce the same change in importance. Counts with 2 strikes and the full count were particularly important.
     </p>
-    <h3>
-     IOM과 패스트볼 구속의 관계
+<h3>
+     IOM and fastball velocity
     </h3>
-    <p>
-     12개 카운트의 IOM 순위와 평균 패스트볼 구속 순위 사이의 Spearman 상관계수는 0.90(p &lt; 0.0001)이었습니다. 높은 중요도의 카운트에서 평균 구속도 높았지만, 순서가 모든 카운트에서 일치한 것은 아닙니다.
+<p>
+     The Spearman correlation between IOM ranks and mean fastball velocity ranks across 12 counts was 0.90 (p &lt; 0.0001). Mean velocity tended to be higher at more important counts, although the ordering did not match at every count.
     </p>
-    <details>
-     <summary>
-      12개 카운트의 IOM·평균 구속 비교
+<details>
+<summary>
+      IOM and mean velocity across 12 counts
      </summary>
-     <div class="result-table">
-      <table>
-       <caption>
-        Table 7 · IOM 내림차순. B는 볼, S는 스트라이크이며 구속 단위는 mph입니다.
+<div class="result-table">
+<table>
+<caption>
+        Table 7: descending IOM. B denotes balls, S denotes strikes; velocity is in mph.
        </caption>
-       <thead>
-        <tr>
-         <th scope="col">
-          카운트
+<thead>
+<tr>
+<th scope="col">
+          Count
          </th>
-         <th scope="col">
+<th scope="col">
           IOM (%)
          </th>
-         <th scope="col">
-          평균 구속
+<th scope="col">
+          Mean velocity
          </th>
-        </tr>
-       </thead>
-       <tbody>
-        <tr>
-         <th scope="row">
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
           3B2S
          </th>
-         <td>
+<td>
           100.00
          </td>
-         <td>
+<td>
           92.41
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           0B2S
          </th>
-         <td>
+<td>
           87.02
          </td>
-         <td>
+<td>
           92.28
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           1B2S
          </th>
-         <td>
+<td>
           85.70
          </td>
-         <td>
+<td>
           92.19
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           2B2S
          </th>
-         <td>
+<td>
           81.90
          </td>
-         <td>
+<td>
           92.29
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           3B1S
          </th>
-         <td>
+<td>
           77.95
          </td>
-         <td>
+<td>
           92.07
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           3B0S
          </th>
-         <td>
+<td>
           63.33
          </td>
-         <td>
+<td>
           91.86
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           2B1S
          </th>
-         <td>
+<td>
           45.52
          </td>
-         <td>
+<td>
           91.96
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           2B0S
          </th>
-         <td>
+<td>
           44.28
          </td>
-         <td>
+<td>
           91.89
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           1B1S
          </th>
-         <td>
+<td>
           33.45
          </td>
-         <td>
+<td>
           91.79
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           1B0S
          </th>
-         <td>
+<td>
           31.15
          </td>
-         <td>
+<td>
           91.70
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           0B1S
          </th>
-         <td>
+<td>
           26.78
          </td>
-         <td>
+<td>
           91.82
          </td>
-        </tr>
-        <tr>
-         <th scope="row">
+</tr>
+<tr>
+<th scope="row">
           0B0S
          </th>
-         <td>
+<td>
           20.39
          </td>
-         <td>
+<td>
           91.79
          </td>
-        </tr>
-       </tbody>
-      </table>
-     </div>
-    </details>
-    <p>
-     2015–2018년 사이영상 투표에서 한 표 이상 받은 투수를 우수 투수 집단으로 정의했습니다. 이 집단의 IOM·구속 순위 상관은 0.78(p = 0.0030)이었습니다. 전체 투수와의 구속 차이는 Table 9 기준 0스트라이크에서 0.27mph, 1스트라이크에서 0.34mph, 2스트라이크에서 0.49mph로 커졌습니다.
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<p>
+     We defined an elite pitcher group as pitchers receiving at least one Cy Young Award vote during 2015–2018. Its IOM–velocity rank correlation was 0.78 (p = 0.0030). The velocity difference from all pitchers increased from 0.27mph at 0 strikes to 0.34mph at 1 strike and 0.49mph at 2 strikes, according to Table 9.
     </p>
-    <h3>
-     모형 검증과 해석의 한계
+<h3>
+     Model validation and interpretive limitations
     </h3>
-    <p>
-     같은 카운트에서도 이전 카운트에 따라 결과가 달라지는지 검증했습니다. 2볼 1스트라이크와 2볼 2스트라이크에서는 최종 아웃 비율에 각각 0.78%p, 0.50%p의 경로별 차이가 있어 경로 독립성 가정이 완전히 성립하지 않았습니다. 모형의 최종 아웃 확률은 실제 타석 결과 비율과 대체로 가까웠지만, 이러한 근사 가정을 함께 고려해야 합니다.
+<p>
+     We tested whether outcomes at the same count differed depending on the preceding count. At 2 balls and 1 strike and at 2 balls and 2 strikes, final out rates differed by path by 0.78 and 0.50 percentage points, respectively. Path independence therefore did not hold completely. Model out probabilities were generally close to observed outcome rates, but this approximation must be considered.
     </p>
-    <p>
-     구속 분석은 카운트별 집계 자료의 관계를 설명하며, 중요도가 구속을 높인다는 인과 효과나 특정 투구 전략의 효과를 검증한 결과는 아닙니다. 우수 투수 선정에는 선발 투수 편향이 있을 수 있고, 패스트볼 구속만으로 투구의 전체 품질을 평가할 수 없습니다. 투수 역할별 비교와 변화구의 회전·궤적 분석은 후속 연구 방향입니다.
+<p>
+     The velocity analysis describes associations in count-level aggregates. It does not establish that importance causes higher velocity or that a particular pitching strategy is effective. Elite pitcher selection may favor starters, and fastball velocity alone cannot assess overall pitch quality. Comparing pitcher roles and analyzing breaking-ball spin and trajectories are directions for future research.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <a href="https://doi.org/10.1080/02640414.2024.2355423">
-     DOI 링크
+<a href="https://doi.org/10.1080/02640414.2024.2355423">
+     DOI
     </a>
     ·
     <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">
-     GitHub 코드
+     Code on GitHub
     </a>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

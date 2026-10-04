@@ -5,11 +5,11 @@
   panel.id = 'link-preview';
   panel.className = 'link-preview';
   panel.hidden = true;
-  panel.setAttribute('aria-label', '항목 미리보기');
+  panel.setAttribute('aria-label', 'Item preview');
   const close = document.createElement('button');
   close.type = 'button';
   close.className = 'preview-close';
-  close.textContent = '닫기';
+  close.textContent = 'Close';
   const title = document.createElement('h2');
   const meta = document.createElement('p');
   meta.className = 'meta';
@@ -17,7 +17,7 @@
   const summary = document.createElement('p');
   const points = document.createElement('ul');
   const detail = document.createElement('a');
-  detail.textContent = '상세 내용 읽기 →';
+  detail.textContent = 'Read details →';
   panel.append(close, title, meta, img, summary, points, detail);
   document.body.append(panel);
   let current = null;
@@ -81,8 +81,8 @@
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'preview-trigger';
-      button.textContent = '미리보기';
-      button.setAttribute('aria-label', `${info.title} 미리보기`);
+      button.textContent = 'Preview';
+      button.setAttribute('aria-label', `${info.title} Preview`);
       button.setAttribute('aria-controls', panel.id);
       button.setAttribute('aria-expanded', 'false');
       link.closest('li').append(button);

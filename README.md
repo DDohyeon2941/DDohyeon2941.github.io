@@ -1,19 +1,21 @@
-# 이도현 포트폴리오
+# Do Hyeon Lee’s portfolio
 
-별도 빌드 없이 제공하는 정적 HTML 개인 홈페이지입니다.
+A static personal website served directly from HTML, CSS, and JavaScript. All visitor-facing pages are in English; no build step or new runtime dependency is required.
 
-| 경로 | 내용 |
+| Path | Contents |
 | --- | --- |
-| `index.html` | 자기소개와 연락처, 강점 3개, 대표 연구·현업 작업, 주요 목록 요약 |
-| `about.html` | 기존 소개 주소를 홈 자기소개로 연결 (이전 본문 보존) |
-| `research.html`, `research/` | 주제별 연구 목록과 상세 8건 |
-| `projects.html`, `projects/` | 현업·수업/개인·공모전/지역 분석 등 프로젝트 9건, 기존 연구 주소 연결 2건 |
-| `writing.html` | 블로그, 회사 ML 세션, 연구 발표 목록 |
-| `posts/` | 기존 블로그 본문 3편 |
-| `sessions/aiguru/` | 기존 세션 9개와 보조 예제 2개 |
-| `resume.html` | 학력, 참여 연구 과제, 학술 활동·논문 심사, 수상 경력 |
-| `assets/` | 공통 스타일과 기존 홈 섹션 링크 연결 |
+| `index.html` | Introduction, contact details, three strengths, selected work, and section summaries |
+| `about.html` | Compatibility route to the introduction on the home page; previous body retained in English |
+| `research.html`, `research/` | Research grouped into imbalanced data, micromobility, and sports; eight detail pages |
+| `projects.html`, `projects/` | Nine projects grouped by context, plus two compatibility routes for research items |
+| `writing.html` | Blog posts, company ML sessions, and research presentations |
+| `posts/` | Three full blog posts |
+| `sessions/aiguru/` | Nine full sessions and two interactive supplementary examples; existing paths retained |
+| `resume.html` | Education, funded research participation, peer review, and awards |
+| `assets/`, `images/` | Shared styles, previews, figures, and compatibility navigation |
 
-로컬 확인: 저장소 루트에서 `python -m http.server 8765 --bind 127.0.0.1`을 실행하고 `http://127.0.0.1:8765/`를 엽니다. 사이트 실행을 위한 패키지 설치는 필요하지 않습니다.
+Run `python -m http.server 8765 --bind 127.0.0.1` from the repository root, then open `http://127.0.0.1:8765/`.
 
-변경 범위, 보존 대조, 검증 결과와 공개 범위 확인 사항은 [검토 기록](docs/review/REVIEW.md)에 정리했습니다.
+The [English conversion review](docs/review/ENGLISH-CONVERSION.md) records translation scope, preservation checks, and current verification. The [original implementation review](docs/review/REVIEW.md) retains the earlier source audit and disclosure decisions.
+
+Changes are submitted on `portfolio/information-architecture` for pull request review. Merging and deployment are separate steps.

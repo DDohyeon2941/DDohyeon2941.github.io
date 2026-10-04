@@ -1,261 +1,262 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   분류 복잡도를 활용한 오버 샘플링 크기 산출 알고리즘 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   An Algorithm for Oversampling Size Determination Using Classification Complexity | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    분류 난이도를 반영하는 오버샘플링 크기 산출
+</p>
+<h1>
+    Oversampling size that reflects classification difficulty
    </h1>
-   <p class="paper-title">
-    분류 복잡도를 활용한 오버 샘플링 크기 산출 알고리즘
+<p class="paper-title">
+    An Algorithm for Oversampling Size Determination Using Classification Complexity
    </p>
-   <p class="meta">
-    석사학위논문, 2020 · 학위논문 저자
+<p class="meta">
+    Master’s thesis, 2020 · Thesis author
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      완전 균형보다 적은 생성량으로도 데이터셋에 맞는 오버샘플링 규모를 적용할 수 있는지 평가한 석사학위 연구입니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      My master’s research evaluated whether smaller augmentation sizes than full balancing could provide suitable oversampling for individual datasets.
      </p>
-     <ul class="key-facts">
-      <li>
-       18개 데이터셋 · 3개 부스팅 모델 · 20회 반복 5-fold 검증
+<ul class="key-facts">
+<li>
+       18 datasets · 3 boosting models · 20 repetitions of 5-fold validation
       </li>
-      <li>
-       평균 생성량: 완전 균형 대비 45–66%
+<li>
+       Mean augmentation size: 45–66% of full balancing
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/thesis-masters-complexity.png">
-      <img alt="석사논문 그림 4.1 · 불균형 정도별 분류 복잡도 분포" loading="lazy" src="../images/research/thesis-masters-complexity.png"/>
-     </a>
-     <figcaption>
-      석사논문 그림 4.1 · 불균형 정도별 분류 복잡도 분포
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/thesis-masters-complexity.png">
+<img alt="Thesis Figure 4.1: classification complexity distributions by imbalance level" loading="lazy" src="../images/research/thesis-masters-complexity.png"/>
+</a>
+<figcaption>
+      Thesis Figure 4.1: classification complexity distributions by imbalance level
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     클래스 수를 같게 만드는 오버샘플링은 불균형 비율만으로 생성량을 결정합니다. 하지만 같은 불균형 비율이라도 클래스가 잘 분리된 데이터와 경계가 겹치는 데이터의 학습 난이도는 다릅니다. 필요한 양보다 많은 합성 표본은 소수 클래스의 영역을 과도하게 확장할 수 있습니다.
+<p>
+     Oversampling to equal class counts determines generation size from the imbalance ratio alone. Yet datasets with the same imbalance ratio can differ in class separation and boundary overlap. More synthetic samples than necessary can expand the minority region too far.
     </p>
-    <p>
-     이 연구는 완전 균형보다 적은 생성량으로도 데이터셋에 적절한 오버샘플링 규모를 적용해 분류 성능을 유지하거나 개선할 수 있는지 평가했습니다.
+<p>
+     This study evaluated whether augmentation smaller than full balancing could suit each dataset while maintaining or improving classification performance.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <h3>
-     데이터의 분리 정도를 생성량에 반영
+<h3>
+     Reflecting class separation in augmentation size
     </h3>
-    <p>
-     분류 복잡도는 네 지표로 측정했습니다. N1은 소수 클래스 주변의 같은 클래스·다른 클래스 이웃 사이 거리 비율, N2는 소수 클래스의 이웃 중 다른 클래스가 차지하는 비율을 사용합니다. 두 지표는 SMOTE의 생성 환경에 맞춰 소수 클래스와 k개 이웃을 중심으로 수정했습니다.
+<p>
+     I measured classification complexity using four indicators. N1 uses ratios of within- and between-class neighbor distances around minority samples; N2 uses the proportion of other-class samples in their neighborhoods. Both were modified to focus on minority samples and k neighbors, matching the SMOTE generation setting.
     </p>
-    <p>
-     F1은 변수별 클래스 평균의 차이와 분산을 이용한 분리 정도, F2는 변수별 클래스가 겹치는 구간의 표본 비율을 반영합니다. 지표를 0–1 범위의 복잡도 T로 표현해, 완전 균형에 필요한 생성량에 T를 적용했습니다. 따라서 모든 데이터에 동일한 증강량을 부여하지 않고 분포 특성에 따라 양을 조정합니다.
+<p>
+     F1 reflects separation through feature-wise class mean differences and variance. F2 reflects the proportion of samples in overlapping feature ranges. The indicators yield complexity T between 0–1, applied to the number needed for full balancing. Augmentation size therefore varies with the data distribution instead of being uniform.
     </p>
-    <details>
-     <summary>
-      실험 설정
+<details>
+<summary>
+      Experimental setup
      </summary>
-     <p>
-      UCI·PROMISE 등의 공개 이진 분류 데이터셋 18개를 사용했습니다. 다중 클래스 자료는 특정 소수 클래스와 나머지 클래스로 재구성하고 범주형 변수를 제외했습니다. SMOTEBoost·RAMOBoost·WOTBoost에 적용해 완전 균형 방식과 비교했습니다.
+<p>
+      I used 18 public binary classification datasets from UCI, PROMISE, and other sources. Multiclass data were recast as a selected minority class vs. the remaining classes, and categorical variables were excluded. SMOTEBoost, RAMOBoost, and WOTBoost were compared with full balancing.
      </p>
-     <p>
-      Decision Stump 25개, 이웃 수 k=5를 사용하고, 층화 5-fold 교차검증을 20회 반복해 AUC로 평가했습니다.
+<p>
+      Experiments used 25 decision stumps and k=5 neighbors, with 20 repetitions of stratified 5-fold cross-validation evaluated by AUC.
      </p>
-    </details>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</details>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <h3>
-     더 적은 생성량으로 데이터셋에 맞는 성능 확보
+<h3>
+     Suitable performance with fewer synthetic samples
     </h3>
-    <p>
-     18개 데이터셋에서 산출한 평균 생성량은 완전 균형 기준의 45–66%였습니다. Oil과 Yeast를 제외한 16개 데이터셋에서는 적어도 한 가지 부스팅 모델·복잡도 지표 조합이 완전 균형과 같거나 더 높은 AUC를 보였습니다. 모든 모델에서 일관되게 우수했다는 의미는 아닙니다.
+<p>
+     Mean generation size across 18 datasets was 45–66% of full balancing. On 16 datasets, excluding Oil and Yeast, at least one boosting-model/complexity combination matched or exceeded the AUC of full balancing. This does not mean consistent superiority for every model.
     </p>
-    <div class="result-table">
-     <table>
-      <caption>
-       석사논문 표 4.2·4.7: 평균 생성 비율과 최고 AUC 방식 선정 횟수
+<div class="result-table">
+<table>
+<caption>
+       Thesis Tables 4.2 and 4.7: mean augmentation ratio and highest-AUC selection counts
       </caption>
-      <thead>
-       <tr>
-        <th scope="col">
-         방식
+<thead>
+<tr>
+<th scope="col">
+         Method
         </th>
-        <th scope="col">
-         완전 균형 대비 평균 생성량
+<th scope="col">
+         Mean size relative to full balancing
         </th>
-        <th scope="col">
-         선정 횟수
+<th scope="col">
+         Selection count
         </th>
-       </tr>
-      </thead>
-      <tbody>
-       <tr>
-        <th scope="row">
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
          N1
         </th>
-        <td>
+<td>
          47%
         </td>
-        <td>
+<td>
          11
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          N2
         </th>
-        <td>
+<td>
          45%
         </td>
-        <td>
+<td>
          17
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          F1
         </th>
-        <td>
+<td>
          52%
         </td>
-        <td>
+<td>
          6
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
+</tr>
+<tr>
+<th scope="row">
          F2
         </th>
-        <td>
+<td>
          66%
         </td>
-        <td>
+<td>
          11
         </td>
-       </tr>
-       <tr>
-        <th scope="row">
-         완전 균형
+</tr>
+<tr>
+<th scope="row">
+         Full balancing
         </th>
-        <td>
+<td>
          100%
         </td>
-        <td>
+<td>
          9
         </td>
-       </tr>
-      </tbody>
-     </table>
-    </div>
-    <p class="meta">
-     선정 횟수는 18개 데이터셋 × 3개 모델, 총 54개 비교입니다. AUC가 같으면 생성 비율이 가장 작은 방식을 선택했으며, 통계적으로 유의한 승리 횟수를 뜻하지 않습니다.
+</tr>
+</tbody>
+</table>
+</div>
+<p class="meta">
+     Counts cover 18 datasets × 3 models, totaling 54 comparisons. Ties in AUC favor the method with the smallest generation ratio. These are not statistically significant win counts.
     </p>
-    <h3>
-     적용 범위와 한계
+<h3>
+     Scope and limitations
     </h3>
-    <p>
-     불균형 비율만으로 분류 난이도를 설명하기 어렵다는 점과, 생성량을 데이터 특성에 맞춰 줄일 여지를 실험으로 제시했습니다. 소수 표본이 매우 적은 Glass 등에서는 지표가 불안정할 수 있습니다. 복잡도는 초기 데이터에서 산출해 고정했으며, 부스팅 과정에서 다시 측정하는 방식과 다른 생성 알고리즘으로의 확장은 후속 과제로 남겼습니다.
+<p>
+     The experiments show that imbalance ratio alone does not explain classification difficulty and that augmentation can be reduced according to data characteristics. Measures can be unstable with very few minority samples, as in Glass. Complexity was fixed from the initial data; recalculation during boosting and extensions to other generation algorithms remain future work.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <p>
-     <a href="https://www.riss.kr/link?id=T15671100">
-      석사학위논문 · RISS
+<p>
+<a href="https://www.riss.kr/link?id=T15671100">
+      Master’s thesis · RISS
      </a>
      ·
      <a href="oversampling.html">
-      후속 학술지 연구의 방법·실험 및 코드
+      Methods, experiments, and code for the follow-up journal study
      </a>
+</p>
+<p>
+     The values on this page come from the thesis’s 18-dataset experiment and are distinguished from the follow-up journal experiment.
     </p>
-    <p>
-     이 페이지의 수치는 석사논문의 18개 데이터셋 실험입니다. 후속 학술지 논문의 실험 구성과 구분해 제시했습니다.
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

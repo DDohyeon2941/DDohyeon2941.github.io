@@ -1,0 +1,35 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "main_navigation": "passed",
+      "profile_aspect": "passed",
+      "research_groups": "passed",
+      "project_contexts_and_count": "passed",
+      "session_rounds_and_draft_labels": "passed",
+      "legacy_redirects": "passed",
+      "baseball_opening_and_sections": "passed"
+    },
+    {
+      "width": 390,
+      "main_navigation": "passed",
+      "profile_aspect": "passed",
+      "research_groups": "passed",
+      "project_contexts_and_count": "passed",
+      "session_rounds_and_draft_labels": "passed",
+      "legacy_redirects": "passed",
+      "baseball_opening_and_sections": "passed"
+    },
+    {
+      "width": 320,
+      "main_navigation": "passed",
+      "profile_aspect": "passed",
+      "research_groups": "passed",
+      "project_contexts_and_count": "passed",
+      "session_rounds_and_draft_labels": "passed",
+      "legacy_redirects": "passed",
+      "baseball_opening_and_sections": "passed"
+    }
+  ],
+  "issues": []
+}

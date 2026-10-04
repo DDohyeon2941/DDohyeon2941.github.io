@@ -1,176 +1,177 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   데이터 품질 차이를 고려한 OOD 일반화 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   OOD generalization with differences in data quality | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    데이터 품질 차이를 고려한 OOD 일반화
+</p>
+<h1>
+    OOD generalization with differences in data quality
    </h1>
-   <p class="meta">
-    수업·개인 프로젝트 · 수업 과제
+<p class="meta">
+    Coursework &amp; personal projects · Course assignment
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      훈련 환경마다 라벨 오류의 정도가 다를 때 IRM의 규제 항을 어떻게 조정할지 실험했습니다. Colored MNIST에서 환경별 데이터 품질과 입력 변화에 대한 민감도를 규제 설계에 반영했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I experimented with adjusting the IRM penalty when label noise differs across training environments. In Colored MNIST, the regularization design reflected environment-specific data quality and sensitivity to input changes.
      </p>
-     <ul class="key-facts">
-      <li>
-       실험: 환경별 라벨 품질이 다른 Colored MNIST
+<ul class="key-facts">
+<li>
+       Experiment: Colored MNIST with different label quality across environments
       </li>
-      <li>
-       방법: IRM 규제의 환경 가중치·입력 민감도 조정
+<li>
+       Method: environment weighting and input sensitivity in IRM regularization
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/ood-method.svg">
-      <img alt="데이터 품질 차이를 고려한 OOD 일반화 · 작업·구현 흐름 개념도" loading="lazy" src="../images/research/ood-method.svg"/>
-     </a>
-     <figcaption>
-      데이터 품질 차이를 고려한 OOD 일반화 · 작업·구현 흐름 개념도
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/ood-method.svg">
+<img alt="OOD generalization with data-quality differences · Workflow concept diagram" loading="lazy" src="../images/research/ood-method.svg"/>
+</a>
+<figcaption>
+      OOD generalization with data-quality differences · Workflow concept diagram
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     훈련 데이터에서 잘 맞는 상관관계가 다른 환경에서는 뒤집힐 수 있습니다. Colored MNIST는 숫자 이미지의 색과 정답의 상관관계를 환경마다 바꾸어 이 문제를 실험합니다. 여기에 환경별 라벨 오류 차이가 있으면 모든 환경을 같은 신뢰도로 다루는 규제가 적절한지 질문할 수 있습니다.
+<p>
+     Correlations that fit training data can reverse in another environment. Colored MNIST tests this by varying the relationship between image color and target labels across environments. With additional differences in label noise, the question is whether regularization should trust every environment equally.
     </p>
-    <p>
-     분포가 다른 환경에서도 예측을 유지하는 OOD 일반화를 목표로, 환경별 데이터 품질 차이를 규제 설계에 반영했습니다.
+<p>
+     I incorporated environment-specific data quality into regularization to investigate OOD generalization across distributions.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     수업 과제로 기존 IRM 및 관련 연구 구현을 바탕으로 규제 항을 수정하고, 환경별 데이터 품질 차이를 반영한 실험을 구현했습니다.
+<p>
+     For a course assignment, I modified penalties in existing IRM and related implementations and built experiments reflecting data-quality differences between environments.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     환경과 라벨 오류 설정
+<h3>
+     Environments and label noise
     </h3>
-    <p>
-     숫자를 두 클래스로 나누고 색과 라벨의 관계를 훈련 환경과 평가 환경에서 다르게 설정합니다. 코드에서는 훈련 색상 오류 확률 0.1·0.2와 평가 확률 0.9를 사용하며, 훈련 환경의 라벨 오류 수준도 0%와 50%로 달리합니다. 이는 실험 조건이며 성능 수치가 아닙니다.
+<p>
+     Digits are grouped into two classes, with color–label relationships differing between training and evaluation environments. The code uses training color-error probabilities of 0.1 and 0.2 and an evaluation probability of 0.9; training label-error levels differ at 0% and 50%. These are experimental settings, not performance results.
     </p>
-    <h3>
-     비교 구현
+<h3>
+     Comparison implementations
     </h3>
-    <p>
-     일반 학습 기준선, 기본 IRM, 환경별 가중치를 조정한 버전, 환경과 샘플 수준의 규제를 추가한 버전으로 실험 파일을 분리했습니다. 품질 추정에는 이진 분류 손실을 사용하고 별도 모델의 정보를 활용하는 구현이 포함됩니다.
+<p>
+     Separate experiment files cover standard learning, basic IRM, adjusted environment weights, and additional environment- and sample-level regularization. Quality estimation uses binary classification loss, with some implementations incorporating information from a separate model.
     </p>
-    <h3>
-     입력 민감도를 규제에 반영
+<h3>
+     Input sensitivity in regularization
     </h3>
-    <p>
-     수정 버전은 입력에 작은 변화를 주었을 때 모델 출력이 얼마나 달라지는지 유한 차분으로 계산합니다. 이 민감도에 클래스별 가중치를 적용한 항을 IRM의 환경별 규제와 함께 사용하도록 구성했습니다.
+<p>
+     Modified versions estimate output changes under small input perturbations using finite differences. Class-weighted sensitivity terms are combined with IRM’s environment-specific penalty.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     Colored MNIST를 이용한 수업 과제입니다. 반복 실험에서 훈련·평가 정확도와 규제 가중치를 기록하고 시각화하도록 구현했습니다.
+<p>
+     This was a Colored MNIST course assignment. I implemented recording and visualization of training/evaluation accuracy and regularization weights across repeated experiments.
     </p>
-    <p>
-     이 프로젝트에서는 환경별 규제와 입력 민감도를 반영한 실험 구조를 구현했습니다. 방법 간 최종 성능 비교는 별도 검증이 필요합니다.
+<p>
+     The project implemented an experimental structure combining environment-specific regularization with input sensitivity. Final performance comparisons require further validation.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="https://github.com/DDohyeon2941/Regularization-Penalty-Optimization-for-Addressing-Data-Quality-Variance-in-Ood-Algorithms">
-      실험 설명과 기준선·IRM 수정 코드
+<p>
+<a href="https://github.com/DDohyeon2941/Regularization-Penalty-Optimization-for-Addressing-Data-Quality-Variance-in-Ood-Algorithms">
+      Experiment descriptions and baseline/modified IRM code
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

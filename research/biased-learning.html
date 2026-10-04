@@ -1,239 +1,240 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   Strategies to Prevent Biased Learning for Imbalanced Data | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Strategies to Prevent Biased Learning for Imbalanced Data | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a aria-current="page" href="../research.html">
-     연구
+<a aria-current="page" href="../research.html">
+     Research
     </a>
-    <a href="../projects.html">
-     프로젝트
+<a href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../research.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    불균형 데이터의 편향 학습 방지
+</p>
+<h1>
+    Preventing biased learning in imbalanced data
    </h1>
-   <p class="paper-title">
+<p class="paper-title">
     Strategies to Prevent Biased Learning for Imbalanced Data
    </p>
-   <p class="meta">
-    박사학위논문, 2025 · 학위논문 저자
+<p class="meta">
+    Doctoral dissertation, 2025 · Dissertation author
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      노이즈 필터링·생성량·생성 위치를 각각 조정해 다수·소수 클래스 양쪽의 편향을 줄이는 전략을 연구했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I studied strategies to reduce bias toward either class by separately adjusting noise filtering, augmentation size, and where synthetic samples are generated.
      </p>
-     <ul class="key-facts">
-      <li>
-       클래스별 필터링 · 효율적인 생성량 · 경계 기반 SMOTE
+<ul class="key-facts">
+<li>
+       Class-specific filtering · Efficient augmentation size · Boundary-aware SMOTE
       </li>
-      <li>
-       경계 기반 생성: 23개 이진 분류 벤치마크에서 평가
+<li>
+       Boundary-aware generation: evaluated on 23 binary classification benchmarks
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/thesis-doctoral-tube.png">
-      <img alt="박사논문 그림 5.1 · 생성 경로의 튜브 영역 포함 여부 평가" loading="lazy" src="../images/research/thesis-doctoral-tube.png"/>
-     </a>
-     <figcaption>
-      박사논문 그림 5.1 · 생성 경로의 튜브 영역 포함 여부 평가
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/thesis-doctoral-tube.png">
+<img alt="Dissertation Figure 5.1: testing whether a sample lies within the generation path’s tube region" loading="lazy" src="../images/research/thesis-doctoral-tube.png"/>
+</a>
+<figcaption>
+      Dissertation Figure 5.1: testing whether a sample lies within the generation path’s tube region
      </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       연구 문제
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       접근 방법
+</li>
+<li>
+<a href="#part-1">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       기여
+</li>
+<li>
+<a href="#part-2">
+       Contributions
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       논문 및 코드
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     연구 문제
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Research problem
     </h2>
-    <p>
-     불균형 데이터에서는 다수 클래스에 유리한 결정 경계가 형성되기 쉽습니다. 그러나 이를 보정하는 과정도 새로운 편향을 만들 수 있습니다. 높은 가중치의 소수 표본을 노이즈로 제거하면 유효한 정보가 사라지고, 합성 표본을 과도하게 생성하면 소수 클래스 영역이 지나치게 넓어질 수 있습니다.
+<p>
+     Imbalanced data can produce decision boundaries favoring the majority class. Correcting this can also introduce new bias: removing high-weight minority samples as noise can discard valid information, while excessive synthetic generation can expand the minority region too far.
     </p>
-    <p>
-     박사논문은 이러한 양방향 편향을 줄이기 위해 표본 제거 기준, 생성량, 생성 위치를 각각 다루는 세 가지 보완적 전략을 연구했습니다.
+<p>
+     My dissertation investigates three complementary strategies addressing sample removal criteria, augmentation size, and generation location to reduce bias in both directions.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-1">
+<h2>
+     Approach
     </h2>
-    <h3>
-     1. 클래스별로 다른 노이즈 필터링 기준
+<h3>
+     1. Class-specific noise filtering criteria
     </h3>
-    <p>
-     AdaBoost에서 가중치가 높은 표본은 반복적으로 오분류된 표본입니다. 소수 클래스에서는 학습이 어려운 정상 표본도 높은 가중치를 가질 수 있으므로, 전체 클래스에 같은 제거 기준을 적용하면 소수 정보가 손실됩니다. 클래스별 가중치 분포를 반영한 평균 기반·상대적 기준을 비교해 제거 기준을 차별화했습니다.
+<p>
+     In AdaBoost, high-weight samples have been repeatedly misclassified. Valid but difficult minority samples can also receive high weights, so a single removal criterion for all classes can lose minority information. I compared mean-based and relative criteria that reflect each class’s weight distribution.
     </p>
-    <p>
-     <a href="noise-filtering.html">
-      노이즈 필터링 연구 상세
+<p>
+<a href="noise-filtering.html">
+      Noise-filtering research details
      </a>
-    </p>
-    <h3>
-     2. 데이터셋에 맞는 효율적인 생성량
+</p>
+<h3>
+     2. Efficient augmentation suited to each dataset
     </h3>
-    <p>
-     완전 균형을 목표로 일률적으로 증강하는 대신 분류 복잡도로 데이터의 분리·중첩 정도를 반영했습니다. 기존보다 적은 생성량에서도 데이터셋에 적절한 규모를 적용해 성능을 유지하거나 개선하는 것이 핵심입니다. 소수 클래스의 과도한 확장을 줄이면서 필요한 학습 정보를 확보하는 방향으로 접근했습니다.
+<p>
+     Instead of uniformly augmenting to full class balance, I used classification complexity to reflect class separation and overlap. The key contribution is applying suitable dataset-specific sizes that maintain or improve performance with fewer generated samples. The approach seeks useful learning information while limiting excessive expansion of the minority region.
     </p>
-    <p>
-     <a href="oversampling.html">
-      오버샘플링 크기 연구 상세
+<p>
+<a href="oversampling.html">
+      Oversampling-size research details
      </a>
-    </p>
-    <h3>
-     3. 생성 쌍을 평가하는 경계 기반 SMOTE
+</p>
+<h3>
+     3. Boundary-aware SMOTE evaluates generation pairs
     </h3>
-    <p>
-     SMOTE는 기준 표본 B와 소수 클래스 이웃 P 사이를 보간합니다. 기준 표본을 잘 선택해도 상대 표본을 무작위로 고르면 생성 경로가 부적절한 영역을 통과할 수 있습니다. 따라서 어떤 표본에서 생성할지에 더해, 어떤 상대 표본과 연결할지를 평가했습니다.
+<p>
+     SMOTE interpolates between a base sample B and a minority neighbor P. Even with a well-chosen base sample, a randomly selected partner can lead the generation path through an unsuitable region. I therefore evaluated which partner to connect with as well as which base to generate from.
     </p>
-    <ol>
-     <li>
-      <strong>
-       주변 분포 구성:
+<ol>
+<li>
+<strong>
+       Constructing local distributions:
       </strong>
-      서로의 이웃인 자연 이웃(NaN)을 사용합니다. 확장 자연 이웃(ENaN)은 kNN과 역방향 kNN의 합집합으로 주변 범위를 넓힙니다.
+      Uses natural neighbors (NaN), which are mutual neighbors. Extended natural neighbors (ENaN) expand the neighborhood using the union of kNN and reverse kNN.
      </li>
-     <li>
-      <strong>
-       생성 경로 평가:
+<li>
+<strong>
+       Evaluating the generation path:
       </strong>
-      B–P 선분 주변의 튜브 영역에 속하는 표본을 찾고, 그 표본들의 자연 이웃 중 소수 클래스 비율을 평균해 경로 주변의 분포를 평가합니다. 조사 범위는 B의 자연 이웃과 그 이웃들의 자연 이웃으로 제한합니다.
+      Finds samples in a tube around the B–P segment and averages the minority-class proportions in their natural neighborhoods. The search is limited to B’s natural neighbors and the natural neighbors of those neighbors.
      </li>
-     <li>
-      <strong>
-       경계 특성 평가:
+<li>
+<strong>
+       Evaluating boundary characteristics:
       </strong>
-      P에서 소수·다수 클래스 이웃까지의 평균 거리를 비교해 경계에 가까운 정도와 다수 클래스 방향의 특성을 함께 반영합니다.
+      Compares mean distances from P to minority and majority natural neighbors, incorporating both proximity to the boundary and characteristics toward the majority class.
      </li>
-     <li>
-      <strong>
-       생성 쌍 선택:
+<li>
+<strong>
+       Selecting a generation pair:
       </strong>
-      경로 주변 분포 점수와 경계 점수를 곱하고 정규화해 상대 표본의 선택 확률로 사용합니다. 한 점수만 높고 다른 점수가 낮은 후보의 선택을 억제한 뒤 선형 보간으로 표본을 생성합니다.
+      Multiplies the local-distribution score and boundary score, then normalizes them into partner-selection probabilities. Candidates with only one strong score are downweighted, and selected pairs produce samples through linear interpolation.
      </li>
-    </ol>
-    <details>
-     <summary>
-      경계 기반 SMOTE 실험 설정
+</ol>
+<details>
+<summary>
+      Boundary-aware SMOTE experimental setup
      </summary>
-     <p>
-      23개 이진 분류 벤치마크를 사용했습니다. 일부는 같은 원자료에서 소수 클래스 구성을 달리한 문제입니다. 수치형 변수를 표준화하고 범주형 변수는 제외했습니다.
+<p>
+      I used 23 binary classification benchmarks. Some were formed by choosing different minority classes from the same original dataset. Numerical variables were standardized and categorical variables excluded.
      </p>
-     <p>
-      CART·kNN·SVM·로지스틱 회귀·랜덤 포레스트로 평가하고, AUROC와 30회 반복 5-fold 교차검증을 사용했습니다. 오버샘플링 없는 기준선, SMOTE 계열 8개 방법, 제안한 NaN·ENaN 방식을 비교했습니다. 완전 균형 생성량과 그 절반을 적용한 조건도 비교했습니다.
+<p>
+      Evaluation used CART, kNN, SVM, logistic regression, and random forest with AUROC and 30 repetitions of 5-fold cross-validation. Comparisons included no oversampling, 8 SMOTE variants, and the proposed NaN/ENaN methods. Full-balancing and half-size augmentation were both examined.
      </p>
-    </details>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     기여
+</details>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Contributions
     </h2>
-    <h3>
-     제거·규모·위치를 구분한 편향 방지 전략
+<h3>
+     Bias prevention through removal, size, and location
     </h3>
-    <p>
-     어려운 소수 표본을 보존하는 필터링, 데이터셋에 맞는 적은 생성량, 생성 경로와 경계를 고려하는 상대 표본 선택을 각각 제시했습니다. 세 전략은 서로 다른 편향 발생 지점을 다루며, 하나의 통합 파이프라인으로 동시에 검증한 결과로 소개하지 않습니다.
+<p>
+     I presented filtering that preserves difficult minority samples, smaller dataset-specific augmentation, and partner selection considering generation paths and boundaries. The three strategies address different sources of bias; they were not evaluated simultaneously as a single integrated pipeline.
     </p>
-    <h3>
-     경계 기반 생성의 결과와 해석
+<h3>
+     Results and interpretation of boundary-aware generation
     </h3>
-    <p>
-     SVM 비교에서 ENaN은 완전 균형 조건에서 4개 데이터셋, 절반 생성량 조건에서 5개 데이터셋의 최고 성능을 기록했습니다. 완전 균형 조건의 평균 순위는 3.8이었으며, Nemenyi 사후검정에서 SMOTE·Safe-Level SMOTE와 유의한 차이를 보이지 않았습니다. 데이터 분포에 따라 경쟁력 있는 결과를 보였지만 모든 데이터셋에서 우수한 방식은 아니었습니다.
+<p>
+     In the SVM comparison, ENaN achieved the best performance on 4 datasets with full balancing and 5 with half-size augmentation. Its mean rank with full balancing was 3.8; the Nemenyi post-hoc test found no significant difference from SMOTE or Safe-Level SMOTE. Performance was competitive for some distributions but not superior on every dataset.
     </p>
-    <p>
-     자연 이웃의 범위가 좁으면 특정 소수 표본에 생성이 집중될 수 있고, 범위를 넓히면 노이즈와 클래스 중첩의 영향이 달라집니다. 생성량을 줄인 조건도 함께 비교한 이유는 이웃 구성과 증강 규모가 함께 결과에 영향을 주기 때문입니다.
+<p>
+     A narrow natural neighborhood can concentrate generation around particular minority samples. Expanding it changes the effects of noise and class overlap. Reduced-size conditions were also evaluated because neighborhood construction and augmentation size jointly affect the results.
     </p>
-    <h3>
-     한계와 후속 과제
+<h3>
+     Limitations and future work
     </h3>
-    <p>
-     상대적 필터링 기준이나 특정 생성 비율이 항상 최선은 아니며, 경계 기반 방법도 이웃 분포에 민감합니다. 학습 과정에 따라 기준·생성량을 조정하는 적응형 방식과 다중 클래스 확장은 후속 과제입니다. 본문의 실험은 이진 분류 범위에서 해석했습니다.
+<p>
+     Relative filtering criteria and particular generation ratios are not always best, and boundary-aware generation remains sensitive to neighborhood distributions. Adaptive criteria and augmentation size during learning, and multiclass extensions, remain future work. The reported experiments concern binary classification.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     논문 및 코드
+</section>
+<section class="section" id="part-3">
+<h2>
+     Paper and code
     </h2>
-    <p>
-     <a href="https://snut.dcollection.net/srch/srchDetail/200000865329">
-      박사학위논문 · 서울과학기술대학교 dCollection
+<p>
+<a href="https://snut.dcollection.net/srch/srchDetail/200000865329">
+      Doctoral dissertation · SeoulTech dCollection
      </a>
-    </p>
-    <p>
-     관련 학술지 연구와 공개 코드는
+</p>
+<p>
+     Related journal research and public code are linked from the
      <a href="noise-filtering.html">
-      클래스별 노이즈 필터링
+      class-specific noise filtering
      </a>
-     과
+     and
      <a href="oversampling.html">
-      효율적인 오버샘플링
+      efficient oversampling
      </a>
-     상세에서 연결했습니다.
+     detail pages.
     </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>

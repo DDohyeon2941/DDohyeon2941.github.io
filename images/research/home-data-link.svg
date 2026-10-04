@@ -1,12 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="300" height="180" viewBox="0 0 300 180" role="img" aria-labelledby="title desc">
- <title id="title">동일 대상 기준의 일반적인 데이터 연결</title>
- <desc id="desc">이전 단계 결과를 이후 단계 입력과 동일 대상 기준으로 1대1 연결하고 정합성 검증, 정렬, 정규화를 수행하는 관계입니다.</desc>
- <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#626b72"/></marker></defs>
+ <title id="title">General data linkage for the same entity</title>
+ <desc id="desc">Link an earlier-stage output to a later-stage input one-to-one for the same entity, then validate consistency, align, and normalize the data.</desc>
+ <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#626b72" /></marker></defs>
  <g font-family="system-ui, sans-serif" text-anchor="middle" fill="#252b30">
-  <text x="150" y="27" font-size="18">동일 대상 · 1:1 연결</text>
-  <g fill="none" stroke="#b9c6c1" stroke-width="1.5"><rect x="1" y="50" width="125" height="58"/><rect x="174" y="50" width="125" height="58"/></g>
-  <g font-size="17"><text x="63" y="74">이전 단계</text><text x="63" y="97">결과</text><text x="237" y="74">이후 단계</text><text x="237" y="97">입력</text></g>
-  <path d="M 133 79 H 166" stroke="#626b72" stroke-width="1.5" marker-end="url(#arrow)"/>
-  <text x="150" y="143" font-size="16">정합성 검증 · 정렬 · 정규화</text>
+  <text x="150" y="27" font-size="18">Same entity · 1:1 linkage</text>
+  <g fill="none" stroke="#b9c6c1" stroke-width="1.5"><rect x="1" y="50" width="125" height="58" /><rect x="174" y="50" width="125" height="58" /></g>
+  <g font-size="17"><text x="63" y="74">Earlier stage</text><text x="63" y="97">Output</text><text x="237" y="74">Later stage</text><text x="237" y="97">Input</text></g>
+  <path d="M 133 79 H 166" stroke="#626b72" stroke-width="1.5" marker-end="url(#arrow)" />
+  <text x="150" y="143" font-size="16">Validate · align · normalize</text>
  </g>
 </svg>

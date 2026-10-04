@@ -1,182 +1,183 @@
 <!DOCTYPE html>
-<html lang="ko">
- <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1" name="viewport"/>
-  <title>
-   시각장애인을 위한 비상구 표지판 인식 | 이도현
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Emergency exit sign recognition for people with visual impairments | Do Hyeon Lee
   </title>
-  <meta content="이도현의 연구, 프로젝트, 글·세션과 이력." name="description"/>
-  <link href="../assets/site.css" rel="stylesheet"/>
- </head>
- <body>
-  <a class="skip-link" href="#main">
-   본문으로 이동
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
   </a>
-  <header class="site-header">
-   <nav aria-label="주요 메뉴" class="site-nav">
-    <a class="name" href="../index.html">
-     이도현
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
     </a>
-    <a href="../index.html">
-     홈
+<a href="../index.html">
+     Home
     </a>
-    <a href="../research.html">
-     연구
+<a href="../research.html">
+     Research
     </a>
-    <a aria-current="page" href="../projects.html">
-     프로젝트
+<a aria-current="page" href="../projects.html">
+     Projects
     </a>
-    <a href="../writing.html">
-     글·세션
+<a href="../writing.html">
+     Writing &amp; Sessions
     </a>
-    <a href="../resume.html">
-     이력
+<a href="../resume.html">
+     CV
     </a>
-   </nav>
-  </header>
-  <main class="detail-page" id="main">
-   <p class="breadcrumb">
-    <a href="../projects.html">
-     ← 목록으로
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
     </a>
-   </p>
-   <h1>
-    시각장애인을 위한 비상구 표지판 인식
+</p>
+<h1>
+    Emergency exit sign recognition for people with visual impairments
    </h1>
-   <p class="meta">
-    서울과학기술대학교 IoT 수업 · 팀 프로젝트
+<p class="meta">
+    SeoulTech IoT course · Team project
    </p>
-   <div class="detail-overview">
-    <div>
-     <p class="intro">
-      실내 이미지에서 비상구 표지판을 구분하는 분류 모델을 만들고, 경량 실행을 위한 TensorFlow Lite 변환을 수행했습니다. 비상구 여부를 판단하는 모델과 표지판 유형까지 구분하는 모델을 나누어 실험했습니다.
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Our team built classifiers for emergency exit signs in indoor images and converted them to TensorFlow Lite for lightweight inference. Binary exit-sign recognition and classification of sign types were tested separately.
      </p>
-     <ul class="key-facts">
-      <li>
-       모델: MobileNetV2의 비상구 여부·표지 유형 분류
+<ul class="key-facts">
+<li>
+       Model: MobileNetV2 for exit-sign presence and sign-type classification
       </li>
-      <li>
-       구현: 전이학습 → TFLite 양자화 → Edge TPU 변환
+<li>
+       Implementation: transfer learning → TFLite quantization → Edge TPU conversion
       </li>
-     </ul>
-    </div>
-    <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/exit-architecture.png">
-      <img alt="학습 모델에서 TFLite·Edge TPU로 변환하는 흐름. 공개 팀 프로젝트의 기존 도식." loading="lazy" src="../images/research/exit-architecture.png"/>
-     </a>
-     <figcaption>
-      학습 모델에서 TFLite·Edge TPU로 변환하는 흐름. 공개 팀 프로젝트의 기존 도식.
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/exit-architecture.png">
+<img alt="Conversion from a trained model to TFLite and Edge TPU; the public team project’s original diagram." loading="lazy" src="../images/research/exit-architecture.png"/>
+</a>
+<figcaption>
+      Conversion from a trained model to TFLite and Edge TPU; the public team project’s original diagram.
       <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance/blob/main/images/image.png">
-       출처
+       Source
       </a>
-     </figcaption>
-    </figure>
-   </div>
-   <nav aria-label="상세 목차" class="toc">
-    <h2>
-     바로가기
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
     </h2>
-    <ol>
-     <li>
-      <a href="#part-0">
-       문제와 맥락
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
       </a>
-     </li>
-     <li>
-      <a href="#part-1">
-       수행 역할
+</li>
+<li>
+<a href="#part-1">
+       My role
       </a>
-     </li>
-     <li>
-      <a href="#part-2">
-       접근 방법
+</li>
+<li>
+<a href="#part-2">
+       Approach
       </a>
-     </li>
-     <li>
-      <a href="#part-3">
-       적용 범위
+</li>
+<li>
+<a href="#part-3">
+       Scope
       </a>
-     </li>
-     <li>
-      <a href="#part-4">
-       공개 자료
+</li>
+<li>
+<a href="#part-4">
+       Public resources
       </a>
-     </li>
-    </ol>
-   </nav>
-   <section class="section" id="part-0">
-    <h2>
-     문제와 맥락
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
     </h2>
-    <p>
-     비상구 표지판은 비상 상황에서 중요한 시각 정보지만 시각장애인이 직접 확인하기 어렵습니다. 프로젝트는 카메라 이미지에서 비상구 관련 정보를 인식하는 기술적 가능성을 살폈습니다.
+<p>
+     Emergency exit signs provide important visual information that can be difficult for people with visual impairments to read directly. The project examined the technical feasibility of recognizing exit-related information from camera images.
     </p>
-    <p>
-     공개 코드의 작업은 이미지 분류입니다. 이미지 안에서 표지판의 좌표를 찾아내는 객체 검출이나 실제 대피 경로 안내까지 구현한 것으로 설명하지 않습니다.
+<p>
+     The public implementation performs image classification. It does not implement object detection locating sign coordinates or actual evacuation-route guidance.
     </p>
-   </section>
-   <section class="section" id="part-1">
-    <h2>
-     수행 역할
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
     </h2>
-    <p>
-     이새롬·이도현의 서울과학기술대학교 IoT 수업 팀 프로젝트입니다. 팀 단위로 이미지 데이터 준비, MobileNetV2 분류 모델 학습, 경량 실행을 위한 변환 실험을 수행했습니다.
+<p>
+     This was a SeoulTech IoT course team project with Sae Rom Lee and Do Hyeon Lee. We prepared image data, trained MobileNetV2 classifiers, and experimented with lightweight conversion.
     </p>
-   </section>
-   <section class="section" id="part-2">
-    <h2>
-     접근 방법
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
     </h2>
-    <h3>
-     데이터와 분류 과제
+<h3>
+     Data and classification tasks
     </h3>
-    <p>
-     실내 표지판 데이터 ISD, 실내 물체 데이터 IODD와 직접 수집한 이미지를 사용했습니다. 비상구 / 기타의 이진 분류와 방향을 나타내는 표지 / 현재 위치의 비상구 표지 / 비상구가 아닌 이미지의 3개 클래스 분류를 따로 구성했습니다.
+<p>
+     We used indoor sign data (ISD), indoor object data (IODD), and self-collected images. Tasks were defined separately as exit/other binary classification and 3-class classification of directional signs, exit signs at the current location, and non-exit images.
     </p>
-    <h3>
-     전이학습
+<h3>
+     Transfer learning
     </h3>
-    <p>
-     이미지를 224×224 크기로 맞추고 픽셀 값을 정규화했습니다. ImageNet으로 사전 학습한 MobileNetV2의 가중치를 고정하고, 전역 평균 풀링과 분류층을 붙여 학습했습니다. 밝기 변화와 뒤집기 증강도 적용했습니다.
+<p>
+     Images were resized to 224×224 and pixel values normalized. We froze ImageNet-pretrained MobileNetV2 weights, added global average pooling and classification layers, and trained them with brightness and flip augmentation.
     </p>
-    <p>
-     Adam과 범주형 교차 엔트로피를 사용하고 검증 손실에 따른 조기 종료를 적용했습니다. AUC와 클래스별 예측 양상을 함께 확인했습니다.
+<p>
+     Training used Adam and categorical cross-entropy, with early stopping based on validation loss. We examined AUC and class-specific predictions.
     </p>
-    <h3>
-     경량 실행을 위한 변환
+<h3>
+     Conversion for lightweight inference
     </h3>
-    <p>
-     Keras 모델을 대표 데이터로 정수 양자화한 TensorFlow Lite 모델로 변환하고 Edge TPU 컴파일을 시험했습니다. 학습 모델을 경량 실행 형식으로 옮기는 과정까지가 공개 구현의 범위입니다.
+<p>
+     Keras models were integer-quantized with representative data into TensorFlow Lite, and Edge TPU compilation was tested. The public implementation extends through conversion to lightweight inference formats.
     </p>
-   </section>
-   <section class="section" id="part-3">
-    <h2>
-     적용 범위
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
     </h2>
-    <p>
-     검증 AUROC는 이진 분류 0.95, 다중 분류 0.9538이었습니다. 이미지 분류 실험의 검증 결과이며 실제 대피 환경의 안전 성능을 평가한 수치는 아닙니다.
+<p>
+     Validation AUROC was 0.95 for binary classification and 0.9538 for multiclass classification. These are image-classification validation results, not measures of safety in actual evacuation environments.
     </p>
-    <p>
-     천장·벽·창문 등 배경에 따라 오분류가 발생했습니다. 제한된 이미지와 검증 조건에서 얻은 결과이므로 조명, 촬영 거리, 표지판 크기가 달라지는 환경에 대한 추가 검증이 필요합니다. 실제 사용자 대상 안내 서비스와 안전 성능은 평가 범위에 포함하지 않았습니다.
+<p>
+     Errors occurred with backgrounds such as ceilings, walls, and windows. Results come from limited images and validation conditions, requiring further tests across lighting, distance, and sign size. Actual user-facing guidance and safety performance were not evaluated.
     </p>
-   </section>
-   <section class="section" id="part-4">
-    <h2>
-     공개 자료
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
     </h2>
-    <p>
-     <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">
-      데이터 구성·모델·변환 노트북과 실험 기록
+<p>
+<a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">
+      Data preparation, model/conversion notebooks, and experiment records
      </a>
-    </p>
-   </section>
-  </main>
-  <footer class="site-footer">
-   이도현 · ML 연구 및 데이터 구조 설계 ·
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
    <a href="mailto:skypo1000@ds.seoultech.ac.kr">
-    이메일
+    Email
    </a>
-  </footer>
- </body>
+</footer>
+</body>
 </html>
