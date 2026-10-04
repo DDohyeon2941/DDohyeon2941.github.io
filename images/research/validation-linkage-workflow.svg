@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 480" role="img" aria-labelledby="title desc">
+  <title id="title">Validation before cross-stage data linkage</title>
+  <desc id="desc">A general illustration of earlier-stage outputs and later-stage inputs linked one-to-one for the same target. Check correspondence and metadata consistency, align and normalize the verified pairs, and prepare a dataset for analysis and training. Shapes illustrate relationships, not actual records or internal structures.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#626b72"/></marker>
+  </defs>
+  <rect width="920" height="480" fill="#fff"/>
+  <g font-family="system-ui, sans-serif" fill="#252b30">
+    <text x="28" y="40" font-size="26" font-weight="600">Validate correspondence before preparing training pairs</text>
+    <g font-size="22" font-weight="600" text-anchor="middle">
+      <text x="202" y="98">Earlier-stage output</text>
+      <text x="718" y="98">Later-stage input</text>
+    </g>
+    <g fill="#f4f6f4" stroke="#c5cec9">
+      <rect x="28" y="116" width="348" height="184" rx="3"/>
+      <rect x="544" y="116" width="348" height="184" rx="3"/>
+    </g>
+    <g fill="#28645f" stroke="#28645f" stroke-width="2">
+      <circle cx="66" cy="154" r="10"/><circle cx="582" cy="154" r="10"/>
+      <rect x="56" y="197" width="20" height="20"/><rect x="572" y="197" width="20" height="20"/>
+      <path d="m66 249 11 11-11 11-11-11Z"/><path d="m582 249 11 11-11 11-11-11Z"/>
+    </g>
+    <g stroke="#b8c7c0" stroke-width="6" stroke-linecap="round">
+      <path d="M100 150H316M100 162H256M100 203H300M100 215H266M100 256H320M100 268H250"/>
+      <path d="M616 150H828M616 162H770M616 203H804M616 215H778M616 256H828M616 268H756"/>
+    </g>
+    <g fill="none" stroke="#28645f" stroke-width="2" marker-end="url(#arrow)">
+      <path d="M384 154H536"/><path d="M384 207H536"/><path d="M384 260H536"/>
+    </g>
+    <g font-size="18" fill="#626b72" text-anchor="middle">
+      <text x="460" y="140">Same target</text>
+      <rect x="422" y="182" width="76" height="27" fill="#fff"/>
+      <text x="460" y="202" fill="#28645f" font-weight="600">1:1</text>
+      <text x="460" y="288">Verified pairs</text>
+    </g>
+    <path d="M28 328H892" stroke="#d8ded9"/>
+    <g font-size="20" text-anchor="middle">
+      <text x="163" y="368" font-weight="600">Check consistency</text>
+      <text x="163" y="400" font-size="18" fill="#626b72">Meaning and metadata</text>
+      <text x="460" y="368" font-weight="600">Align and normalize</text>
+      <text x="460" y="400" font-size="18" fill="#626b72">Comparable representations</text>
+      <text x="757" y="368" font-weight="600">Prepare the dataset</text>
+      <text x="757" y="400" font-size="18" fill="#626b72">Analysis and model training</text>
+    </g>
+    <g fill="none" stroke="#626b72" stroke-width="2" marker-end="url(#arrow)"><path d="M292 380H320"/><path d="M589 380H617"/></g>
+    <text x="28" y="452" font-size="18" fill="#626b72">Illustrative relationship · No actual records, fields, or internal implementation</text>
+  </g>
+</svg>

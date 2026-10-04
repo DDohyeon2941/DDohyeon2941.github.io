@@ -1,6 +1,10 @@
 # 포트폴리오 변경 검토
 
-## Latest: detail page layout
+## Latest: visible professional diagrams
+
+The original safe validation diagram from the supplied portfolio is visible again. Larger correspondence and time-alignment diagrams now distinguish the two professional experiences, with mobile layouts and updated previews. Restricted original work images remain withheld. See [PROFESSIONAL-DIAGRAMS.md](PROFESSIONAL-DIAGRAMS.md) for source review and verification.
+
+## Detail page layout
 
 Research and project details now distinguish summaries, methods, evidence, and limitations through an editorial layout. Full content and source materials are preserved. See [DETAIL-LAYOUT.md](DETAIL-LAYOUT.md) for the current visual changes and verification.
 
