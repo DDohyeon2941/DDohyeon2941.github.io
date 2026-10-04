@@ -31,6 +31,7 @@ The session HTML, scripts, charts, full explanations, original links, round orde
 - Close, Escape, and outside click dismiss the preview. Close returns focus to the associated button.
 - Titles continue to open the complete materials directly. Without JavaScript, the original list and links still work.
 - Existing research/project previews retain their text, data, and interaction. The wider image-focused presentation applies to the new session previews.
+- Home, research, projects, and writing lists load the preview data, script, and stylesheet with the same version query. Loading the latest HTML therefore bypasses cached assets from before session previews were added.
 
 ## Verification
 
@@ -43,6 +44,7 @@ See [browser and preservation results](session-preview-results.json) and [figure
 - Standalone SVG XML, viewport attributes, rendered text bounds, and desktop/mobile screenshots checked. No runtime dependencies are added.
 - Final figure/session link spacing and viewport bounds: 9 additional checks passed. Existing Chart.js resources loaded during the complete navigation validation; no JavaScript errors were reported.
 - Follow-up entry-point validation: home and writing list at three viewport sizes, both over local HTTP and as directly opened files, passed all 12 checks. Actual mobile taps, figure switching, image decoding, viewport bounds, Close/focus return, and navigation to the complete session were checked with no errors. See [entry-point results](session-preview-entrypoint-results.json).
+- Cache follow-up: the server at port 8765 served HTML/data/script/style bytes identical to the current workspace, and fresh-browser previews worked. A separate real Chromium HTTP-cache test primed all three pre-session assets from `36cc258` with a long cache lifetime. Current versioned HTML then loaded the updated assets and all 11 previews/20 figures while the old URLs stayed cached, with no JavaScript errors. The 12 entry-point checks also passed after versioning. See [cache regression results](session-preview-cache-results.json). The user's existing browser cache has not been inspected, so it is a possible failure mode rather than a confirmed diagnosis of that browser.
 
 ## Screenshots
 
