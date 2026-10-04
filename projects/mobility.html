@@ -54,22 +54,19 @@
      </p>
      <ul class="key-facts">
       <li>
-       예측 모델: 잔차 기반 극단 수요 예측
+       예측 모델: 극단 수요 개선과 낮은 수요 오차의 상충
       </li>
       <li>
-       공간 집계: 이용 패턴을 반영한 지역 통합
+       공간 단위: 도시와 지표에 따라 달라지는 예측 결과
       </li>
      </ul>
     </div>
     <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/mobility-heatmap.png">
-      <img alt="Kansas City의 공간별 분석 히트맵. 공개 연구 저장소의 기존 그림." loading="lazy" src="../images/research/mobility-heatmap.png"/>
+     <a aria-label="그림 원본 보기" href="../images/research/paper-mobility-main-grids.png">
+      <img alt="원고 Fig. 3 · 주요 격자를 선택하고 가까운 보조 격자를 결합하는 과정." loading="lazy" src="../images/research/paper-mobility-main-grids.png"/>
      </a>
      <figcaption>
-      Kansas City의 공간별 분석 히트맵. 공개 연구 저장소의 기존 그림.
-      <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework/blob/main/Kansas/analysis/Figure5/Kansas_heatmap_0824.png">
-       출처
-      </a>
+      원고 Fig. 3 · 주요 격자를 선택하고 가까운 보조 격자를 결합하는 과정.
      </figcaption>
     </figure>
    </div>
@@ -152,7 +149,7 @@
      적용 범위
     </h2>
     <p>
-     논문과 저장소는 극단 수요의 과소 예측 완화, 고정 격자 대비 희소한 수요 분포의 개선을 보고합니다. 이 페이지에는 출처에서 확인하지 않은 수치나 실제 운영 적용 성과를 추가하지 않았습니다.
+     연구 원문에서는 극단 수요의 예측 개선과 매우 낮은 수요의 오차 증가가 함께 나타납니다. 공간 단위 연구도 도시·지표별 결과가 다르며, Minneapolis에서는 RMSE가 줄지만 MAPE가 커졌습니다. 각각의 논문 상세에 조건과 수치를 함께 정리했습니다.
     </p>
     <p>
      연구 범위는 공개된 도시별 데이터와 실험 조건입니다. 다른 도시나 이동 수단에서도 같은 효과가 보장되는 것은 아니며, 공간 단위 변경에 따른 해석과 운영 적합성도 별도로 검토해야 합니다.

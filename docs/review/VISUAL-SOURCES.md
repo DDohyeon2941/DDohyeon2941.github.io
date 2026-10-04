@@ -1,5 +1,7 @@
 # 연구 본문과 그림의 근거
 
+사용자 제공 PDF 네 건을 받은 뒤 공간 단위·AdaBoost.RDT·오버샘플링·노이즈 필터링의 대표 그림과 본문을 원문 기준으로 갱신했습니다. 아래 저장소 그림은 보존된 초기 자료 목록이며, 최신 연구 그림과 표의 근거는 [제공 논문 대조](PAPER-SOURCES.md)에 있습니다.
+
 2026-10-04 확인. 학술지 연구의 공개 저장소와 실제 구현은 [프로젝트 근거 목록](PROJECT-SOURCES.md)의 관련 항목과 동일합니다. 추가로 분류 복잡도 연구의 `cal_cluster_complexity.py`·`simple_experiment_with_complexity.py`, 노이즈 필터링의 `noise_filtering.py`를 확인했습니다. 국제 방문객 연구는 [학술지 원문](https://jkiie.org/xml/30761/30761.pdf)의 방법을 요약했습니다.
 
 ## 기존 공개 그림

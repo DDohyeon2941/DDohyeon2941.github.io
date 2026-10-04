@@ -68,6 +68,18 @@ td,th { border:1px solid var(--line); padding:8px; text-align:left; }
 .detail-figure img { display:block; width:100%; max-height:170px; object-fit:contain; background:white; }
 .detail-overview .key-facts { padding-left:18px; margin:10px 0 0; font-size:14px; }
 .detail-overview .key-facts li { margin:4px 0; }
+.method-equation { background:#f1f3f1; padding:10px 14px; border-left:2px solid var(--line); }
+.result-table { overflow-x:auto; margin:10px 0; }
+.result-table table { width:100%; }
+.result-table .wide-result { min-width:460px; }
+.result-table caption { text-align:left; font-size:12px; color:var(--muted); padding-bottom:6px; }
+.result-table th,.result-table td { padding:6px 9px; vertical-align:top; }
+.detail-page .result-note { font-size:12px; color:var(--muted); line-height:1.5; margin:6px 0 10px; }
+.detail-page details { padding:10px 0; margin:12px 0; font-size:14px; }
+.detail-page details>p { margin-top:10px; }
+.paper-extra { max-width:460px; margin:12px auto; }
+.paper-extra img { display:block; width:100%; }
+.paper-extra figcaption { font-size:12px; }
 .detail-figure figcaption { font-size:12px; line-height:1.5; margin-top:6px; }
 .detail-page .toc { display:flex; align-items:baseline; gap:16px; padding:10px 0; margin:18px 0; }
 .detail-page .toc h2 { margin:0; font-size:13px; white-space:nowrap; }

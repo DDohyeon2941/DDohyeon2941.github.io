@@ -53,25 +53,25 @@
    <div class="detail-overview">
     <div>
      <p class="intro">
-      평균적인 수요와 급증하는 수요를 함께 예측하기 위해 AdaBoost에 잔차 기반 의사결정나무를 결합했습니다.
+      극단 수요를 노이즈로 약화시키지 않고 예측하기 위해 A-MT와 잔차 트리 R-DT를 결합했습니다. 극단 수요의 오차 감소와 매우 낮은 수요의 오차 증가를 함께 평가한 연구입니다.
      </p>
      <ul class="key-facts">
       <li>
-       방법: 잔차 트리의 정보를 후속 부스팅에 반영
+       방법: 선택적 Lasso 모델 트리 + 잔차 부호 특징 + 분위수 조정
       </li>
       <li>
-       평가: 일반 수요와 극단 수요 구간을 함께 비교
+       결과: 극단 수요 오차 감소와 매우 낮은 수요 오차 증가의 상충
       </li>
      </ul>
     </div>
     <figure class="detail-figure">
-     <a aria-label="그림 원본 보기" href="../images/research/adaboost-comparison.png">
-      <img alt="서울 평일 Group 3의 α·β 설정별 MAPE 분석. 개별 실험 조건의 기존 그림." loading="lazy" src="../images/research/adaboost-comparison.png"/>
+     <a aria-label="그림 원본 보기" href="../images/research/paper-adaboost-framework.png">
+      <img alt="원고 Figure 1 · 수요 학습, 잔차 학습, 다음 반복의 추가 특징과 최종 예측 조정." loading="lazy" src="../images/research/paper-adaboost-framework.png"/>
      </a>
      <figcaption>
-      서울 평일 Group 3의 α·β 설정별 MAPE 분석. 개별 실험 조건의 기존 그림.
-      <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction/blob/main/analysis/original/Seoul_Weekdays_Group3_MAPE_20240908.png">
-       출처
+      원고 Figure 1 · 수요 학습, 잔차 학습, 다음 반복의 추가 특징과 최종 예측 조정.
+      <a href="#part-3">
+       논문
       </a>
      </figcaption>
     </figure>
@@ -108,26 +108,112 @@
      연구 문제
     </h2>
     <p>
-     공유자전거 수요는 낮거나 보통인 구간이 많고 높은 수요 구간은 적습니다. 전체 평균 오차가 작아도 급증 구간을 과소 예측할 수 있어, 일반 수요의 예측을 유지하면서 극단 수요를 다루는 것이 문제였습니다.
+     일반 부스팅은 큰 오차의 극단 수요에 치우칠 수 있고, 노이즈에 강한 방식은 중요한 급증 수요까지 약화시킬 수 있습니다. 공유자전거에서 수요 급증을 놓치는 문제를 다루되, 낮은 수요의 예측에 미치는 영향도 함께 살폈습니다.
     </p>
    </section>
    <section class="section" id="part-1">
     <h2>
      접근 방법
     </h2>
-    <p>
-     서울·대전의 시간별 이용 자료와 날씨·시간·지역 특성을 사용했습니다. 조정된 모델 트리와 잔차 기반 트리를 부스팅 과정에 결합하며, 이전 단계의 잔차 정보를 후속 학습의 추가 특징으로 전달합니다. 공개 구현은 잔차 정보를 이용해 예측 결합도 조정합니다.
-    </p>
-    <p>
-     AdaBoost와 다른 부스팅 모델을 비교하고 일반 수요·극단 수요 구간을 구분해 평가했습니다. 파라미터별 결과도 함께 분석해 특정 설정에 대한 민감도를 확인했습니다.
-    </p>
+    <ol>
+     <li>
+      <strong>
+       A-MT:
+      </strong>
+      의사결정나무의 리프 안에서 목표값 분포를 확인하고, 조건에 맞는 리프에만 Lasso 회귀를 학습합니다. 모든 리프에 선형 모델을 두어 낮은 수요를 과대 예측하는 문제를 줄이려는 설계입니다.
+     </li>
+     <li>
+      <strong>
+       R-DT:
+      </strong>
+      같은 반복의 A-MT 잔차를 별도 트리로 예측합니다. 예측 잔차가 양수인지를 나타내는 이진 특징을 다음 반복의 입력에 추가합니다. 단순히 잔차 값을 다음 목표값으로 사용하는 방식과 구분됩니다.
+     </li>
+     <li>
+      <strong>
+       최종 예측:
+      </strong>
+      반복별 예측 잔차의 평균으로 과소·과대 추정 정도를 판단하고, 여러 A-MT 예측을 결합할 가중 분위수 Q를 조정합니다. Q는 0.1–0.9 범위로 제한합니다.
+     </li>
+    </ol>
+    <details>
+     <summary>
+      데이터·비교 모델·평가 설정
+     </summary>
+     <p>
+      서울·대전의 대여소별 시간 수요를 평일·주말로 나누어 분석했습니다. 시간·날씨·지역 인구·교통 관련 특징을 사용하고, 저수요·중간 수요·극단 수요 그룹을 따로 평가했습니다. AdaBoost, AdaBoost.RT, GBM, XGBoost, MBoost, LADBoost의 6개 비교 모델을 사용했습니다. 극단 수요의 학습 비중을 달리한 자료와 5개 표본 학습 세트에서도 검토했습니다. 지표는 RMSE·MAE·MAPE·sMAPE 및 실제 수요가 0인 사례를 제외한 sMAPE입니다.
+     </p>
+    </details>
    </section>
    <section class="section" id="part-2">
     <h2>
      기여
     </h2>
     <p>
-     제1저자로 극단 수요 예측 모델 연구에 참여했습니다. 공개 연구 기록은 일반 수요 성능을 함께 고려하면서 극단 수요의 과소 예측을 완화한 결과를 보고합니다. 그림의 파라미터 분석은 개별 실험 조건이며 전체 모델의 보편적인 성능을 의미하지 않습니다.
+     제1저자로 잔차 기반 부스팅 모델 연구에 참여했습니다. 기여는 수요 모델과 잔차 모델을 결합하고, 잔차 부호를 후속 학습에 전달하며 최종 결합 위치까지 조정하는 것입니다.
+    </p>
+    <h3>
+     분위수 조정의 효과와 상충
+    </h3>
+    <div aria-label="수요 그룹별 RMSE 결과 표" class="result-table" role="region" tabindex="0">
+     <table>
+      <caption>
+       서울 평일, Q 고정과 조정 비교 · 원고 Table 4 · RMSE
+      </caption>
+      <thead>
+       <tr>
+        <th scope="col">
+         수요 그룹
+        </th>
+        <th scope="col">
+         Q 고정
+        </th>
+        <th scope="col">
+         Q 조정
+        </th>
+       </tr>
+      </thead>
+      <tbody>
+       <tr>
+        <th scope="row">
+         Group 1 · 낮은 수요
+        </th>
+        <td>
+         1.0474
+        </td>
+        <td>
+         1.4022
+        </td>
+       </tr>
+       <tr>
+        <th scope="row">
+         Group 2 · 중간 수요
+        </th>
+        <td>
+         5.8085
+        </td>
+        <td>
+         5.1165
+        </td>
+       </tr>
+       <tr>
+        <th scope="row">
+         Group 3 · 극단 수요
+        </th>
+        <td>
+         47.4712
+        </td>
+        <td>
+         40.3704
+        </td>
+       </tr>
+      </tbody>
+     </table>
+    </div>
+    <p class="result-note">
+     낮을수록 좋습니다. 동일 AdaBoost.RDT 안에서 Q를 0.5로 고정한 경우와 조정한 경우를 비교한 값이며, 다른 모델과의 비교표가 아닙니다.
+    </p>
+    <p>
+     중간·극단 수요의 오차는 줄지만 낮은 수요의 오차는 커집니다. 6개 모델 비교에서도 극단 수요 개선과 매우 낮은 수요의 과대 예측이 함께 나타납니다. 새 대여소 등 운영 환경의 변화와 도시별 수요 분포에 따른 일반화는 추가 과제로 남았습니다. 실제 재배치 운영의 효과를 검증한 결과로 설명하지 않습니다.
     </p>
    </section>
    <section class="section" id="part-3">
@@ -141,6 +227,9 @@
     <a href="https://github.com/DDohyeon2941/adaboost-rdt-extreme-demand-prediction">
      GitHub 코드
     </a>
+    <p class="meta paper-source">
+     방법·그림·결과는 연구 원문 기준이며 모델을 다시 학습한 결과가 아닙니다.
+    </p>
    </section>
   </main>
   <footer class="site-footer">
