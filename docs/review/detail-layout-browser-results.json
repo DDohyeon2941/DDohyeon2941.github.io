@@ -1,0 +1,267 @@
+{
+  "detail_viewport_checks": 51,
+  "viewports": [
+    "1440\u00d71000",
+    "390\u00d7844",
+    "320\u00d7740"
+  ],
+  "checks": [
+    {
+      "page": "research/adaboost-rdt.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/baseball.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/biased-learning.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/masters-oversampling.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/micro-mobility.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/noise-filtering.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/online-reviews.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/oversampling.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/documents.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/emergency-exit.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/federated.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/finance.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/gan.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/manufacturing-data.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/ood.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/sungsoo.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/time-series-data.html",
+      "viewport": 1440,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/adaboost-rdt.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/baseball.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/biased-learning.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/masters-oversampling.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/micro-mobility.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/noise-filtering.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/online-reviews.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/oversampling.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/documents.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/emergency-exit.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/federated.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/finance.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/gan.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/manufacturing-data.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/ood.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/sungsoo.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/time-series-data.html",
+      "viewport": 390,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/adaboost-rdt.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/baseball.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/biased-learning.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/masters-oversampling.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/micro-mobility.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/noise-filtering.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/online-reviews.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "research/oversampling.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/documents.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/emergency-exit.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/federated.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/finance.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/gan.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/manufacturing-data.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/ood.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/sungsoo.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    },
+    {
+      "page": "projects/time-series-data.html",
+      "viewport": 320,
+      "layout_images_details_contents": "passed"
+    }
+  ],
+  "issues": [],
+  "javascript_errors": []
+}

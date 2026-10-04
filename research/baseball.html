@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../research.html">
      ← Back to list
@@ -67,14 +67,7 @@
 <p class="intro">
       We defined IOM (Importance of Moment) to quantify how much a pitch can change the balance of a plate appearance. The measure weights immediate termination separately from continuation through a ball or strike. We analyzed count-specific importance alongside fastball velocity.
      </p>
-<ul class="key-facts">
-<li>
-       Method: a 14-state Markov model → out probabilities → IOM
-      </li>
-<li>
-       Result: rank correlation of 0.90 between IOM and mean velocity
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Method:</dt><dd>a 14-state Markov model → out probabilities → IOM</dd></div><div><dt>Result:</dt><dd>rank correlation of 0.90 between IOM and mean velocity</dd></div></dl>
 </div>
 </div>
 <nav aria-label="On this page" class="toc">
@@ -104,22 +97,19 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Research problem
-    </h2>
+    </h2><div class="section-body">
 <p>
      A strike at 0 balls and 0 strikes has a different meaning from a strike with 2 strikes already on the count. How favorable the current count is to the pitcher also differs from how important the next pitch is. This study quantifies how much the next pitch can affect the final out or on-base probability within a plate appearance.
     </p>
 <p>
      In tennis, importance can be defined as the difference in win probability between the two states reached by winning or losing a point. In baseball, a batted ball or hit-by-pitch can end a plate appearance immediately at any count. The difference between the states after a ball and after a strike alone is therefore insufficient. We proposed a measure that also incorporates this termination possibility.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-method-block"><h3>
      1. Representing pitch records as state transitions
     </h3>
 <p>
@@ -149,7 +139,7 @@
       </figcaption>
 </figure>
 </details>
-<h3>
+</div><div class="detail-method-block"><h3>
      2. Calculating the favorability of the current count
     </h3>
 <p>
@@ -161,7 +151,7 @@
 <p>
      The final out probability was 79.48% at 0 balls and 2 strikes and 28.83% at 3 balls and 0 strikes. These values describe current favorability, which is different from the importance of the next pitch.
     </p>
-<h3>
+</div><div class="detail-method-block"><h3>
      3. IOM weights termination and count continuation
     </h3>
 <p>
@@ -175,15 +165,13 @@
 <p>
      For example, at 2 balls and 1 strike, immediate termination has probability 23.9% and continuation 76.1%. After a ball, the out probability at 3 balls and 1 strike is about 41.7%; after a strike, at 2 balls and 2 strikes it is about 70.1%. IOM is about 45.52%. At 3 balls and 2 strikes, the next effective event must end the plate appearance, giving IOM of 100%. Calculations use probabilities before rounding.
     </p>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></div></section><section class="section" id="part-2"><h2>
      Contributions
-    </h2>
+    </h2><div class="section-body">
 <p>
      As co-first author, I participated in proposing a probabilistic measure for interpreting pitch importance despite complex plate-appearance transitions. We distinguished current count favorability from next-pitch importance and analyzed how IOM relates to pitchers’ observed behavior.
     </p>
-<h3>
+<div class="detail-evidence"><h3>
      Importance varies by count
     </h3>
 <figure class="baseball-figure">
@@ -197,7 +185,7 @@
 <p>
      IOM was 20.39% at 0 balls and 0 strikes, 26.78% at 0 balls and 1 strike, and 87.02% at 0 balls and 2 strikes. Adding a strike does not always produce the same change in importance. Counts with 2 strikes and the full count were particularly important.
     </p>
-<h3>
+</div><div class="detail-evidence"><h3>
      IOM and fastball velocity
     </h3>
 <p>
@@ -365,7 +353,7 @@
 <p>
      We defined an elite pitcher group as pitchers receiving at least one Cy Young Award vote during 2015–2018. Its IOM–velocity rank correlation was 0.78 (p = 0.0030). The velocity difference from all pitchers increased from 0.27mph at 0 strikes to 0.34mph at 1 strike and 0.49mph at 2 strikes, according to Table 9.
     </p>
-<h3>
+</div><div class="detail-caveat"><h3>
      Model validation and interpretive limitations
     </h3>
 <p>
@@ -374,11 +362,9 @@
 <p>
      The velocity analysis describes associations in count-level aggregates. It does not establish that importance causes higher velocity or that a particular pitching strategy is effective. Elite pitcher selection may favor starters, and fastball velocity alone cannot assess overall pitch quality. Comparing pitcher roles and analyzing breaking-ball spin and trajectories are directions for future research.
     </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
      Paper and code
-    </h2>
+    </h2><div class="section-body">
 <a href="https://doi.org/10.1080/02640414.2024.2355423">
      DOI
     </a>
@@ -386,7 +372,7 @@
     <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">
      Code on GitHub
     </a>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

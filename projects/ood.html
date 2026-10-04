@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../projects.html">
      ← Back to list
@@ -53,14 +53,7 @@
 <p class="intro">
       I experimented with adjusting the IRM penalty when label noise differs across training environments. In Colored MNIST, the regularization design reflected environment-specific data quality and sensitivity to input changes.
      </p>
-<ul class="key-facts">
-<li>
-       Experiment: Colored MNIST with different label quality across environments
-      </li>
-<li>
-       Method: environment weighting and input sensitivity in IRM regularization
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Experiment:</dt><dd>Colored MNIST with different label quality across environments</dd></div><div><dt>Method:</dt><dd>environment weighting and input sensitivity in IRM regularization</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/ood-method.svg">
@@ -103,69 +96,55 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Problem and context
-    </h2>
+    </h2><div class="section-body">
 <p>
      Correlations that fit training data can reverse in another environment. Colored MNIST tests this by varying the relationship between image color and target labels across environments. With additional differences in label noise, the question is whether regularization should trust every environment equally.
     </p>
 <p>
      I incorporated environment-specific data quality into regularization to investigate OOD generalization across distributions.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      My role
-    </h2>
+    </h2><div class="section-body">
 <p>
      For a course assignment, I modified penalties in existing IRM and related implementations and built experiments reflecting data-quality differences between environments.
     </p>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></section><section class="section" id="part-2"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
      Environments and label noise
-    </h3>
-<p>
+    </h3><p>
      Digits are grouped into two classes, with color–label relationships differing between training and evaluation environments. The code uses training color-error probabilities of 0.1 and 0.2 and an evaluation probability of 0.9; training label-error levels differ at 0% and 50%. These are experimental settings, not performance results.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="02"><h3>
      Comparison implementations
-    </h3>
-<p>
+    </h3><p>
      Separate experiment files cover standard learning, basic IRM, adjusted environment weights, and additional environment- and sample-level regularization. Quality estimation uses binary classification loss, with some implementations incorporating information from a separate model.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="03"><h3>
      Input sensitivity in regularization
-    </h3>
-<p>
+    </h3><p>
      Modified versions estimate output changes under small input perturbations using finite differences. Class-weighted sensitivity terms are combined with IRM’s environment-specific penalty.
-    </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
      Scope
-    </h2>
-<p>
+    </h2><div class="section-body">
+<div class="detail-evidence"><p>
      This was a Colored MNIST course assignment. I implemented recording and visualization of training/evaluation accuracy and regularization weights across repeated experiments.
-    </p>
-<p>
+    </p></div>
+<div class="detail-caveat"><p>
      The project implemented an experimental structure combining environment-specific regularization with input sensitivity. Final performance comparisons require further validation.
-    </p>
-</section>
-<section class="section" id="part-4">
-<h2>
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
      Public resources
-    </h2>
+    </h2><div class="section-body">
 <p>
 <a href="https://github.com/DDohyeon2941/Regularization-Penalty-Optimization-for-Addressing-Data-Quality-Variance-in-Ood-Algorithms">
       Experiment descriptions and baseline/modified IRM code
      </a>
 </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

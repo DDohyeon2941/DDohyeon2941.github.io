@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../research.html">
      ← Back to list
@@ -56,14 +56,7 @@
 <p class="intro">
       This study addresses excessive removal of difficult minority-class samples as noise in AdaBoost. I applied different thresholds to each class’s weight distribution and evaluated sample retention and AUROC on original and noise-injected data.
      </p>
-<ul class="key-facts">
-<li>
-       Method: class-specific means and two thresholds accounting for distribution asymmetry
-      </li>
-<li>
-       Evaluation: 11 datasets, 10–40% noise, AUROC and sample retention
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Method:</dt><dd>class-specific means and two thresholds accounting for distribution asymmetry</dd></div><div><dt>Evaluation:</dt><dd>11 datasets, 10–40% noise, AUROC and sample retention</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/paper-noise-weight-distributions.png">
@@ -104,38 +97,31 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Research problem
-    </h2>
+    </h2><div class="section-body">
 <p>
      AdaBoost increases the weights of repeatedly misclassified samples. In imbalanced data, informative minority samples can also receive high weights. A single filtering criterion for all classes can therefore remove too much minority-class information.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      Approach
-    </h2>
-<ul>
-<li>
-<strong>
+    </h2><div class="section-body">
+<div class="detail-comparison"><div><h3>
        Case 1 · Class-specific means:
-      </strong>
+      </h3><p>
+
       Sets a separate threshold for each class by multiplying its mean sample weight by an adjustment coefficient.
-     </li>
-<li>
-<strong>
+     </p></div><div><h3>
        Case 2 · Distribution asymmetry:
-      </strong>
+      </h3><p>
+
       Accounts for the spread and asymmetry of each class’s weight distribution. The 15th and 85th percentiles and the median reduce the problem of identical quartiles. Filtering is skipped when the two percentiles coincide.
-     </li>
-<li>
-<strong>
+     </p></div></div><div class="detail-method-block"><h3>
        Integration into learning:
-      </strong>
+      </h3><p>
+
       Sets the weights of samples exceeding the threshold to 0, replacing the existing filtering stage in ORBoost and RUSBoostWO.
-     </li>
-</ul>
+     </p></div>
 <details>
 <summary>
       Original-data and noise-injection experiments
@@ -144,15 +130,13 @@
       I evaluated the 11 imbalanced datasets reported in the tables and conclusions using depth-1 CART, 50 boosting iterations, and 30 repetitions of stratified 5-fold cross-validation. The main metric was AUROC. Noise was injected by giving synthetic samples the opposite class label while preserving the class ratio. Direct sample selection, proportional to a neighbor-distance ratio, was compared with Inverse selection, inversely proportional to it. Noise levels ranged from 10–40% in 10% increments.
      </p>
 </details>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></section><section class="section" id="part-2"><h2>
      Contributions
-    </h2>
+    </h2><div class="section-body">
 <p>
      As first author, I investigated filtering that accounts for differences in classification difficulty between classes. The study combines class-specific thresholds with noise-injection experiments that preserve the imbalance ratio.
     </p>
-<h3>
+<div class="detail-evidence"><h3>
      Better sample retention; performance depends on conditions
     </h3>
 <div aria-label="AUROC comparison on original data" class="result-table" role="region" tabindex="0">
@@ -213,14 +197,12 @@
 <p class="result-note">
      Mean AUROC; higher is better. These are examples for a specific model and setting on original data, not averages across all datasets or noise-injection results.
     </p>
-<p>
+<div class="detail-caveat"><p>
      The rate at which minority samples were identified as noise decreased, and prediction improved under several conditions, but not on KC1. Case 1 generally outperformed Case 2. Case 2 with RUSBoostWO sometimes stopped filtering because its percentiles coincided. Minority-sample retention alone does not establish improved predictive performance.
-    </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+    </p></div>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
      Paper and code
-    </h2>
+    </h2><div class="section-body">
 <a href="https://doi.org/10.3233/JIFS-213244">
      DOI
     </a>
@@ -231,7 +213,7 @@
 <p class="meta paper-source">
      Methods, figures, and results come from the original paper; the models were not retrained for this page.
     </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

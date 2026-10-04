@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../projects.html">
      ← Back to list
@@ -53,14 +53,7 @@
 <p class="intro">
       Can simply aggregating models produce a good global model when clients have different data quality? Our team compared aggregation strategies in Flower and experimented with controlling updates from clients with incorrect labels.
      </p>
-<ul class="key-facts">
-<li>
-       Experiment: 4 aggregation strategies and clean/noisy-label clients
-      </li>
-<li>
-       Result: norm filtering and clipping did not improve this experiment
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Experiment:</dt><dd>4 aggregation strategies and clean/noisy-label clients</dd></div><div><dt>Result:</dt><dd>norm filtering and clipping did not improve this experiment</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/flower-accuracy.png">
@@ -106,69 +99,53 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Problem and context
-    </h2>
+    </h2><div class="section-body">
 <p>
      In federated learning, clients train on their own data and the server aggregates model updates. Because data remain distributed, inaccurate training data on some clients can affect the global model.
     </p>
 <p>
      The project examined two questions. MNIST experiments compared server aggregation strategies. CIFAR-10 experiments combined clean-label clients with clients whose labels were partly shuffled to examine data-quality effects.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      My role
-    </h2>
+    </h2><div class="section-body">
 <p>
      I participated in a course team project with Ji Hyo Kim and Seong Cheol Kim. The team implemented Flower server/client experiments, aggregation comparisons, and update control for data-quality differences.
     </p>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></section><section class="section" id="part-2"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
      Comparing aggregation strategies
-    </h3>
-<p>
+    </h3><p>
      After receiving initial server weights, clients train locally and return updates. The server aggregates updates and computes loss and accuracy on separate evaluation data. We repeated this process to compare FedAvg, FedAdagrad, FedAdam, and FedYogi.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="02"><h3>
      Clients with different data quality
-    </h3>
-<p>
+    </h3><p>
      CIFAR-10 experiments used 5 clean-data clients and 5 clients with some randomly reassigned labels, varying the correctness of the learning signal rather than the images themselves.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="03"><h3>
      Controlling updates
-    </h3>
-<p>
+    </h3><p>
      We tested model-weight norm filtering and gradient-norm clipping during local learning. Clients implemented SGD with optional clipping; the server implemented aggregation selection and global-model evaluation.
-    </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
      Scope
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-evidence"><h3>
      Results and limitations
-    </h3>
-<p>
+    </h3><p>
      In the MNIST experiment, FedAdam and FedYogi converged faster or performed better than FedAvg, while FedAdagrad performed worse.
-    </p>
-<p>
+    </p><p>
      CIFAR-10 global accuracy was 64.13% with clean updates and 59.23% when noisy updates were included. Filtering and clipping did not improve performance in this experiment, indicating that update magnitude alone did not resolve data-quality issues.
-    </p>
-<p>
+    </p></div>
+<div class="detail-caveat"><p>
      These values apply to the course-project settings. Actual inter-institution operation and privacy guarantees were outside the evaluation scope.
-    </p>
-</section>
-<section class="section" id="part-4">
-<h2>
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
      Public resources
-    </h2>
+    </h2><div class="section-body">
 <p>
 <a href="https://github.com/JihyoKim00/federated-learning">
       Project description and experiment records
@@ -182,7 +159,7 @@
       Client implementation
      </a>
 </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

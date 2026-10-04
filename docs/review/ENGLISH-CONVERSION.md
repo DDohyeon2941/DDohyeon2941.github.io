@@ -1,5 +1,7 @@
 # English portfolio conversion
 
+This records the English conversion at commit `6073223`. Subsequent detail-page markup and layout changes are documented in [DETAIL-LAYOUT.md](DETAIL-LAYOUT.md); refer there for the latest preservation and visual checks.
+
 All visitor-facing content is now presented in English: the home introduction, research and project indexes/details, CV, blog posts, full company ML sessions, supplementary examples, previews, navigation, captions, chart labels, page metadata, and accessibility text. The name follows the dissertation’s English form, **Do Hyeon Lee**.
 
 The existing static HTML structure and URLs are retained. Long session and blog bodies were translated in full rather than replaced by summaries. Research remains grouped into **Imbalanced data**, **Micromobility**, and **Sports**. Professional projects, coursework/independent work, and competition/regional analysis remain distinct; the document-standardization context remains unclassified pending confirmation. Company ML session rounds, session order, draft labels, and supplementary links remain available.

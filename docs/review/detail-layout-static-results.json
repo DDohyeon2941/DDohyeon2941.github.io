@@ -1,0 +1,109 @@
+{
+  "detail_pages": 17,
+  "internal_references": 725,
+  "preservation_checks": [
+    {
+      "page": "research/adaboost-rdt.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/baseball.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/biased-learning.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/masters-oversampling.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/micro-mobility.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/noise-filtering.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/online-reviews.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "research/oversampling.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/documents.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/emergency-exit.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/federated.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/finance.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/gan.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/manufacturing-data.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/ood.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/sungsoo.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    },
+    {
+      "page": "projects/time-series-data.html",
+      "full_text": "preserved",
+      "ids_urls_media": "preserved",
+      "numeric_tables_formulas_figures_details": "preserved"
+    }
+  ],
+  "issues": []
+}

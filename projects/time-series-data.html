@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../projects.html">
      ← Back to list
@@ -53,14 +53,7 @@
 <p class="intro">
       I prepared manufacturing data with different collection times and intervals for model training and evaluation. Alongside time alignment, I checked whether information would actually be available at prediction time.
      </p>
-<ul class="key-facts">
-<li>
-       Work: alignment based on record times and information meaning
-      </li>
-<li>
-       Criterion: consistency between training inputs and information available at use time
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Work:</dt><dd>alignment based on record times and information meaning</dd></div><div><dt>Criterion:</dt><dd>consistency between training inputs and information available at use time</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/time-series-data-method.svg">
@@ -103,63 +96,49 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Problem and context
-    </h2>
+    </h2><div class="section-body">
 <p>
      Records from different sources cannot always be compared immediately on a common time basis. Without examining recording time and when information becomes valid, relationships can be misaligned or future information can enter training inputs.
     </p>
 <p>
      The goal was to create training data whose meaning matched actual usage, beyond bringing records together in one place.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      My role
-    </h2>
+    </h2><div class="section-body">
 <p>
      I participated in validation, preprocessing, time-series alignment, and training/evaluation workflow construction. My public experience also includes dashboard prototypes, proof-of-concept work, and field testing.
     </p>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></section><section class="section" id="part-2"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
      Time reference and data quality
-    </h3>
-<p>
+    </h3><p>
      I examined differences in collection intervals and record meaning and organized data on a comparable basis. Missing or inconsistent records were checked rather than treated as normal observations.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="02"><h3>
      Consistency between learning and use time
-    </h3>
-<p>
+    </h3><p>
      Inputs were constructed from information available at the intended prediction time. I checked whether preprocessing and feature-construction criteria were consistent across training, validation, and use.
-    </p>
-<h3>
+    </p></div><div class="detail-method-block" data-step="03"><h3>
      Evaluation and review
-    </h3>
-<p>
+    </h3><p>
      I examined what errors meant in the actual usage context, alongside prediction scores. Prototypes and tests supported a workflow for interpreting data and checking model results.
-    </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
      Scope
-    </h2>
-<p>
+    </h2><div class="section-body">
+<div class="detail-evidence"><p>
      I worked on data preparation, modeling and evaluation, and prototype review.
-    </p>
-<p>
+    </p></div>
+<div class="detail-caveat"><p>
      This page describes general time-series challenges and decision criteria without disclosing actual data fields, files, internal implementation, throughput, or screens.
-    </p>
-</section>
-<section class="section" id="part-4">
-<h2>
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
      Public resources
-    </h2>
+    </h2><div class="section-body">
 <p>
 <a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
       Article on evaluation metrics in their actual usage context
@@ -169,7 +148,7 @@
       Distinguishing setpoints from actual observations
      </a>
 </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

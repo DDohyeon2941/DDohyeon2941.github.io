@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../research.html">
      ← Back to list
@@ -56,14 +56,7 @@
 <p class="intro">
       I studied strategies to reduce bias toward either class by separately adjusting noise filtering, augmentation size, and where synthetic samples are generated.
      </p>
-<ul class="key-facts">
-<li>
-       Class-specific filtering · Efficient augmentation size · Boundary-aware SMOTE
-      </li>
-<li>
-       Boundary-aware generation: evaluated on 23 binary classification benchmarks
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Strategies:</dt><dd>Class-specific filtering · Efficient augmentation size · Boundary-aware SMOTE</dd></div><div><dt>Boundary-aware generation:</dt><dd>evaluated on 23 binary classification benchmarks</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/thesis-doctoral-tube.png">
@@ -101,22 +94,19 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Research problem
-    </h2>
+    </h2><div class="section-body">
 <p>
      Imbalanced data can produce decision boundaries favoring the majority class. Correcting this can also introduce new bias: removing high-weight minority samples as noise can discard valid information, while excessive synthetic generation can expand the minority region too far.
     </p>
 <p>
      My dissertation investigates three complementary strategies addressing sample removal criteria, augmentation size, and generation location to reduce bias in both directions.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-strategies"><div class="detail-method-block"><h3>
      1. Class-specific noise filtering criteria
     </h3>
 <p>
@@ -127,7 +117,7 @@
       Noise-filtering research details
      </a>
 </p>
-<h3>
+</div><div class="detail-method-block"><h3>
      2. Efficient augmentation suited to each dataset
     </h3>
 <p>
@@ -138,37 +128,37 @@
       Oversampling-size research details
      </a>
 </p>
-<h3>
+</div><div class="detail-method-block"><h3>
      3. Boundary-aware SMOTE evaluates generation pairs
     </h3>
 <p>
      SMOTE interpolates between a base sample B and a minority neighbor P. Even with a well-chosen base sample, a randomly selected partner can lead the generation path through an unsuitable region. I therefore evaluated which partner to connect with as well as which base to generate from.
     </p>
-<ol>
-<li>
-<strong>
+<ol class="detail-flow">
+<li><div class="flow-body">
+<strong class="step-label">
        Constructing local distributions:
       </strong>
       Uses natural neighbors (NaN), which are mutual neighbors. Extended natural neighbors (ENaN) expand the neighborhood using the union of kNN and reverse kNN.
-     </li>
-<li>
-<strong>
+     </div></li>
+<li><div class="flow-body">
+<strong class="step-label">
        Evaluating the generation path:
       </strong>
       Finds samples in a tube around the B–P segment and averages the minority-class proportions in their natural neighborhoods. The search is limited to B’s natural neighbors and the natural neighbors of those neighbors.
-     </li>
-<li>
-<strong>
+     </div></li>
+<li><div class="flow-body">
+<strong class="step-label">
        Evaluating boundary characteristics:
       </strong>
       Compares mean distances from P to minority and majority natural neighbors, incorporating both proximity to the boundary and characteristics toward the majority class.
-     </li>
-<li>
-<strong>
+     </div></li>
+<li><div class="flow-body">
+<strong class="step-label">
        Selecting a generation pair:
       </strong>
       Multiplies the local-distribution score and boundary score, then normalizes them into partner-selection probabilities. Candidates with only one strong score are downweighted, and selected pairs produce samples through linear interpolation.
-     </li>
+     </div></li>
 </ol>
 <details>
 <summary>
@@ -181,18 +171,16 @@
       Evaluation used CART, kNN, SVM, logistic regression, and random forest with AUROC and 30 repetitions of 5-fold cross-validation. Comparisons included no oversampling, 8 SMOTE variants, and the proposed NaN/ENaN methods. Full-balancing and half-size augmentation were both examined.
      </p>
 </details>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></div></div></section><section class="section" id="part-2"><h2>
      Contributions
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-evidence"><h3>
      Bias prevention through removal, size, and location
     </h3>
 <p>
      I presented filtering that preserves difficult minority samples, smaller dataset-specific augmentation, and partner selection considering generation paths and boundaries. The three strategies address different sources of bias; they were not evaluated simultaneously as a single integrated pipeline.
     </p>
-<h3>
+</div><div class="detail-evidence"><h3>
      Results and interpretation of boundary-aware generation
     </h3>
 <p>
@@ -201,17 +189,15 @@
 <p>
      A narrow natural neighborhood can concentrate generation around particular minority samples. Expanding it changes the effects of noise and class overlap. Reduced-size conditions were also evaluated because neighborhood construction and augmentation size jointly affect the results.
     </p>
-<h3>
+</div><div class="detail-caveat"><h3>
      Limitations and future work
     </h3>
 <p>
      Relative filtering criteria and particular generation ratios are not always best, and boundary-aware generation remains sensitive to neighborhood distributions. Adaptive criteria and augmentation size during learning, and multiclass extensions, remain future work. The reported experiments concern binary classification.
     </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
      Paper and code
-    </h2>
+    </h2><div class="section-body">
 <p>
 <a href="https://snut.dcollection.net/srch/srchDetail/200000865329">
       Doctoral dissertation · SeoulTech dCollection
@@ -228,7 +214,7 @@
      </a>
      detail pages.
     </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

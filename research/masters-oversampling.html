@@ -36,7 +36,7 @@
     </a>
 </nav>
 </header>
-<main class="detail-page" id="main">
+<main class="detail-page detail-editorial" id="main">
 <p class="breadcrumb">
 <a href="../research.html">
      ← Back to list
@@ -56,14 +56,7 @@
 <p class="intro">
       My master’s research evaluated whether smaller augmentation sizes than full balancing could provide suitable oversampling for individual datasets.
      </p>
-<ul class="key-facts">
-<li>
-       18 datasets · 3 boosting models · 20 repetitions of 5-fold validation
-      </li>
-<li>
-       Mean augmentation size: 45–66% of full balancing
-      </li>
-</ul>
+<dl class="detail-facts"><div><dt>Evaluation:</dt><dd>18 datasets · 3 boosting models · 20 repetitions of 5-fold validation</dd></div><div><dt>Mean augmentation size:</dt><dd>45–66% of full balancing</dd></div></dl>
 </div>
 <figure class="detail-figure">
 <a aria-label="View full-size figure" href="../images/research/thesis-masters-complexity.png">
@@ -101,22 +94,19 @@
 </li>
 </ol>
 </nav>
-<section class="section" id="part-0">
-<h2>
+<div class="detail-body"><section class="section" id="part-0"><h2>
      Research problem
-    </h2>
+    </h2><div class="section-body">
 <p>
      Oversampling to equal class counts determines generation size from the imbalance ratio alone. Yet datasets with the same imbalance ratio can differ in class separation and boundary overlap. More synthetic samples than necessary can expand the minority region too far.
     </p>
 <p>
      This study evaluated whether augmentation smaller than full balancing could suit each dataset while maintaining or improving classification performance.
     </p>
-</section>
-<section class="section" id="part-1">
-<h2>
+</div></section><section class="section" id="part-1"><h2>
      Approach
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-method-block"><h3>
      Reflecting class separation in augmentation size
     </h3>
 <p>
@@ -136,12 +126,10 @@
       Experiments used 25 decision stumps and k=5 neighbors, with 20 repetitions of stratified 5-fold cross-validation evaluated by AUC.
      </p>
 </details>
-</section>
-<section class="section" id="part-2">
-<h2>
+</div></div></section><section class="section" id="part-2"><h2>
      Contributions
-    </h2>
-<h3>
+    </h2><div class="section-body">
+<div class="detail-evidence"><h3>
      Suitable performance with fewer synthetic samples
     </h3>
 <p>
@@ -227,17 +215,15 @@
 <p class="meta">
      Counts cover 18 datasets × 3 models, totaling 54 comparisons. Ties in AUC favor the method with the smallest generation ratio. These are not statistically significant win counts.
     </p>
-<h3>
+</div><div class="detail-caveat"><h3>
      Scope and limitations
     </h3>
 <p>
      The experiments show that imbalance ratio alone does not explain classification difficulty and that augmentation can be reduced according to data characteristics. Measures can be unstable with very few minority samples, as in Glass. Complexity was fixed from the initial data; recalculation during boosting and extensions to other generation algorithms remain future work.
     </p>
-</section>
-<section class="section" id="part-3">
-<h2>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
      Paper and code
-    </h2>
+    </h2><div class="section-body">
 <p>
 <a href="https://www.riss.kr/link?id=T15671100">
       Master’s thesis · RISS
@@ -250,7 +236,7 @@
 <p>
      The values on this page come from the thesis’s 18-dataset experiment and are distinguished from the follow-up journal experiment.
     </p>
-</section>
+</div></section></div>
 </main>
 <footer class="site-footer">
    Do Hyeon Lee · ML research and data design ·

@@ -16,6 +16,6 @@ A static personal website served directly from HTML, CSS, and JavaScript. All vi
 
 Run `python -m http.server 8765 --bind 127.0.0.1` from the repository root, then open `http://127.0.0.1:8765/`.
 
-The [English conversion review](docs/review/ENGLISH-CONVERSION.md) records translation scope, preservation checks, and current verification. The [original implementation review](docs/review/REVIEW.md) retains the earlier source audit and disclosure decisions.
+The [detail layout review](docs/review/DETAIL-LAYOUT.md) records the current reading layout and visual checks. The [English conversion review](docs/review/ENGLISH-CONVERSION.md) records translation scope and preservation checks. The [original implementation review](docs/review/REVIEW.md) retains the earlier source audit and disclosure decisions.
 
 Changes are submitted on `portfolio/information-architecture` for pull request review. Merging and deployment are separate steps.

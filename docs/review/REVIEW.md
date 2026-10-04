@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: detail page layout
+
+Research and project details now distinguish summaries, methods, evidence, and limitations through an editorial layout. Full content and source materials are preserved. See [DETAIL-LAYOUT.md](DETAIL-LAYOUT.md) for the current visual changes and verification.
+
 ## Latest: English conversion
 
 The current visitor-facing site is in English. Full bodies, figures, and interaction labels were translated while preserving routes, research data, and disclosure decisions. See [ENGLISH-CONVERSION.md](ENGLISH-CONVERSION.md) for the latest preservation and browser verification. Earlier Korean review notes below retain the implementation history.
