@@ -1,0 +1,78 @@
+{
+  "entrypoint_checks": 12,
+  "checks": [
+    {
+      "page": "index.html",
+      "protocol": "http",
+      "viewport": "1440x1000",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "http",
+      "viewport": "1440x1000",
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "protocol": "file",
+      "viewport": "1440x1000",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "file",
+      "viewport": "1440x1000",
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "protocol": "http",
+      "viewport": "390x844",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "http",
+      "viewport": "390x844",
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "protocol": "file",
+      "viewport": "390x844",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "file",
+      "viewport": "390x844",
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "protocol": "http",
+      "viewport": "320x740",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "http",
+      "viewport": "320x740",
+      "passed": true
+    },
+    {
+      "page": "index.html",
+      "protocol": "file",
+      "viewport": "320x740",
+      "passed": true
+    },
+    {
+      "page": "writing.html",
+      "protocol": "file",
+      "viewport": "320x740",
+      "passed": true
+    }
+  ],
+  "issues": []
+}

@@ -126,7 +126,8 @@
     const info = data[path];
     if (!info || url.origin !== root.origin) return;
     const entry = {link, info, button: null};
-    if (link.matches('.entries h3 a, .session-list a')) {
+    const inlinePreview = link.matches('.session-list a, a[data-preview]');
+    if (inlinePreview || link.matches('.entries h3 a')) {
       const button = document.createElement('button');
       button.type = 'button';
       button.className = 'preview-trigger';
@@ -134,7 +135,7 @@
       button.setAttribute('aria-label', `${info.title} Preview`);
       button.setAttribute('aria-controls', panel.id);
       button.setAttribute('aria-expanded', 'false');
-      if (link.matches('.session-list a')) link.insertAdjacentElement('afterend', button);
+      if (inlinePreview) link.insertAdjacentElement('afterend', button);
       else link.closest('li').append(button);
       button.addEventListener('click', () => {
         if (current === entry && !panel.hidden && pinned) hide();

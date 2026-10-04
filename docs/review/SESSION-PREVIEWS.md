@@ -25,6 +25,7 @@ The session HTML, scripts, charts, full explanations, original links, round orde
 ## Behavior
 
 - Mouse hover or keyboard focus previews the linked material. Each main session and supplement also has its own Preview button for touch and explicit activation.
+- The home-page session link also has an inline Preview button. This closes a mobile entry-point gap: the initial implementation attached hover/focus handlers there but only created buttons in list layouts.
 - Previous/next controls browse the actual source figures. The caption and full-size link update together; controls stop at the first and last figure.
 - Explicitly opened previews remain on the chosen material while interacting with figures. Image resizing cannot trigger an unrelated hover preview; hover-only exploration still switches between links.
 - Close, Escape, and outside click dismiss the preview. Close returns focus to the associated button.
@@ -41,6 +42,7 @@ See [browser and preservation results](session-preview-results.json) and [figure
 - All 11 session source files compared with the previous commit without body changes. Existing writing text and links, three draft labels, and 17 pre-existing preview entries preserved.
 - Standalone SVG XML, viewport attributes, rendered text bounds, and desktop/mobile screenshots checked. No runtime dependencies are added.
 - Final figure/session link spacing and viewport bounds: 9 additional checks passed. Existing Chart.js resources loaded during the complete navigation validation; no JavaScript errors were reported.
+- Follow-up entry-point validation: home and writing list at three viewport sizes, both over local HTTP and as directly opened files, passed all 12 checks. Actual mobile taps, figure switching, image decoding, viewport bounds, Close/focus return, and navigation to the complete session were checked with no errors. See [entry-point results](session-preview-entrypoint-results.json).
 
 ## Screenshots
 
@@ -48,5 +50,8 @@ See [browser and preservation results](session-preview-results.json) and [figure
 - [Evaluation curves, mobile](session-preview-metrics-390.png)
 - [Regression diagram, desktop](session-preview-regression-1440.png)
 - [Feature-importance example, small mobile](session-preview-importance-320.png)
+- [Home-page session preview, mobile](session-preview-home-390.png)
 
 The changes are submitted on `portfolio/information-architecture` for PR review. Main is not merged or deployed.
+
+The preview feature is available in this branch's home and writing-list pages. The live GitHub Pages site does not receive these PR changes before merge/deployment. Individual session bodies remain the complete materials rather than the list-preview interface.

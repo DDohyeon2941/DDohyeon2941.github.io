@@ -178,7 +178,7 @@ td,th { border:1px solid var(--line); padding:8px; text-align:left; }
 .preview-open-figure { display:inline-block; font-size:12px; margin:0 16px 10px 0; }
 .visual-preview > a:last-child { display:inline-block; }
 .visual-preview > p:not(.meta) { font-size:13px; }
-.session-list .preview-trigger { margin-left:10px; font-weight:400; white-space:nowrap; }
+.session-list .preview-trigger, a[data-preview] + .preview-trigger { margin-left:10px; font-weight:400; white-space:nowrap; }
 @media(max-width:700px) { .detail-overview { grid-template-columns:1fr; gap:12px; } .detail-figure img { max-height:180px; } .detail-page .toc { align-items:flex-start; gap:10px; } .detail-page { font-size:14px; line-height:1.65; } .detail-page h1 { font-size:21px; } }
 @media(max-width:600px) { body { font-size:15px; } .site-nav { padding:14px 18px; gap:10px 12px; font-size:13px; } .site-nav .name { flex-basis:100%; } main,.container { padding:30px 18px 48px; } h1 { font-size:24px; } h2 { font-size:20px; } .case-grid { grid-template-columns:1fr; } }
 @media(max-width:360px) { .site-nav { column-gap:7px; font-size:12.5px; } }
