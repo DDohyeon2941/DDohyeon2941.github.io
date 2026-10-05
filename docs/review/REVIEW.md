@@ -1,5 +1,9 @@
 # 포트폴리오 변경 검토
 
+## Latest: employment history and expanded skills
+
+The introduction now identifies the current Necton role and previous Amber Road/AI Guru employment, with dated CV entries. Verified spatial, imbalanced-learning, statistical, visualization, and data-architecture skills supplement the earlier list. The document project is now classified under Industry projects after its Necton context was confirmed. See [CAREER-SKILLS.md](CAREER-SKILLS.md) for sources and verification; it supersedes the earlier affiliation uncertainty.
+
 ## Latest: CV highlights and evidenced skills
 
 The home introduction now includes the degree/date and linked research, award, and peer-review counts. Technical skills and practical strengths are supported by project links, with course/team experience clearly scoped. Personal weaknesses are excluded at the user's request. See [PROFILE-SKILLS.md](PROFILE-SKILLS.md) for evidence, desktop/mobile screenshots, and the 33 navigation checks.
@@ -53,7 +57,7 @@ main 병합과 실제 사이트 배포는 수행하지 않습니다.
 - 제공 프로필 사진을 홈의 이름·소개 옆에 원본 비율로 배치했습니다. 데스크톱에서는 오른쪽 136px, 모바일에서는 88px로 표시하고 소개·연락처는 전체 폭을 사용합니다.
 
 - 방문자용 본문을 직접 수행한 작업과 방법·결과를 소개하는 시점으로 정리했습니다. 출처 검토·자료 접근·개인 분담 미확인·재실행 여부 등의 편집 메모는 본문에서 제거하고, 아래 검토 사항과 자료 대조 기록에 남겼습니다. 팀 성과는 팀 작업으로 표현하고 실험의 범위·한계·미완료 평가는 유지했습니다.
-- 논문 중심의 모빌리티·야구 항목은 연구에서만 소개합니다. 프로젝트 목록은 현업 2건, 수업·개인 4건, 공모전·지역 분석 2건, 문서 표준화 1건입니다. 기존 모빌리티·야구 프로젝트 주소는 각각 연구 목록·야구 연구 상세로 자동 이동하며 기존 본문은 호환 페이지에 보존했습니다. GAN은 팀 과제와 개인 후속 연구의 구현·실험으로 소개합니다.
+- 논문 중심의 모빌리티·야구 항목은 연구에서만 소개합니다. 프로젝트 목록은 문서 표준화를 포함한 현업 3건, 수업·개인 4건, 공모전·지역 분석 2건입니다. 기존 모빌리티·야구 프로젝트 주소는 각각 연구 목록·야구 연구 상세로 자동 이동하며 기존 본문은 호환 페이지에 보존했습니다. GAN은 팀 과제와 개인 후속 연구의 구현·실험으로 소개합니다.
 
 - GAN 상세와 목록·미리보기를 제공 포트폴리오 6–8쪽으로 보강했습니다. 2019 팀 프로젝트와 2023 개인 후속 연구를 구분하고, BAGAN·EdgeGenerator / Dual-Critic WGAN-GP·Sobel edge loss의 구현과 미완료 평가·한계를 명시했습니다. 7쪽의 실제 구현 도식 2개를 추출했으며 향후 연구 방향을 완료된 결과로 표시하지 않았습니다. [자료 대조 기록](GAN-SOURCE.md).
 
@@ -72,7 +76,7 @@ main 병합과 실제 사이트 배포는 수행하지 않습니다.
 - 공개 저장소 그림 4개를 직접 확인해 보존했습니다. 현재 Flower 정확도 곡선과 비상구 변환 도식은 상세에서 사용하며, 공간 연구와 AdaBoost의 대표 그림은 제공된 논문 그림으로 대체했습니다. 기존 SVG 개념도 12개와 안전한 제조 관계 도식도 보존합니다. 수치나 곡선은 재생성하지 않았고 캡션으로 실험 그림과 개념도를 구분합니다.
 - 제공 논문 네 건의 실제 그림 5개를 추출해 연구 상세와 미리보기에 적용했습니다. 긴 실험 설정과 공간 연구의 전체 흐름도는 펼쳐보기로 정리했고, 결과 표는 비교 조건·지표 방향·조건부 평균 여부를 표시했습니다. 원고 전체와 피드백은 게시하지 않았습니다. [원문 대조 기록](PAPER-SOURCES.md)을 참고할 수 있습니다.
 - 프로젝트 상세 9건은 문제와 맥락 / 수행 역할 / 접근 방법 / 적용 범위 / 공개 자료 순서입니다. 공개 저장소의 README와 실제 전처리·모델·실험 코드를 읽고 데이터, 구현 방식, 기록된 결과와 한계를 본문에 작성했습니다. 외부 저장소는 본문을 대신하지 않는 참고 자료입니다.
-- 프로젝트는 현업 2건, 수업·개인 4건, 공모전·지역 분석 2건, 수행 소속 확인 필요 1건으로 구분했습니다. Flower와 비상구 인식의 수업 맥락, 성수동과 금융 대회의 팀 맥락, GAN의 대학원 프로젝트와 개인 후속 연구는 공개 기록으로 확인했습니다. OOD는 사용자 확인에 따라 수업 과제로 분류했습니다.
+- 프로젝트는 현업 3건, 수업·개인 4건, 공모전·지역 분석 2건으로 구분했습니다. 문서 표준화의 넥톤 소속은 제공 포트폴리오와 사용자 확인을 반영했습니다. Flower와 비상구 인식의 수업 맥락, 성수동과 금융 대회의 팀 맥락, GAN의 대학원 프로젝트와 개인 후속 연구는 공개 기록으로 확인했습니다. OOD는 사용자 확인에 따라 수업 과제로 분류했습니다.
 - OOD의 실제 구현은 IRM 기반 일반화 실험이므로 제목을 바로잡았습니다. 성수동 분석은 공개 코드의 매출 회귀·SHAP을 설명하며 미래 폐업 예측으로 소개하지 않습니다. 비상구 프로젝트는 이미지 분류와 경량 모델 변환으로 설명하며 객체 좌표 검출이나 대피 서비스로 확대하지 않습니다.
 - Flower의 업데이트 제어가 개선을 보이지 않았다는 결과도 포함했습니다. Flower와 비상구 인식 수치는 공개 실험 기록으로 명시하고 재실행 결과나 실제 운영 성능으로 설명하지 않습니다. GAN과 OOD에는 확인되지 않은 개선율을 추가하지 않았습니다.
 - 기존 블로그 URL 3개, 세션 URL 9개와 보조 예제 URL 2개를 유지했습니다. 본문을 요약으로 대체하지 않았습니다. 글과 세션에 목차를 추가하고 긴 표를 개별적으로 스크롤할 수 있게 했습니다.
@@ -134,8 +138,8 @@ main 병합과 실제 사이트 배포는 수행하지 않습니다.
 
 ## 추가 확인 사항
 
-1. 문서 데이터 표준화의 수행 맥락은 공개 자료에서 확인되지 않았습니다. 문서 표준화에 직접 대응하는 공개 저장소·산출물도 찾지 못해 기존 기록의 세 가지 활동만 보존했습니다. Flower·비상구 인식 등 팀 프로젝트의 개인별 세부 분담은 추정하지 않았습니다.
-2. 현업 프로젝트의 소속 회사, 시기, 개인 역할의 세부 범위와 실제 운영 적용 여부는 확인되지 않은 부분을 추가하지 않았습니다. 공개 가능한 범위를 확인해 주세요.
+1. 문서 데이터 표준화의 넥톤 수행 맥락은 제공 포트폴리오와 사용자 확인으로 보완했습니다. 직접 대응하는 공개 저장소·산출물 링크는 아직 없습니다. Flower·비상구 인식 등 팀 프로젝트의 개인별 세부 분담은 추정하지 않았습니다.
+2. 회사별 직함과 재직 기간은 제공 포트폴리오에서 확인했습니다. 개별 프로젝트의 정확한 기간, 역할의 세부 범위와 실제 운영 적용 여부 등 추가 공개가 필요한 내용은 추정하지 않았습니다.
 3. 현업 저장소의 README·도식·관련 자료가 공개 승인을 받았는지 별도로 확인해야 합니다. 확인과 정리 전에는 사이트에 링크를 복원하지 않는 상태입니다.
 4. 학위논문 2건은 제공된 원문으로 보강했습니다. 박사 공유본의 실험 범위와 한계를 반영하고 서식 안내는 제외했습니다. 국제 방문객 연구의 개인별 분담은 추정하지 않았습니다. 연구·프로젝트 수치와 결과는 원문에 근거했으며 모델 재학습은 하지 않았습니다.
 

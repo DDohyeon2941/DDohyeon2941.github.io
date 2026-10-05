@@ -32,6 +32,8 @@ p { margin:0 0 16px; }
 .home-page .profile-identity { font-size:21px; line-height:1.55; margin-bottom:16px; }
 .home-page .profile-context { line-height:1.75; }
 .home-page .contact { margin:18px 0 0; }
+.profile-role { font-size:15px; line-height:1.65; margin:0 0 5px; }
+.profile-employers { font-size:13px; margin:0 0 10px; }
 .profile-degree { font-size:14px; margin:0 0 8px; }
 .profile-records { display:flex; flex-wrap:wrap; gap:4px 16px; list-style:none; padding:0; margin:0 0 18px; font-size:13px; }
 .profile-records li { margin:0; }
