@@ -20,20 +20,21 @@ p { margin:0 0 16px; }
 .meta,.session-status { font-size:14px; }
 .intro { max-width:730px; }
 .contact { display:flex; gap:8px 20px; flex-wrap:wrap; font-size:14px; margin:20px 0; }
-.profile-intro { display:grid; grid-template-columns:minmax(0,1fr) 136px; gap:32px; align-items:start; }
-.profile-copy { grid-column:1; grid-row:1; }
-.profile-photo { grid-column:2; grid-row:1; display:block; width:136px; height:auto; border-radius:3px; }
+.profile-heading { display:grid; grid-template-columns:112px minmax(0,1fr); gap:24px; align-items:start; }
+.profile-copy { min-width:0; }
+.profile-photo { display:block; width:112px; height:auto; border-radius:3px; }
+.profile-summary { margin-top:18px; }
 .profile-identity { font-size:18px; font-weight:600; line-height:1.65; }
 .profile-context { font-size:15px; margin-bottom:10px; }
 .home-page { padding-top:36px; }
-.home-page .profile-intro { gap:24px; }
 .home-page .profile-copy>h1 { margin-bottom:6px; }
 .home-page .profile-copy>.muted { font-size:14px; margin-bottom:16px; }
-.home-page .profile-identity { font-size:21px; line-height:1.55; margin-bottom:16px; }
+.home-page .profile-identity { max-width:none; font-size:21px; line-height:1.55; margin-bottom:16px; }
 .home-page .profile-context { line-height:1.75; }
 .home-page .contact { margin:18px 0 0; }
 .profile-role { font-size:15px; line-height:1.65; margin:0 0 5px; }
 .profile-employers { font-size:13px; margin:0 0 10px; }
+.profile-employers a { white-space:nowrap; }
 .profile-degree { font-size:14px; margin:0 0 8px; }
 .profile-records { display:flex; flex-wrap:wrap; gap:4px 16px; list-style:none; padding:0; margin:0 0 18px; font-size:13px; }
 .profile-records li { margin:0; }
@@ -70,7 +71,6 @@ p { margin:0 0 16px; }
 @media (max-width:600px) {
  .home-page { padding-top:28px; }
  .home-page .profile-identity { font-size:19px; }
- .profile-records { clear:both; padding-top:4px; }
  .skills-list > div { grid-template-columns:1fr; gap:4px; }
  .home-strengths dl { grid-template-columns:1fr; gap:12px; }
  .home-strengths dt { margin-bottom:2px; }
@@ -91,9 +91,8 @@ p { margin:0 0 16px; }
 .home-learning-path .story-step + .story-step { border-top:1px solid var(--line); }
 .home-learning-path .story-step:first-of-type { padding-top:0; }
 @media (max-width:600px) {
- .profile-intro { display:block; }
- .profile-photo { float:right; width:88px; margin:0 0 12px 18px; }
- .profile-copy .intro,.profile-copy .contact { clear:both; }
+ .profile-heading { grid-template-columns:72px minmax(0,1fr); gap:16px; }
+ .profile-photo { width:72px; }
  .story-step { grid-template-columns:1fr; gap:6px; }
  .story-step h3 span { display:inline; }
  .story-step h3 span::after { content:" · "; }

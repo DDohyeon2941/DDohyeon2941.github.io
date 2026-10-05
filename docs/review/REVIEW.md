@@ -1,5 +1,11 @@
 # 포트폴리오 변경 검토
 
+## Latest: home alignment
+
+The portrait now sits beside the name in a compact left-aligned header. The introduction, contact links, and Technical skills share the same full content width. This removes the former photo column that narrowed the entire introduction. Existing text, links, fragment IDs, and images are unchanged.
+
+Chrome checks at 1440, 768, 390, and 320px confirm matching left/right bounds, 24px desktop and 16px mobile portrait-to-text gaps, no overflow, and no JavaScript errors. All 28 career/CV navigation checks and the desktop skill preview passed. See [measurements](home-alignment-results.json), [desktop](home-alignment-desktop.png), and [mobile](home-alignment-mobile.png).
+
 ## Latest: employment history and expanded skills
 
 The introduction now identifies the current Necton role and previous Amber Road/AI Guru employment, with dated CV entries. Verified spatial, imbalanced-learning, statistical, visualization, and data-architecture skills supplement the earlier list. The document project is now classified under Industry projects after its Necton context was confirmed. See [CAREER-SKILLS.md](CAREER-SKILLS.md) for sources and verification; it supersedes the earlier affiliation uncertainty.

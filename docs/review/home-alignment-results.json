@@ -1,0 +1,37 @@
+{
+  "measurements": [
+    {
+      "viewport": 1440,
+      "shared_width": 872,
+      "shared_left": 284,
+      "photo_width": 112,
+      "photo_text_gap": 24
+    },
+    {
+      "viewport": 768,
+      "shared_width": 720,
+      "shared_left": 24,
+      "photo_width": 112,
+      "photo_text_gap": 24
+    },
+    {
+      "viewport": 390,
+      "shared_width": 354,
+      "shared_left": 18,
+      "photo_width": 72,
+      "photo_text_gap": 16
+    },
+    {
+      "viewport": 320,
+      "shared_width": 284,
+      "shared_left": 18,
+      "photo_width": 72,
+      "photo_text_gap": 16
+    }
+  ],
+  "career_cv_navigation_checks": 28,
+  "visible_text_links_ids_images_preserved": true,
+  "desktop_preview": "passed",
+  "horizontal_overflow": false,
+  "issues": []
+}
