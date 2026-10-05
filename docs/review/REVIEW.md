@@ -4,6 +4,8 @@
 
 Technical skills now uses two columns with category headings, tool names, application descriptions, and separate supporting links. Five skill areas plus explicitly scoped course-team experience form three rows. Thin separators retain the site's understated style; widths of 700px and below use one column. The introduction/skills width alignment, all technologies and descriptions, and existing links are preserved.
 
+Typography and spacing are now more compact: section title 16px, group titles 14px, body 13px, and secondary tools/links 12px. The section height decreases from 693px to 535px at desktop width and from 1246px to 952px at 390px mobile width. Checks at 1440, 768, 390, and 320px confirm unchanged content, links, and introduction layout, with no overflow or JavaScript errors. See [density measurements](skills-compact-results.json); the screenshots below show the current compact styling.
+
 Chrome checks at 1440, 768, 700, 390, and 320px passed without overflow or JavaScript errors. All 24 desktop/mobile detail-navigation checks and 12 keyboard previews passed. See [results](skills-layout-results.json), [desktop](skills-layout-desktop.png), and [mobile](skills-layout-mobile.png).
 
 ## Latest: home alignment
