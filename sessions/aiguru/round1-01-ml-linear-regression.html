@@ -437,8 +437,11 @@
 </div>
 </div>
 <div class="chart-wrap">
-<canvas aria-label="Training and test performance as model complexity increases" id="ofChart" role="img"></canvas>
+<canvas aria-label="Training and test performance as model complexity increases" aria-describedby="of-chart-description" id="ofChart" role="img">The training and test performance values are available in the data table below.</canvas>
 </div>
+<p class="chart-description" id="of-chart-description">Illustrative teaching data: training performance rises from 68% to 99% as complexity increases. Test performance peaks at 84% for the more complex model, then falls to 55% for the overly complex model.</p>
+<p class="chart-status" id="of-chart-status" role="status" hidden>The chart could not load. Read the description or expand the data table below.</p>
+<details class="chart-data"><summary>Training and test chart data</summary><div class="table-wrap" tabindex="0" role="region" aria-label="Training and test performance data"><table><caption>Illustrative performance values, not measured benchmark results</caption><thead><tr><th scope="col">Model complexity</th><th scope="col">Training (%)</th><th scope="col">Test (%)</th></tr></thead><tbody><tr><th scope="row">Simple</th><td>68</td><td>66</td></tr><tr><th scope="row">Moderate</th><td>80</td><td>79</td></tr><tr><th scope="row">More complex</th><td>91</td><td>84</td></tr><tr><th scope="row">Very complex</th><td>97</td><td>72</td></tr><tr><th scope="row">Overly complex</th><td>99</td><td>55</td></tr></tbody></table></div></details>
 <div class="note">Overfitting means <strong>memorizing even the noise</strong> in training data. As model complexity increases, training performance improves, but test performance eventually declines.</div>
 <div class="box box-amber">
 <div class="box-title">Overfitting versus process change — distinguish the causes <span class="changed-tag">Added</span></div>
@@ -1022,6 +1025,7 @@
   const labels = ["Simple", "Moderate", "More complex", "Very complex", "Overly complex"];
   const train  = [68, 80, 91, 97, 99];
   const test   = [66, 79, 84, 72, 55];
+  if (typeof Chart === 'function') {
   new Chart(document.getElementById('ofChart'), {
     type: 'line',
     data: {
@@ -1038,11 +1042,15 @@
         tooltip: { callbacks: { label: c => c.dataset.label + ': ' + c.parsed.y + '%' } }
       },
       scales: {
-        y: { min: 40, max: 105, ticks: { callback: v => v + '%', font: { size: 11, family: 'IBM Plex Mono' }, color: '#9b9890' }, grid: { color: 'rgba(0,0,0,0.05)' } },
-        x: { ticks: { font: { size: 11, family: 'IBM Plex Mono' }, color: '#9b9890' }, grid: { display: false } }
+        y: { min: 40, max: 105, ticks: { callback: v => v + '%', font: { size: 11, family: 'IBM Plex Mono' }, color: '#626058' }, grid: { color: 'rgba(0,0,0,0.05)' } },
+        x: { ticks: { font: { size: 11, family: 'IBM Plex Mono' }, color: '#626058' }, grid: { display: false } }
       }
     }
   });
+  } else {
+    document.getElementById('ofChart').parentElement.hidden = true;
+    document.getElementById('of-chart-status').hidden = false;
+  }
 </script>
 <div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← Portfolio · Company ML Sessions</a></div>
 </body>

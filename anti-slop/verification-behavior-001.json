@@ -1,0 +1,48 @@
+[
+  {
+    "case": "round1-01-ml-linear-regression",
+    "cdn_blocked": true,
+    "table_rows": 5,
+    "expanded_no_overflow": true
+  },
+  {
+    "case": "round1-02-trees-ensembles",
+    "cdn_blocked": true,
+    "table_rows": 5,
+    "expanded_no_overflow": true
+  },
+  {
+    "case": "round1-03-clustering-similarity",
+    "cdn_blocked": true,
+    "table_rows": 7,
+    "expanded_no_overflow": true
+  },
+  {
+    "case": "slider",
+    "keyboard_range_and_value_text": true
+  },
+  {
+    "case": "preview",
+    "focus_open_close_escape": true,
+    "targets_44px": true
+  },
+  {
+    "case": "no_javascript",
+    "all_chart_tables_readable": true
+  },
+  {
+    "case": "round1-01-ml-linear-regression",
+    "real_cdn_loaded": true,
+    "chart_rendered": true
+  },
+  {
+    "case": "round1-02-trees-ensembles",
+    "real_cdn_loaded": true,
+    "chart_rendered": true
+  },
+  {
+    "case": "round1-03-clustering-similarity",
+    "real_cdn_loaded": true,
+    "chart_rendered": true
+  }
+]

@@ -470,8 +470,11 @@
 </div>
 </div>
 <div style="width:100%; height:180px; margin-bottom:16px;">
-<canvas id="elbowChart"></canvas>
+<canvas id="elbowChart" role="img" aria-label="Elbow chart of within-cluster sum of squares by cluster count" aria-describedby="elbow-chart-description">The within-cluster sum of squares values are available in the data table below.</canvas>
 </div>
+<p class="chart-description" id="elbow-chart-description">Illustrative teaching data: WCSS decreases from 9,200 at K=1 to 2,100 at K=7. The decrease becomes smaller after K=3, suggesting an elbow near three clusters; this does not establish that K=3 is the correct choice.</p>
+<p class="chart-status" id="elbow-chart-status" role="status" hidden>The chart could not load. Read the description or expand the data table below.</p>
+<details class="chart-data"><summary>Elbow chart data</summary><div class="table-wrap" tabindex="0" role="region" aria-label="Elbow chart values"><table><caption>Illustrative within-cluster sum of squares (WCSS)</caption><thead><tr><th scope="col">Cluster count (K)</th><th scope="col">WCSS</th></tr></thead><tbody><tr><th scope="row">1</th><td>9200</td></tr><tr><th scope="row">2</th><td>5400</td></tr><tr><th scope="row">3</th><td>3100</td></tr><tr><th scope="row">4</th><td>2600</td></tr><tr><th scope="row">5</th><td>2350</td></tr><tr><th scope="row">6</th><td>2200</td></tr><tr><th scope="row">7</th><td>2100</td></tr></tbody></table></div></details>
 <hr/>
 <!-- DBSCAN -->
 <div class="label">② DBSCAN — cluster dense regions</div>
@@ -1522,6 +1525,7 @@
   });
 
   // Elbow chart
+  if (typeof Chart === 'function') {
   new Chart(document.getElementById('elbowChart'),{
     type:'line',
     data:{
@@ -1540,12 +1544,16 @@
         tooltip:{callbacks:{label:c=>'WCSS: '+c.parsed.y.toLocaleString()}}
       },
       scales:{
-        y:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'},grid:{color:'rgba(0,0,0,0.05)'},
-           title:{display:true,text:"WCSS (within-cluster sum of squares)",font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'}},
-        x:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#9b9890'},grid:{display:false}}
+        y:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#626058'},grid:{color:'rgba(0,0,0,0.05)'},
+           title:{display:true,text:"WCSS (within-cluster sum of squares)",font:{size:11,family:'IBM Plex Mono'},color:'#626058'}},
+        x:{ticks:{font:{size:11,family:'IBM Plex Mono'},color:'#626058'},grid:{display:false}}
       }
     }
   });
+  } else {
+    document.getElementById('elbowChart').parentElement.hidden = true;
+    document.getElementById('elbow-chart-status').hidden = false;
+  }
 </script>
 <div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← Portfolio · Company ML Sessions</a></div>
 </body>

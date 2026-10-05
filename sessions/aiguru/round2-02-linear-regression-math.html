@@ -1062,7 +1062,7 @@
             .xtx-status { font-size:12px; padding:8px 12px; border-radius:6px; margin-top:10px; border:1px solid; }
           </style>
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-<span style="font-size:12px;color:var(--text2);font-family:'IBM Plex Mono',monospace;min-width:120px">Off-diagonal b</span>
+<label for="xtx-slider" style="font-size:12px;color:var(--text2);font-family:'IBM Plex Mono',monospace;min-width:120px">Off-diagonal b</label>
 <input id="xtx-slider" max="99" min="0" step="1" style="flex:1" type="range" value="30"/>
 <span id="xtx-bval" style="font-family:'IBM Plex Mono',monospace;font-size:13px;min-width:40px;text-align:right">0.30</span>
 </div>
@@ -1113,6 +1113,7 @@
         const sl = document.getElementById('xtx-slider');
         function upd() {
           const b = sl.value / 100;
+          sl.setAttribute('aria-valuetext', 'b = ' + b.toFixed(2));
           const det = 1 - b * b;
           const scale = det > 0.001 ? (1 / det) : 9999;
           document.getElementById('xtx-bval').textContent = b.toFixed(2);

@@ -67,18 +67,20 @@
 <div class="charts">
 <div class="chart-wrap active-raw">
 <div class="chart-title">Original (Raw)</div>
-<canvas id="rawChart"></canvas>
+<canvas id="rawChart" role="img" aria-label="Original temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The current temperature and pressure ranges are listed in the statistics below.</canvas>
 </div>
 <div class="chart-wrap active-minmax">
 <div class="chart-title">MinMax scaling</div>
-<canvas id="minmaxChart"></canvas>
+<canvas id="minmaxChart" role="img" aria-label="MinMax scaled temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The scaled temperature and pressure ranges are listed in the statistics below.</canvas>
 </div>
 <div class="chart-wrap active-std">
 <div class="chart-title">Standardization (Z-score)</div>
-<canvas id="stdChart"></canvas>
+<canvas id="stdChart" role="img" aria-label="Standardized temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The standardized temperature and pressure ranges are listed in the statistics below.</canvas>
 </div>
 </div>
-<div class="stats" id="statsArea"></div>
+<p class="chart-description" id="scaling-description">Generated teaching data: the plots show the same temperature and pressure observations on three different axis scales. MinMax maps each variable to 0–1; standardization gives each variable mean 0 and standard deviation 1. The statistics below update when data or outliers change.</p>
+<div class="stats" id="statsArea" aria-live="polite" aria-atomic="true"></div>
+<noscript><p>Enable JavaScript to generate the plots and statistics. The scaling methods are described above.</p></noscript>
 <div class="note-box" id="noteBox"></div>
 <script>
 const N = 1000;
@@ -165,7 +167,7 @@ function drawScatter(canvasId, xs, ys, color, xRange, yRange) {
   }
 
   // 축 레이블
-  ctx.fillStyle = '#9b9890';
+  ctx.fillStyle = '#626058';
   ctx.font = '9px IBM Plex Mono, monospace';
   ctx.textAlign = 'center';
   for (let i = 0; i <= 4; i++) {

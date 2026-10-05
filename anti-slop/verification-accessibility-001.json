@@ -1,0 +1,107 @@
+{
+  "sessions/aiguru/example-feature-importance.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/example-scaling.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-01-ml-linear-regression.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-02-trees-ensembles.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-03-clustering-similarity.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-04-evaluation-metrics.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-05-model-reliability.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round1-06-time-series.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round2-01-ml-notation.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round2-02-linear-regression-math.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "sessions/aiguru/round2-03-trees-ensembles-math.html": {
+    "low_contrast_count": 0,
+    "examples": []
+  },
+  "escape_no_button": {
+    "hidden": true,
+    "tag": "A",
+    "cls": ""
+  },
+  "small_targets": [
+    {
+      "text": "Do Hyeon Lee",
+      "w": 354,
+      "h": 44
+    },
+    {
+      "text": "Home",
+      "w": 44,
+      "h": 44
+    },
+    {
+      "text": "Research",
+      "w": 51.921875,
+      "h": 44
+    },
+    {
+      "text": "Projects",
+      "w": 46.046875,
+      "h": 44
+    },
+    {
+      "text": "Writing & Sessions",
+      "w": 118.796875,
+      "h": 44
+    },
+    {
+      "text": "CV",
+      "w": 44,
+      "h": 44
+    },
+    {
+      "text": "Preview",
+      "w": 52.859375,
+      "h": 44
+    },
+    {
+      "text": "Preview",
+      "w": 52.859375,
+      "h": 44
+    },
+    {
+      "text": "Preview",
+      "w": 49.40625,
+      "h": 44
+    },
+    {
+      "text": "Preview",
+      "w": 52.859375,
+      "h": 44
+    }
+  ],
+  "scaling_controls": {
+    "regenerated": true,
+    "outlier_note": "It is normal for all three scatter plots to show the same distribution shape. MinMax scaling and standardization are monotonic transformations: applying the same formula to every value preserves their relative order and the ratios between gaps. What "
+  }
+}

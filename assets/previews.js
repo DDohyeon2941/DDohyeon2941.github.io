@@ -45,6 +45,7 @@
   let current = null;
   let pinned = false;
   let timer;
+  let restoringFocus = false;
   const clear = () => clearTimeout(timer);
   const position = () => {
     if (!current || panel.hidden) return;
@@ -66,7 +67,11 @@
     current = null;
     pinned = false;
     if (previous?.button) previous.button.setAttribute('aria-expanded', 'false');
-    if (restore && previous) previous.button?.focus();
+    if (restore && previous) {
+      restoringFocus = true;
+      (previous.button || previous.link).focus({preventScroll: true});
+      restoringFocus = false;
+    }
   };
   const show = (entry) => {
     clear();
@@ -139,7 +144,7 @@
       else link.closest('li').append(button);
       button.addEventListener('click', () => {
         if (current === entry && !panel.hidden && pinned) hide();
-        else { pinned = true; show(entry); }
+        else { pinned = true; show(entry); close.focus({preventScroll: true}); }
       });
       entry.button = button;
     }
@@ -147,7 +152,7 @@
       if (event.pointerType === 'mouse' && !pinned && !panel.contains(document.activeElement)) show(entry);
     });
     link.addEventListener('pointerleave', delayedHide);
-    link.addEventListener('focus', () => show(entry));
+    link.addEventListener('focus', () => { if (!restoringFocus) show(entry); });
     link.addEventListener('blur', delayedHide);
   });
   panel.addEventListener('pointerenter', clear);

@@ -647,8 +647,11 @@
 </tbody>
 </table></div>
 <div class="chart-wrap">
-<canvas aria-label="Radar chart comparing model characteristics" id="modelChart" role="img"></canvas>
+<canvas aria-label="Radar chart comparing model characteristics" aria-describedby="model-chart-description" id="modelChart" role="img">Model characteristic scores are available in the data table below.</canvas>
 </div>
+<p class="chart-description" id="model-chart-description">Illustrative teaching scores on a 0–100 scale, not measured benchmark results. The chart contrasts accuracy, interpretability, overfit resistance, speed, and suitability for small datasets. The exact illustrative scores are listed below; real model performance depends on the dataset and settings.</p>
+<p class="chart-status" id="model-chart-status" role="status" hidden>The chart could not load. Read the description or expand the data table below.</p>
+<details class="chart-data"><summary>Model comparison chart data</summary><div class="table-wrap" tabindex="0" role="region" aria-label="Illustrative model comparison scores"><table><caption>Illustrative teaching scores (0–100), not benchmark results</caption><thead><tr><th scope="col">Model</th><th scope="col">Accuracy</th><th scope="col">Interpretability</th><th scope="col">Overfit resistance</th><th scope="col">Speed</th><th scope="col">Small datasets</th></tr></thead><tbody><tr><th scope="row">Linear regression</th><td>55</td><td>95</td><td>82</td><td>98</td><td>88</td></tr><tr><th scope="row">Decision Tree</th><td>65</td><td>85</td><td>38</td><td>92</td><td>62</td></tr><tr><th scope="row">RandomForest</th><td>82</td><td>42</td><td>88</td><td>74</td><td>82</td></tr><tr><th scope="row">AdaBoost</th><td>78</td><td>35</td><td>52</td><td>68</td><td>55</td></tr><tr><th scope="row">XGBoost</th><td>93</td><td>35</td><td>58</td><td>65</td><td>58</td></tr></tbody></table></div></details>
 <ul class="checklist">
 <li><span class="icon ok">✓</span><div class="body">Need a single operational rule → Decision Tree<div class="sub">A condition such as “temperature &gt; 85°C AND pressure &gt; 3.2 bar → 62% defective” can be directly expressed in an SOP. RF predictions can be explained using SHAP, but extracting one rule is harder.</div></div></li>
 <li><span class="icon ok">✓</span><div class="body">Stable predictions and concern about overfitting → RandomForest<div class="sub">Averaging independent trees generally resists overfitting as tree count grows. OOB scores provide evaluation without a separate validation set.</div></div></li>
@@ -684,12 +687,13 @@
 <script>
   const secs=document.querySelectorAll('.section-block'),links=document.querySelectorAll('.nav a');
   window.addEventListener('scroll',()=>{let c='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-80)c=s.id});links.forEach(a=>{a.classList.toggle('active',a.getAttribute('href')==='#'+c)})});
+  if (typeof Chart === 'function') {
   new Chart(document.getElementById('modelChart'),{
     type:'radar',
     data:{
       labels:["Accuracy","Interpretability","Overfit resistance","Speed","Small datasets"],
       datasets:[
-        {label:"Linear regression",data:[55,95,82,98,88],borderColor:'#9b9890',borderWidth:1.5,pointRadius:3,fill:false},
+        {label:"Linear regression",data:[55,95,82,98,88],borderColor:'#626058',borderWidth:1.5,pointRadius:3,fill:false},
         {label:'Decision Tree',data:[65,85,38,92,62],borderColor:'#7a4a00',borderWidth:1.5,pointRadius:3,fill:false},
         {label:'RandomForest',data:[82,42,88,74,82],borderColor:'#1a4f8a',borderWidth:2,pointRadius:3,fill:false},
         {label:'AdaBoost',data:[78,35,52,68,55],borderColor:'#1a5a2a',borderWidth:1.5,pointRadius:3,fill:false,borderDash:[3,2]},
@@ -702,6 +706,10 @@
       scales:{r:{min:0,max:100,ticks:{display:false},grid:{color:'rgba(0,0,0,0.06)'},pointLabels:{font:{size:11,family:'IBM Plex Sans KR'},color:'#6b6860'}}}
     }
   });
+  } else {
+    document.getElementById('modelChart').parentElement.hidden = true;
+    document.getElementById('model-chart-status').hidden = false;
+  }
 </script>
 <div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← Portfolio · Company ML Sessions</a></div>
 </body>
