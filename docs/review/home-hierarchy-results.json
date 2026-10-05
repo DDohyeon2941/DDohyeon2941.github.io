@@ -1,0 +1,114 @@
+{
+  "viewports": [
+    {
+      "viewport": 1440,
+      "section_headings": [
+        {
+          "text": "Technical skills",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Strengths in practice",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Selected work",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Explore",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "skills_height": 549.4
+    },
+    {
+      "viewport": 768,
+      "section_headings": [
+        {
+          "text": "Technical skills",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Strengths in practice",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Selected work",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Explore",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "skills_height": 587.8
+    },
+    {
+      "viewport": 390,
+      "section_headings": [
+        {
+          "text": "Technical skills",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Strengths in practice",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Selected work",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Explore",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "skills_height": 966
+    },
+    {
+      "viewport": 320,
+      "section_headings": [
+        {
+          "text": "Technical skills",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Strengths in practice",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Selected work",
+          "size": "20px",
+          "weight": "700"
+        },
+        {
+          "text": "Explore",
+          "size": "20px",
+          "weight": "700"
+        }
+      ],
+      "skills_height": 1104.1
+    }
+  ],
+  "original_text_links_ids_images_preserved": true,
+  "compact_skill_type_unchanged": true,
+  "section_navigation_checks": 12,
+  "keyboard_preview_checks": 3,
+  "horizontal_overflow": false,
+  "issues": []
+}

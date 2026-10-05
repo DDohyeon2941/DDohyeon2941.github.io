@@ -1,5 +1,11 @@
 # 포트폴리오 변경 검토
 
+## Latest: home section hierarchy
+
+The four main sections now share a 20px/700 heading, a darker full-width separator, and consistent section spacing. Subordinate headings remain 13–16px with lighter item separators. Research, Projects, and Writing & Sessions are grouped under a new Explore section and use h3 headings. The portrait/introduction layout and compact 12–13px skills body/tools/links are preserved; only the main skills heading and its surrounding spacing change.
+
+Chrome checks at 1440, 768, 390, and 320px confirm the heading hierarchy, matching content widths, unchanged compact skill type, image loading, and no horizontal overflow or JavaScript errors. All 12 Explore navigation checks and 3 representative keyboard previews passed. Original text, links, IDs, and images are preserved; Explore is the only added label. See [results](home-hierarchy-results.json), [desktop home](home-hierarchy-desktop.png), and [mobile hierarchy](home-hierarchy-mobile.png).
+
 ## Latest: technical skills arrangement
 
 Technical skills now uses two columns with category headings, tool names, application descriptions, and separate supporting links. Five skill areas plus explicitly scoped course-team experience form three rows. Thin separators retain the site's understated style; widths of 700px and below use one column. The introduction/skills width alignment, all technologies and descriptions, and existing links are preserved.
