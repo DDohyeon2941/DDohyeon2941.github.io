@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   An Algorithm for Oversampling Size Determination Using Classification Complexity | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a aria-current="page" href="../research.html">
+     Research
+    </a>
+<a href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Oversampling size that reflects classification difficulty
+   </h1>
+<p class="paper-title">
+    An Algorithm for Oversampling Size Determination Using Classification Complexity
+   </p>
+<p class="meta">
+    Master’s thesis, 2020 · Thesis author
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      My master’s research evaluated whether smaller augmentation sizes than full balancing could provide suitable oversampling for individual datasets.
+     </p>
+<dl class="detail-facts"><div><dt>Evaluation:</dt><dd>18 datasets · 3 boosting models · 20 repetitions of 5-fold validation</dd></div><div><dt>Mean augmentation size:</dt><dd>45–66% of full balancing</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/thesis-masters-complexity.png">
+<img alt="Thesis Figure 4.1: classification complexity distributions by imbalance level" loading="lazy" src="../images/research/thesis-masters-complexity.png"/>
+</a>
+<figcaption>
+      Thesis Figure 4.1: classification complexity distributions by imbalance level
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Contributions
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Research problem
+    </h2><div class="section-body">
+<p>
+     Oversampling to equal class counts determines generation size from the imbalance ratio alone. Yet datasets with the same imbalance ratio can differ in class separation and boundary overlap. More synthetic samples than necessary can expand the minority region too far.
+    </p>
+<p>
+     This study evaluated whether augmentation smaller than full balancing could suit each dataset while maintaining or improving classification performance.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-method-block"><h3>
+     Reflecting class separation in augmentation size
+    </h3>
+<p>
+     I measured classification complexity using four indicators. N1 uses ratios of within- and between-class neighbor distances around minority samples; N2 uses the proportion of other-class samples in their neighborhoods. Both were modified to focus on minority samples and k neighbors, matching the SMOTE generation setting.
+    </p>
+<p>
+     F1 reflects separation through feature-wise class mean differences and variance. F2 reflects the proportion of samples in overlapping feature ranges. The indicators yield complexity T between 0–1, applied to the number needed for full balancing. Augmentation size therefore varies with the data distribution instead of being uniform.
+    </p>
+<details>
+<summary>
+      Experimental setup
+     </summary>
+<p>
+      I used 18 public binary classification datasets from UCI, PROMISE, and other sources. Multiclass data were recast as a selected minority class vs. the remaining classes, and categorical variables were excluded. SMOTEBoost, RAMOBoost, and WOTBoost were compared with full balancing.
+     </p>
+<p>
+      Experiments used 25 decision stumps and k=5 neighbors, with 20 repetitions of stratified 5-fold cross-validation evaluated by AUC.
+     </p>
+</details>
+</div></div></section><section class="section" id="part-2"><h2>
+     Contributions
+    </h2><div class="section-body">
+<div class="detail-evidence"><h3>
+     Suitable performance with fewer synthetic samples
+    </h3>
+<p>
+     Mean generation size across 18 datasets was 45–66% of full balancing. On 16 datasets, excluding Oil and Yeast, at least one boosting-model/complexity combination matched or exceeded the AUC of full balancing. This does not mean consistent superiority for every model.
+    </p>
+<div class="result-table">
+<table>
+<caption>
+       Thesis Tables 4.2 and 4.7: mean augmentation ratio and highest-AUC selection counts
+      </caption>
+<thead>
+<tr>
+<th scope="col">
+         Method
+        </th>
+<th scope="col">
+         Mean size relative to full balancing
+        </th>
+<th scope="col">
+         Selection count
+        </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+         N1
+        </th>
+<td>
+         47%
+        </td>
+<td>
+         11
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         N2
+        </th>
+<td>
+         45%
+        </td>
+<td>
+         17
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         F1
+        </th>
+<td>
+         52%
+        </td>
+<td>
+         6
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         F2
+        </th>
+<td>
+         66%
+        </td>
+<td>
+         11
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         Full balancing
+        </th>
+<td>
+         100%
+        </td>
+<td>
+         9
+        </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="meta">
+     Counts cover 18 datasets × 3 models, totaling 54 comparisons. Ties in AUC favor the method with the smallest generation ratio. These are not statistically significant win counts.
+    </p>
+</div><div class="detail-caveat"><h3>
+     Scope and limitations
+    </h3>
+<p>
+     The experiments show that imbalance ratio alone does not explain classification difficulty and that augmentation can be reduced according to data characteristics. Measures can be unstable with very few minority samples, as in Glass. Complexity was fixed from the initial data; recalculation during boosting and extensions to other generation algorithms remain future work.
+    </p>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
+     Paper and code
+    </h2><div class="section-body">
+<p>
+<a href="https://www.riss.kr/link?id=T15671100">
+      Master’s thesis · RISS
+     </a>
+     ·
+     <a href="oversampling.html">
+      Methods, experiments, and code for the follow-up journal study
+     </a>
+</p>
+<p>
+     The values on this page come from the thesis’s 18-dataset experiment and are distinguished from the follow-up journal experiment.
+    </p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

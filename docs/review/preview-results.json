@@ -1,0 +1,12 @@
+{
+  "preview_checks": 51,
+  "detail_viewport_checks": 51,
+  "viewports": [
+    "1440×1000",
+    "390×844",
+    "320×740"
+  ],
+  "hover_keyboard_escape_touch_detail_navigation": "passed",
+  "javascript_disabled_navigation": "passed",
+  "issues": []
+}

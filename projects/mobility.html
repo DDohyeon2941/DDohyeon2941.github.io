@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Bike-sharing and micromobility demand prediction | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+<meta content="0; url=../research.html#micro-mobility" http-equiv="refresh"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a aria-current="page" href="../research.html">
+     Research
+    </a>
+<a href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research.html#micro-mobility">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Bike-sharing and micromobility demand prediction
+   </h1>
+<p class="meta">
+    Related research · This legacy address redirects to the research page.
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      I investigated two problems in predicting where and when demand concentrates: underprediction of extreme demand in bike sharing and sparse demand distributions created by fixed grids in micromobility.
+     </p>
+<ul class="key-facts">
+<li>
+       Prediction model: extreme-demand improvements vs. low-demand error
+      </li>
+<li>
+       Spatial units: prediction results vary by city and metric
+      </li>
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/paper-mobility-main-grids.png">
+<img alt="Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids." loading="lazy" src="../images/research/paper-mobility-main-grids.png"/>
+</a>
+<figcaption>
+      Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids.
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
+    </h2>
+<p>
+     Good predictions at typical times can still miss information needed for operation if demand spikes are underpredicted. Aggregating trips into arbitrary grids also changes demand patterns with grid size and boundaries.
+    </p>
+<p>
+     I distinguished research improving the prediction model itself from research designing spatial units before prediction.
+    </p>
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
+    </h2>
+<p>
+     I participated as first author in the related papers. Problem definitions, methods, and public implementations for spatial units and extreme-demand prediction are available in the respective research details.
+    </p>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
+    </h2>
+<h3>
+     Extreme demand: boosting with residual information
+    </h3>
+<p>
+     Uses hourly bike-sharing demand in Seoul and Daejeon with weather, time, and regional features. A residual-learning tree is integrated into AdaBoost so high-error demand information informs subsequent learning. The public implementation passes residual information as additional features and adjusts prediction aggregation.
+    </p>
+<h3>
+     Spatial units: merging areas by usage patterns
+    </h3>
+<p>
+     Base units are constructed from micromobility data in Kansas City and Minneapolis, with low-usage auxiliary areas merged into nearby main areas. Similar regions are then hierarchically merged using temporal-demand and spatial representations.
+    </p>
+<h3>
+     Comparison criteria
+    </h3>
+<p>
+     Extreme-demand research evaluates errors at both typical and high demand. Spatial-unit research compares fixed grids at multiple sizes and evaluates how prediction changes with spatial aggregation.
+    </p>
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
+    </h2>
+<p>
+     The papers report both improved extreme-demand prediction and increased very-low-demand error. Spatial-unit results also vary by city and metric: Minneapolis has lower RMSE but higher MAPE. Each paper’s detail page describes the conditions and values.
+    </p>
+<p>
+     The findings apply to the public city datasets and experimental settings. Effects are not guaranteed for other cities or vehicles, and interpretation and operational suitability after changing spatial units require separate review.
+    </p>
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
+    </h2>
+<p>
+<a href="../research/adaboost-rdt.html">
+      Extreme-demand paper details
+     </a>
+     ·
+     <a href="../research/micro-mobility.html">
+      Spatial-unit paper details
+     </a>
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

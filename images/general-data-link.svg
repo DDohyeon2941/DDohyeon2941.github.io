@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="360" viewBox="0 0 1200 360" role="img" aria-labelledby="title desc">
+ <title id="title">General data linkage for the same entity</title>
+ <desc id="desc">An earlier-stage output becomes the later-stage input. Data for the same entity are linked one-to-one, checked for consistency, aligned, and normalized into a dataset for analysis and model training.</desc>
+ <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#626b72"/></marker></defs>
+ <rect width="1200" height="360" fill="#fafbf9"/>
+ <g font-family="system-ui, sans-serif" fill="#252b30">
+  <text x="48" y="65" font-size="30">General data linkage for the same entity</text>
+  <g fill="none" stroke="#aab9b4" stroke-width="2"><rect x="48" y="121" width="260" height="94"/><rect x="470" y="121" width="260" height="94"/><rect x="892" y="121" width="260" height="94"/></g>
+  <g font-size="23" text-anchor="middle"><text x="178" y="178">Earlier-stage output</text><text x="600" y="166">Same entity</text><text x="600" y="194">1:1 linkage</text><text x="1022" y="178">Later-stage input</text></g>
+  <g fill="none" stroke="#626b72" stroke-width="2" marker-end="url(#arrow)"><path d="M 320 168 H 447"/><path d="M 742 168 H 869"/></g>
+  <text x="48" y="290" font-size="23" fill="#626b72">Validate consistency → Align &amp; normalize → Dataset for analysis &amp; training</text>
+ </g>
+</svg>

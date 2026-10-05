@@ -1,0 +1,24 @@
+{
+  "html_pages": 39,
+  "local_references": 739,
+  "unchanged_html_files": 35,
+  "preserved_session_and_example_bodies": 11,
+  "preserved_blog_bodies": 3,
+  "preserved_research_and_project_details": 19,
+  "preserved_video_entries": 8,
+  "preserved_drafts": 3,
+  "learning_goals": 11,
+  "home_and_writing_viewport_checks": 6,
+  "story_link_checks": 12,
+  "menu_navigation_checks": 15,
+  "category_anchor_checks": 9,
+  "session_preview_checks": 33,
+  "figure_checks": 60,
+  "viewports": [
+    "1440x1000",
+    "390x844",
+    "320x740"
+  ],
+  "no_javascript_navigation": "passed",
+  "issues": []
+}

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 380 540" role="img" aria-labelledby="title desc">
+  <title id="title">Validation before cross-stage data linkage</title>
+  <desc id="desc">Earlier-stage output and later-stage input are paired for the same target. Check meaning and metadata consistency, align and normalize, then prepare data for analysis and training. The symbols are illustrative, not actual records.</desc>
+  <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#626b72"/></marker></defs>
+  <rect width="380" height="540" fill="#fff"/>
+  <g font-family="system-ui, sans-serif" fill="#252b30">
+    <g font-size="21" font-weight="600"><text x="18" y="32">Validate correspondence</text><text x="18" y="60">before linking the data</text></g>
+    <g font-size="17" font-weight="600" text-anchor="middle"><text x="86" y="104">Earlier output</text><text x="294" y="104">Later input</text></g>
+    <g fill="#f4f6f4" stroke="#c5cec9"><rect x="18" y="120" width="136" height="138" rx="3"/><rect x="226" y="120" width="136" height="138" rx="3"/></g>
+    <g fill="#28645f" stroke="#28645f" stroke-width="2"><circle cx="47" cy="149" r="7"/><circle cx="255" cy="149" r="7"/><rect x="40" y="183" width="14" height="14"/><rect x="248" y="183" width="14" height="14"/><path d="m47 224 8 8-8 8-8-8Z"/><path d="m255 224 8 8-8 8-8-8Z"/></g>
+    <g stroke="#b8c7c0" stroke-width="5" stroke-linecap="round"><path d="M70 149H128M70 191H122M70 233H128M278 149H336M278 191H330M278 233H336"/></g>
+    <g fill="none" stroke="#28645f" stroke-width="2" marker-end="url(#arrow)"><path d="M162 149H218"/><path d="M162 191H218"/><path d="M162 233H218"/></g>
+    <text x="190" y="290" font-size="18" font-weight="600" text-anchor="middle">Same target · 1:1 verified pairs</text>
+    <path d="M18 311H362" stroke="#d8ded9"/>
+    <g font-size="18" font-weight="600"><text x="18" y="344">01</text><text x="60" y="344">Check consistency</text><text x="18" y="405">02</text><text x="60" y="405">Align and normalize</text><text x="18" y="466">03</text><text x="60" y="466">Prepare the dataset</text></g>
+    <g font-size="16" fill="#626b72"><text x="60" y="368">Meaning and metadata</text><text x="60" y="429">Comparable representations</text><text x="60" y="490">Analysis and model training</text><text x="18" y="524">Illustrative relationship, not actual records</text></g>
+  </g>
+</svg>

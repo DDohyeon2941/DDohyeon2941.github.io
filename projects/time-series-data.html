@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Manufacturing time-series alignment and ML pipelines | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Manufacturing time-series alignment and ML pipelines
+   </h1>
+<p class="meta">
+    Amber Road · Industry project · Generalized public description
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Records collected at different times can create misleading comparisons or expose a model to information unavailable when it makes a prediction. I aligned records around the intended prediction time and prepared consistent inputs for training and evaluation.
+     </p>
+<dl class="detail-facts"><div><dt>Problem:</dt><dd>Misaligned records and information unavailable at prediction time</dd></div><div><dt>Output:</dt><dd>Training and evaluation inputs aligned with their intended use</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View the time-alignment diagram below" href="#work-diagram">
+<img alt="Manufacturing time-series alignment and ML pipelines · Workflow concept diagram" loading="lazy" src="../images/research/time-series-data-method.svg"/>
+</a>
+<figcaption>
+      Manufacturing time-series alignment and ML pipelines · Workflow concept diagram
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     Records from different sources cannot always be compared immediately on a common time basis. Without examining recording time and when information becomes valid, relationships can be misaligned or future information can enter training inputs.
+    </p>
+<p>
+     The goal was to create training data whose meaning matched actual usage, beyond bringing records together in one place.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     I participated in validation, preprocessing, time-series alignment, and training/evaluation workflow construction. My public experience also includes dashboard prototypes, proof-of-concept work, and field testing.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body"><figure class="professional-workflow" id="work-diagram">
+<a aria-label="View full-size workflow diagram" href="../images/research/time-alignment-workflow.svg">
+<picture>
+<source media="(max-width: 600px)" srcset="../images/research/time-alignment-workflow-mobile.svg"/>
+<img alt="Different recording patterns aligned around a prediction point, using information available at that time." loading="lazy" src="../images/research/time-alignment-workflow.svg"/>
+</picture>
+</a>
+<figcaption>Different recording intervals → a shared prediction point → aligned data and consistent evaluation. The recording patterns are illustrative.</figcaption>
+</figure>
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
+     Time reference and data quality
+    </h3><p>
+     I examined differences in collection intervals and record meaning and organized data on a comparable basis. Missing or inconsistent records were checked rather than treated as normal observations.
+    </p></div><div class="detail-method-block" data-step="02"><h3>
+     Consistency between learning and use time
+    </h3><p>
+     Inputs were constructed from information available at the intended prediction time. I checked whether preprocessing and feature-construction criteria were consistent across training, validation, and use.
+    </p></div><div class="detail-method-block" data-step="03"><h3>
+     Evaluation and review
+    </h3><p>
+     I examined what errors meant in the actual usage context, alongside prediction scores. Prototypes and tests supported a workflow for interpreting data and checking model results.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-evidence"><p>
+     I worked on data preparation, modeling and evaluation, and prototype review.
+    </p></div>
+<div class="detail-caveat"><p>
+     This page describes general time-series challenges and decision criteria without disclosing actual data fields, files, internal implementation, throughput, or screens.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+      Article on evaluation metrics in their actual usage context
+     </a>
+     ·
+     <a href="../posts/setpoint-vs-actual-process-value.html">
+      Distinguishing setpoints from actual observations
+     </a>
+</p>
+<p><a href="../images/research/time-series-data-method.svg">Simple relationship diagram</a> · <a href="#work-diagram">Workflow diagram</a></p></div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

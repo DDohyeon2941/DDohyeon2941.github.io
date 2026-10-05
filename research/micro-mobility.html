@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a aria-current="page" href="../research.html">
+     Research
+    </a>
+<a href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Spatial units that reflect usage patterns
+   </h1>
+<p class="paper-title">
+    Development of an enhanced base unit generation framework for predicting demand in free-floating micro-mobility
+   </p>
+<p class="meta">
+    IET ITS, 2024 · First author
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      This work addresses the MAUP: how fixed-grid size and boundaries affect demand prediction. I combined low-usage areas and used temporal patterns and distance to construct spatial prediction units.
+     </p>
+<dl class="detail-facts"><div><dt>Method:</dt><dd>base grids → main/auxiliary grid merging → spatiotemporal clustering</dd></div><div><dt>Results:</dt><dd>lower RMSE in both cities; higher MAPE in Minneapolis</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/paper-mobility-main-grids.png">
+<img alt="Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids." loading="lazy" src="../images/research/paper-mobility-main-grids.png"/>
+</a>
+<figcaption>
+      Manuscript Fig. 3: selecting main grids and merging nearby auxiliary grids.
+      <a href="#part-3">
+       Paper
+      </a>
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Contributions
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Research problem
+    </h2><div class="section-body">
+<p>
+     Free-floating vehicles have no fixed stations, so demand must be aggregated into spatial units. Grid width and boundaries alter the distribution of zero and high demand even for the same trip records. Simply enlarging grids also changes target scale, so prediction improvements must be distinguished from aggregation effects.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     Approach
+    </h2><div class="section-body">
+<ol class="detail-flow">
+<li><div class="flow-body">
+<strong class="step-label">
+       Representative locations:
+      </strong>
+      Divides each base grid into 4 subgrids and adjusts its representative location when usage is concentrated on one side.
+     </div></li>
+<li><div class="flow-body">
+<strong class="step-label">
+       Merging main and auxiliary grids:
+      </strong>
+      Distinguishes the two types by average daily usage and merges auxiliary grids into nearby main grids. The number of merges is limited, and unmerged auxiliary grids remain separate units.
+     </div></li>
+<li><div class="flow-body">
+<strong class="step-label">
+       Spatiotemporal clustering:
+      </strong>
+      Multiplies cosine similarity of 24-hour usage proportions by distance-based similarity. Spatial similarity is set to 0 for nonadjacent and diagonally adjacent pairs. Hierarchical clustering then constructs the final units.
+     </div></li>
+</ol>
+<details>
+<summary>
+      Experimental setup and framework
+     </summary>
+<p>
+      I used shared e-scooter records from July–August 2019 in Kansas City and July–August 2022 in Minneapolis. The framework was compared with 250m, 500m, and 750m grids, using a simple LSTM with hourly demand and calendar inputs. July was used for training and August for evaluation, with fixed-origin validation within the training period. Each experiment was repeated 5 times. Targets were trained after log1p transformation and evaluated after conversion back to the original units.
+     </p>
+<figure class="paper-extra">
+<a href="../images/research/paper-mobility-framework.png">
+<img alt="The framework from base grids through main/auxiliary grids and clustering to final spatial units" loading="lazy" src="../images/research/paper-mobility-framework.png"/>
+</a>
+<figcaption>
+       Manuscript Fig. 1: the spatial unit generation framework.
+      </figcaption>
+</figure>
+</details>
+</div></section><section class="section" id="part-2"><h2>
+     Contributions
+    </h2><div class="section-body">
+<p>
+     As first author, I worked on conceptualization, methodology design, data preparation, software implementation, visualization, and writing. The research focuses on designing aggregation units rather than increasing prediction-model complexity.
+    </p>
+<div class="detail-evidence"><h3>
+     Results vary by city and metric
+    </h3>
+<div aria-label="Prediction results by city" class="result-table" role="region" tabindex="0">
+<table>
+<caption>
+       All spatial units: 500m baseline vs. proposed method · Manuscript Tables 1–2
+      </caption>
+<thead>
+<tr>
+<th scope="col">
+         City
+        </th>
+<th scope="col">
+         RMSE: 500m → proposed
+        </th>
+<th scope="col">
+         MAPE: 500m → proposed
+        </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+         Kansas City
+        </th>
+<td>
+         1.7601 → 1.5868
+        </td>
+<td>
+         0.7115 → 0.6875
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         Minneapolis
+        </th>
+<td>
+         0.8521 → 0.7776
+        </td>
+<td>
+         0.6905 → 0.7226
+        </td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="result-note">
+     Lower error is better; MAPE is reported as a ratio and excludes cases with actual demand of 0. Changing aggregation units can also change the scale of absolute errors.
+    </p>
+<div class="detail-caveat"><p>
+     RMSE decreased in both cities, while MAPE increased in Minneapolis. Interpretation depends on street-level location recording and treatment of zero demand. The units do not guarantee spatial connectivity, which motivates further investigation of parameters and connectivity.
+    </p></div>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
+     Paper and code
+    </h2><div class="section-body">
+<a href="https://doi.org/10.1049/itr2.12596">
+     DOI
+    </a>
+    ·
+    <a href="https://github.com/DDohyeon2941/micro-mobility-demand-prediction-framework">
+     Code on GitHub
+    </a>
+<p class="meta paper-source">
+     Methods, figures, and results come from the original paper; the models were not retrained for this page.
+    </p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

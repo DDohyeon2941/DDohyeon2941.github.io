@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Manufacturing data validation and linkage | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Manufacturing data validation and linkage
+   </h1>
+<p class="meta">
+    AI Guru · Industry project · Generalized public description
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Data from successive stages could not be used as valid training pairs without confirming that the records described the same target. I verified those correspondences and built a linked dataset for analysis and model training.
+     </p>
+<dl class="detail-facts"><div><dt>Problem:</dt><dd>Incorrect pairings can distort analysis and learning</dd></div><div><dt>Output:</dt><dd>Verified pairs of records for analysis and training</dd></div></dl>
+</div>
+<figure class="detail-figure source-figure">
+<a aria-label="View the original portfolio diagram at full size" href="../images/research/portfolio-validation-reasoning.png">
+<img alt="Original portfolio diagram: evaluation criteria, validity conditions, inspection-data integration, comparison, and discovery of assumption mismatches or data errors. Labels are in Korean." height="612" loading="lazy" src="../images/research/portfolio-validation-reasoning.png" width="678"/>
+</a>
+<figcaption>Evaluation criteria → validity conditions → data integration → comparison → errors. Original diagram from the supplied portfolio (p. 9).</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     Where the output of an earlier process becomes the input of a later process, I linked the two stages’ data one-to-one for the same target. Metadata consistency checks, alignment, and normalization produced datasets for analysis and model training.
+    </p>
+<p>
+     Grouping records from similar times is different from linking the same target. Incorrect correspondence can mislead analysis and the learning objective, so I first examined data meaning and linkage conditions.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     I participated in metadata consistency checks, data extraction and linkage, alignment, normalization, and analysis dataset preparation. I also worked on defining the data criteria used in modeling and evaluation.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body"><figure class="professional-workflow" id="work-diagram">
+<a aria-label="View full-size workflow diagram" href="../images/research/validation-linkage-workflow.svg">
+<picture>
+<source media="(max-width: 600px)" srcset="../images/research/validation-linkage-workflow-mobile.svg"/>
+<img alt="One-to-one linkage for the same target, with consistency checks, alignment, and normalization." loading="lazy" src="../images/research/validation-linkage-workflow.svg"/>
+</picture>
+</a>
+<figcaption>Verified correspondence → alignment and normalization → analysis/training dataset. Shapes illustrate relationships, not actual records.</figcaption>
+</figure>
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
+     Checking meaning and correspondence
+    </h3><p>
+     I examined whether records at different stages referred to the same target and whether the information being compared had the same meaning. Records without verified correspondence were not assumed to form valid training pairs.
+    </p></div><div class="detail-method-block" data-step="02"><h3>
+     Alignment and normalization
+    </h3><p>
+     I aligned data using verified correspondences and standardized different representations for analysis. Dataset construction considered both linkage validity and data quality.
+    </p></div><div class="detail-method-block" data-step="03"><h3>
+     Checking analysis goals and availability at use time
+    </h3><p>
+     I distinguished setpoints from actual observations and examined when the information needed for analysis became available. I checked the usage context so outcomes known only during training would not be treated as inputs available for real prediction.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-evidence"><p>
+     Outputs comprised analysis/training datasets and the validation and preprocessing needed to prepare them. Quantitative performance changes, processing scale, and operational automation results are not disclosed.
+    </p></div>
+<div class="detail-caveat"><p>
+     The description is limited to general relationships and work objectives. It does not reproduce actual processes, products, data structures, implementations, or internal screens.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="../posts/manufacturing-ai-cause-effect-mapping.html">
+      Article on linking the same target across stages
+     </a>
+     ·
+     <a href="../posts/setpoint-vs-actual-process-value.html">
+      Article on setpoints and actual observations
+     </a>
+</p>
+<p>
+<a href="../posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+      Article on evaluation criteria
+     </a>
+</p>
+<p><a href="../images/general-data-link.svg">Simple relationship diagram</a> · <a href="#work-diagram">Workflow diagram</a></p></div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

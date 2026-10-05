@@ -1,0 +1,104 @@
+{
+  "paper_viewport_checks": 12,
+  "mobile_table_keyboard_scroll": "passed",
+  "settings_and_framework_toggle": "passed",
+  "checks": [
+    {
+      "paper": "micro-mobility",
+      "viewport": "desktop",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "noise-filtering",
+      "viewport": "desktop",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "oversampling",
+      "viewport": "desktop",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "adaboost-rdt",
+      "viewport": "desktop",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "micro-mobility",
+      "viewport": "mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "noise-filtering",
+      "viewport": "mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "oversampling",
+      "viewport": "mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "adaboost-rdt",
+      "viewport": "mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "micro-mobility",
+      "viewport": "small-mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "noise-filtering",
+      "viewport": "small-mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "oversampling",
+      "viewport": "small-mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    },
+    {
+      "paper": "adaboost-rdt",
+      "viewport": "small-mobile",
+      "figure": "loaded",
+      "result_table": "readable",
+      "settings": "toggled",
+      "overflow": false
+    }
+  ],
+  "issues": []
+}

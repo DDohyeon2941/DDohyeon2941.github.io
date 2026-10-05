@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   GAN augmentation for imbalanced image data | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    GAN augmentation for imbalanced image data
+   </h1>
+<p class="meta">
+    2019 graduate team project · 2023 personal follow-up study
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Adding more minority-class images does not guarantee that a classifier learns to distinguish that class better. Building on graduate team experiments, I explored ways to preserve class characteristics in generated images and assess their usefulness for classification.
+     </p>
+<dl class="detail-facts"><div><dt>Context:</dt><dd>2019 team experiments and a 2023 personal follow-up</dd></div><div><dt>Status:</dt><dd>Classification benefit of the personal follow-up remains unverified</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/portfolio-gan-class-aware-en.svg">
+<img alt="Class-aware generation: learning shared image representations and sampling class-specific latent distributions" loading="lazy" src="../images/research/portfolio-gan-class-aware-en.svg"/>
+</a>
+<figcaption>
+      Class-aware generation: shared representation learning and class-specific latent distributions
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     Increasing minority sample counts alone may not provide the information needed for imbalanced classification. Majority samples can dominate generative learning signals, while sparse minority observations make distribution estimation and generation diversity unstable. The question was whether visually plausible images were also useful for downstream classification.
+    </p>
+<p>
+     In the 2019 graduate team project, we compared Vanilla GAN, CGAN, and ACGAN. We created imbalanced MNIST and CIFAR-10 data, added generated images, and evaluated classification with LeNet and ResNet. My 2023 personal follow-up separately explored improving class-specific generation distributions and generating samples useful near classification boundaries.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     In the 2023 personal study, I implemented PyTorch model structures, loss functions, training loops, image generation, and downstream classification pipelines. The experiments allowed adjustment of critic contributions and loss weights. The 2019 experiments were team work.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-comparison"><div class="detail-method-block"><h3>
+     Shared representations and class-specific latent distributions: BAGAN approaches
+    </h3><p>
+     An autoencoder learned representations shared across all images. I estimated each class’s latent-vector mean and covariance from encoder outputs, sampled its latent distribution, and generated images with the trained decoder. I explored BAGAN and Convolutional BAGAN; a later variation combined EdgeGenerator contours with decoder features.
+    </p></div><div class="detail-method-block"><h3>
+     Combining two critic signals: Dual-Critic WGAN-GP
+    </h3><p>
+     I used a minority-class critic and a Majority Critic checkpoint pretrained on majority data. Generated images were passed to both critics, and weighted scores contributed to the generator loss. Their output difference formed a separate loss term to explore generation away from class centers. This was a hypothesis about useful boundary samples, not verified boundary proximity.
+    </p></div></div>
+<div class="detail-method-block detail-shared-method"><h3>
+     Connecting contour information and classification evaluation
+    </h3><p>
+     Sobel edge loss measured differences in horizontal and vertical contours between real and generated images and was combined with Dual-Critic loss. I implemented adjustable critic and edge weights and connected generated and original data to ResNet classification. Evaluation included F1 and G-mean alongside accuracy.
+    </p><details>
+<summary>
+      Overview of implemented approaches
+     </summary>
+<figure>
+<a href="../images/research/portfolio-gan-approaches-en.svg">
+<img alt="Portfolio diagram of class-aware generation, the Dual-Critic hypothesis, EdgeGenerator, and Sobel edge loss" loading="lazy" src="../images/research/portfolio-gan-approaches-en.svg" style="max-width:100%;height:auto"/>
+</a>
+<figcaption>
+       Class-specific generation, the Dual-Critic generation hypothesis, and integration of EdgeGenerator and Sobel edge loss
+      </figcaption>
+</figure>
+</details></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-method-block detail-caveat"><h3>
+     Limitations identified during implementation
+    </h3><p>
+     Each critic evaluates real/fake characteristics for its class; neither is a classifier separating the two classes. Similar or jointly high scores do not guarantee useful hard samples. Criteria were also insufficient for distinguishing shared class features, critic errors, ambiguous class mixtures, and generation artifacts. Sobel edges describe contours rather than a classifier’s semantic features directly.
+    </p><p>
+     Matched-condition quantitative comparisons and joint evaluation of realism, diversity, and boundary proximity were not completed. Further comparisons are needed to verify the learning effects of the edge term and final performance. The 2019 and 2023 experiments are not treated as a matched-condition performance comparison.
+    </p></div>
+<div class="detail-method-block detail-caveat"><h3>
+     A revised research direction
+    </h3><p>
+     I reframed the question around analyzing class-discriminating features and distance to the decision boundary in a separate classifier’s feature space, jointly evaluating realism and boundary proximity. Confidence filtering, soft labels, and before/after classification comparisons when adding generated data are also future work, not completed results.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="https://github.com/DDohyeon2941/gan-for-imbalanced-image-data">
+      2019/2023 research archive and code
+     </a>
+</p>
+<p>
+<a href="https://www.youtube.com/watch?v=JdLwad0vzWs&amp;list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&amp;index=14">
+      Presentation video
+     </a>
+</p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

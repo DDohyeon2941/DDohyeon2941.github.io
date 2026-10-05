@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Federated learning experiments with Flower | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Federated learning experiments with Flower
+   </h1>
+<p class="meta">
+    SeoulTech database course · Team project
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Incorrect labels on some clients can weaken a shared model. Our course team compared ways to combine client models and tested controls on their updates; those controls did not improve performance in our experiments.
+     </p>
+<dl class="detail-facts"><div><dt>Setting:</dt><dd>Course experiments with clean and incorrect training labels</dd></div><div><dt>Finding:</dt><dd>Controlling update magnitude did not resolve the data-quality issue</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/flower-accuracy.png">
+<img alt="MNIST test-accuracy curves by aggregation strategy, from the public team project’s original experiment." loading="lazy" src="../images/research/flower-accuracy.png"/>
+</a>
+<figcaption>
+      MNIST test-accuracy curves by aggregation strategy, from the public team project’s original experiment.
+      <a href="https://github.com/JihyoKim00/federated-learning/blob/main/assets/topic1-acc.png">
+       Source
+      </a>
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     In federated learning, clients train on their own data and the server aggregates model updates. Because data remain distributed, inaccurate training data on some clients can affect the global model.
+    </p>
+<p>
+     The project examined two questions. MNIST experiments compared server aggregation strategies. CIFAR-10 experiments combined clean-label clients with clients whose labels were partly shuffled to examine data-quality effects.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     I participated in a course team project with Ji Hyo Kim and Seong Cheol Kim. The team implemented Flower server/client experiments, aggregation comparisons, and update control for data-quality differences.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
+     Comparing aggregation strategies
+    </h3><p>
+     After receiving initial server weights, clients train locally and return updates. The server aggregates updates and computes loss and accuracy on separate evaluation data. We repeated this process to compare FedAvg, FedAdagrad, FedAdam, and FedYogi.
+    </p></div><div class="detail-method-block" data-step="02"><h3>
+     Clients with different data quality
+    </h3><p>
+     CIFAR-10 experiments used 5 clean-data clients and 5 clients with some randomly reassigned labels, varying the correctness of the learning signal rather than the images themselves.
+    </p></div><div class="detail-method-block" data-step="03"><h3>
+     Controlling updates
+    </h3><p>
+     We tested model-weight norm filtering and gradient-norm clipping during local learning. Clients implemented SGD with optional clipping; the server implemented aggregation selection and global-model evaluation.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-evidence"><h3>
+     Results and limitations
+    </h3><p>
+     In the MNIST experiment, FedAdam and FedYogi converged faster or performed better than FedAvg, while FedAdagrad performed worse.
+    </p><p>
+     CIFAR-10 global accuracy was 64.13% with clean updates and 59.23% when noisy updates were included. Filtering and clipping did not improve performance in this experiment, indicating that update magnitude alone did not resolve data-quality issues.
+    </p></div>
+<div class="detail-caveat"><p>
+     These values apply to the course-project settings. Actual inter-institution operation and privacy guarantees were outside the evaluation scope.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="https://github.com/JihyoKim00/federated-learning">
+      Project description and experiment records
+     </a>
+     ·
+     <a href="https://github.com/JihyoKim00/federated-learning/blob/main/server.py">
+      Server implementation
+     </a>
+     ·
+     <a href="https://github.com/JihyoKim00/federated-learning/blob/main/client.py">
+      Client implementation
+     </a>
+</p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

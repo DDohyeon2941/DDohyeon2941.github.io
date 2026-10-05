@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Insurance claim review classification | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Insurance claim review classification
+   </h1>
+<p class="meta">
+    2020.08–2020.10 · Financial Big Data Festival · Team project
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Insurance claims need different levels of review, and patterns can differ by disease group. In a competition, our team built classifiers tailored to those groups to distinguish immediate payment, document review, and on-site review.
+     </p>
+<dl class="detail-facts"><div><dt>Task:</dt><dd>Classify claims into three levels of review</dd></div><div><dt>Scope:</dt><dd>Competition training, validation, and submission predictions</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/finance-method.svg">
+<img alt="Insurance claim review classification · Workflow concept diagram" loading="lazy" src="../images/research/finance-method.svg"/>
+</a>
+<figcaption>
+      Insurance claim review classification · Workflow concept diagram
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     Insurance claims require different levels of review. The competition task was to classify three review types from the provided claim information. A value can mean different things across diseases or institutions, so we considered feature construction alongside group-specific modeling.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     I participated in the Financial Big Data Festival team project with Jong Hwan Park. As a team, we performed claim preprocessing, feature construction, classifier training, and cross-validation.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
+     Preprocessing and feature construction
+    </h3><p>
+     Exploratory analysis informed features based on zero/nonzero monetary values, relative amounts, and combinations of institution categories. This page explains feature purposes rather than detailed source-field names or individual claims.
+    </p></div><div class="detail-method-block" data-step="02"><h3>
+     Learning by disease group
+    </h3><p>
+     The public model code divides data into two disease-category groups and trains a LightGBM model for each. Group-specific predictions are then restored to the original claim order.
+    </p></div><div class="detail-method-block" data-step="03"><h3>
+     Cross-validation and submission
+    </h3><p>
+     StratifiedKFold preserves class proportions across 5 splits, evaluating accuracy and F1. Predictions from validation models were combined into competition test submissions.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-caveat"><p>
+     The implementation covers competition-data preprocessing, classifier training, validation, and submission predictions. It was not an industry project deployed in an insurer’s actual review system.
+    </p></div>
+<div class="detail-evidence"><p>
+     We implemented preprocessing through cross-validation and submission prediction generation. The public code does not include source data.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="https://github.com/chromatices/2020_mirae_insurance_competition">
+      Competition project repository
+     </a>
+     ·
+     <a href="https://github.com/chromatices/2020_mirae_insurance_competition/blob/master/modules/Modeling/preprocessing.py">
+      Preprocessing
+     </a>
+     ·
+     <a href="https://github.com/chromatices/2020_mirae_insurance_competition/blob/master/modules/Modeling/models.py">
+      Models and cross-validation
+     </a>
+</p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

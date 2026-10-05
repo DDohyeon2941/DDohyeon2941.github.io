@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Defining closing and continuing commercial areas in Seongsu-dong | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Defining closing and continuing commercial areas in Seongsu-dong
+   </h1>
+<p class="meta">
+    2024.07–2024.12 · Seongdong-gu Big Data Fellowship · Team project
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Seongsu-dong’s popularity did not explain why some commercial areas struggled while others remained active. Our team defined closing and continuing groups within industries with relatively frequent closures, then compared their sales, customer patterns, and accessibility to propose local policy directions.
+     </p>
+<dl class="detail-facts"><div><dt>Comparison:</dt><dd>Groups defined by industry-specific opening/closure rates and sales patterns</dd></div><div><dt>Output:</dt><dd>Local policy proposals; closure causes and policy effects were not established</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/fellowship-group-definition-en.svg">
+<img alt="Report Figure 5: opening/closure scatterplots and candidate regions for Korean restaurants, foreign-cuisine restaurants, and cafes" loading="lazy" src="../images/research/fellowship-group-definition-en.svg"/>
+</a>
+<figcaption>
+      Criteria for candidate comparison groups based on industry-specific opening and closure rates (Report Figure 5)
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#group-definition">
+       Commercial-area definitions
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<h3>
+     Why distinguish closing and continuing areas?
+    </h3>
+<p>
+     Although Seongsu-dong attracts tourists and younger visitors, commercial activity is not equally stable everywhere. Closures can leave vacant premises and weaken the local economy. We needed to examine specific differences between areas where commercial activity was difficult to establish and those where it was relatively well established.
+    </p>
+<p>
+     We first analyzed the closure distribution when choosing what to compare. Korean restaurants, foreign-cuisine restaurants, and cafes were selected from food/entertainment, where closures were comparatively active. Each industry’s opening and closure characteristics were considered separately.
+    </p>
+<p>
+     Beyond predicting whether individual businesses would survive or close, the team aimed to compare spatial, population, and accessibility characteristics at commercial-area level and propose local policy directions. We defined closing and sustainable commercial areas as comparison groups. The report calls the latter continuing areas; an area is a group of selected analysis grids in the same industry.
+    </p>
+<p>
+     We designed the groups before analyzing their sales structures and key-variable differences. Regression predicts daily sales; the closing/continuing distinction serves as a feature and comparison grouping.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     I participated in a team with Seung Yeon Tak and Hee Jun Lee, writing data preprocessing and analysis code. The project received an Excellence Award in the 2024 Seongdong-gu Big Data Fellowship.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block"><h3 class="numbered-title" id="group-definition">
+     1. Selecting industries from closure distributions
+    </h3><p>
+     Industries were selected after examining closures in the data. After excluding 18 detailed categories that were difficult to compare, we organized 52 categories into four groups: food/entertainment, retail, services, and automotive. Seoul’s commercial-area analysis service and sources on Seongsu-dong’s distinctive industries also informed the categorization.
+    </p><p>
+     Business operating-status data showed comparatively active closures in food/entertainment. Other broad groups had no closures or cases concentrated in particular subcategories, limiting representativeness for broad-group comparisons. We narrowed the scope to food/entertainment and selected Korean restaurants, foreign-cuisine restaurants, and cafes.
+    </p><p>
+     Opening and closure distributions also differed among the three industries. Both rates tended to be lower for Korean restaurants, while cafes were relatively high on both. We therefore analyzed the industries separately and defined candidates relative to each industry’s mean.
+    </p></div><div class="detail-method-block"><h3 class="numbered-title">
+     2. Selecting spatial units suitable for sales comparisons
+    </h3><p>
+     Seongsu-dong was divided into 250m × 250m grids, aligning sales, payment counts, and business operating status spatially. From 60 initial grids, we excluded locations where closure-related changes in transaction counts were unlikely to appear and locations with extremely low sales or payment counts, leaving 45 grids.
+    </p></div><div class="detail-method-block"><h3 class="numbered-title">
+     3. First-stage definition using opening and closure rates
+    </h3><p>
+     Closure rates alone can miss the characteristics of industries with both frequent entry and frequent closure. Korean restaurants tended to have low opening and closure rates; cafes were high on both. We compared both measures relative to industry-specific means.
+    </p><div class="result-table">
+<table>
+<caption>
+       Candidate grids were selected relative to their industry’s average.
+      </caption>
+<thead>
+<tr>
+<th scope="col">
+         Group
+        </th>
+<th scope="col">
+         Closure rate
+        </th>
+<th scope="col">
+         Opening rate
+        </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+         Closing candidate
+        </th>
+<td>
+         Above the industry mean
+        </td>
+<td>
+         Below the industry mean
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         Continuing candidate
+        </th>
+<td>
+         Below the industry mean
+        </td>
+<td>
+         Above the industry mean
+        </td>
+</tr>
+</tbody>
+</table>
+</div><p>
+     Grids not satisfying both conditions were excluded. First-stage closing/continuing counts were 3/2 for Korean restaurants, 3/8 for foreign-cuisine restaurants, and 3/1 for cafes. Rather than dividing all of Seongsu-dong into two groups, we selected representative grids with distinct comparison characteristics.
+    </p><details>
+<summary>
+      Rate criteria and final selected grids
+     </summary>
+<figure class="fellowship-figure">
+<a href="../images/research/fellowship-group-definition-en.svg">
+<img alt="First-stage closing/continuing criteria shown on industry-specific opening/closure scatterplots" loading="lazy" src="../images/research/fellowship-group-definition-en.svg"/>
+</a>
+<figcaption>
+       Report Figure 5: closing and continuing candidates defined relative to industry means.
+      </figcaption>
+</figure>
+<figure class="fellowship-figure">
+<a href="../images/research/fellowship-selected-grids-en.svg">
+<img alt="Maps of continuing and closing grids selected after sales-pattern review for the three industries" loading="lazy" src="../images/research/fellowship-selected-grids-en.svg"/>
+</a>
+<figcaption>
+       Report Figure 6: second-stage selection; blue indicates continuing areas and red closing areas.
+      </figcaption>
+</figure>
+</details></div><div class="detail-method-block"><h3 class="numbered-title">
+     4. Second-stage review using sales patterns
+    </h3><p>
+     Among first-stage candidates, we checked whether continuing areas showed relatively higher sales than closing areas. Applying this criterion yielded final closing/continuing grid counts of 2/2 for Korean restaurants, 1/2 for foreign-cuisine restaurants, and 2/1 for cafes. Selected grids of the same type and industry were grouped into comparison areas.
+    </p><div class="result-table">
+<table>
+<caption>
+       Candidate and final closing/continuing grid counts by industry
+      </caption>
+<thead>
+<tr>
+<th scope="col">
+         Industry
+        </th>
+<th scope="col">
+         First-stage candidates
+         <br/>
+         Closing / continuing
+        </th>
+<th scope="col">
+         Final selection
+         <br/>
+         Closing / continuing
+        </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+         Korean restaurants
+        </th>
+<td>
+         3 / 2
+        </td>
+<td>
+         2 / 2
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         Foreign-cuisine restaurants
+        </th>
+<td>
+         3 / 8
+        </td>
+<td>
+         1 / 2
+        </td>
+</tr>
+<tr>
+<th scope="row">
+         Cafes
+        </th>
+<td>
+         3 / 1
+        </td>
+<td>
+         2 / 1
+        </td>
+</tr>
+</tbody>
+</table>
+</div></div><div class="detail-method-block"><h3 class="numbered-title">
+     5. Checking group differences and statistical assumptions
+    </h3><p>
+     Before examining sales differences, we checked normality using Kolmogorov–Smirnov tests and equal variance using Levene tests. Normality was not satisfied; equal variance was also not satisfied except for cafes. We considered both independent-sample t-tests and Wilcoxon rank-sum tests. Report Table 3 shows higher sales in continuing groups, with industry-wise differences significant at 0.05.
+    </p></div><div class="detail-method-block"><h3 class="numbered-title">
+     6. Linking spatial and temporal data to sales analysis
+    </h3><p>
+     Card sales, floating population by age and gender, business information, public-transport accessibility, and weather were combined by grid and date. Training used 2023 and evaluation 2024. Standardization fitted on training data was also applied to evaluation data. Sales were transformed using log1p and evaluated after restoration to the original scale.
+    </p><p>
+     We compared Random Forest, XGBoost, and LightGBM and interpreted the selected industry-level sales models using SHAP. Mean SHAP differences between closing and continuing groups were examined alongside actual key-variable distributions to connect prediction contributions with customer ages, accessibility, and weekday/weekend sales patterns.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-method-block detail-evidence"><h3>
+     Different policy directions for different areas
+    </h3><p>
+     High foot traffic alone did not establish high sales or commercial sustainability. We considered customer age composition, reliance on external visitors, public-transport accessibility, and weekday/weekend sales patterns. For example, cafes in office districts showed little weekend sales, constraining expected revenue. We proposed location-specific accessibility and pedestrian-environment improvements around schools, Ttukdo Market, and Atelier Street.
+    </p></div>
+<div class="detail-method-block detail-caveat"><h3>
+     Interpreting selection criteria and results
+    </h3><p>
+     The groups are selected cases based on openings, closures, and sales patterns. Sales differences also informed second-stage selection, so subsequent sales tests cannot be interpreted as generalization tests independent of selection. SHAP explains contributions to the sales prediction model; it does not establish causal drivers of business closures.
+    </p><p>
+     The scope covers sales structures, group differences in selected areas, and related policy proposals. It does not evaluate future closure probabilities throughout Seongsu-dong or the effects of implemented policies.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="https://github.com/DDohyeon2941/sungsoo">
+      Project record
+     </a>
+     ·
+     <a href="https://github.com/DDohyeon2941/sungsoo/blob/main/analysis/analyze_korean.py">
+      Sales regression and SHAP code
+     </a>
+     ·
+     <a href="https://github.com/DDohyeon2941/sungsoo/blob/main/preprocess/preprocess_for_training.py">
+      Training-data preprocessing code
+     </a>
+</p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

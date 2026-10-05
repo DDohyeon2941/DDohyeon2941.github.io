@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Writing &amp; Sessions | Do Hyeon Lee
+  </title>
+<meta content="ML training materials for junior colleagues, recorded research presentations, and writing by Do Hyeon Lee, connecting data understanding with machine learning." name="description"/>
+<link href="assets/site.css?v=career-skills-20261005-1" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="index.html">
+     Do Hyeon Lee
+    </a>
+<a href="index.html">
+     Home
+    </a>
+<a href="research.html">
+     Research
+    </a>
+<a href="projects.html">
+     Projects
+    </a>
+<a aria-current="page" href="writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="writing-page" id="main">
+<h1>
+    Writing &amp; Sessions
+   </h1>
+<p class="intro">
+    These materials reflect my continued study of how data characteristics affect machine learning, through educational materials for junior colleagues, research presentations, and writing about practical application.
+   </p>
+<nav aria-label="Writing and session categories" class="toc">
+<a href="#talks">
+     Company ML Training
+    </a>
+    ·
+    <a href="#presentations">
+     Research Presentations
+    </a>
+    ·
+    <a href="#blog">
+     Blog Posts
+    </a>
+</nav>
+<section class="section" id="talks">
+<h2>
+     Company ML Training
+    </h2>
+<p class="section-intro">
+     I created these ML educational materials for junior colleagues at work, connecting foundational concepts with model interpretation, data validation, and evaluation. Round 1 focuses on concepts and practical interpretation; Round 2 revisits them through mathematics.
+    </p>
+<div class="project-group">
+<h3>
+      Round 1 — ML concepts and practical interpretation
+     </h3>
+<ol class="session-list">
+<li>
+<strong>
+<a href="sessions/aiguru/round1-01-ml-linear-regression.html">
+         The ML workflow and linear regression
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Understand what a linear model captures and how residual patterns reveal what it misses.</p>
+<p class="session-topics">
+        The workflow from data collection to evaluation and application, regression coefficients, overfitting, multicollinearity, and interpreting R².
+       </p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round1-02-trees-ensembles.html">
+         Tree models and ensembles
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Explain tree predictions, distinguish bagging from boosting, and interpret feature importance with its limitations.</p>
+<p class="session-topics">
+        Decision tree splits and predictions, the differences between bagging and boosting, and feature importance.
+       </p>
+<a href="sessions/aiguru/example-feature-importance.html">
+        Supplement: MDI · OOB permutation · SHAP
+       </a>
+<p class="session-goal supplement-goal"><span class="goal-label">Learning goal</span> Compare what MDI, OOB permutation, and SHAP measure using the same teaching example.</p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round1-03-clustering-similarity.html">
+         Clustering and similarity
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Choose distances and scaling suited to the data, and assess whether the resulting clusters are meaningful.</p>
+<p class="session-topics">
+        Hard and soft clustering, choosing distances and similarity measures, the effects of scaling, and interpreting clusters.
+       </p>
+<a href="sessions/aiguru/example-scaling.html">
+        Supplement: Min–max scaling vs. standardization
+       </a>
+<p class="session-goal supplement-goal"><span class="goal-label">Learning goal</span> Compare how min–max scaling and standardization change the same data.</p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round1-04-evaluation-metrics.html">
+         Metrics and model evaluation
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Choose metrics that reflect the task and recognize failures that an overall score can hide.</p>
+<p class="session-topics">
+        The meanings and limitations of regression and classification metrics and how to examine performance in important regions.
+       </p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round1-05-model-reliability.html">
+         When model results should not be trusted
+        </a>
+</strong>
+<span class="session-status">
+        Draft material
+       </span>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Question apparently good results by checking leakage, bias, distribution shifts, overfitting, and target definition.</p>
+<p class="session-topics">
+        Assessing model reliability through data leakage, bias, distribution shifts, overfitting, and target definition.
+       </p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round1-06-time-series.html">
+         Time-series data and validation
+        </a>
+</strong>
+<span class="session-status">
+        Draft material
+       </span>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Identify temporal dependence and design time-based validation that avoids future-information leakage.</p>
+<p class="session-topics">
+        Temporal dependence, data leakage, time-based validation, retraining, and input issues after deployment.
+       </p>
+</li>
+</ol>
+</div>
+<div class="project-group">
+<h3>
+      Round 2 — ML through mathematics
+     </h3>
+<ol class="session-list">
+<li>
+<strong>
+<a href="sessions/aiguru/round2-01-ml-notation.html">
+         The ML workflow and mathematical notation
+        </a>
+</strong>
+<span class="session-status">
+        Draft material
+       </span>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Read ML notation and connect inputs, predictions, and loss functions to the learning process.</p>
+<p class="session-topics">
+        Functions and mathematical notation, the relationship between inputs and predictions, and learning through loss functions.
+       </p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round2-02-linear-regression-math.html">
+         The mathematics of linear regression
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Use equations to explain regression coefficients, R², significance tests, and multicollinearity.</p>
+<p class="session-topics">
+        Calculating regression coefficients, decomposing R², t/F tests, and multicollinearity.
+       </p>
+</li>
+<li>
+<strong>
+<a href="sessions/aiguru/round2-03-trees-ensembles-math.html">
+         The mathematics of trees and ensembles
+        </a>
+</strong>
+<p class="session-goal"><span class="goal-label">Learning goal</span> Connect impurity and error reduction to tree splits, and explain how bagging and boosting combine models.</p>
+<p class="session-topics">
+        Gini and entropy, classification and regression split criteria, feature importance, and the calculations behind bagging and boosting.
+       </p>
+</li>
+</ol>
+</div>
+</section>
+<section class="section" id="presentations">
+<h2>
+     Research Presentations
+    </h2>
+<p class="section-intro">
+     These recorded presentations share research topics I have continued to study, including imbalanced learning, classification complexity, and how spatial units affect demand analysis. The videos are available on YouTube and connect with the questions explored in my research and teaching materials.
+    </p>
+<ol class="custom-list">
+<li>
+      Imbalanced Problem for Regression (2024.11) -
+      <a href="https://youtu.be/yfcqHHT5f1w">
+       Presentation video
+      </a>
+</li>
+<li>
+      SMOTE (Synthetic Minority Over-sampling Technique) for Imbalanced dataset (2024.05) -
+      <a href="https://www.youtube.com/watch?v=q5yhwOPmP-k&amp;list=PLVUMrRRWzO2q2dMZG9dqV8Mbz-gkEC1Yg&amp;index=38">
+       Presentation video
+      </a>
+</li>
+<li>
+      GAN(Generative Adversarial Networks) for Imbalanced dataset (2023.12) -
+      <a href="https://www.youtube.com/watch?v=JdLwad0vzWs&amp;list=PLVUMrRRWzO2qkF9Gyig-OT8MIAQOUIk26&amp;index=14">
+       Presentation video
+      </a>
+</li>
+<li>
+      MAUP (Modifiable Areal Unit Problem) for Free-float micro-mobility (2023.04) -
+      <a href="https://www.youtube.com/watch?v=tVGDsRIWSNs&amp;list=PLVUMrRRWzO2r9ELYB2RUt8Uumjs74iFaw&amp;index=15">
+       Presentation video
+      </a>
+</li>
+<li>
+      An Improved Boxplot for Univariate Data (2022.10) -
+      <a href="https://www.youtube.com/watch?v=fcZx27op96g&amp;list=PLVUMrRRWzO2od9mvVjPUcGMquTceiRAM5&amp;index=6">
+       Presentation video
+      </a>
+</li>
+<li>
+      How Complex Is Your Classification Problem?: A Survey on Measuring Classification Complexity (2022.07) -
+      <a href="https://www.youtube.com/watch?v=JksnEaiyL-M&amp;list=PLVUMrRRWzO2r9_i7U_OsrWC4YGUrZbDrv&amp;index=17">
+       Presentation video
+      </a>
+</li>
+<li>
+      Noise-Filtering Methods for Noisy Robust Adaboost (2021.10) -
+      <a href="https://youtu.be/XqRSu0tX1PI">
+       Presentation video
+      </a>
+</li>
+<li>
+      Oversampling Methods for Imbalanced Dataset (2021.04) -
+      <a href="https://www.youtube.com/watch?v=PY0u-aELDdc&amp;list=PLVUMrRRWzO2pSbuW-RhxroVl0xhgycZvb&amp;index=24">
+       Presentation video
+      </a>
+</li>
+</ol>
+</section>
+<section class="section" id="blog">
+<h2>
+     Blog Posts
+    </h2>
+<ul>
+<li>
+<strong>
+<a href="posts/manufacturing-ai-cause-effect-mapping.html">
+        Manufacturing AI Is Not Just a Prediction Problem
+       </a>
+</strong>
+<p>
+       Why cause–effect mapping and data validation matter alongside model performance in manufacturing AI.
+      </p>
+</li>
+<li>
+<strong>
+<a href="posts/setpoint-vs-actual-process-value.html">
+        Why Setpoint ≠ Actual Process Value
+       </a>
+</strong>
+<p>
+       Why training and operational data can differ in manufacturing AI, and why the distinction between a setpoint and an actual value matters.
+      </p>
+</li>
+<li>
+<strong>
+<a href="posts/industrial-ai-evaluation-metrics-must-be-realistic.html">
+        Why AI Evaluation Metrics Must Be Realistic in Manufacturing
+       </a>
+</strong>
+<p>
+       Why manufacturing AI needs realistic evaluation criteria and how to define them.
+      </p>
+</li>
+</ul>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+<script src="assets/previews-data.js?v=career-skills-20261005-1"></script>
+<script src="assets/previews.js?v=career-skills-20261005-1"></script>
+</body>
+</html>

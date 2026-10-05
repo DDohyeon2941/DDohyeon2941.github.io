@@ -1,0 +1,29 @@
+{
+  "pages": 39,
+  "local_references": 760,
+  "static": [],
+  "overflow": [],
+  "js_errors": [],
+  "broken_images": [],
+  "checks": 195,
+  "preview_open_focus": {
+    "tag": "BUTTON",
+    "cls": "preview-close"
+  },
+  "preview_next_tab": {
+    "text": "",
+    "inside": true
+  },
+  "escape_from_preview": {
+    "hidden": true,
+    "cls": "preview-trigger",
+    "tag": "BUTTON"
+  },
+  "slider": {
+    "labels": 1,
+    "aria": null,
+    "labelledby": null
+  },
+  "preview_before_next": "http://127.0.0.1:51179/images/sessions/round1-01-residual-random.svg",
+  "preview_after_next": "http://127.0.0.1:51179/images/sessions/round1-01-residual-u-shape.svg"
+}

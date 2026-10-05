@@ -1,0 +1,13 @@
+{
+  "html_pages": 39,
+  "internal_references": 725,
+  "external_urls_preserved": 39,
+  "numeric_table_cells_preserved": 160,
+  "complete_element_sequences_preserved": true,
+  "all_pages_language_en": true,
+  "issues": [],
+  "formula_blocks_preserved": 37,
+  "text_nodes_preserved": 8212,
+  "quantity_representation_differences_reviewed": 247,
+  "quantity_semantics_preserved": true
+}

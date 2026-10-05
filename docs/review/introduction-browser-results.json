@@ -1,0 +1,16 @@
+{
+  "viewports": [
+    1440,
+    390,
+    320
+  ],
+  "identity_visible_in_first_view": true,
+  "experience_and_perspective_visible_on_home": true,
+  "strengths": 3,
+  "featured_work": 2,
+  "featured_images_focus_preview_escape_detail_navigation": "passed",
+  "research_project_resume_home_navigation": "passed",
+  "top_menu_navigation": "passed",
+  "old_about_address_redirects_to_home": true,
+  "overflow_and_javascript_errors": []
+}

@@ -1,0 +1,34 @@
+{
+  "measurements": [
+    {
+      "viewport": 1440,
+      "before_height": 692.7,
+      "after_height": 535.4,
+      "reduction_percent": 22.7
+    },
+    {
+      "viewport": 768,
+      "before_height": 764.0,
+      "after_height": 573.8,
+      "reduction_percent": 24.9
+    },
+    {
+      "viewport": 390,
+      "before_height": 1246.2,
+      "after_height": 952,
+      "reduction_percent": 23.6
+    },
+    {
+      "viewport": 320,
+      "before_height": 1412.9,
+      "after_height": 1090.1,
+      "reduction_percent": 22.8
+    }
+  ],
+  "content_and_links_unchanged": true,
+  "intro_unchanged": true,
+  "horizontal_overflow": false,
+  "detail_navigation_checks": 4,
+  "keyboard_preview": "passed",
+  "issues": []
+}

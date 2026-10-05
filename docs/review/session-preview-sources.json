@@ -1,0 +1,179 @@
+[
+  {
+    "page": "sessions/aiguru/round1-01-ml-linear-regression.html",
+    "title": "The ML workflow and linear regression",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-01-residual-random.svg",
+        "caption": "An existing session illustration of residuals without an apparent systematic pattern.",
+        "section": "s4"
+      },
+      {
+        "image": "images/sessions/round1-01-residual-u-shape.svg",
+        "caption": "An existing U-shaped residual illustration showing structure a linear model has not captured.",
+        "section": "s4"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round1-02-trees-ensembles.html",
+    "title": "Tree models and ensembles",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-02-axis-partition.svg",
+        "caption": "The session’s two-dimensional temperature–pressure example shows axis-aligned splits and stepwise predictions.",
+        "section": "s1"
+      },
+      {
+        "image": "images/sessions/round1-02-regression-leaves.svg",
+        "caption": "The existing regression tree stores a different mean yield in each leaf; all observations reaching a leaf share its prediction.",
+        "section": "s1"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/example-feature-importance.html",
+    "title": "Supplement: MDI · OOB permutation · SHAP",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/example-feature-importance-waterfall.png",
+        "caption": "The existing SHAP waterfall explains feature contributions to one example prediction.",
+        "section": null
+      },
+      {
+        "image": "images/sessions/example-feature-importance-summary.png",
+        "caption": "The existing SHAP summary shows contribution direction and feature-value colors across examples.",
+        "section": null
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round1-03-clustering-similarity.html",
+    "title": "Clustering and similarity",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-03-temporal-context.svg",
+        "caption": "Two existing temperature-series illustrations end at 85°C but distinguish a rising history from a stable history.",
+        "section": "s8"
+      },
+      {
+        "image": "images/sessions/round1-03-dtw-distance.svg",
+        "caption": "The session’s existing Euclidean-versus-DTW figure compares fixed timestamp alignment with flexible time alignment.",
+        "section": "s8"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/example-scaling.html",
+    "title": "Supplement: Min–max scaling vs. standardization",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/example-scaling-plots.png",
+        "caption": "Original, min–max, and standardized scatter plots using the example’s default generated data.",
+        "section": null
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round1-04-evaluation-metrics.html",
+    "title": "Metrics and model evaluation",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-04-target-recall-feasibility.svg",
+        "caption": "Existing illustrative PR curves contrast feasible and difficult recall targets, including the corresponding precision at recall 90%.",
+        "section": "s4b"
+      },
+      {
+        "image": "images/sessions/round1-04-roc-curve.svg",
+        "caption": "Existing educational ROC example with false-positive rate, recall, random baseline, and illustrative AUC.",
+        "section": "s4"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round1-05-model-reliability.html",
+    "title": "When model results should not be trusted",
+    "draft": true,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-05-train-test-gaps.png",
+        "caption": "Existing educational comparison of small, large, and severe train–test performance gaps; the numbers are examples, not project results.",
+        "section": "s5"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round1-06-time-series.html",
+    "title": "Time-series data and validation",
+    "draft": true,
+    "visuals": [
+      {
+        "image": "images/sessions/round1-06-lag-rolling-timeline.svg",
+        "caption": "Existing timeline distinguishes past-value features from future information that would create leakage.",
+        "section": "s2"
+      },
+      {
+        "image": "images/sessions/round1-06-training-window-patterns.svg",
+        "caption": "Existing schematic curves show improving, plateauing, and declining test performance as the training window grows.",
+        "section": "s4b"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round2-01-ml-notation.html",
+    "title": "The ML workflow and mathematical notation",
+    "draft": true,
+    "visuals": [
+      {
+        "image": "images/sessions/round2-01-function.png",
+        "caption": "Input → function → prediction, from the session’s function diagram.",
+        "section": "func"
+      },
+      {
+        "image": "images/sessions/round2-01-loss.png",
+        "caption": "The existing loss illustration: residuals, squaring, and summation.",
+        "section": "loss"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round2-02-linear-regression-math.html",
+    "title": "The mathematics of linear regression",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round2-02-residuals.svg",
+        "caption": "Large versus small residuals around the regression line.",
+        "section": "s2"
+      },
+      {
+        "image": "images/sessions/round2-02-collinearity.svg",
+        "caption": "Variable vectors: independence versus near parallel alignment.",
+        "section": "s3"
+      }
+    ]
+  },
+  {
+    "page": "sessions/aiguru/round2-03-trees-ensembles-math.html",
+    "title": "The mathematics of trees and ensembles",
+    "draft": false,
+    "visuals": [
+      {
+        "image": "images/sessions/round2-03-impurity.png",
+        "caption": "Worked Gini and entropy examples for different class proportions.",
+        "section": "s1"
+      },
+      {
+        "image": "images/sessions/round2-03-ensembles.png",
+        "caption": "The existing side-by-side comparison of bagging and boosting.",
+        "section": "s4"
+      }
+    ]
+  }
+]

@@ -1,0 +1,167 @@
+# 포트폴리오 변경 검토
+
+## Latest: home section hierarchy
+
+The four main sections now share a 20px/700 heading, a darker full-width separator, and consistent section spacing. Subordinate headings remain 13–16px with lighter item separators. Research, Projects, and Writing & Sessions are grouped under a new Explore section and use h3 headings. The portrait/introduction layout and compact 12–13px skills body/tools/links are preserved; only the main skills heading and its surrounding spacing change.
+
+Chrome checks at 1440, 768, 390, and 320px confirm the heading hierarchy, matching content widths, unchanged compact skill type, image loading, and no horizontal overflow or JavaScript errors. All 12 Explore navigation checks and 3 representative keyboard previews passed. Original text, links, IDs, and images are preserved; Explore is the only added label. See [results](home-hierarchy-results.json), [desktop home](home-hierarchy-desktop.png), and [mobile hierarchy](home-hierarchy-mobile.png).
+
+## Latest: technical skills arrangement
+
+Technical skills now uses two columns with category headings, tool names, application descriptions, and separate supporting links. Five skill areas plus explicitly scoped course-team experience form three rows. Thin separators retain the site's understated style; widths of 700px and below use one column. The introduction/skills width alignment, all technologies and descriptions, and existing links are preserved.
+
+Typography and spacing are now more compact: section title 16px, group titles 14px, body 13px, and secondary tools/links 12px. The section height decreases from 693px to 535px at desktop width and from 1246px to 952px at 390px mobile width. Checks at 1440, 768, 390, and 320px confirm unchanged content, links, and introduction layout, with no overflow or JavaScript errors. See [density measurements](skills-compact-results.json); the screenshots below show the current compact styling.
+
+Chrome checks at 1440, 768, 700, 390, and 320px passed without overflow or JavaScript errors. All 24 desktop/mobile detail-navigation checks and 12 keyboard previews passed. See [results](skills-layout-results.json), [desktop](skills-layout-desktop.png), and [mobile](skills-layout-mobile.png).
+
+## Latest: home alignment
+
+The portrait now sits beside the name in a compact left-aligned header. The introduction, contact links, and Technical skills share the same full content width. This removes the former photo column that narrowed the entire introduction. Existing text, links, fragment IDs, and images are unchanged.
+
+Chrome checks at 1440, 768, 390, and 320px confirm matching left/right bounds, 24px desktop and 16px mobile portrait-to-text gaps, no overflow, and no JavaScript errors. All 28 career/CV navigation checks and the desktop skill preview passed. See [measurements](home-alignment-results.json), [desktop](home-alignment-desktop.png), and [mobile](home-alignment-mobile.png).
+
+## Latest: employment history and expanded skills
+
+The introduction now identifies the current Necton role and previous Amber Road/AI Guru employment, with dated CV entries. Verified spatial, imbalanced-learning, statistical, visualization, and data-architecture skills supplement the earlier list. The document project is now classified under Industry projects after its Necton context was confirmed. See [CAREER-SKILLS.md](CAREER-SKILLS.md) for sources and verification; it supersedes the earlier affiliation uncertainty.
+
+## Latest: CV highlights and evidenced skills
+
+The home introduction now includes the degree/date and linked research, award, and peer-review counts. Technical skills and practical strengths are supported by project links, with course/team experience clearly scoped. Personal weaknesses are excluded at the user's request. See [PROFILE-SKILLS.md](PROFILE-SKILLS.md) for evidence, desktop/mobile screenshots, and the 33 navigation checks.
+
+## Latest: project problems and responses
+
+All nine project summaries now explain the problem and the response before technical implementation details. Lists, detail introductions, previews, and the home manufacturing example are consistent; full detailed bodies and supporting evidence remain intact. See [PROJECT-SUMMARIES.md](PROJECT-SUMMARIES.md) for scope and verification.
+
+## Latest: research, practice, and teaching
+
+The home connects doctoral research, applied data work, junior colleague education, and recorded research presentations through a sustained focus on how data characteristics affect machine learning. Writing & Sessions now explains its educational purpose and gives each session/example a learning goal. Existing materials, links, drafts, and figures are preserved. See [PORTFOLIO-STORY.md](PORTFOLIO-STORY.md) for changes, verification, and screenshots.
+
+## Latest: visual ML session previews
+
+All nine company ML sessions and both supplements now have image-focused previews using 20 existing figures. Full bodies, ordering, URLs, and draft labels are preserved. See [SESSION-PREVIEWS.md](SESSION-PREVIEWS.md) for source mapping and interaction verification.
+
+## Visible professional diagrams
+
+The original safe validation diagram from the supplied portfolio is visible again. Larger correspondence and time-alignment diagrams now distinguish the two professional experiences, with mobile layouts and updated previews. Restricted original work images remain withheld. See [PROFESSIONAL-DIAGRAMS.md](PROFESSIONAL-DIAGRAMS.md) for source review and verification.
+
+## Detail page layout
+
+Research and project details now distinguish summaries, methods, evidence, and limitations through an editorial layout. Full content and source materials are preserved. See [DETAIL-LAYOUT.md](DETAIL-LAYOUT.md) for the current visual changes and verification.
+
+## Latest: English conversion
+
+The current visitor-facing site is in English. Full bodies, figures, and interaction labels were translated while preserving routes, research data, and disclosure decisions. See [ENGLISH-CONVERSION.md](ENGLISH-CONVERSION.md) for the latest preservation and browser verification. Earlier Korean review notes below retain the implementation history.
+
+기준 커밋: `894f9b26d3adf74ece5f7d7168ca0f8202598d8c` (원격 main과 일치 확인).
+작업 브랜치: `portfolio/information-architecture`.
+main 병합과 실제 사이트 배포는 수행하지 않습니다.
+
+## 변경 내용
+
+- 홈을 자기소개 → 강점 3개 → 대표 작업 2개 → 전체 목록 순서로 구성했습니다. 이름·사진과 ‘데이터사이언스 박사’를 앞에 두고 ‘불균형 학습을 연구하고, 현업 데이터를 모델 학습과 평가로 연결합니다’를 가장 먼저 읽히게 배치했습니다. 학위과정·현업 경험과 데이터 이해로 이어진 관점도 상단 두 문단에서 바로 읽습니다. 별도 소개 링크는 없습니다. 강점은 분포에 맞는 학습 설계, 학습용 데이터 구성, 사용 맥락을 반영한 평가입니다. 대표 작업은 ESWA 오버샘플링 연구와 제조 데이터 연결 경험이며 실제 논문 그림과 일반화한 연결 도식을 표시했습니다. 연구 그림을 성능 그래프로 표현하지 않았고, 현업 도식에는 내부 정보나 운영 성과를 추가하지 않았습니다. 전체 목록은 데스크톱에서 항목명·설명을 나란히 배치하고 모바일에서는 세로로 읽습니다. 스타일은 홈에 한정합니다. 기존 소개 주소는 홈으로 연결하고 이전 본문을 보존했습니다. 1440·390·320px에서 자기소개, 강점과 그림, 대표 작업 미리보기·Escape·상세 이동, 메뉴·이력·기존 소개 주소, 가로 넘침과 JavaScript 오류를 확인했습니다. [검증 결과](introduction-browser-results.json).
+
+- 오버샘플링 연구의 기여 설명을 데이터셋 특성에 맞는 증강 규모와 더 적은 생성량·성능 유지 또는 개선으로 수정했습니다. 계산식은 접근 방법에만 남기고 목록·미리보기·상단 요약·기여 문단을 맞췄습니다. 원문 수치와 조건별 성능 차이는 유지합니다.
+
+- 펠로우십 업종 선정의 데이터 분석 맥락을 문제 설정과 접근 방법 첫 단계에서 강조했습니다. 폐업이 비교적 활발한 요식/유흥을 중심으로 한식·외국 음식·카페를 선정하고 업종별 창업·폐업 분포를 따로 반영한 이유를 설명합니다. 후보·최종 선정 격자 수를 업종별 표로 구분합니다. 보고서에 없는 세 업종 간 폐업률 순위나 고정 임계값은 추가하지 않았습니다.
+
+- 성동구 펠로우십의 핵심을 비교 집단 정의부터 소개하도록 보강했습니다. 보고서 4–17쪽에 근거해 왜 상권 단위로 비교했는지, 60→45 격자와 업종 선정, 업종별 창업률·폐업률 평균 기준, 매출 패턴을 반영한 2차 선정, 검정 가정 점검을 설명합니다. ‘지속 가능한 상권’ 명칭과 팀 단위 작업을 유지하고 선정 기준에 매출이 포함된 점을 해석의 한계로 명시했습니다. [보고서 대조](FELLOWSHIP-SOURCE.md), [화면 검증](fellowship-browser-results.json).
+
+- 최종 야구 페이지에는 추가 수업 설명·슬라이드 없이 투수·타자 그림만 논문 제목·정보 바로 아래에 독립 배치했습니다. 기존 논문 설명과 논문 결과 그림은 유지합니다.
+
+- 야구 상세의 상단 대표 그림과 미리보기는 발표 자료 3쪽의 투수·타자 대결 그림으로 변경했습니다. IOM 결과 그림은 본문에 유지하며 대표 그림의 원 출처를 표시합니다.
+
+- 추가 제공된 2022년 강화학습 수업 발표 자료 11·12쪽의 그림을 야구 연구 상세에 별도 펼쳐보기로 배치했습니다. 타석 기록의 구성과 구종 선택 MDP를 설명하며, IOM 논문과 다른 파울 자기 전이 및 모델 설정을 구분했습니다. 그림의 기존 출처 표기를 유지합니다.
+
+- 야구 연구는 제공 DOCX 원고의 상태 전이·흡수 확률·IOM 그림 3개를 그대로 추출해 반영했습니다. 즉시 종료와 카운트 진행을 가중하는 정의, 후진 계산, 2B1S 계산 예제, 12개 카운트의 IOM·구속 비교, 전체·우수 투수 집단의 관계를 보강했습니다. Table 5의 경로 독립성 예외 2개와 집계 자료의 해석 한계를 명시했습니다. [원고 대조](BASEBALL-SOURCE.md), [화면 검증](baseball-browser-results.json).
+
+- 제공 프로필 사진을 홈의 이름·소개 옆에 원본 비율로 배치했습니다. 데스크톱에서는 오른쪽 136px, 모바일에서는 88px로 표시하고 소개·연락처는 전체 폭을 사용합니다.
+
+- 방문자용 본문을 직접 수행한 작업과 방법·결과를 소개하는 시점으로 정리했습니다. 출처 검토·자료 접근·개인 분담 미확인·재실행 여부 등의 편집 메모는 본문에서 제거하고, 아래 검토 사항과 자료 대조 기록에 남겼습니다. 팀 성과는 팀 작업으로 표현하고 실험의 범위·한계·미완료 평가는 유지했습니다.
+- 논문 중심의 모빌리티·야구 항목은 연구에서만 소개합니다. 프로젝트 목록은 문서 표준화를 포함한 현업 3건, 수업·개인 4건, 공모전·지역 분석 2건입니다. 기존 모빌리티·야구 프로젝트 주소는 각각 연구 목록·야구 연구 상세로 자동 이동하며 기존 본문은 호환 페이지에 보존했습니다. GAN은 팀 과제와 개인 후속 연구의 구현·실험으로 소개합니다.
+
+- GAN 상세와 목록·미리보기를 제공 포트폴리오 6–8쪽으로 보강했습니다. 2019 팀 프로젝트와 2023 개인 후속 연구를 구분하고, BAGAN·EdgeGenerator / Dual-Critic WGAN-GP·Sobel edge loss의 구현과 미완료 평가·한계를 명시했습니다. 7쪽의 실제 구현 도식 2개를 추출했으며 향후 연구 방향을 완료된 결과로 표시하지 않았습니다. [자료 대조 기록](GAN-SOURCE.md).
+
+- 이력의 ‘학술 활동 · 논문 심사’에 제공 인증서 기준 2026년 실적을 추가했습니다: Discover Artificial Intelligence 3건(2026.09.27 발급), Quality & Quantity 1건(2026.09.01 발급), The Journal of Supercomputing 1건(2026.08.09 발급). 합계 3개 학술지, 5건이며 발급일을 심사일로 표기하지 않았습니다. 홈에서 해당 절로 이동할 수 있습니다. 인증서 원본 PDF는 저장소에 추가하지 않았습니다.
+
+- 연구의 주요 분류는 불균형 데이터 4건 / 마이크로 모빌리티 2건 / 스포츠 1건입니다. 온라인 리뷰 연구 1건은 임의로 분류하지 않고 목록 아래 펼쳐보기로 보존했습니다.
+- 홈, 글·세션 목록, 세션 11개 화면의 명칭을 회사 ML 세션으로 변경했습니다. 기존 경로와 본문, Round별 회차, 초안·보조 예제는 유지했습니다. 본문 보존 검사는 요청된 명칭 변경만 허용하도록 정규화했습니다.
+
+- 단일 홈의 긴 목록을 홈 / 연구 / 프로젝트 / 글·세션 / 이력으로 분리했습니다.
+- 기존 정적 HTML을 유지했습니다. 새 프레임워크와 사이트 의존성은 추가하지 않았습니다.
+- 차분한 배경, 작은 상단 메뉴, 일정한 여백과 얇은 구분선을 적용했습니다. 홈의 홍보 문구, 장식 사진, 카드와 애니메이션을 제거했습니다.
+- 연구는 주제별 목록과 상세 8건으로 구성했습니다. 기존 논문 제목·연도·학술지·저자 역할·원문·코드 링크를 보존했습니다. 학위논문은 학위논문 저자로 표시했습니다.
+- 연구 상세는 연구 문제 / 접근 방법 / 기여 / 논문 및 코드 순서입니다. 학술지 연구 6건은 공개 README·구현과 확인 가능한 원문에 근거해 보강했습니다. 이 중 사용자가 제공한 PDF 4건은 우선 근거로 읽고 방법·실험 조건·실제 표 수치를 반영했습니다. 관련 미리보기와 수요 예측 프로젝트도 결과의 상충과 한계를 맞췄습니다. 학위논문 2건도 제공된 원문으로 방법·실험·기여를 보강했습니다. 근거는 [THESIS-SOURCES.md](THESIS-SOURCES.md)에 정리했습니다.
+- 상세 17건은 여백·행간·제목 크기를 줄이고, 상단 요약과 그림을 데스크톱에서 나란히 배치했습니다. 목차는 짧은 가로 바로가기로 정리했습니다. 모바일은 요약·그림 순서로 읽힙니다.
+- 홈·연구·프로젝트의 상세 제목 링크에 그림과 핵심 요약 미리보기를 추가했습니다. 마우스 호버·키보드 포커스로 열고, 모바일 목록에는 명시적인 미리보기 버튼을 제공합니다. Escape·닫기·외부 클릭으로 닫히며 실제 제목 링크 이동도 유지합니다. JavaScript가 없어도 목록과 상세 이동은 가능합니다.
+- 공개 저장소 그림 4개를 직접 확인해 보존했습니다. 현재 Flower 정확도 곡선과 비상구 변환 도식은 상세에서 사용하며, 공간 연구와 AdaBoost의 대표 그림은 제공된 논문 그림으로 대체했습니다. 기존 SVG 개념도 12개와 안전한 제조 관계 도식도 보존합니다. 수치나 곡선은 재생성하지 않았고 캡션으로 실험 그림과 개념도를 구분합니다.
+- 제공 논문 네 건의 실제 그림 5개를 추출해 연구 상세와 미리보기에 적용했습니다. 긴 실험 설정과 공간 연구의 전체 흐름도는 펼쳐보기로 정리했고, 결과 표는 비교 조건·지표 방향·조건부 평균 여부를 표시했습니다. 원고 전체와 피드백은 게시하지 않았습니다. [원문 대조 기록](PAPER-SOURCES.md)을 참고할 수 있습니다.
+- 프로젝트 상세 9건은 문제와 맥락 / 수행 역할 / 접근 방법 / 적용 범위 / 공개 자료 순서입니다. 공개 저장소의 README와 실제 전처리·모델·실험 코드를 읽고 데이터, 구현 방식, 기록된 결과와 한계를 본문에 작성했습니다. 외부 저장소는 본문을 대신하지 않는 참고 자료입니다.
+- 프로젝트는 현업 3건, 수업·개인 4건, 공모전·지역 분석 2건으로 구분했습니다. 문서 표준화의 넥톤 소속은 제공 포트폴리오와 사용자 확인을 반영했습니다. Flower와 비상구 인식의 수업 맥락, 성수동과 금융 대회의 팀 맥락, GAN의 대학원 프로젝트와 개인 후속 연구는 공개 기록으로 확인했습니다. OOD는 사용자 확인에 따라 수업 과제로 분류했습니다.
+- OOD의 실제 구현은 IRM 기반 일반화 실험이므로 제목을 바로잡았습니다. 성수동 분석은 공개 코드의 매출 회귀·SHAP을 설명하며 미래 폐업 예측으로 소개하지 않습니다. 비상구 프로젝트는 이미지 분류와 경량 모델 변환으로 설명하며 객체 좌표 검출이나 대피 서비스로 확대하지 않습니다.
+- Flower의 업데이트 제어가 개선을 보이지 않았다는 결과도 포함했습니다. Flower와 비상구 인식 수치는 공개 실험 기록으로 명시하고 재실행 결과나 실제 운영 성능으로 설명하지 않습니다. GAN과 OOD에는 확인되지 않은 개선율을 추가하지 않았습니다.
+- 기존 블로그 URL 3개, 세션 URL 9개와 보조 예제 URL 2개를 유지했습니다. 본문을 요약으로 대체하지 않았습니다. 글과 세션에 목차를 추가하고 긴 표를 개별적으로 스크롤할 수 있게 했습니다.
+- 회사 ML 세션 Round 1의 1~6회, Round 2의 1~3회 순서와 기존 초안 표시 3건, 보조 예제 2개를 보존했습니다.
+- 학력 3건, 학생연구원 참여 과제 3건, 수상 7건, 연구 발표 8건을 보존했습니다. 수상 목록은 키보드로도 조작할 수 있는 펼쳐보기입니다.
+
+## 기존 URL 연결
+
+논문·코드·영상·프로필 등 기존 외부 링크 27개는 주소를 그대로 유지했습니다. 공개 범위 확인이 필요한 현업 저장소 링크 1개만 사이트에서 제외했습니다. 이메일, GitHub 프로필, ORCID도 유지했습니다.
+
+| 기존 홈 섹션 | 이동 대상 |
+| --- | --- |
+| `#home` | 홈 소개 |
+| `#machine-learning`, `#research` | 연구 목록 |
+| `#projects`, `#data-architecture`, `#applied-ai` | 프로젝트 목록과 분류 |
+| `#talks`, `#blog` | 글·세션 목록과 분류 |
+| `#about`, `#funded-projects`, `#awards` | 이력과 해당 목록 |
+
+홈에서 기존 fragment URL을 방문하면 대응 페이지로 연결합니다. JavaScript가 꺼져 있어도 기존 ID에 요약과 목록 링크가 남습니다. 기존 블로그와 세션의 파일명은 바꾸지 않았습니다.
+
+## 현업 정보 검토와 예외
+
+홈, 현업 블로그 3편, 세션의 실제 고객 사례, 현업 이미지와 기존 링크된 저장소의 README 및 도식 2개를 검토했습니다.
+
+- 내부 공정·제품·부품명, 데이터 필드·스키마, 검사 운영 방식, 구체적인 품질 기준, 처리 규모, 구현·저장 방식은 공개 페이지에서 제거하거나 일반화했습니다.
+- 제조 데이터 연결 설명은 사용자가 제공한 일반화 문구를 사용했습니다. 실제 내부 구조를 재현하는 설명은 추가하지 않았습니다.
+- 현업 도식은 일반적인 동일 대상 1:1 관계로 교체했습니다. 기존 이미지 URL도 안전한 새 도식을 제공하므로 옛 이미지 직접 링크가 현재 파일의 내부 도식을 노출하지 않습니다. 모바일에서는 관계를 읽을 수 있는 HTML 텍스트로 표시합니다.
+- 블로그의 논점·본문과 절 순서는 유지하면서 내부 사례 부분을 일반화했습니다. 세션의 실제 고객 사례는 동일한 다섯 설명 단계의 일반화 예시로 바꾸었습니다. 보안 수정은 내용 보존보다 우선했습니다.
+- 기존 링크된 `DDohyeon2941/industrial-ml-system-design` 저장소에는 세부 측정 항목과 내부 구조를 설명하는 도식이 남아 있습니다. 공개 승인 여부를 확인할 수 없어 사이트의 클릭 가능한 링크에서 제외했습니다. 외부 저장소 자체는 이번 작업 범위에서 수정하지 않았습니다.
+- 이미 게시된 main, 기존 사이트, Git 이력 또는 외부 저장소의 과거 사본은 이번 PR 변경만으로 정리되지 않습니다. 이번 검증 대상은 이 작업 브랜치가 제공하는 페이지와 자산입니다.
+- 검증용 도구, 원본 비교 파일, 원본 이미지와 임시 파일은 `.review/`에 보관하고 Git에서 제외했습니다. PR에는 일반화한 콘텐츠와 안전한 화면 캡처만 포함합니다.
+
+## 검증 결과
+
+| 확인 항목 | 결과 |
+| --- | --- |
+| 정적 HTML | 39개 페이지 |
+| 내부 링크·목차·이미지·자원 참조 | 725개, 누락 파일·fragment 없음 |
+| 본문 대조 | 세션·보조 예제 11개, 현업 사례 일반화·요청된 명칭 변경 외 본문 텍스트 보존 |
+| 세션 기능 자료 대조 | 기존 JavaScript와 SVG 보존 |
+| 이력·발표 대조 | 학력 3 / 연구 과제 3 / 수상 7 / 연구 발표 8 누락 없음 |
+| 외부 링크 대조 | 기존 28개 중 27개 유지, 현업 링크 1개 검토 보류 |
+| Chrome 화면 검사 | 기존 38개 페이지 × 3 크기, 총 114개. 최신 홈·기존 소개 주소 이동 × 3 크기 추가 확인 |
+| 반응형 | 페이지 가로 넘침 없음, 넓은 표는 표 영역에서 스크롤 |
+| 동작 | 메뉴, 연구 상세, 프로젝트 9건의 상세·목차·목록 복귀, 기존 홈 섹션 이동, 펼쳐보기·키보드 조작 확인 |
+| 브라우저 오류 | 최종 검사에서 JavaScript 오류 없음; 기존 Chart.js CDN 정상 로드 |
+| 미리보기 | 연구 8·프로젝트 9건 × 3 화면 크기, 총 51건: 이미지 로드·화면 경계·열기·닫기 확인 |
+| 최종 상세 레이아웃 | 상세 17건 × 3 화면 크기, 총 51건: 마지막 제목·요약 배치 변경 후 이미지 로드·가로 넘침 재확인 |
+| 논문 원문 반영 | 연구 4건 × 3 화면 크기, 12건: 실제 그림 로드, 실험 설정 펼쳐보기, 긴 표의 키보드 가로 스크롤 및 페이지 넘침 확인 |
+| 접근·탐색 | 호버에서 미리보기 영역으로 이동, 키보드 포커스·Escape, 모바일 터치, 미리보기에서 상세 이동, JavaScript 비활성 이동 통과 |
+| 현업 노출 검색 | 지정된 내부 용어·필드·구체적인 기준·처리 규모가 공개 HTML 텍스트에 없음 |
+| Git 공백 검사 | `git diff --check` 통과 |
+
+데스크톱·모바일 홈, 주요 목록, 제조 데이터 상세, 블로그, 대표 세션 화면을 캡처해 직접 확인했습니다. 외부 글꼴을 실제로 로드한 상태에서 320px 세션 제목의 가로 넘침을 발견해 수정하고 재검증했습니다.
+
+증거: [정적 검사](static-results.json), [브라우저 검사](browser-results.json), [미리보기 검사](preview-results.json), [논문 화면 검사](paper-browser-results.json), [프로젝트 근거 자료](PROJECT-SOURCES.md), [그림·연구 근거](VISUAL-SOURCES.md), [제공 논문 대조](PAPER-SOURCES.md), [데스크톱 연구 상세](desktop-research-detail.png), [모바일 논문 상세](mobile-paper-detail.png), [데스크톱 상세](desktop-project-detail.png), [모바일 상세](mobile-project-detail.png).
+
+검증 도구는 로컬 임시 설치의 BeautifulSoup·Playwright·Pillow를 사용했고 실제 Chrome으로 실행했습니다. 사이트 런타임에는 추가하지 않았습니다. 논문·영상·코드의 모든 외부 서버 응답이나 각 외부 저장소 전체 파일의 공개 승인은 이 결과로 보증하지 않습니다. 기존 외부 URL의 보존과 이번 브랜치의 내부 동작을 검증했습니다.
+
+## 추가 확인 사항
+
+1. 문서 데이터 표준화의 넥톤 수행 맥락은 제공 포트폴리오와 사용자 확인으로 보완했습니다. 직접 대응하는 공개 저장소·산출물 링크는 아직 없습니다. Flower·비상구 인식 등 팀 프로젝트의 개인별 세부 분담은 추정하지 않았습니다.
+2. 회사별 직함과 재직 기간은 제공 포트폴리오에서 확인했습니다. 개별 프로젝트의 정확한 기간, 역할의 세부 범위와 실제 운영 적용 여부 등 추가 공개가 필요한 내용은 추정하지 않았습니다.
+3. 현업 저장소의 README·도식·관련 자료가 공개 승인을 받았는지 별도로 확인해야 합니다. 확인과 정리 전에는 사이트에 링크를 복원하지 않는 상태입니다.
+4. 학위논문 2건은 제공된 원문으로 보강했습니다. 박사 공유본의 실험 범위와 한계를 반영하고 서식 안내는 제외했습니다. 국제 방문객 연구의 개인별 분담은 추정하지 않았습니다. 연구·프로젝트 수치와 결과는 원문에 근거했으며 모델 재학습은 하지 않았습니다.
+
+학위논문 상세 2건을 1440·390·320px에서 확인했습니다. 원본 그림, 목차 이동, 실험 설정 펼쳐보기와 표가 정상 동작하며 가로 넘침이 없습니다. 미리보기 51건과 상세 화면 51건도 다시 통과했습니다. 근거: [thesis-browser-results.json](thesis-browser-results.json).
+5. 기존 세션 초안 3건은 초안 상태 그대로 보존했습니다. 교정·확정은 별도 내용 검토가 필요합니다.

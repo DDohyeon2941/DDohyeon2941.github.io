@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg role="img" style="margin-bottom:16px;font-family:system-ui, -apple-system, &quot;Segoe UI&quot;, sans-serif;font-size:15px;color:rgb(37, 43, 48)" viewBox="0 0 720 200" width="720" xmlns="http://www.w3.org/2000/svg" height="200">
+<title>Test performance patterns by training-window length</title>
+
+
+<rect fill="none" height="170" rx="6" stroke="#b8d8bf" stroke-width="1" width="210" x="20" y="10"></rect>
+<text fill="#1a5a2a" font-family="IBM Plex Sans KR, sans-serif" font-size="10" font-weight="500" text-anchor="middle" x="125" y="28">① Improvement → Longest window</text>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="40" x2="215" y1="155" y2="155"></line>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="40" x2="40" y1="155" y2="40"></line>
+<text fill="#9b9890" font-family="IBM Plex Mono, monospace" font-size="8" text-anchor="middle" x="127" y="170">Training window →</text>
+<polyline fill="none" points="50,145 80,130 110,112 140,96 170,82 200,70" stroke="#1a5a2a" stroke-linecap="round" stroke-width="2"></polyline>
+<circle cx="200" cy="70" fill="#1a5a2a" r="4"></circle>
+<text fill="#1a5a2a" font-family="IBM Plex Mono, monospace" font-size="8" x="195" y="63">Longer↑</text>
+
+<rect fill="none" height="170" rx="6" stroke="#b8ccdf" stroke-width="1" width="210" x="255" y="10"></rect>
+<text fill="#1a4f8a" font-family="IBM Plex Sans KR, sans-serif" font-size="10" font-weight="500" text-anchor="middle" x="360" y="28">② Plateau → Stop here</text>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="275" x2="450" y1="155" y2="155"></line>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="275" x2="275" y1="155" y2="40"></line>
+<text fill="#9b9890" font-family="IBM Plex Mono, monospace" font-size="8" text-anchor="middle" x="362" y="170">Training window →</text>
+<polyline fill="none" points="285,145 315,125 345,100 375,84 405,80 435,79" stroke="#1a4f8a" stroke-linecap="round" stroke-width="2"></polyline>
+<line opacity=".5" stroke="#1a4f8a" stroke-dasharray="4 3" stroke-width="1" x1="375" x2="375" y1="45" y2="155"></line>
+<text fill="#1a4f8a" font-family="IBM Plex Mono, monospace" font-size="8" x="377" y="55">Suitable window</text>
+<circle cx="375" cy="84" fill="#1a4f8a" r="4"></circle>
+
+<rect fill="none" height="170" rx="6" stroke="#dfb8b8" stroke-width="1" width="210" x="490" y="10"></rect>
+<text fill="#8a1a1a" font-family="IBM Plex Sans KR, sans-serif" font-size="10" font-weight="500" text-anchor="middle" x="595" y="28">③ Decline → Old data add noise</text>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="510" x2="685" y1="155" y2="155"></line>
+<line stroke="#e2e0d8" stroke-width="0.8" x1="510" x2="510" y1="155" y2="40"></line>
+<text fill="#9b9890" font-family="IBM Plex Mono, monospace" font-size="8" text-anchor="middle" x="597" y="170">Training window →</text>
+<polyline fill="none" points="520,145 550,120 580,92 610,85 640,90 670,102" stroke="#8a1a1a" stroke-linecap="round" stroke-width="2"></polyline>
+<line opacity=".5" stroke="#8a1a1a" stroke-dasharray="4 3" stroke-width="1" x1="610" x2="610" y1="45" y2="155"></line>
+<text fill="#8a1a1a" font-family="IBM Plex Mono, monospace" font-size="8" x="612" y="55">Stop here</text>
+<circle cx="610" cy="85" fill="#8a1a1a" r="4"></circle>
+</svg>

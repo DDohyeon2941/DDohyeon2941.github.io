@@ -1,0 +1,16 @@
+{
+  "viewports": [
+    "1440x1000",
+    "390x844",
+    "320x740"
+  ],
+  "career_cv_identity_in_first_view": true,
+  "cv_skill_navigation_checks": 54,
+  "professional_preview_checks": 9,
+  "local_references_checked": 760,
+  "industry_projects": 3,
+  "previous_links_ids_images_preserved": true,
+  "award_expand_collapse": "passed",
+  "horizontal_overflow": false,
+  "issues": []
+}

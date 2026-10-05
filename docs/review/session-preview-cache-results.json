@@ -1,0 +1,15 @@
+{
+  "previous_asset_version": "36cc258",
+  "new_reference_version": "ml-previews-20261005-1",
+  "cache_mode": "real Chromium cache; no request interception",
+  "primed_unversioned_assets": 3,
+  "versioned_asset_requests": {
+    "assets/previews-data.js": 1,
+    "assets/previews.js": 1,
+    "assets/site.css": 1
+  },
+  "unversioned_assets_not_refetched": true,
+  "session_and_example_previews": 11,
+  "loaded_figures": 20,
+  "issues": []
+}

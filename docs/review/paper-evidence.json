@@ -1,0 +1,91 @@
+{
+  "papers": {
+    "micro-mobility": {
+      "file": "IET_Intelligent_Transport_Systems__Base_Unit_Generation_Framework_for_predicting_demand_in_free_float_micro_mobility_20240819_feedback.pdf",
+      "sha256": "72f1dbd8bcf6eade0532e8126f2069b86c52a3832517801bc85f31d2a7d86b14",
+      "pages": 11
+    },
+    "noise-filtering": {
+      "file": "Improved Noise-Filtering Algorithm for AdaBoost using the Inter-and Intra-Class Variability of Imbalanced Datasets.pdf",
+      "sha256": "bf87313cb35724f8e0c135afa25d7ab737599a72f1cc5895c91b38e0cffaf52a",
+      "pages": 17
+    },
+    "oversampling": {
+      "file": "ESWA-S-20-08121.pdf",
+      "sha256": "01a1e5c97d962622f958aa316e74d642e051666e86fe9fba74abcf2e7b9caf55",
+      "pages": 41
+    },
+    "adaboost-rdt": {
+      "file": "_IEEE__Tree_based_boosting_for_BSS_with_extreme_demands.pdf",
+      "sha256": "f383e5273d1180f5c48775bd4def6c75ccf5a573eab6103e82335332ed3e0c20",
+      "pages": 23
+    }
+  },
+  "figure_crops": [
+    {
+      "paper": "micro-mobility",
+      "pdf_page": 4,
+      "figure": "Fig. 3",
+      "image": "paper-mobility-main-grids.png",
+      "clip": [
+        55,
+        610,
+        293,
+        687
+      ],
+      "sha256": "72f1dbd8bcf6eade0532e8126f2069b86c52a3832517801bc85f31d2a7d86b14"
+    },
+    {
+      "paper": "micro-mobility",
+      "pdf_page": 3,
+      "figure": "Fig. 1",
+      "image": "paper-mobility-framework.png",
+      "clip": [
+        323,
+        86,
+        555,
+        275
+      ],
+      "sha256": "72f1dbd8bcf6eade0532e8126f2069b86c52a3832517801bc85f31d2a7d86b14"
+    },
+    {
+      "paper": "noise-filtering",
+      "pdf_page": 4,
+      "figure": "Fig. 1",
+      "image": "paper-noise-weight-distributions.png",
+      "clip": [
+        97,
+        104,
+        497,
+        257
+      ],
+      "sha256": "bf87313cb35724f8e0c135afa25d7ab737599a72f1cc5895c91b38e0cffaf52a"
+    },
+    {
+      "paper": "oversampling",
+      "pdf_page": 23,
+      "figure": "Figure 1",
+      "image": "paper-oversampling-complexity.png",
+      "clip": [
+        163,
+        151,
+        455,
+        325
+      ],
+      "sha256": "01a1e5c97d962622f958aa316e74d642e051666e86fe9fba74abcf2e7b9caf55"
+    },
+    {
+      "paper": "adaboost-rdt",
+      "pdf_page": 6,
+      "figure": "Figure 1",
+      "image": "paper-adaboost-framework.png",
+      "clip": [
+        72,
+        55,
+        499,
+        294
+      ],
+      "sha256": "f383e5273d1180f5c48775bd4def6c75ccf5a573eab6103e82335332ed3e0c20"
+    }
+  ]
+}

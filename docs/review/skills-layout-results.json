@@ -1,0 +1,39 @@
+{
+  "layouts": [
+    {
+      "viewport": 1440,
+      "columns": 2,
+      "areas": 6,
+      "overflow": false
+    },
+    {
+      "viewport": 768,
+      "columns": 2,
+      "areas": 6,
+      "overflow": false
+    },
+    {
+      "viewport": 700,
+      "columns": 1,
+      "areas": 6,
+      "overflow": false
+    },
+    {
+      "viewport": 390,
+      "columns": 1,
+      "areas": 6,
+      "overflow": false
+    },
+    {
+      "viewport": 320,
+      "columns": 1,
+      "areas": 6,
+      "overflow": false
+    }
+  ],
+  "skills_text_and_links_preserved": true,
+  "intro_width_alignment_preserved": true,
+  "detail_navigation_checks": 24,
+  "keyboard_previews": 12,
+  "issues": []
+}

@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="580" viewBox="0 0 900 580" role="img" aria-labelledby="title desc">
+  <title id="title">Time alignment around a shared prediction point</title>
+  <desc id="desc">A conceptual illustration of three generic record streams with frequent, less frequent, and irregular observations. Records available by the shared prediction time are dark; later records are grey. Timing, meaning, and data quality are reviewed before alignment. Training, validation, use, and evaluation apply consistent data criteria. The diagram shows no observed data, actual intervals, source fields, or implementation.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto" markerUnits="strokeWidth"><path d="M0 0 8 4 0 8Z" fill="#58636d"/></marker>
+  </defs>
+  <rect width="900" height="580" fill="#fff"/>
+  <g font-family="Arial, Helvetica, sans-serif" fill="#26313b">
+    <text x="24" y="36" font-size="28" font-weight="700">Time alignment around a shared prediction point</text>
+    <text x="24" y="65" font-size="20" fill="#58636d">Generic recording patterns; use information available at prediction time.</text>
+
+    <rect x="20" y="86" width="860" height="270" rx="5" fill="#fafafa" stroke="#d9dee2"/>
+    <text x="42" y="119" font-size="23" font-weight="700">Records with different timing</text>
+    <rect x="268" y="161" width="400" height="147" fill="#eff2f4"/>
+    <text x="668" y="147" font-size="20" text-anchor="middle" font-weight="700">Prediction time</text>
+    <path d="M668 156V309" fill="none" stroke="#58636d" stroke-width="2" stroke-dasharray="5 5"/>
+
+    <text x="44" y="185" font-size="20">Frequent records</text>
+    <text x="44" y="236" font-size="20">Less frequent records</text>
+    <text x="44" y="287" font-size="20">Irregular records</text>
+    <g fill="none" stroke-width="2">
+      <path d="M280 178H668M280 229H668M280 280H668" stroke="#58636d"/>
+      <path d="M668 178H850M668 229H850M668 280H850" stroke="#c3cbd1" stroke-dasharray="4 4"/>
+    </g>
+    <g fill="#344657">
+      <circle cx="290" cy="178" r="5"/><circle cx="345" cy="178" r="5"/><circle cx="400" cy="178" r="5"/><circle cx="455" cy="178" r="5"/><circle cx="510" cy="178" r="5"/><circle cx="565" cy="178" r="5"/><circle cx="620" cy="178" r="5"/><circle cx="658" cy="178" r="5"/>
+      <circle cx="290" cy="229" r="5"/><circle cx="400" cy="229" r="5"/><circle cx="510" cy="229" r="5"/><circle cx="620" cy="229" r="5"/>
+      <circle cx="290" cy="280" r="5"/><circle cx="330" cy="280" r="5"/><circle cx="480" cy="280" r="5"/><circle cx="620" cy="280" r="5"/><circle cx="658" cy="280" r="5"/>
+      <circle cx="46" cy="333" r="5"/>
+    </g>
+    <g fill="#c3cbd1">
+      <circle cx="720" cy="178" r="5"/><circle cx="775" cy="178" r="5"/><circle cx="830" cy="178" r="5"/>
+      <circle cx="740" cy="229" r="5"/><circle cx="830" cy="229" r="5"/>
+      <circle cx="720" cy="280" r="5"/><circle cx="830" cy="280" r="5"/>
+      <circle cx="502" cy="333" r="5"/>
+    </g>
+    <text x="61" y="340" font-size="20">Available by prediction time</text>
+    <text x="517" y="340" font-size="20" fill="#58636d">Later records</text>
+
+    <rect x="20" y="378" width="860" height="82" rx="5" fill="#fff" stroke="#d9dee2"/>
+    <text x="42" y="410" font-size="22" font-weight="700">Review timing, meaning, and quality</text>
+    <text x="42" y="440" font-size="20" fill="#58636d">Check missing or inconsistent records</text>
+    <path d="M492 419H542" fill="none" stroke="#58636d" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="570" y="410" font-size="23" font-weight="700">Aligned data</text>
+    <text x="570" y="440" font-size="20" fill="#58636d">Comparable time basis</text>
+
+    <path d="M450 461V485" fill="none" stroke="#58636d" stroke-width="2" marker-end="url(#arrow)"/>
+    <rect x="20" y="495" width="860" height="67" rx="5" fill="#fafafa" stroke="#d9dee2"/>
+    <text x="42" y="524" font-size="22" font-weight="700">Consistent data criteria</text>
+    <text x="42" y="550" font-size="20" fill="#58636d">Training · validation · use</text>
+    <path d="M492 529H542" fill="none" stroke="#58636d" stroke-width="2" marker-end="url(#arrow)"/>
+    <text x="570" y="538" font-size="22" font-weight="700">Evaluate in context</text>
+  </g>
+</svg>

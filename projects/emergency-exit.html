@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Emergency exit sign recognition for people with visual impairments | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a href="../research.html">
+     Research
+    </a>
+<a aria-current="page" href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../projects.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Emergency exit sign recognition for people with visual impairments
+   </h1>
+<p class="meta">
+    SeoulTech IoT course · Team project
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      Emergency exit signs can be difficult for people with visual impairments to read directly. Our team used camera images to distinguish exit signs from other objects and adapted the classifiers for lightweight inference as a technical feasibility study.
+     </p>
+<dl class="detail-facts"><div><dt>Scope:</dt><dd>Exit-sign presence and sign-type classification</dd></div><div><dt>Evaluation:</dt><dd>Image validation; user-facing guidance was not evaluated</dd></div></dl>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/exit-architecture.png">
+<img alt="Conversion from a trained model to TFLite and Edge TPU; the public team project’s original diagram." loading="lazy" src="../images/research/exit-architecture.png"/>
+</a>
+<figcaption>
+      Conversion from a trained model to TFLite and Edge TPU; the public team project’s original diagram.
+      <a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance/blob/main/images/image.png">
+       Source
+      </a>
+</figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Problem and context
+    </h2><div class="section-body">
+<p>
+     Emergency exit signs provide important visual information that can be difficult for people with visual impairments to read directly. The project examined the technical feasibility of recognizing exit-related information from camera images.
+    </p>
+<p>
+     The public implementation performs image classification. It does not implement object detection locating sign coordinates or actual evacuation-route guidance.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     My role
+    </h2><div class="section-body">
+<p>
+     This was a SeoulTech IoT course team project with Sae Rom Lee and Do Hyeon Lee. We prepared image data, trained MobileNetV2 classifiers, and experimented with lightweight conversion.
+    </p>
+</div></section><section class="section" id="part-2"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-workflow"><div class="detail-method-block" data-step="01"><h3>
+     Data and classification tasks
+    </h3><p>
+     We used indoor sign data (ISD), indoor object data (IODD), and self-collected images. Tasks were defined separately as exit/other binary classification and 3-class classification of directional signs, exit signs at the current location, and non-exit images.
+    </p></div><div class="detail-method-block" data-step="02"><h3>
+     Transfer learning
+    </h3><p>
+     Images were resized to 224×224 and pixel values normalized. We froze ImageNet-pretrained MobileNetV2 weights, added global average pooling and classification layers, and trained them with brightness and flip augmentation.
+    </p><p>
+     Training used Adam and categorical cross-entropy, with early stopping based on validation loss. We examined AUC and class-specific predictions.
+    </p></div><div class="detail-method-block" data-step="03"><h3>
+     Conversion for lightweight inference
+    </h3><p>
+     Keras models were integer-quantized with representative data into TensorFlow Lite, and Edge TPU compilation was tested. The public implementation extends through conversion to lightweight inference formats.
+    </p></div></div>
+</div></section><section class="section" id="part-3"><h2>
+     Scope
+    </h2><div class="section-body">
+<div class="detail-evidence"><p>
+     Validation AUROC was 0.95 for binary classification and 0.9538 for multiclass classification. These are image-classification validation results, not measures of safety in actual evacuation environments.
+    </p></div>
+<div class="detail-caveat"><p>
+     Errors occurred with backgrounds such as ceilings, walls, and windows. Results come from limited images and validation conditions, requiring further tests across lighting, distance, and sign size. Actual user-facing guidance and safety performance were not evaluated.
+    </p></div>
+</div></section><section class="section section-resources" id="part-4"><h2>
+     Public resources
+    </h2><div class="section-body">
+<p>
+<a href="https://github.com/DDohyeon2941/emergency-exit-detection-for-visual-assistance">
+      Data preparation, model/conversion notebooks, and experiment records
+     </a>
+</p>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

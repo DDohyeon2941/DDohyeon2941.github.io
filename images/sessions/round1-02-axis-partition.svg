@@ -1,0 +1,53 @@
+<svg aria-label="A tree’s partition of two-dimensional space" aria-labelledby="figure-title figure-description" height="300" role="img" style="font-family:system-ui,sans-serif;" viewBox="0 0 680 300" width="680" xmlns="http://www.w3.org/2000/svg"><title id="figure-title">How a tree divides feature space</title><desc id="figure-description">The session’s two-dimensional temperature–pressure example shows axis-aligned splits and stepwise predictions.</desc>
+<!-- 축 -->
+<line stroke="#ccc9be" stroke-width="1.2" x1="60" x2="420" y1="260" y2="260"></line>
+<line stroke="#ccc9be" stroke-width="1.2" x1="60" x2="60" y1="260" y2="20"></line>
+<!-- 축 라벨 -->
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="11" text-anchor="middle" x="240" y="282">Temperature (°C)</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="11" text-anchor="middle" transform="rotate(-90,22,140)" x="22" y="140">Pressure (bar)</text>
+<!-- 축 눈금 -->
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="middle" x="60" y="275">60</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="middle" x="160" y="275">75</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="middle" x="260" y="275">85</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="middle" x="360" y="275">95</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="middle" x="420" y="275">105</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="end" x="50" y="260">2.0</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="end" x="50" y="180">2.8</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="end" x="50" y="120">3.2</text>
+<text fill="#9b9890" font-family="IBM Plex Mono,monospace" font-size="9" text-anchor="end" x="50" y="60">3.8</text>
+<!-- 분할 영역 색 -->
+<!-- 저온 저압 = 정상 (초록) -->
+<rect fill="#eaf5ec" height="80" opacity=".7" width="200" x="60" y="180"></rect>
+<!-- 저온 고압 = 주의 (노랑) -->
+<rect fill="#fdf3e0" height="160" opacity=".7" width="200" x="60" y="20"></rect>
+<!-- 고온 저압 = 중위험 (주황) -->
+<rect fill="#fdf3e0" height="140" opacity=".9" width="160" x="260" y="120"></rect>
+<!-- 고온 고압 = 고위험 (빨강) -->
+<rect fill="#f8eaea" height="100" opacity=".85" width="160" x="260" y="20"></rect>
+<!-- 분기선 1: 온도 > 85 (수직선) -->
+<line stroke="#1a4f8a" stroke-dasharray="6 3" stroke-width="2" x1="260" x2="260" y1="20" y2="260"></line>
+<text fill="#1a4f8a" font-family="IBM Plex Mono,monospace" font-size="10" x="262" y="16">Temperature = 85°C</text>
+<!-- 분기선 2: 압력 > 3.2 (수평선, 고온 구간만) -->
+<line stroke="#1a5a2a" stroke-dasharray="6 3" stroke-width="2" x1="260" x2="420" y1="120" y2="120"></line>
+<text fill="#1a5a2a" font-family="IBM Plex Mono,monospace" font-size="10" x="422" y="124">Pressure = 3.2</text>
+<!-- 분기선 3: 압력 > 2.8 (수평선, 저온 구간만) -->
+<line stroke="#7a4a00" stroke-dasharray="6 3" stroke-width="2" x1="60" x2="260" y1="180" y2="180"></line>
+<text fill="#7a4a00" font-family="IBM Plex Mono,monospace" font-size="10" x="60" y="175">Pressure = 2.8</text>
+<!-- 영역 라벨 -->
+<text fill="#1a5a2a" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="160" y="225">Normal</text>
+<text fill="#1a5a2a" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle" x="160" y="240">1% defective</text>
+<text fill="#7a4a00" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="160" y="95">Caution</text>
+<text fill="#7a4a00" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle" x="160" y="110">8% defective</text>
+<text fill="#7a4a00" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="340" y="200">Moderate risk</text>
+<text fill="#7a4a00" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle" x="340" y="215">13% defective</text>
+<text fill="#8a1a1a" font-family="IBM Plex Sans KR,sans-serif" font-size="11" font-weight="500" text-anchor="middle" x="340" y="65">High risk</text>
+<text fill="#8a1a1a" font-family="IBM Plex Mono,monospace" font-size="10" text-anchor="middle" x="340" y="80">62% defective</text>
+<!-- 범례 -->
+<text fill="#1a4f8a" font-family="IBM Plex Mono,monospace" font-size="10" x="480" y="40">── First split (temperature)</text>
+<text fill="#1a5a2a" font-family="IBM Plex Mono,monospace" font-size="10" x="480" y="58">── Split 2: pressure (high temp)</text>
+<text fill="#7a4a00" font-family="IBM Plex Mono,monospace" font-size="10" x="480" y="76">── Split 2: pressure (low temp)</text>
+<text fill="#9b9890" font-family="IBM Plex Sans KR,sans-serif" font-size="11" x="480" y="100">Split lines always run</text>
+<text fill="#9b9890" font-family="IBM Plex Sans KR,sans-serif" font-size="11" x="480" y="116">parallel to the axes</text>
+<text fill="#9b9890" font-family="IBM Plex Sans KR,sans-serif" font-size="11" x="480" y="140">→ Stepwise boundaries</text>
+<text fill="#9b9890" font-family="IBM Plex Sans KR,sans-serif" font-size="11" x="480" y="156">→ Nonlinear</text>
+</svg>

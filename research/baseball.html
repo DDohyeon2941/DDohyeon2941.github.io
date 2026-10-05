@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   A measure of the importance of moment for ball-strike counts in a baseball plate appearance | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a aria-current="page" href="../research.html">
+     Research
+    </a>
+<a href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page detail-editorial" id="main">
+<p class="breadcrumb">
+<a href="../research.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Situation importance from ball–strike count transitions
+   </h1>
+<p class="paper-title">
+    A measure of the importance of moment for ball-strike counts in a baseball plate appearance
+   </p>
+<p class="meta">
+    Journal of Sports Sciences, 2024 · Co-first author
+   </p>
+<figure class="detail-figure baseball-opening">
+<a aria-label="View full-size figure" href="../images/research/baseball-pitcher-batter.png">
+<img alt="A pitcher delivering the ball to a batter, with a catcher and umpire behind the plate" loading="lazy" src="../images/research/baseball-pitcher-batter.png"/>
+</a>
+<figcaption>
+     The pitcher–batter matchup ·
+     <a href="https://smcncad.com/495">
+      Image source
+     </a>
+</figcaption>
+</figure>
+<div class="baseball-summary">
+<div>
+<p class="intro">
+      We defined IOM (Importance of Moment) to quantify how much a pitch can change the balance of a plate appearance. The measure weights immediate termination separately from continuation through a ball or strike. We analyzed count-specific importance alongside fastball velocity.
+     </p>
+<dl class="detail-facts"><div><dt>Method:</dt><dd>a 14-state Markov model → out probabilities → IOM</dd></div><div><dt>Result:</dt><dd>rank correlation of 0.90 between IOM and mean velocity</dd></div></dl>
+</div>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Research problem
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Contributions
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Paper and code
+      </a>
+</li>
+</ol>
+</nav>
+<div class="detail-body"><section class="section" id="part-0"><h2>
+     Research problem
+    </h2><div class="section-body">
+<p>
+     A strike at 0 balls and 0 strikes has a different meaning from a strike with 2 strikes already on the count. How favorable the current count is to the pitcher also differs from how important the next pitch is. This study quantifies how much the next pitch can affect the final out or on-base probability within a plate appearance.
+    </p>
+<p>
+     In tennis, importance can be defined as the difference in win probability between the two states reached by winning or losing a point. In baseball, a batted ball or hit-by-pitch can end a plate appearance immediately at any count. The difference between the states after a ball and after a strike alone is therefore insufficient. We proposed a measure that also incorporates this termination possibility.
+    </p>
+</div></section><section class="section" id="part-1"><h2>
+     Approach
+    </h2><div class="section-body">
+<div class="detail-method-block"><h3>
+     1. Representing pitch records as state transitions
+    </h3>
+<p>
+     We processed 2,867,154 pitches and 727,031 plate appearances from MLB Statcast for 2015–2018. The 12 combinations of 0–3 balls and 0–2 strikes, plus the two absorbing states out (O) and on base (R), form a 14-state discrete-time Markov chain. Transition probabilities from each count were estimated from observed frequencies.
+    </p>
+<p>
+     Fouls that leave the count unchanged after 2 strikes were excluded from transitions. A model step therefore represents an event that changes the count or plate-appearance outcome, rather than every actual pitch. Reaching out or on base ends the plate appearance.
+    </p>
+<details>
+<summary>
+      State transitions and final out/on-base probabilities
+     </summary>
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-transitions.png">
+<img alt="Single-step transition probabilities between 12 counts and out/on-base outcomes, Figure 1" loading="lazy" src="../images/research/paper-baseball-transitions.png"/>
+</a>
+<figcaption>
+       Figure 1: transition probabilities from each count. Outgoing probabilities at each state sum to 100%.
+      </figcaption>
+</figure>
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-absorption.png">
+<img alt="Probabilities of ultimately reaching out or on base from each count, Figure 4" loading="lazy" src="../images/research/paper-baseball-absorption.png"/>
+</a>
+<figcaption>
+       Figure 4: blue denotes final out probability; red denotes final on-base probability.
+      </figcaption>
+</figure>
+</details>
+</div><div class="detail-method-block"><h3>
+     2. Calculating the favorability of the current count
+    </h3>
+<p>
+     We denote the probability of a plate appearance ultimately ending in an out from count s as q(s). Backward calculation weights the next-state out probabilities by their transition probabilities. q is 1 at the out state and 0 at the on-base state.
+    </p>
+<p class="method-equation">
+     q(s) = Σ P(next state = s′ | current state = s) × q(s′)
+    </p>
+<p>
+     The final out probability was 79.48% at 0 balls and 2 strikes and 28.83% at 3 balls and 0 strikes. These values describe current favorability, which is different from the importance of the next pitch.
+    </p>
+</div><div class="detail-method-block"><h3>
+     3. IOM weights termination and count continuation
+    </h3>
+<p>
+     If the next event ends the plate appearance in an out or on-base outcome, the difference in out probabilities between those outcomes is 1. If play continues, we use the difference in final out probability between the states after a ball and after a strike. IOM weights the two differences by their respective occurrence probabilities.
+    </p>
+<p class="method-equation">
+     IOM(s) = P(immediate termination | s) × 1
+     <br/>
+     + P(plate appearance continues | s) × |q(after a ball) − q(after a strike)|
+    </p>
+<p>
+     For example, at 2 balls and 1 strike, immediate termination has probability 23.9% and continuation 76.1%. After a ball, the out probability at 3 balls and 1 strike is about 41.7%; after a strike, at 2 balls and 2 strikes it is about 70.1%. IOM is about 45.52%. At 3 balls and 2 strikes, the next effective event must end the plate appearance, giving IOM of 100%. Calculations use probabilities before rounding.
+    </p>
+</div></div></section><section class="section" id="part-2"><h2>
+     Contributions
+    </h2><div class="section-body">
+<p>
+     As co-first author, I participated in proposing a probabilistic measure for interpreting pitch importance despite complex plate-appearance transitions. We distinguished current count favorability from next-pitch importance and analyzed how IOM relates to pitchers’ observed behavior.
+    </p>
+<div class="detail-evidence"><h3>
+     Importance varies by count
+    </h3>
+<figure class="baseball-figure">
+<a href="../images/research/paper-baseball-iom.png">
+<img alt="Count-specific IOM and final out/on-base probabilities, Figure 5" loading="lazy" src="../images/research/paper-baseball-iom.png"/>
+</a>
+<figcaption>
+      Figure 5: green values denote IOM. Select the figure to view it at full size.
+     </figcaption>
+</figure>
+<p>
+     IOM was 20.39% at 0 balls and 0 strikes, 26.78% at 0 balls and 1 strike, and 87.02% at 0 balls and 2 strikes. Adding a strike does not always produce the same change in importance. Counts with 2 strikes and the full count were particularly important.
+    </p>
+</div><div class="detail-evidence"><h3>
+     IOM and fastball velocity
+    </h3>
+<p>
+     The Spearman correlation between IOM ranks and mean fastball velocity ranks across 12 counts was 0.90 (p &lt; 0.0001). Mean velocity tended to be higher at more important counts, although the ordering did not match at every count.
+    </p>
+<details>
+<summary>
+      IOM and mean velocity across 12 counts
+     </summary>
+<div class="result-table">
+<table>
+<caption>
+        Table 7: descending IOM. B denotes balls, S denotes strikes; velocity is in mph.
+       </caption>
+<thead>
+<tr>
+<th scope="col">
+          Count
+         </th>
+<th scope="col">
+          IOM (%)
+         </th>
+<th scope="col">
+          Mean velocity
+         </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<th scope="row">
+          3B2S
+         </th>
+<td>
+          100.00
+         </td>
+<td>
+          92.41
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          0B2S
+         </th>
+<td>
+          87.02
+         </td>
+<td>
+          92.28
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          1B2S
+         </th>
+<td>
+          85.70
+         </td>
+<td>
+          92.19
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          2B2S
+         </th>
+<td>
+          81.90
+         </td>
+<td>
+          92.29
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          3B1S
+         </th>
+<td>
+          77.95
+         </td>
+<td>
+          92.07
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          3B0S
+         </th>
+<td>
+          63.33
+         </td>
+<td>
+          91.86
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          2B1S
+         </th>
+<td>
+          45.52
+         </td>
+<td>
+          91.96
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          2B0S
+         </th>
+<td>
+          44.28
+         </td>
+<td>
+          91.89
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          1B1S
+         </th>
+<td>
+          33.45
+         </td>
+<td>
+          91.79
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          1B0S
+         </th>
+<td>
+          31.15
+         </td>
+<td>
+          91.70
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          0B1S
+         </th>
+<td>
+          26.78
+         </td>
+<td>
+          91.82
+         </td>
+</tr>
+<tr>
+<th scope="row">
+          0B0S
+         </th>
+<td>
+          20.39
+         </td>
+<td>
+          91.79
+         </td>
+</tr>
+</tbody>
+</table>
+</div>
+</details>
+<p>
+     We defined an elite pitcher group as pitchers receiving at least one Cy Young Award vote during 2015–2018. Its IOM–velocity rank correlation was 0.78 (p = 0.0030). The velocity difference from all pitchers increased from 0.27mph at 0 strikes to 0.34mph at 1 strike and 0.49mph at 2 strikes, according to Table 9.
+    </p>
+</div><div class="detail-caveat"><h3>
+     Model validation and interpretive limitations
+    </h3>
+<p>
+     We tested whether outcomes at the same count differed depending on the preceding count. At 2 balls and 1 strike and at 2 balls and 2 strikes, final out rates differed by path by 0.78 and 0.50 percentage points, respectively. Path independence therefore did not hold completely. Model out probabilities were generally close to observed outcome rates, but this approximation must be considered.
+    </p>
+<p>
+     The velocity analysis describes associations in count-level aggregates. It does not establish that importance causes higher velocity or that a particular pitching strategy is effective. Elite pitcher selection may favor starters, and fastball velocity alone cannot assess overall pitch quality. Comparing pitcher roles and analyzing breaking-ball spin and trajectories are directions for future research.
+    </p>
+</div></div></section><section class="section section-resources" id="part-3"><h2>
+     Paper and code
+    </h2><div class="section-body">
+<a href="https://doi.org/10.1080/02640414.2024.2355423">
+     DOI
+    </a>
+    ·
+    <a href="https://github.com/DDohyeon2941/baseball-ball-strike-count-analysis">
+     Code on GitHub
+    </a>
+</div></section></div>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

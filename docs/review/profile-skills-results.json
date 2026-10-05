@@ -1,0 +1,13 @@
+{
+  "viewports": [
+    "1440x1000",
+    "390x844",
+    "320x740"
+  ],
+  "cv_and_identity_visible_in_first_view": true,
+  "cv_and_skill_link_checks": 33,
+  "award_expand_collapse": "passed",
+  "original_home_links_ids_images_preserved": true,
+  "horizontal_overflow": false,
+  "issues": []
+}

@@ -1,0 +1,18 @@
+{
+  "sessions_and_examples": 11,
+  "source_figures": 20,
+  "preserved_session_bodies": 11,
+  "draft_labels_preserved": 3,
+  "new_preview_viewport_checks": 33,
+  "figure_viewport_checks": 60,
+  "existing_research_project_preview_checks": 51,
+  "viewports": [
+    "1440\u00d71000",
+    "390\u00d7844",
+    "320\u00d7740"
+  ],
+  "hover_focus_escape_close_outside_click_full_size_and_no_javascript_navigation": "passed",
+  "issues": [],
+  "footer_spacing_and_viewport_checks": 9,
+  "standalone_svg_render_checks": 12
+}

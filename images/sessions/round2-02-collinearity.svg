@@ -1,0 +1,38 @@
+<svg font-family="Arial, Helvetica, sans-serif" role="img" style="display:block" viewBox="0 0 680 520" width="100%" xmlns="http://www.w3.org/2000/svg">
+<title>Vector independence and multicollinearity: relationships between cosine similarity, dot product, and VIF</title>
+<desc>Two variables are drawn as vectors. Nearly orthogonal vectors are more independent, with a dot product near 0; nearly parallel vectors have a cosine near 1 and a larger VIF.</desc>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:14px;font-weight:500" text-anchor="middle" x="340" y="30">Variables as vectors — Independent vs almost parallel</text>
+<rect fill="none" height="220" rx="8" stroke="#e2e0d8" stroke-width="0.5" width="280" x="40" y="60"></rect>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a5a2a" text-anchor="middle" x="180" y="80">Independent (nearly orthogonal)</text>
+<line stroke="#ccc9be" stroke-width="0.5" x1="80" x2="280" y1="250" y2="250"></line>
+<line stroke="#ccc9be" stroke-width="0.5" x1="80" x2="80" y1="250" y2="100"></line>
+<line stroke="#1a5a2a" stroke-width="2" x1="80" x2="240" y1="250" y2="250"></line>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a5a2a" x="245" y="254">X1 (age)</text>
+<line stroke="#1a4f8a" stroke-width="2" x1="80" x2="80" y1="250" y2="110"></line>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a4f8a" x="56" y="106">X2</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a4f8a" x="40" y="120">(Arbitrary variable)</text>
+<path d="M105,250 A25,25 0 0,0 80,225" fill="none" stroke="#9b9890" stroke-width="0.5"></path>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" x="108" y="230">θ ≈ 90°</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" text-anchor="middle" x="180" y="295">cos(θ) ≈ 0</text>
+<text style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#1a5a2a" text-anchor="middle" x="180" y="262">Dot product ≈ 0</text>
+<rect fill="none" height="220" rx="8" stroke="#e2e0d8" stroke-width="0.5" width="280" x="380" y="60"></rect>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#8a1a1a" text-anchor="middle" x="520" y="80">Almost parallel (multicollinearity)</text>
+<line stroke="#ccc9be" stroke-width="0.5" x1="420" x2="620" y1="250" y2="250"></line>
+<line stroke="#ccc9be" stroke-width="0.5" x1="420" x2="420" y1="250" y2="100"></line>
+<line stroke="#1a5a2a" stroke-width="2" x1="420" x2="600" y1="250" y2="250"></line>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a5a2a" x="555" y="270">X1 (age)</text>
+<line stroke="#8a1a1a" stroke-width="2" x1="420" x2="590" y1="250" y2="135"></line>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#8a1a1a" x="596" y="132">X2 (experience)</text>
+<path d="M460,250 A40,40 0 0,0 446,217" fill="none" stroke="#9b9890" stroke-width="0.5"></path>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" x="463" y="222">θ ≈ 20°</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" text-anchor="middle" x="520" y="295">cos(θ) ≈ 0.94</text>
+<text style="font-family:'IBM Plex Mono',monospace;font-size:11px;fill:#8a1a1a" text-anchor="middle" x="520" y="262">Dot product ≈ Large</text>
+<rect fill="#eaf5ec" height="60" rx="6" stroke="#b8d8bf" stroke-width="0.5" width="600" x="40" y="320"></rect>
+<text style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#1a5a2a" x="60" y="345">cos(θ) = u·v / (‖u‖‖v‖) → 0</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#1a5a2a" x="60" y="362">Orthogonal vectors → One variable carries none of the other's information → R²ⱼ≈0 → VIF≈1</text>
+<rect fill="#f8eaea" height="60" rx="6" stroke="#dfb8b8" stroke-width="0.5" width="600" x="40" y="396"></rect>
+<text style="font-family:'IBM Plex Mono',monospace;font-size:12px;fill:#8a1a1a" x="60" y="421">cos(θ) = u·v / (‖u‖‖v‖) → 1</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px;fill:#8a1a1a" x="60" y="438">Nearly parallel vectors → One variable is almost explained by the other → R²ⱼ→1 → VIF surges</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" text-anchor="middle" x="340" y="478">cos(θ) and R²ⱼ express the same relationship differently — R²ⱼ = cos²(θ)</text>
+<text style="font-family:'IBM Plex Sans KR',sans-serif;font-size:12px" text-anchor="middle" x="340" y="496">As θ approaches 0°, cos(θ)→1, R²ⱼ→1, denominator (1−R²ⱼ)→0, and VIF→∞</text>
+</svg>

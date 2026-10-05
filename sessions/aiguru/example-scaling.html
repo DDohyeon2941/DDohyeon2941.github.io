@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html lang="ko">
+
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>스케일링 비교 — MinMax vs 표준화</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Scaling comparison — MinMax vs standardization</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap');
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -51,38 +52,36 @@
   .outlier-toggle{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--text2);cursor:pointer;user-select:none}
   .outlier-toggle input{cursor:pointer;accent-color:var(--red)}
 </style>
+<link href="../../assets/reading.css" rel="stylesheet"/>
 </head>
 <body>
-
-<h2>스케일링 비교 — 원본 · MinMax · 표준화</h2>
-<div class="subtitle">1,000개 샘플 (온도·압력 두 변수) — 산포도로 스케일링 효과 확인</div>
-
+<nav aria-label="Portfolio navigation" class="portfolio-nav"><a href="../../index.html">Home</a><a href="../../research.html">Research</a><a href="../../projects.html">Projects</a><a aria-current="page" href="../../writing.html">Writing &amp; Sessions</a><a href="../../resume.html">CV</a></nav>
+<h2>Scaling comparison — Original · MinMax · Standardization</h2>
+<div class="subtitle">1,000 samples (temperature and pressure) — Explore the effect of scaling in scatter plots</div>
 <div class="controls">
-  <label class="outlier-toggle">
-    <input type="checkbox" id="outlierToggle"> 이상치 5개 추가
+<label class="outlier-toggle">
+<input id="outlierToggle" type="checkbox"/> Add 5 outliers
   </label>
-  <button class="seed-btn" onclick="regenerate()">🎲 데이터 재생성</button>
+<button class="seed-btn" onclick="regenerate()">🎲 Regenerate data</button>
 </div>
-
 <div class="charts">
-  <div class="chart-wrap active-raw">
-    <div class="chart-title">원본 (Raw)</div>
-    <canvas id="rawChart"></canvas>
-  </div>
-  <div class="chart-wrap active-minmax">
-    <div class="chart-title">MinMax 스케일링</div>
-    <canvas id="minmaxChart"></canvas>
-  </div>
-  <div class="chart-wrap active-std">
-    <div class="chart-title">표준화 (Z-score)</div>
-    <canvas id="stdChart"></canvas>
-  </div>
+<div class="chart-wrap active-raw">
+<div class="chart-title">Original (Raw)</div>
+<canvas id="rawChart" role="img" aria-label="Original temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The current temperature and pressure ranges are listed in the statistics below.</canvas>
 </div>
-
-<div class="stats" id="statsArea"></div>
-
+<div class="chart-wrap active-minmax">
+<div class="chart-title">MinMax scaling</div>
+<canvas id="minmaxChart" role="img" aria-label="MinMax scaled temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The scaled temperature and pressure ranges are listed in the statistics below.</canvas>
+</div>
+<div class="chart-wrap active-std">
+<div class="chart-title">Standardization (Z-score)</div>
+<canvas id="stdChart" role="img" aria-label="Standardized temperature and pressure scatter plot" aria-describedby="scaling-description statsArea">The standardized temperature and pressure ranges are listed in the statistics below.</canvas>
+</div>
+</div>
+<p class="chart-description" id="scaling-description">Generated teaching data: the plots show the same temperature and pressure observations on three different axis scales. MinMax maps each variable to 0–1; standardization gives each variable mean 0 and standard deviation 1. The statistics below update when data or outliers change.</p>
+<div class="stats" id="statsArea" aria-live="polite" aria-atomic="true"></div>
+<noscript><p>Enable JavaScript to generate the plots and statistics. The scaling methods are described above.</p></noscript>
 <div class="note-box" id="noteBox"></div>
-
 <script>
 const N = 1000;
 let seed = 42;
@@ -168,7 +167,7 @@ function drawScatter(canvasId, xs, ys, color, xRange, yRange) {
   }
 
   // 축 레이블
-  ctx.fillStyle = '#9b9890';
+  ctx.fillStyle = '#626058';
   ctx.font = '9px IBM Plex Mono, monospace';
   ctx.textAlign = 'center';
   for (let i = 0; i <= 4; i++) {
@@ -210,36 +209,36 @@ function updateStats(rawXs, rawYs, mmXs, mmYs, stXs, stYs) {
 
   document.getElementById('statsArea').innerHTML = `
     <div class="stat-box">
-      <div class="stat-label">원본 (Raw)</div>
+      <div class="stat-label">Original (Raw)</div>
       <div class="stat-vals">
-        <div class="stat-item">온도 범위: <b>${rX.min.toFixed(1)} ~ ${rX.max.toFixed(1)}</b></div>
-        <div class="stat-item">압력 범위: <b>${rY.min.toFixed(2)} ~ ${rY.max.toFixed(2)}</b></div>
+        <div class="stat-item">Temperature range: <b>${rX.min.toFixed(1)} ~ ${rX.max.toFixed(1)}</b></div>
+        <div class="stat-item">Pressure range: <b>${rY.min.toFixed(2)} ~ ${rY.max.toFixed(2)}</b></div>
       </div>
       <div class="stat-vals" style="margin-top:4px">
-        <div class="stat-item">온도 std: <b>${rX.std.toFixed(1)}</b></div>
-        <div class="stat-item">압력 std: <b>${rY.std.toFixed(2)}</b></div>
+        <div class="stat-item">Temperature std: <b>${rX.std.toFixed(1)}</b></div>
+        <div class="stat-item">Pressure std: <b>${rY.std.toFixed(2)}</b></div>
       </div>
     </div>
     <div class="stat-box minmax">
-      <div class="stat-label">MinMax 스케일링</div>
+      <div class="stat-label">MinMax scaling</div>
       <div class="stat-vals">
-        <div class="stat-item">온도 범위: <b>${mX.min.toFixed(2)} ~ ${mX.max.toFixed(2)}</b></div>
-        <div class="stat-item">압력 범위: <b>${mY.min.toFixed(2)} ~ ${mY.max.toFixed(2)}</b></div>
+        <div class="stat-item">Temperature range: <b>${mX.min.toFixed(2)} ~ ${mX.max.toFixed(2)}</b></div>
+        <div class="stat-item">Pressure range: <b>${mY.min.toFixed(2)} ~ ${mY.max.toFixed(2)}</b></div>
       </div>
       <div class="stat-vals" style="margin-top:4px">
-        <div class="stat-item">온도 std: <b>${mX.std.toFixed(3)}</b></div>
-        <div class="stat-item">압력 std: <b>${mY.std.toFixed(3)}</b></div>
+        <div class="stat-item">Temperature std: <b>${mX.std.toFixed(3)}</b></div>
+        <div class="stat-item">Pressure std: <b>${mY.std.toFixed(3)}</b></div>
       </div>
     </div>
     <div class="stat-box std">
-      <div class="stat-label">표준화 (Z-score)</div>
+      <div class="stat-label">Standardization (Z-score)</div>
       <div class="stat-vals">
-        <div class="stat-item">온도 범위: <b>${sX.min.toFixed(2)} ~ ${sX.max.toFixed(2)}</b></div>
-        <div class="stat-item">압력 범위: <b>${sY.min.toFixed(2)} ~ ${sY.max.toFixed(2)}</b></div>
+        <div class="stat-item">Temperature range: <b>${sX.min.toFixed(2)} ~ ${sX.max.toFixed(2)}</b></div>
+        <div class="stat-item">Pressure range: <b>${sY.min.toFixed(2)} ~ ${sY.max.toFixed(2)}</b></div>
       </div>
       <div class="stat-vals" style="margin-top:4px">
-        <div class="stat-item">온도 std: <b>${sX.std.toFixed(2)}</b></div>
-        <div class="stat-item">압력 std: <b>${sY.std.toFixed(2)}</b></div>
+        <div class="stat-item">Temperature std: <b>${sX.std.toFixed(2)}</b></div>
+        <div class="stat-item">Pressure std: <b>${sY.std.toFixed(2)}</b></div>
       </div>
     </div>
   `;
@@ -247,13 +246,13 @@ function updateStats(rawXs, rawYs, mmXs, mmYs, stXs, stYs) {
 
 function updateNote(withOutliers) {
   const base = `
-    <b>세 산포도의 분포 모양이 같은 건 정상입니다.</b> MinMax와 표준화는 단조 변환 — 각 값에 같은 수식을 적용하기 때문에 데이터 간 상대적 순서와 간격 비율이 유지됩니다. 달라지는 건 분포 모양이 아니라 <b>축의 척도(scale)</b>입니다.<br><br>
-    <b>원본:</b> 온도는 60~100°C, 압력은 2~8 bar 수준. 단위와 범위가 완전히 다릅니다. 이 상태에서 유클리드 거리를 계산하면 온도가 압력을 지배합니다.<br><br>
-    <b>MinMax:</b> 두 변수 모두 0~1 범위로 압축. 범위는 같지만 <b>이상치가 0과 1을 결정</b>합니다. 이상치가 없을 때 적합합니다.<br><br>
-    <b>표준화(Z-score):</b> 평균=0, std=1로 변환. 이상치가 있어도 전체 분포 기준으로 변환하기 때문에 MinMax보다 안정적입니다.
+    <b>It is normal for all three scatter plots to show the same distribution shape.</b> MinMax scaling and standardization are monotonic transformations: applying the same formula to every value preserves their relative order and the ratios between gaps. What changes is not the distribution shape but the <b>axis scale</b>.<br><br>
+    <b>Original:</b> Temperature is around 60–100°C and pressure around 2–8 bar. Their units and ranges differ substantially. Calculating Euclidean distance at this scale lets temperature dominate pressure.<br><br>
+    <b>MinMax:</b> Both variables are compressed into the 0–1 range. The ranges match, but <b>outliers determine 0 and 1</b>. This is suitable when there are no outliers.<br><br>
+    <b>Standardization (Z-score):</b> Transforms each variable to mean=0 and std=1. Because the transformation uses the whole distribution, it is more stable than MinMax in the presence of outliers.
   `;
   const outlierNote = withOutliers ? `<br><br>
-    <b>이상치 추가 시:</b> MinMax에서 이상치 하나가 전체 스케일을 결정해버립니다. 정상 데이터가 0~0.5 구간에 몰리게 됩니다. 표준화는 이상치 영향을 받지만 MinMax만큼 극단적이지 않습니다.
+    <b>When outliers are added:</b> With MinMax scaling, one outlier determines the entire scale, compressing normal observations into the 0–0.5 interval. Standardization is also affected by outliers, but less dramatically than MinMax.
   ` : '';
   document.getElementById('noteBox').innerHTML = base + outlierNote;
 }
@@ -297,6 +296,6 @@ document.getElementById('outlierToggle').addEventListener('change', render);
 window.addEventListener('resize', render);
 window.addEventListener('load', () => { setTimeout(render, 100); });
 </script>
-<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../index.html#talks" style="color:#0f766e;text-decoration:underline">← 포트폴리오 · AIguru 세션 목록</a></div>
+<div style="padding:12px 20px;text-align:right;background:#f7f6f2;font:14px/1.5 Arial,sans-serif"><a href="../../writing.html#talks" style="color:#0f766e;text-decoration:underline">← Portfolio · Company ML Sessions</a></div>
 </body>
 </html>

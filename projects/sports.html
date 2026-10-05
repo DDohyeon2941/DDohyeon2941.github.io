@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<title>
+   Situation importance of baseball ball–strike counts | Do Hyeon Lee
+  </title>
+<meta content="Research, projects, writing, sessions, and CV of Do Hyeon Lee." name="description"/>
+<link href="../assets/site.css" rel="stylesheet"/>
+<meta content="0; url=../research/baseball.html" http-equiv="refresh"/>
+</head>
+<body>
+<a class="skip-link" href="#main">
+   Skip to content
+  </a>
+<header class="site-header">
+<nav aria-label="Main navigation" class="site-nav">
+<a class="name" href="../index.html">
+     Do Hyeon Lee
+    </a>
+<a href="../index.html">
+     Home
+    </a>
+<a aria-current="page" href="../research.html">
+     Research
+    </a>
+<a href="../projects.html">
+     Projects
+    </a>
+<a href="../writing.html">
+     Writing &amp; Sessions
+    </a>
+<a href="../resume.html">
+     CV
+    </a>
+</nav>
+</header>
+<main class="detail-page" id="main">
+<p class="breadcrumb">
+<a href="../research/baseball.html">
+     ← Back to list
+    </a>
+</p>
+<h1>
+    Situation importance of baseball ball–strike counts
+   </h1>
+<p class="meta">
+    Related research · This legacy address redirects to the research page.
+   </p>
+<div class="detail-overview">
+<div>
+<p class="intro">
+      A strike’s effect on a plate appearance depends on the current ball–strike count. We modeled count transitions as a Markov chain and analyzed situation importance through differences in outcome probabilities after a ball or strike.
+     </p>
+<ul class="key-facts">
+<li>
+       Method: situation importance from count transitions
+      </li>
+<li>
+       Analysis: importance and pitch velocity
+      </li>
+</ul>
+</div>
+<figure class="detail-figure">
+<a aria-label="View full-size figure" href="../images/research/baseball-method.svg">
+<img alt="Baseball count importance · Workflow concept diagram" loading="lazy" src="../images/research/baseball-method.svg"/>
+</a>
+<figcaption>
+      Baseball count importance · Workflow concept diagram
+     </figcaption>
+</figure>
+</div>
+<nav aria-label="On this page" class="toc">
+<h2>
+     On this page
+    </h2>
+<ol>
+<li>
+<a href="#part-0">
+       Problem and context
+      </a>
+</li>
+<li>
+<a href="#part-1">
+       My role
+      </a>
+</li>
+<li>
+<a href="#part-2">
+       Approach
+      </a>
+</li>
+<li>
+<a href="#part-3">
+       Scope
+      </a>
+</li>
+<li>
+<a href="#part-4">
+       Public resources
+      </a>
+</li>
+</ol>
+</nav>
+<section class="section" id="part-0">
+<h2>
+     Problem and context
+    </h2>
+<p>
+     Beyond examining pitch velocity or outcome in isolation, the research asks how to quantify the count in which a pitch occurs. We aimed to interpret pitcher behavior and outcomes in the context of situation importance.
+    </p>
+</section>
+<section class="section" id="part-1">
+<h2>
+     My role
+    </h2>
+<p>
+     I participated as co-first author. The public repository includes code for count-transition data, outcome probabilities and importance calculations, and velocity comparisons.
+    </p>
+</section>
+<section class="section" id="part-2">
+<h2>
+     Approach
+    </h2>
+<h3>
+     Counts as states
+    </h3>
+<p>
+     Using MLB Statcast data, the model combines 12 ball–strike states with terminal plate-appearance outcomes. Estimated next-state probabilities form a discrete-time Markov chain.
+    </p>
+<h3>
+     Plate-appearance outcome probabilities
+    </h3>
+<p>
+     Calculates the probability of reaching an out or on-base outcome from each count. Changes in outcome probability after a ball vs. a strike contribute to Importance of Moment.
+    </p>
+<h3>
+     Importance and pitch characteristics
+    </h3>
+<p>
+     Public analysis code compares count-specific importance with mean fastball velocity and separately examines all pitchers and an elite group.
+    </p>
+</section>
+<section class="section" id="part-3">
+<h2>
+     Scope
+    </h2>
+<p>
+     The research examines fastball velocity at high-importance counts and the elite group’s two-strike characteristics. These are observational associations, not evidence that importance causes velocity changes.
+    </p>
+<p>
+     Count probabilities depend on the pitch data and state definitions. Applications to player evaluation or game strategy require additional batter, pitcher, and game-context factors.
+    </p>
+</section>
+<section class="section" id="part-4">
+<h2>
+     Public resources
+    </h2>
+<p>
+<a href="../research/baseball.html">
+      Paper, code, and authorship
+     </a>
+</p>
+</section>
+</main>
+<footer class="site-footer">
+   Do Hyeon Lee · ML research and data design ·
+   <a href="mailto:skypo1000@ds.seoultech.ac.kr">
+    Email
+   </a>
+</footer>
+</body>
+</html>

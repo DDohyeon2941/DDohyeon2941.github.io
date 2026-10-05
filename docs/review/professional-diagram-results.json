@@ -1,0 +1,26 @@
+{
+  "html_pages": 39,
+  "local_references": 734,
+  "preservation": [
+    {
+      "page": "projects/manufacturing-data.html",
+      "text_ids_previous_links": "preserved"
+    },
+    {
+      "page": "projects/time-series-data.html",
+      "text_ids_previous_links": "preserved"
+    }
+  ],
+  "source_figure_matches_portfolio_crop": true,
+  "source_diagram_language": "original Korean with English caption and alt text",
+  "full_public_html_preview_new_svg_and_source_crop_privacy_check": "passed",
+  "detail_viewport_checks": 6,
+  "preview_navigation_checks": 6,
+  "svg_render_and_text_bounds_checks": 4,
+  "viewports": [
+    "1440×1000",
+    "390×844",
+    "320×740"
+  ],
+  "issues": []
+}
