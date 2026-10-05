@@ -1,5 +1,11 @@
 # 포트폴리오 변경 검토
 
+## Latest: technical skills arrangement
+
+Technical skills now uses two columns with category headings, tool names, application descriptions, and separate supporting links. Five skill areas plus explicitly scoped course-team experience form three rows. Thin separators retain the site's understated style; widths of 700px and below use one column. The introduction/skills width alignment, all technologies and descriptions, and existing links are preserved.
+
+Chrome checks at 1440, 768, 700, 390, and 320px passed without overflow or JavaScript errors. All 24 desktop/mobile detail-navigation checks and 12 keyboard previews passed. See [results](skills-layout-results.json), [desktop](skills-layout-desktop.png), and [mobile](skills-layout-mobile.png).
+
 ## Latest: home alignment
 
 The portrait now sits beside the name in a compact left-aligned header. The introduction, contact links, and Technical skills share the same full content width. This removes the former photo column that narrowed the entire introduction. Existing text, links, fragment IDs, and images are unchanged.
